@@ -929,3 +929,173 @@ body > header.nav{display:none!important}
   #iconLayer .icon-ae{--x:79%!important;--y:67%!important}
   #iconLayer .icon-capcut{width:62px!important;height:62px!important}
 }
+
+
+/* =========================================================
+   V20 — FINAL SPACING + ICON VISIBILITY + SMOOTH MOTION
+   ========================================================= */
+
+/* Title: compact, intentional spacing. */
+.hero-display{
+  line-height:.88!important;
+}
+.hero-display span:first-child{
+  margin-bottom:4px!important;
+}
+.hero-display span+span{
+  margin-top:0!important;
+}
+
+/* Stats: tighter horizontal rhythm, especially between 6+ and 100+. */
+.stats{
+  gap:0!important;
+  width:max-content!important;
+}
+.stats>div{
+  padding-left:18px!important;
+  padding-right:18px!important;
+}
+.stats>div:first-child{
+  padding-left:0!important;
+}
+.stats strong{
+  font-size:20px!important;
+}
+.stats small{
+  margin-top:6px!important;
+}
+
+/* Six icons: larger and visually grouped around the portrait. */
+#iconLayer{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  z-index:55!important;
+  pointer-events:none!important;
+}
+#iconLayer .app-icon{
+  width:88px!important;
+  height:88px!important;
+  z-index:55!important;
+}
+#iconLayer .icon-figma{
+  width:98px!important;
+  height:98px!important;
+}
+#iconLayer .icon-capcut{
+  width:94px!important;
+  height:94px!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+/* Balanced positions: closer to the portrait than V19, but still separated. */
+#iconLayer .icon-ai{
+  --x:16%!important;
+  --y:28%!important;
+}
+#iconLayer .icon-figma{
+  --x:13%!important;
+  --y:48%!important;
+}
+#iconLayer .icon-capcut{
+  --x:15%!important;
+  --y:66%!important;
+}
+#iconLayer .icon-pr{
+  --x:69%!important;
+  --y:19%!important;
+}
+#iconLayer .icon-ps{
+  --x:76%!important;
+  --y:43%!important;
+}
+#iconLayer .icon-ae{
+  --x:72%!important;
+  --y:67%!important;
+}
+
+/* Make floating movement smoother and less mechanical. */
+#iconLayer .app-icon{
+  animation-duration:6s!important;
+  transition:
+    transform .9s cubic-bezier(.16,1,.3,1),
+    opacity .65s ease,
+    filter .65s ease!important;
+}
+#iconLayer .app-icon img{
+  transition:transform .45s cubic-bezier(.16,1,.3,1),filter .45s ease!important;
+}
+#iconLayer .app-icon:hover img{
+  transform:scale(1.1) rotate(2deg)!important;
+}
+
+/* Portrait slightly larger, with a softer hover/parallax feel. */
+#portraitTarget{
+  width:min(57vw,780px)!important;
+  height:99%!important;
+  right:-4vw!important;
+  transition:transform .28s cubic-bezier(.16,1,.3,1),filter .45s ease!important;
+}
+#portraitTarget:hover{
+  filter:drop-shadow(0 25px 48px rgba(255,45,35,.16))!important;
+}
+
+/* Smooth retreat: icons collapse toward the center of the portrait,
+   rather than shooting sideways. */
+.interactive-hero.icon-retreat #iconLayer .app-icon{
+  opacity:0!important;
+  filter:blur(2px)!important;
+  animation-play-state:paused!important;
+}
+.interactive-hero.icon-retreat #iconLayer .icon-ai{
+  transform:translate(205px,125px) scale(.12)!important;
+}
+.interactive-hero.icon-retreat #iconLayer .icon-figma{
+  transform:translate(215px,28px) scale(.12)!important;
+}
+.interactive-hero.icon-retreat #iconLayer .icon-capcut{
+  transform:translate(205px,-95px) scale(.12)!important;
+}
+.interactive-hero.icon-retreat #iconLayer .icon-pr{
+  transform:translate(-145px,125px) scale(.12)!important;
+}
+.interactive-hero.icon-retreat #iconLayer .icon-ps{
+  transform:translate(-175px,28px) scale(.12)!important;
+}
+.interactive-hero.icon-retreat #iconLayer .icon-ae{
+  transform:translate(-150px,-92px) scale(.12)!important;
+}
+
+/* Cursor-responsive hero glow is deliberately subtle. */
+.interactive-hero::after{
+  transition:left .18s ease-out,top .18s ease-out!important;
+}
+
+/* Desktop/tablet */
+@media(max-width:1100px) and (min-width:801px){
+  #iconLayer .app-icon{width:78px!important;height:78px!important}
+  #iconLayer .icon-figma{width:88px!important;height:88px!important}
+  #iconLayer .icon-capcut{width:84px!important;height:84px!important}
+  #iconLayer .icon-ai{--x:12%!important}
+  #iconLayer .icon-figma{--x:9%!important}
+  #iconLayer .icon-capcut{--x:11%!important}
+  #iconLayer .icon-pr{--x:67%!important}
+  #iconLayer .icon-ps{--x:74%!important}
+  #iconLayer .icon-ae{--x:69%!important}
+  #portraitTarget{width:min(59vw,680px)!important}
+}
+@media(max-width:800px){
+  .stats>div{padding-left:10px!important;padding-right:10px!important}
+  .stats>div:first-child{padding-left:0!important}
+  #iconLayer .app-icon{width:62px!important;height:62px!important}
+  #iconLayer .icon-figma{width:72px!important;height:72px!important}
+  #iconLayer .icon-capcut{width:68px!important;height:68px!important}
+  #iconLayer .icon-ai{--x:6%!important;--y:24%!important}
+  #iconLayer .icon-figma{--x:5%!important;--y:46%!important}
+  #iconLayer .icon-capcut{--x:8%!important;--y:68%!important}
+  #iconLayer .icon-pr{--x:75%!important;--y:14%!important}
+  #iconLayer .icon-ps{--x:85%!important;--y:41%!important}
+  #iconLayer .icon-ae{--x:77%!important;--y:67%!important}
+}
