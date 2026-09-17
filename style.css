@@ -159,3 +159,112 @@ footer{border-top:1px solid var(--line);display:flex;justify-content:space-betwe
   .photo-caption{font-size:7px}
   .hero-bottomline{font-size:8px}.hero-bottomline span:nth-child(2){display:none}
 }
+
+
+/* ===== HERO V3 — CLEAR TWO-COLUMN COMPOSITION ===== */
+@media (min-width: 801px){
+  .hero-v2{
+    padding-left:6vw;
+    padding-right:3vw;
+  }
+
+  .hero-v2-stage{
+    display:block;
+    position:relative;
+    min-height:0;
+    height:calc(100vh - 150px);
+  }
+
+  .hero-v2-copy{
+    position:absolute;
+    z-index:5;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    width:54%;
+    max-width:780px;
+    margin:0;
+  }
+
+  .hero-display{
+    font-size:clamp(76px,9.2vw,150px);
+    line-height:.82;
+    letter-spacing:-.075em;
+    text-align:left;
+  }
+
+  .hero-display span{
+    display:block;
+    white-space:nowrap;
+  }
+
+  .hero-display .outline-word{
+    margin-left:0;
+    padding-left:5vw;
+    -webkit-text-stroke:1.4px #f5f3ee;
+  }
+
+  .hero-v2-intro{
+    width:min(430px,75%);
+    margin:34px 0 24px 5vw;
+    text-align:left;
+  }
+
+  .hero-actions{
+    margin-left:5vw;
+    justify-content:flex-start;
+  }
+
+  .hero-orbit{
+    width:min(38vw,560px);
+    height:min(38vw,560px);
+    left:auto;
+    right:22vw;
+    top:50%;
+    transform:translate(50%,-50%);
+    z-index:1;
+    opacity:.7;
+  }
+
+  .hero-v2-photo-wrap{
+    position:absolute;
+    z-index:6;
+    right:1.5vw;
+    top:50%;
+    bottom:auto;
+    transform:translateY(-50%);
+    width:min(35vw,520px);
+  }
+
+  .hero-v2-photo{
+    height:min(76vh,760px);
+    min-height:560px;
+    border-radius:210px 210px 12px 12px;
+  }
+
+  .hero-v2-photo img{
+    object-position:center top;
+  }
+
+  .hero-photo-tag{
+    left:-38px;
+  }
+
+  .photo-caption{
+    text-align:left;
+  }
+
+  .hero-bottomline{
+    position:relative;
+    z-index:10;
+  }
+}
+
+@media (max-width:1100px) and (min-width:801px){
+  .hero-v2-copy{width:57%}
+  .hero-display{font-size:8.2vw}
+  .hero-v2-intro{width:78%}
+  .hero-orbit{right:27vw}
+  .hero-v2-photo-wrap{width:32vw}
+  .hero-v2-photo{height:68vh;min-height:500px}
+}
