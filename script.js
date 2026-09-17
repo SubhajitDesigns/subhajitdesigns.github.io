@@ -4,94 +4,67 @@ window.addEventListener('mousemove',e=>{if(dot){dot.style.left=e.clientX+'px';do
 const reveals=document.querySelectorAll('.project,.process-grid > div,.about,.contact');
 if('IntersectionObserver' in window){const io=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.style.opacity='1';entry.target.style.transform='translateY(0)';io.unobserve(entry.target)}})},{threshold:.08});reveals.forEach(el=>{el.style.opacity='0';el.style.transform='translateY(28px)';el.style.transition='opacity .8s ease, transform .8s ease';io.observe(el)})}
 
+/* V12 — shy 3D tools: peek from behind the portrait, then dive inward on hover. */
 (()=>{
   const hero=document.querySelector('.interactive-hero');
   const art=document.querySelector('.hero-art');
   const portrait=document.querySelector('.portrait-interactive');
-  const type=document.querySelector('.hero-type-back');
   const icons=[...document.querySelectorAll('.app-icon')];
   if(!hero||!art||!portrait||!icons.length)return;
 
-  /*
-    V11 is intentionally NOT a full orbit.
-    The icons behave like shy 3D objects hiding behind the portrait:
-    two peek from behind the shoulders/head, while three sit closer to
-    the viewer around the lower body/hand area. Each one makes a small
-    looping bob so the scene still feels alive.
-  */
-  const layout=[
-    {x:34,y:24,z:-80,rx:7,ry:12,rot:-8,back:true},
-    {x:66,y:29,z:-65,rx:8,ry:14,rot:8,back:true},
-    {x:13,y:57,z:120,rx:10,ry:12,rot:-9,back:false},
-    {x:75,y:59,z:135,rx:8,ry:11,rot:10,back:false},
-    {x:43,y:77,z:105,rx:7,ry:10,rot:-5,back:false}
+  // x/y are percentages of the portrait area. z controls depth.
+  // Back icons sit behind the shoulders/head; front icons sit over the lower body.
+  const spots=[
+    {x:31,y:28,z:-110,scale:.78,rot:-12,back:true,phase:0.2},
+    {x:69,y:28,z:-90, scale:.82,rot:10, back:true,phase:1.5},
+    {x:22,y:69,z:120, scale:.86,rot:-10,back:false,phase:2.7},
+    {x:73,y:70,z:130, scale:.90,rot:9,  back:false,phase:4.0},
+    {x:57,y:82,z:145, scale:.84,rot:-6, back:false,phase:5.1}
   ];
 
-  let hovering=false;
-  let pointerX=0,pointerY=0;
-  let start=performance.now();
-
+  let hover=false, px=0, py=0, start=performance.now();
   icons.forEach((icon,i)=>{
-    const p=layout[i%layout.length];
-    icon.classList.add(p.back?'peek-back':'peek-front');
+    icon.classList.toggle('peek-back',spots[i].back);
+    icon.classList.toggle('peek-front',!spots[i].back);
   });
 
-  function render(now){
+  function frame(now){
     const t=(now-start)/1000;
     const r=art.getBoundingClientRect();
-    const mx=(pointerX/r.width-.5);
-    const my=(pointerY/r.height-.5);
+    const cx=r.width*.50, cy=r.height*.49;
+    const mouseX=(px/r.width-.5), mouseY=(py/r.height-.5);
 
     icons.forEach((icon,i)=>{
-      const p=layout[i%layout.length];
-      const bobX=Math.sin(t*(0.75+i*.07)+i)*p.rx;
-      const bobY=Math.cos(t*(0.68+i*.09)+i*1.4)*p.ry;
-      const sway=Math.sin(t*.42+i)*4;
-      const x=((p.x/100)*r.width)+bobX+mx*8;
-      const y=((p.y/100)*r.height)+bobY+my*7;
-      const z=p.z + Math.sin(t*.55+i)*12;
-      const scale=p.back ? .72 : 1.0;
+      const p=spots[i%spots.length];
+      const bx=Math.sin(t*.72+p.phase)*7;
+      const by=Math.cos(t*.62+p.phase)*5;
+      const x=r.width*p.x/100 + bx + mouseX*10;
+      const y=r.height*p.y/100 + by + mouseY*7;
+      const z=p.z + Math.sin(t*.45+p.phase)*14;
 
-      if(hovering){
-        /* Visually dive into the portrait rather than simply switching off. */
-        const cx=r.width*.49, cy=r.height*.49;
-        icon.style.transform=`translate3d(${cx-x}px,${cy-y}px,-180px) rotateX(24deg) rotateY(-18deg) rotate(${p.rot}deg) scale(.12)`;
-        icon.style.opacity='0';
-        icon.style.filter='blur(5px) brightness(.35)';
+      if(hover){
+        // Pull the object toward the portrait center and sink it behind the body.
+        const dx=cx-x, dy=cy-y;
+        icon.style.zIndex='5';
+        icon.style.transform=`translate3d(calc(${x}px - 50% + ${dx*.72}px),calc(${y}px - 50% + ${dy*.72}px),-260px) rotate(${p.rot*1.4}deg) scale(.16)`;
+        icon.style.opacity='.04';
+        icon.style.filter='blur(7px) brightness(.28)';
       }else{
-        icon.style.transform=`translate3d(calc(${x}px - 50%),calc(${y}px - 50%),${z}px) rotateX(${Math.sin(t+i)*4}deg) rotateY(${sway+p.rot}deg) scale(${scale})`;
-        icon.style.opacity=p.back ? '.78' : '1';
-        icon.style.filter=p.back ? 'brightness(.52) saturate(.75) blur(.35px)' : 'brightness(1) saturate(1)';
+        icon.style.zIndex=p.back?'8':'45';
+        icon.style.transform=`translate3d(calc(${x}px - 50%),calc(${y}px - 50%),${z}px) rotateZ(${p.rot+Math.sin(t*.5+p.phase)*3}deg) rotateX(${Math.sin(t*.7+p.phase)*5}deg) rotateY(${Math.cos(t*.6+p.phase)*7}deg) scale(${p.scale})`;
+        icon.style.opacity=p.back?'.90':'1';
+        icon.style.filter=p.back?'brightness(.72) saturate(.88) drop-shadow(0 12px 18px rgba(0,0,0,.42))':'drop-shadow(0 18px 22px rgba(0,0,0,.52))';
       }
     });
 
-    if(!hovering){
-      if(type) type.style.transform=`translate3d(${mx*-14}px,${my*-7}px,0)`;
-      portrait.style.transform=`translate3d(${mx*6}px,${my*-4}px,0)`;
-    }
-    requestAnimationFrame(render);
+    if(!hover) portrait.style.transform=`translate3d(${mouseX*5}px,${mouseY*-3}px,0)`;
+    requestAnimationFrame(frame);
   }
 
-  function pointerMove(e){
-    const r=art.getBoundingClientRect();
-    pointerX=e.clientX-r.left;
-    pointerY=e.clientY-r.top;
-  }
-
-  function enterPortrait(){
-    hovering=true;
-    hero.classList.add('portrait-hover');
-  }
-
-  function leavePortrait(){
-    hovering=false;
-    hero.classList.remove('portrait-hover');
-  }
-
-  art.addEventListener('pointermove',pointerMove);
-  portrait.addEventListener('pointerenter',enterPortrait);
-  portrait.addEventListener('pointerleave',leavePortrait);
-  requestAnimationFrame(render);
+  art.addEventListener('pointermove',e=>{const r=art.getBoundingClientRect();px=e.clientX-r.left;py=e.clientY-r.top});
+  portrait.addEventListener('pointerenter',()=>{hover=true;hero.classList.add('portrait-hover')});
+  portrait.addEventListener('pointerleave',()=>{hover=false;hero.classList.remove('portrait-hover')});
+  requestAnimationFrame(frame);
 })();
 
 const magnetic=document.querySelector('.magnetic');
