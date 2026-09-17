@@ -254,3 +254,39 @@ body.cursor-active .cursor-glow {
 @media (max-width: 900px) {
   .cursor-glow { width: 320px; height: 320px; }
 }
+
+
+/* V30 FINAL — guarantee headline fits inside the left hero column */
+.hero-copy .hero-title {
+  display: block !important;
+  width: 100% !important;
+  max-width: 700px !important;
+  box-sizing: border-box !important;
+  font-size: clamp(3.65rem, 5.75vw, 6.7rem) !important;
+  line-height: .88 !important;
+  letter-spacing: -.055em !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+.hero-copy .hero-title span {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+}
+
+@media (max-width: 1200px) {
+  .hero-copy .hero-title {
+    font-size: clamp(3.35rem, 5.4vw, 5.8rem) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-copy .hero-title {
+    max-width: 100% !important;
+    font-size: clamp(3rem, 10vw, 5rem) !important;
+  }
+}
