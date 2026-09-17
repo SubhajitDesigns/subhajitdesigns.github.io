@@ -34,8 +34,8 @@
       const px=Math.max(-1,Math.min(1,(sx-(r.left+r.width/2))/(r.width/2)));
       const py=Math.max(-1,Math.min(1,(sy-(r.top+r.height/2))/(r.height/2)));
       const retreat=hero?.classList.contains('icon-retreat');
-      const move=retreat?2.5:9;
-      portrait.style.transform=`translate3d(${px*move}px,${py*move*.7}px,0) rotateX(${py*(retreat?1.5:3)}deg) rotateY(${px*(retreat?-2:4)}deg)`;
+      const move=retreat?2.2:10;
+      portrait.style.transform=`translate3d(${px*move}px,${py*move*.7}px,0) rotateX(${py*(retreat?1.2:3.2)}deg) rotateY(${px*(retreat?-2:4.5)}deg)`;
       const grid=hero.querySelector('.hero-bg-grid');
       if(grid)grid.style.transform=`translate3d(${px*4}px,${py*3}px,0)`;
     }
