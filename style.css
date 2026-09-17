@@ -814,3 +814,118 @@ body > header.nav{display:none!important}
     transform:translate(0,0) scale(.22)!important;
   }
 }
+
+
+/* =========================================================
+   V19 — POLISHED HERO SPACING + CAPCUT + MICRO-INTERACTION
+   ========================================================= */
+
+/* Title: tighter, cleaner gap between SUBHAJIT'S and DESIGN. */
+.hero-display{
+  font-size:clamp(68px,6.05vw,103px)!important;
+  line-height:.90!important;
+}
+.hero-display span:first-child{
+  margin-bottom:8px!important;
+}
+.hero-display span+span{
+  margin-top:0!important;
+}
+
+/* Six icons — balanced around the portrait, not hugging it. */
+#iconLayer{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  overflow:visible!important;
+}
+#iconLayer .app-icon{
+  z-index:55!important;
+  overflow:visible!important;
+}
+
+/* LEFT SIDE: move Illustrator/Figma/CapCut farther away from the body. */
+#iconLayer .icon-ai{--x:7%!important;--y:27%!important}
+#iconLayer .icon-figma{--x:2%!important;--y:48%!important}
+#iconLayer .icon-capcut{
+  --x:8%!important;
+  --y:70%!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+/* RIGHT SIDE: bring Pr/PS/Ae closer together. */
+#iconLayer .icon-pr{--x:72%!important;--y:18%!important}
+#iconLayer .icon-ps{--x:80%!important;--y:43%!important}
+#iconLayer .icon-ae{--x:75%!important;--y:69%!important}
+
+/* CapCut is deliberately a little larger so it cannot get lost. */
+#iconLayer .icon-capcut{
+  width:86px!important;
+  height:86px!important;
+}
+
+/* Portrait slightly bigger, but still leaving room for the icons. */
+#portraitTarget{
+  width:min(55vw,760px)!important;
+  height:98%!important;
+  right:-3.5vw!important;
+}
+
+/* More obvious but still premium micro-interaction on the hero. */
+#iconLayer .app-icon img{
+  transition:transform .28s ease,filter .28s ease!important;
+}
+#iconLayer .app-icon:hover img{
+  transform:scale(1.08) rotate(2deg)!important;
+  filter:drop-shadow(0 18px 25px rgba(255,55,45,.32))!important;
+}
+.interactive-hero{
+  transition:background-position .3s ease!important;
+}
+
+/* Hover retreat: all six move toward the portrait center, not outward. */
+.interactive-hero.icon-retreat #iconLayer .app-icon{
+  opacity:0!important;
+  filter:blur(2px)!important;
+  animation-play-state:paused!important;
+}
+.interactive-hero.icon-retreat #iconLayer .icon-ai{transform:translate(300px,145px) scale(.16)!important}
+.interactive-hero.icon-retreat #iconLayer .icon-figma{transform:translate(330px,30px) scale(.16)!important}
+.interactive-hero.icon-retreat #iconLayer .icon-capcut{transform:translate(290px,-105px) scale(.16)!important}
+.interactive-hero.icon-retreat #iconLayer .icon-pr{transform:translate(-170px,145px) scale(.16)!important}
+.interactive-hero.icon-retreat #iconLayer .icon-ps{transform:translate(-210px,35px) scale(.16)!important}
+.interactive-hero.icon-retreat #iconLayer .icon-ae{transform:translate(-175px,-100px) scale(.16)!important}
+
+/* Keep the hero visually active even when the pointer isn't over the portrait. */
+.hero-art .portrait-interactive{
+  transition:transform .18s cubic-bezier(.22,1,.36,1),filter .35s ease!important;
+}
+.hero-art .portrait-interactive:hover{
+  filter:drop-shadow(0 22px 42px rgba(255,45,35,.13))!important;
+}
+
+@media(max-width:1100px) and (min-width:801px){
+  .hero-display{font-size:clamp(62px,6.15vw,92px)!important}
+  #portraitTarget{width:min(56vw,650px)!important}
+  #iconLayer .icon-ai{--x:4%!important}
+  #iconLayer .icon-figma{--x:0%!important}
+  #iconLayer .icon-capcut{--x:5%!important}
+  #iconLayer .icon-pr{--x:69%!important}
+  #iconLayer .icon-ps{--x:79%!important}
+  #iconLayer .icon-ae{--x:73%!important}
+}
+
+@media(max-width:800px){
+  .hero-display{font-size:15.5vw!important}
+  .hero-display span:first-child{margin-bottom:4px!important}
+  #portraitTarget{width:100%!important;height:100%!important;right:0!important}
+  #iconLayer .icon-ai{--x:1%!important;--y:24%!important}
+  #iconLayer .icon-figma{--x:0%!important;--y:46%!important}
+  #iconLayer .icon-capcut{--x:4%!important;--y:69%!important}
+  #iconLayer .icon-pr{--x:78%!important;--y:14%!important}
+  #iconLayer .icon-ps{--x:88%!important;--y:41%!important}
+  #iconLayer .icon-ae{--x:79%!important;--y:67%!important}
+  #iconLayer .icon-capcut{width:62px!important;height:62px!important}
+}

@@ -101,3 +101,33 @@
     });
   }
 })();
+
+
+/* V19 micro-interaction: a very small portrait tilt follows the pointer. */
+(() => {
+  const p = document.querySelector('#portraitTarget');
+  const h = document.querySelector('.interactive-hero');
+  if (!p || !h || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let rx = 0, ry = 0, tx = 0, ty = 0;
+  window.addEventListener('mousemove', e => {
+    if (window.innerWidth <= 800) return;
+    const r = p.getBoundingClientRect();
+    const x = Math.max(-1, Math.min(1, (e.clientX - (r.left+r.width/2))/(r.width/2)));
+    const y = Math.max(-1, Math.min(1, (e.clientY - (r.top+r.height/2))/(r.height/2)));
+    tx = x * 1.6;
+    ty = y * 1.1;
+  }, {passive:true});
+
+  function tick(){
+    rx += (tx-rx)*.08;
+    ry += (ty-ry)*.08;
+    if (!h.classList.contains('icon-retreat')) {
+      p.style.rotate = `${rx}deg`;
+    } else {
+      p.style.rotate = `0deg`;
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
