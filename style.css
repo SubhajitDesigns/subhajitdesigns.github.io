@@ -290,3 +290,60 @@ body.cursor-active .cursor-glow {
     font-size: clamp(3rem, 10vw, 5rem) !important;
   }
 }
+
+
+/* V31 FINAL — hard-safe headline fit */
+.hero-copy,
+.hero-copy * {
+  box-sizing: border-box;
+}
+
+.hero-copy .hero-title {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  padding-right: 8px !important;
+  margin-right: 0 !important;
+  overflow: visible !important;
+  font-family: "Poppins", "Montserrat", Arial, sans-serif !important;
+  font-weight: 800 !important;
+  font-size: clamp(3.15rem, 5.0vw, 5.7rem) !important;
+  line-height: 0.88 !important;
+  letter-spacing: -0.065em !important;
+  white-space: normal !important;
+  transform: none !important;
+}
+
+.hero-copy .hero-title span {
+  display: block !important;
+  width: auto !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+}
+
+/* Never let the hero's left column crop the headline. */
+.hero-copy,
+.hero-copy .hero-title,
+.hero-copy .hero-title span {
+  clip-path: none !important;
+}
+
+@media (min-width: 1201px) {
+  .hero-copy .hero-title {
+    font-size: clamp(3.8rem, 4.45vw, 5.35rem) !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .hero-copy .hero-title {
+    font-size: clamp(3rem, 5.0vw, 5rem) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-copy .hero-title {
+    font-size: clamp(2.7rem, 10vw, 4.8rem) !important;
+  }
+}
