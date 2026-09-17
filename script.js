@@ -57,3 +57,36 @@
     magnetic.addEventListener('mouseleave',()=>magnetic.style.transform='');
   }
 })();
+
+
+/* V29 FINAL: subtle red cursor-following atmosphere */
+(() => {
+  const glow = document.querySelector('.cursor-glow');
+  if (!glow || window.matchMedia('(pointer: coarse)').matches) return;
+
+  let tx = window.innerWidth / 2, ty = window.innerHeight / 2;
+  let x = tx, y = ty;
+  let active = false;
+
+  window.addEventListener('pointermove', (e) => {
+    tx = e.clientX;
+    ty = e.clientY;
+    if (!active) {
+      active = true;
+      document.body.classList.add('cursor-active');
+    }
+  }, { passive: true });
+
+  window.addEventListener('pointerleave', () => {
+    active = false;
+    document.body.classList.remove('cursor-active');
+  });
+
+  const tick = () => {
+    x += (tx - x) * 0.10;
+    y += (ty - y) * 0.10;
+    glow.style.transform = `translate3d(${x}px, ${y}px, 0) translate3d(-50%, -50%, 0)`;
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+})();
