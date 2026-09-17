@@ -510,3 +510,137 @@ body > header.nav{display:none!important}
   .hero-art .icon-ps{--icon-x:91%;--icon-y:42%}
   .hero-art .icon-ae{--icon-x:82%;--icon-y:68%}
 }
+
+
+/* ===== V17 — RESTORE ICONS + REAL HOVER RETREAT ===== */
+
+/* V15 hid the icon layer; V17 explicitly restores it. */
+.hero-art .app-icons{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:25 !important;
+  pointer-events:none !important;
+}
+
+/* Keep the portrait in its original right-side position. */
+.hero-art .portrait-interactive{
+  position:absolute !important;
+  right:-1vw !important;
+  bottom:-1px !important;
+  width:min(48vw,690px) !important;
+  height:92% !important;
+  z-index:40 !important;
+  display:flex !important;
+  align-items:flex-end !important;
+  justify-content:center !important;
+  transform:translate3d(0,0,0) !important;
+}
+
+/* Six icons are always visible before hover. */
+.hero-art .app-icon{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  z-index:25 !important;
+  pointer-events:none !important;
+  transform-origin:center center !important;
+}
+
+/* Gentle in-place floating — no orbit and no disappearing. */
+@keyframes subhFloat1{
+  0%,100%{translate:0 0;rotate:-2deg}
+  50%{translate:4px -9px;rotate:2deg}
+}
+@keyframes subhFloat2{
+  0%,100%{translate:0 0;rotate:2deg}
+  50%{translate:-5px 7px;rotate:-2deg}
+}
+@keyframes subhFloat3{
+  0%,100%{translate:0 0;rotate:-1deg}
+  50%{translate:6px -6px;rotate:2deg}
+}
+@keyframes subhFloat4{
+  0%,100%{translate:0 0;rotate:1deg}
+  50%{translate:-4px 8px;rotate:-2deg}
+}
+@keyframes subhFloat5{
+  0%,100%{translate:0 0;rotate:-2deg}
+  50%{translate:5px 6px;rotate:2deg}
+}
+@keyframes subhFloat6{
+  0%,100%{translate:0 0;rotate:2deg}
+  50%{translate:-6px -5px;rotate:-2deg}
+}
+.hero-art .icon-ai{animation:subhFloat1 4.8s ease-in-out infinite !important}
+.hero-art .icon-figma{animation:subhFloat2 5.4s ease-in-out infinite !important}
+.hero-art .icon-capcut{animation:subhFloat3 4.5s ease-in-out infinite !important}
+.hero-art .icon-pr{animation:subhFloat4 5.8s ease-in-out infinite !important}
+.hero-art .icon-ps{animation:subhFloat5 4.9s ease-in-out infinite !important}
+.hero-art .icon-ae{animation:subhFloat6 5.5s ease-in-out infinite !important}
+
+/* Hover state: icons travel inward, shrink and fade behind the portrait. */
+.interactive-hero.portrait-hover .hero-art .app-icon{
+  opacity:.12 !important;
+  filter:blur(1.5px) !important;
+}
+.interactive-hero.portrait-hover .hero-art .icon-ai{
+  transform:translate3d(210px,150px,0) scale(.25) !important;
+}
+.interactive-hero.portrait-hover .hero-art .icon-figma{
+  transform:translate3d(250px,40px,0) scale(.25) !important;
+}
+.interactive-hero.portrait-hover .hero-art .icon-capcut{
+  transform:translate3d(205px,-100px,0) scale(.25) !important;
+}
+.interactive-hero.portrait-hover .hero-art .icon-pr{
+  transform:translate3d(-180px,150px,0) scale(.25) !important;
+}
+.interactive-hero.portrait-hover .hero-art .icon-ps{
+  transform:translate3d(-240px,40px,0) scale(.25) !important;
+}
+.interactive-hero.portrait-hover .hero-art .icon-ae{
+  transform:translate3d(-200px,-90px,0) scale(.25) !important;
+}
+
+/* Fix title clipping at common desktop widths. */
+.hero-v2-copy{
+  min-width:0 !important;
+  overflow:visible !important;
+}
+.hero-display{
+  width:max-content !important;
+  max-width:none !important;
+  overflow:visible !important;
+  font-size:clamp(70px,6.35vw,108px) !important;
+}
+.hero-display span{
+  overflow:visible !important;
+  padding-right:8px !important;
+}
+
+/* Make the six icons slightly smaller on compact desktop layouts. */
+@media(max-width:1100px) and (min-width:801px){
+  .hero-art .app-icon{width:64px !important;height:64px !important}
+  .hero-art .icon-figma{width:76px !important;height:76px !important}
+  .hero-art .icon-capcut{width:68px !important;height:68px !important}
+}
+@media(max-width:800px){
+  .hero-art .portrait-interactive{
+    position:absolute !important;
+    right:0 !important;
+    bottom:0 !important;
+    width:100% !important;
+    height:100% !important;
+  }
+  .hero-display{
+    width:max-content !important;
+    font-size:15.5vw !important;
+  }
+  .interactive-hero.portrait-hover .hero-art .app-icon{
+    opacity:.10 !important;
+    transform:translate3d(0,0,0) scale(.3) !important;
+  }
+}
