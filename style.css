@@ -84,3 +84,127 @@ body > header.nav{display:none!important}
 .app-icon.pr{background:linear-gradient(145deg,#4a1760,#13061b)!important}.app-icon.pr .app-glyph{color:#c38bff}
 .portrait-hover .app-icon{box-shadow:0 5px 10px rgba(0,0,0,.18)!important}
 @media(max-width:800px){.hero-display{font-size:18vw!important}.app-icon{width:60px!important;height:60px!important}.app-glyph{font-size:24px}}
+
+
+/* V9 — TRUE 3D ORBIT + SILVER/WHITE TITLE */
+.hero-display span:first-child{
+  background:linear-gradient(180deg,#ffffff 0%,#f3eee9 42%,#a9a4a1 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent!important;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 30px rgba(255,255,255,.08),0 0 42px rgba(255,48,30,.08)!important;
+}
+.hero-display .outline-word{
+  background:linear-gradient(180deg,#f7f2ef 0%,#b7b0ad 48%,#6e6866 100%);
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent!important;-webkit-text-fill-color:transparent;
+  -webkit-text-stroke:1px rgba(245,238,234,.72)!important;
+  filter:drop-shadow(0 0 18px rgba(255,60,40,.12));
+}
+.hero-art{perspective:1100px!important;transform-style:preserve-3d!important}
+.app-icons{left:0!important;top:0!important;right:0!important;bottom:0!important;transform-style:preserve-3d!important;perspective:1100px!important;pointer-events:none!important}
+.app-icon{left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;margin:0!important;transform-origin:center center!important;will-change:transform,opacity,filter!important;pointer-events:none!important}
+.app-icon:after{content:'';position:absolute!important;inset:-10px!important;border-radius:25px!important;border:1px solid rgba(255,65,40,.22)!important;filter:blur(4px)!important;pointer-events:none}
+/* Keep the portrait above the orbit when icons pass behind it. */
+.portrait-interactive{z-index:40!important;transform-style:preserve-3d!important}
+.portrait-interactive img{position:relative;z-index:41!important}
+/* Remove legacy fixed-position rules; JS owns orbit placement. */
+.app-icon.ps,.app-icon.ai,.app-icon.id,.app-icon.ae,.app-icon.lr,.app-icon.pr{left:50%!important;top:50%!important;right:auto!important;bottom:auto!important}
+@media(max-width:800px){
+  .app-icon{width:62px!important;height:62px!important;border-radius:16px!important}
+  .app-glyph{font-size:24px!important}
+}
+
+
+/* ===== V10 — REAL 3D ICON ORBIT ===== */
+.hero-art{
+  perspective:1100px !important;
+  transform-style:preserve-3d !important;
+}
+.hero-art .hero-type-back,
+.hero-art .orbit-lines{
+  transform-style:preserve-3d !important;
+}
+.app-icons{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:20 !important;
+  pointer-events:none !important;
+  transform-style:preserve-3d !important;
+}
+.app-icon{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  width:88px !important;
+  height:88px !important;
+  display:block !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  animation:none !important;
+  will-change:transform,opacity,filter !important;
+  transition:opacity .35s ease, filter .35s ease !important;
+  transform-style:preserve-3d !important;
+}
+.app-icon::after{display:none !important}
+.app-icon img{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  background:transparent !important;
+  filter:drop-shadow(0 18px 20px rgba(0,0,0,.5)) !important;
+  user-select:none !important;
+  -webkit-user-drag:none !important;
+}
+.portrait-interactive{
+  z-index:40 !important;
+  transform-style:preserve-3d !important;
+  isolation:isolate !important;
+}
+.portrait-interactive img{
+  position:relative !important;
+  z-index:60 !important;
+}
+.location-mark{z-index:70 !important}
+
+/* Keep the orbit visible behind the portrait and give it atmospheric depth */
+.orbit-lines{
+  z-index:8 !important;
+  pointer-events:none !important;
+  transform-style:preserve-3d !important;
+}
+.hero-art::before{
+  content:"";
+  position:absolute;
+  width:min(48vw,620px);
+  height:min(48vw,620px);
+  left:50%;
+  top:52%;
+  transform:translate(-50%,-50%);
+  border:1px solid rgba(255,64,42,.18);
+  border-radius:50%;
+  box-shadow:0 0 60px rgba(255,48,30,.08), inset 0 0 60px rgba(255,48,30,.04);
+  pointer-events:none;
+  z-index:2;
+}
+.hero-art::after{
+  content:"";
+  position:absolute;
+  width:min(36vw,470px);
+  height:min(22vw,290px);
+  left:50%;
+  top:52%;
+  transform:translate(-50%,-50%) rotate(-12deg);
+  border:1px solid rgba(255,92,62,.14);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:3;
+}
+@media(max-width:800px){
+  .app-icon{width:58px !important;height:58px !important}
+  .hero-art::before{width:86vw;height:86vw}
+  .hero-art::after{width:72vw;height:48vw}
+}

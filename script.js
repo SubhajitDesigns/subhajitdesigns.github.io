@@ -9,61 +9,108 @@ if('IntersectionObserver' in window){const io=new IntersectionObserver(entries=>
   const art=document.querySelector('.hero-art');
   const portrait=document.querySelector('.portrait-interactive');
   const type=document.querySelector('.hero-type-back');
+  const orbit=document.querySelector('.app-icons');
   const icons=[...document.querySelectorAll('.app-icon')];
-  if(!hero||!art||!portrait||!icons.length)return;
+  if(!hero||!art||!portrait||!orbit||!icons.length)return;
 
-  let raf=0;
+  let last=performance.now();
+  let angle=0;
   let hoveringPortrait=false;
-  const orbitOffsets=[
-    {x:-250,y:-20,r:-12,s:1},
-    {x:-145,y:150,r:9,s:.98},
-    {x:-55,y:-150,r:-8,s:1.02},
-    {x:165,y:-150,r:10,s:1.04},
-    {x:245,y:-5,r:-8,s:.98},
-    {x:175,y:150,r:12,s:1.02}
-  ];
+  let pointerX=0, pointerY=0;
 
-  function render(e){
-    cancelAnimationFrame(raf);
-    raf=requestAnimationFrame(()=>{
-      const ar=art.getBoundingClientRect();
-      const x=(e.clientX-ar.left)/ar.width-.5;
-      const y=(e.clientY-ar.top)/ar.height-.5;
-      if(!hoveringPortrait){
-        if(type)type.style.transform=`translate3d(${x*-16}px,calc(-50% + ${y*-7}px),0)`;
-        portrait.style.transform=`translate3d(${x*12}px,${y*-7}px,0) scale(1.01)`;
-        icons.forEach((icon,i)=>{
-          const o=orbitOffsets[i]||{x:0,y:0,r:0,s:1};
-          const d=Number(icon.dataset.depth||1);
-          icon.style.transform=`translate3d(${x*18*d}px,${y*14*d}px,0) rotate(${o.r+x*5*d}deg) scale(${o.s})`;
-        });
+  /* One complete revolution is about 18 seconds. */
+  const speed=.00035;
+
+  function render(now){
+    const dt=Math.min(32,now-last); last=now;
+    if(!hoveringPortrait) angle += dt*speed;
+
+    const ar=art.getBoundingClientRect();
+    const mobile=window.innerWidth<=800;
+    const px=(pointerX/ar.width-.5);
+    const py=(pointerY/ar.height-.5);
+
+    /* Elliptical atmosphere around the portrait */
+    const rx=mobile ? Math.min(ar.width*.33,145) : Math.min(ar.width*.37,300);
+    const ry=mobile ? Math.min(ar.height*.27,150) : Math.min(ar.height*.32,245);
+    const depth=mobile ? 95 : 180;
+
+    icons.forEach((icon,i)=>{
+      const base=(parseFloat(icon.dataset.angle)||0)*Math.PI/180;
+      const d=parseFloat(icon.dataset.depth||1);
+      const a=base+angle*d;
+
+      const sin=Math.sin(a);
+      const cos=Math.cos(a);
+
+      /* x/y are the orbital ellipse; z makes the icons actually move
+         toward and away from the viewer. */
+      const x=sin*rx + px*16;
+      const y=-cos*ry + py*12;
+      const z=cos*depth;
+
+      const normalized=(z/depth+1)/2;
+      const scale=.68 + normalized*.48;
+      const tiltX=cos*13 + py*4;
+      const tiltY=sin*16 + px*5;
+      const behind=z < -8;
+
+      /* Icons behind the portrait sit underneath it and become darker.
+         They remain part of the orbit rather than simply disappearing. */
+      let opacity=behind ? .18 : .98;
+      let filter=behind
+        ? 'brightness(.45) saturate(.65) blur(.3px)'
+        : 'brightness(1) saturate(1)';
+
+      if(hoveringPortrait){
+        opacity=0;
+        filter='brightness(.25) blur(3px)';
       }
+
+      icon.style.transform=
+        `translate3d(calc(-50% + ${x}px),calc(-50% + ${y}px),${z}px) `+
+        `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(${scale})`;
+      icon.style.opacity=opacity;
+      icon.style.filter=filter;
+      icon.style.zIndex=behind?5:50;
     });
+
+    if(!hoveringPortrait){
+      if(type) type.style.transform=`translate3d(${px*-18}px,${py*-8}px,0)`;
+      portrait.style.transform=`translate3d(${px*8}px,${py*-5}px,0)`;
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  function pointerMove(e){
+    const r=art.getBoundingClientRect();
+    pointerX=e.clientX-r.left;
+    pointerY=e.clientY-r.top;
   }
 
   function enterPortrait(){
     hoveringPortrait=true;
     hero.classList.add('portrait-hover');
-    portrait.style.transform='translate3d(0,0,0) scale(1.025)';
-    if(type)type.style.opacity='.18';
-    icons.forEach((icon,i)=>{
-      const o=orbitOffsets[i]||{x:0,y:0,r:0};
-      icon.style.transform=`translate3d(${o.x*.14}px,${o.y*.14}px,-40px) rotate(${o.r}deg) scale(.12)`;
+    icons.forEach(icon=>{
       icon.style.opacity='0';
+      icon.style.filter='brightness(.25) blur(3px)';
     });
   }
 
   function leavePortrait(){
     hoveringPortrait=false;
     hero.classList.remove('portrait-hover');
-    if(type)type.style.opacity='';
-    icons.forEach(icon=>icon.style.opacity='');
+    icons.forEach(icon=>{
+      icon.style.opacity='';
+      icon.style.filter='';
+    });
   }
 
-  art.addEventListener('mousemove',render);
-  portrait.addEventListener('mouseenter',enterPortrait);
-  portrait.addEventListener('mouseleave',leavePortrait);
-  art.addEventListener('mouseleave',()=>{if(!hoveringPortrait){portrait.style.transform='';if(type)type.style.transform='';icons.forEach(icon=>{icon.style.transform='';icon.style.opacity=''})}});
+  art.addEventListener('pointermove',pointerMove);
+  portrait.addEventListener('pointerenter',enterPortrait);
+  portrait.addEventListener('pointerleave',leavePortrait);
+  requestAnimationFrame(render);
 })();
 
 const magnetic=document.querySelector('.magnetic');
