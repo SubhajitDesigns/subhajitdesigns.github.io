@@ -37,6 +37,17 @@
   portraitImg?.addEventListener('mouseenter',hoverOn);
   portraitImg?.addEventListener('mouseleave',hoverOff);
 
+
+  // Premium nav interaction: hover bump + clicked active state.
+  const navLinks = [...document.querySelectorAll('.hero-nav nav a, .hero-nav .nav-cta')];
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.forEach(item => item.classList.remove('nav-active'));
+      link.classList.add('nav-active');
+      window.setTimeout(() => link.classList.remove('nav-active'), 700);
+    });
+  });
+
   function animate(){
     sx += (mouseX-sx)*.055;
     sy += (mouseY-sy)*.055;
@@ -46,7 +57,7 @@
       const px=Math.max(-1,Math.min(1,(sx-(ar.left+ar.width/2))/ar.width));
       const py=Math.max(-1,Math.min(1,(sy-(ar.top+ar.height/2))/ar.height));
 
-      portrait.style.transform=`translate3d(${px*(hovering?2:7)}px,${py*(hovering?1.5:5)}px,0)`;
+      portrait.style.transform=`translate3d(${px*(hovering?2.5:8)}px,${py*(hovering?2:6)}px,0) rotateX(${py*(hovering?1.5:3)}deg) rotateY(${px*(hovering?-2:4)}deg)`;
 
       icons.forEach((icon,i)=>{
         if(!hovering){

@@ -1099,3 +1099,122 @@ body > header.nav{display:none!important}
   #iconLayer .icon-ps{--x:85%!important;--y:41%!important}
   #iconLayer .icon-ae{--x:77%!important;--y:67%!important}
 }
+
+
+/* =========================================================
+   V21 — FINAL HERO VISIBILITY + 3D INTERACTION + NAV BUMP
+   ========================================================= */
+
+/* Keep every tool icon clearly visible around the portrait. */
+#iconLayer{
+  z-index:120!important;
+  pointer-events:none!important;
+  overflow:visible!important;
+}
+#iconLayer .app-icon{
+  z-index:121!important;
+  opacity:1!important;
+  visibility:visible!important;
+  width:94px!important;
+  height:94px!important;
+  filter:drop-shadow(0 16px 22px rgba(0,0,0,.58))!important;
+  transition:
+    left .8s cubic-bezier(.16,1,.3,1),
+    top .8s cubic-bezier(.16,1,.3,1),
+    transform .8s cubic-bezier(.16,1,.3,1),
+    opacity .55s ease,
+    filter .55s ease!important;
+}
+#iconLayer .icon-figma{width:102px!important;height:102px!important}
+#iconLayer .icon-capcut{width:98px!important;height:98px!important}
+
+/* Deliberately separated positions: none are allowed to disappear behind the body. */
+#iconLayer .icon-ai{--x:5%!important;--y:25%!important}
+#iconLayer .icon-figma{--x:1%!important;--y:48%!important}
+#iconLayer .icon-capcut{--x:5%!important;--y:73%!important}
+#iconLayer .icon-pr{--x:70%!important;--y:16%!important}
+#iconLayer .icon-ps{--x:82%!important;--y:41%!important}
+#iconLayer .icon-ae{--x:76%!important;--y:68%!important}
+
+/* More convincing 3D float: depth, tilt and soft shadow, without orbiting. */
+#iconLayer .app-icon img{
+  transform:translateZ(0) rotateX(0deg) rotateY(0deg)!important;
+  transform-origin:center!important;
+  transition:transform .45s cubic-bezier(.16,1,.3,1),filter .45s ease!important;
+}
+#iconLayer .app-icon:hover img{
+  transform:translateZ(18px) scale(1.10) rotateX(4deg) rotateY(-5deg)!important;
+  filter:drop-shadow(0 22px 28px rgba(255,55,45,.34))!important;
+}
+
+/* Portrait gets a subtle 3D tilt from the cursor. */
+#portraitTarget{
+  z-index:100!important;
+  transform-style:preserve-3d!important;
+  will-change:transform!important;
+}
+#portraitTarget img{
+  transform-style:preserve-3d!important;
+  will-change:transform!important;
+}
+
+/* Stats: compact, evenly distributed rhythm. */
+.hero-stats{
+  width:440px!important;
+  max-width:440px!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  column-gap:0!important;
+}
+.hero-stats div{
+  padding-left:9px!important;
+  padding-right:9px!important;
+}
+.hero-stats div:first-child{padding-left:0!important}
+
+/* Click/hover bump for Work / About / Services / Contact / Let's talk. */
+.hero-nav nav a,
+.hero-nav .nav-cta{
+  position:relative!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  transform-origin:center!important;
+  transition:transform .28s cubic-bezier(.16,1,.3,1),color .28s ease,background .28s ease!important;
+}
+.hero-nav nav a:hover,
+.hero-nav nav a.nav-active,
+.hero-nav .nav-cta:hover,
+.hero-nav .nav-cta.nav-active{
+  transform:translateY(-3px) scale(1.10)!important;
+  color:#fff!important;
+}
+.hero-nav nav a::after,
+.hero-nav .nav-cta::after{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  bottom:-8px!important;
+  width:5px!important;
+  height:5px!important;
+  border-radius:50%!important;
+  background:#ff3324!important;
+  transform:translateX(-50%) scale(0)!important;
+  transition:transform .28s cubic-bezier(.16,1,.3,1)!important;
+}
+.hero-nav nav a:hover::after,
+.hero-nav nav a.nav-active::after,
+.hero-nav .nav-cta:hover::after,
+.hero-nav .nav-cta.nav-active::after{
+  transform:translateX(-50%) scale(1)!important;
+}
+.hero-nav .nav-cta.nav-active{
+  border-color:rgba(255,90,66,.7)!important;
+  box-shadow:0 8px 30px rgba(255,45,35,.10)!important;
+}
+
+/* The selected nav item stays bumped briefly after a click. */
+@media(max-width:800px){
+  #iconLayer .app-icon{width:64px!important;height:64px!important}
+  #iconLayer .icon-figma{width:74px!important;height:74px!important}
+  #iconLayer .icon-capcut{width:70px!important;height:70px!important}
+  .hero-stats{width:100%!important;max-width:100%!important}
+}
