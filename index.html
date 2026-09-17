@@ -41,7 +41,7 @@
           <p class="hero-v2-intro">Visuals with a point of view — from scroll-stopping campaigns to motion-led brand stories.</p>
           <div class="hero-actions">
             <a class="pill magnetic" href="#work">Explore work <span>↗</span></a>
-            <a class="reel-link" href="#work"><i>▶</i> Show reel</a>
+            <button class="reel-link" type="button" id="showReel"><i>▶</i> Show reel</button>
           </div>
 
           <div class="hero-stats">
@@ -193,6 +193,16 @@
       </div>
     </section>
   </main>
+
+  <div class="reel-modal" id="reelModal" aria-hidden="true">
+    <div class="reel-card" role="dialog" aria-modal="true" aria-label="Subhajit show reel preview">
+      <button class="reel-close" id="reelClose" type="button" aria-label="Close reel">×</button>
+      <div class="reel-orb" aria-hidden="true"></div>
+      <div class="reel-center"><div class="reel-play-ring"><span>▶</span></div></div>
+      <div class="reel-word">DESIGN <em>IN MOTION.</em></div>
+      <div class="reel-progress"><i></i></div>
+    </div>
+  </div>
 
   <footer>
     <span>© 2026 SUBHAJIT</span>

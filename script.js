@@ -43,6 +43,15 @@
   }
   requestAnimationFrame(frame);
 
+  const reelButton=document.querySelector('#showReel');
+  const reelModal=document.querySelector('#reelModal');
+  const reelClose=document.querySelector('#reelClose');
+  const closeReel=()=>{ if(reelModal){ reelModal.classList.remove('is-open'); reelModal.setAttribute('aria-hidden','true'); } };
+  reelButton?.addEventListener('click',()=>{ if(reelModal){ reelModal.classList.add('is-open'); reelModal.setAttribute('aria-hidden','false'); } });
+  reelClose?.addEventListener('click',closeReel);
+  reelModal?.addEventListener('click',e=>{ if(e.target===reelModal) closeReel(); });
+  addEventListener('keydown',e=>{ if(e.key==='Escape') closeReel(); });
+
   if(magnetic){
     magnetic.addEventListener('mousemove',e=>{const r=magnetic.getBoundingClientRect(); magnetic.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.1}px,${(e.clientY-r.top-r.height/2)*.1}px)`});
     magnetic.addEventListener('mouseleave',()=>magnetic.style.transform='');
