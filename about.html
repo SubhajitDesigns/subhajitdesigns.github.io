@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Subhajit</title>
+<meta name="description" content="About Subhajit Das — graphic designer and motion designer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--red:#e20b0b;--red2:#ff2a1a;--white:#fff;--muted:#d4d0d0}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;min-height:100%;background:#050505;color:#fff;font-family:"DM Sans",Arial,sans-serif}
+body{overflow-x:hidden}
+.about-page{
+  min-height:100svh;
+  width:100%;
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  background:#050505 url("about-background.png") center center/cover no-repeat;
+}
+.about-page:before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg,rgba(0,0,0,.84) 0%,rgba(0,0,0,.66) 34%,rgba(0,0,0,.22) 60%,rgba(0,0,0,.04) 100%);
+}
+.about-page:after{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(circle at 30% 55%,rgba(226,11,11,.18),transparent 34%),
+             linear-gradient(180deg,rgba(0,0,0,.25),transparent 35%,rgba(0,0,0,.35));
+}
+.topbar{
+  position:absolute;top:0;left:0;right:0;height:88px;padding:0 5vw;
+  display:flex;align-items:center;justify-content:space-between;z-index:10;
+  border-bottom:1px solid rgba(255,255,255,.09);
+  background:linear-gradient(180deg,rgba(0,0,0,.46),transparent);
+}
+.brand{font-size:18px;font-weight:800;letter-spacing:.1em}.brand span{color:var(--red)}
+nav{display:flex;gap:30px;align-items:center}
+nav a{color:#fff;text-decoration:none;font-size:13px;font-weight:700;transition:.22s}
+nav a:hover,nav a.active{color:#ff4135;transform:translateY(-2px)}
+.talk{border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:11px 17px;color:#fff;text-decoration:none;font-size:13px;font-weight:700}
+.talk span{color:#ff4135;margin-left:5px}
+.content{
+  min-height:100svh;width:min(1440px,100%);margin:auto;
+  display:grid;grid-template-columns:minmax(390px, .88fr) minmax(470px,1.12fr);
+  align-items:center;position:relative;padding:100px 5vw 50px;
+}
+.copy{
+  position:relative;z-index:4;max-width:650px;
+  padding:25px 0 30px;
+}
+.eyebrow{margin:0 0 15px;color:#ff3b2e;font-size:13px;font-weight:800;letter-spacing:.22em}
+h1{font-family:"Space Grotesk",sans-serif;font-size:clamp(58px,7vw,110px);line-height:.86;letter-spacing:-.065em;margin:0 0 14px;font-weight:700}
+h1 .accent{color:var(--red)}
+.subhead{font-size:clamp(18px,2vw,27px);line-height:1.2;font-weight:700;margin:0 0 26px;color:#f5f3f3}
+.typed-area{min-height:285px;max-width:630px}
+.typed-line{font-size:17px;line-height:1.62;color:#eee;min-height:1.62em;margin:0 0 9px}
+.typed-line strong{color:#fff;font-weight:800}
+.cursor{display:inline-block;width:2px;height:1em;background:#ff2a1a;margin-left:3px;vertical-align:-.12em;animation:blink .7s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.stats{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px}
+.stat{border-left:2px solid var(--red);padding:8px 18px 8px 13px;background:rgba(0,0,0,.27);backdrop-filter:blur(5px)}
+.stat b{display:block;font-size:22px}.stat span{font-size:10px;letter-spacing:.1em;color:#bbb}
+.photo-side{
+  position:relative;height:min(86vh,850px);align-self:end;z-index:3;
+  display:flex;justify-content:flex-end;align-items:flex-end;
+}
+.photo{
+  height:100%;max-height:900px;width:auto;max-width:100%;
+  object-fit:contain;object-position:center bottom;
+  filter:drop-shadow(0 0 25px rgba(255,0,0,.2));
+  transform:translate3d(0,0,0);
+  animation:floatPhoto 5.5s ease-in-out infinite;
+}
+@keyframes floatPhoto{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.photo-glow{
+  position:absolute;width:52%;height:24%;right:13%;bottom:5%;
+  background:rgba(255,0,0,.24);filter:blur(55px);border-radius:50%;z-index:-1;
+}
+.corner{position:absolute;bottom:30px;left:5vw;font-size:10px;letter-spacing:.16em;color:#a9a4a4;z-index:5}
+.scroll{position:absolute;right:5vw;bottom:30px;color:#aaa;font-size:10px;letter-spacing:.14em;z-index:5}
+@media(max-width:980px){
+  .content{grid-template-columns:1fr;min-height:auto;padding:120px 7vw 0}
+  .copy{max-width:720px;padding-top:20px}
+  .photo-side{height:620px;margin-top:-20px;justify-content:center}
+  .photo{max-height:650px}
+  .corner{left:7vw}.scroll{right:7vw}
+  .topbar{padding:0 7vw}
+  nav{gap:18px}
+}
+@media(max-width:650px){
+  .topbar{height:74px;padding:0 20px}.brand{font-size:15px}
+  nav{display:none}.talk{padding:9px 13px}
+  .content{padding:100px 20px 0}
+  h1{font-size:58px}.subhead{font-size:18px}.typed-line{font-size:15px}
+  .typed-area{min-height:330px}.stats{gap:9px}.stat{padding-right:12px}
+  .photo-side{height:520px;margin-top:5px}
+  .photo{height:100%;max-width:110vw}
+  .corner,.scroll{display:none}
+}
+</style>
+</head>
+<body>
+<div class="about-page">
+  <header class="topbar">
+    <a class="brand" href="index.html">SUBHAJIT<span>•</span></a>
+    <nav aria-label="Main navigation">
+      <a class="active" href="about.html">About</a>
+      <a href="what-i-do.html">What I Do</a>
+      <a href="index.html#resume">Resume</a>
+      <a href="index.html#work">Work</a>
+    </nav>
+    <a class="talk" href="index.html#contact">Let's talk <span>↗</span></a>
+  </header>
+
+  <main class="content">
+    <section class="copy" aria-label="About Subhajit">
+      <p class="eyebrow">CREATIVE PORTFOLIO — ABOUT</p>
+      <h1>Meet <span class="accent">Subhajit.</span></h1>
+      <p class="subhead">Designing with Purpose, Passion &amp; Experience</p>
+
+      <div class="typed-area" aria-live="polite">
+        <p class="typed-line" id="line1"></p>
+        <p class="typed-line" id="line2"></p>
+        <p class="typed-line" id="line3"></p>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><b>6+</b><span>YEARS EXPERIENCE</span></div>
+        <div class="stat"><b>50+</b><span>BRANDS</span></div>
+        <div class="stat"><b>6000+</b><span>DESIGNS</span></div>
+        <div class="stat"><b>1000+</b><span>VIDEOS</span></div>
+      </div>
+    </section>
+
+    <section class="photo-side" aria-label="Subhajit portrait">
+      <div class="photo-glow"></div>
+      <img class="photo" src="about-photo.png" alt="Subhajit Das">
+    </section>
+  </main>
+
+  <div class="corner">GRAPHIC DESIGNER • MOTION DESIGNER</div>
+  <div class="scroll">SCROLL / EXPLORE ↘</div>
+</div>
+
+<script>
+const lines = [
+  '<strong>Hey, myself Subhajit Das.</strong> I’m a 26-year-old dedicated graphic designer with over <strong>6 years of professional experience.</strong>',
+  'After completing my schooling in 2017, <strong>financial limitations</strong> prevented me from finishing college — but they never limited my ambition.',
+  'Since then, I’ve built my career through self-learning, <strong>continuous practice</strong>, and real client projects. I’ve <strong>collaborated with 50+ brands</strong>, creating clean, effective visuals that communicate ideas and drive engagement.'
+];
+
+const targets = [
+  document.getElementById('line1'),
+  document.getElementById('line2'),
+  document.getElementById('line3')
+];
+
+function stripHTML(s){ return s.replace(/<[^>]*>/g,''); }
+function renderTyped(el, html, count){
+  const plain = stripHTML(html);
+  let partial = plain.slice(0,count);
+  // Keep the typing effect readable while preserving the final formatted text.
+  el.textContent = partial;
+}
+async function typeLine(el, html, speed){
+  const plain = stripHTML(html);
+  for(let i=1;i<=plain.length;i++){
+    renderTyped(el,html,i);
+    await new Promise(r=>setTimeout(r,speed));
+  }
+  el.innerHTML = html;
+  const c=document.createElement('span'); c.className='cursor'; el.appendChild(c);
+}
+(async()=>{
+  for(let i=0;i<lines.length;i++){
+    await typeLine(targets[i],lines[i],18);
+    await new Promise(r=>setTimeout(r,260));
+  }
+})();
+</script>
+</body>
+</html>
