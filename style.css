@@ -90,3 +90,72 @@ footer{border-top:1px solid var(--line);display:flex;justify-content:space-betwe
   footer{gap:15px;flex-direction:column}
   .cursor-dot{display:none}
 }
+
+
+/* ===== SUBHAJIT'S DESIGN — INTERACTIVE HERO V2 ===== */
+:root{--accent:#ff4d24}
+.hero-v2{
+  min-height:calc(100vh - 82px); position:relative; overflow:hidden;
+  background:#11110f; color:#f5f3ee; padding:0 5vw;
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+.hero-v2:before{
+  content:"";position:absolute;inset:0;opacity:.045;pointer-events:none;
+  background-image:radial-gradient(#fff .7px,transparent .7px);background-size:7px 7px;
+}
+.hero-noise{position:absolute;inset:0;pointer-events:none;opacity:.08;mix-blend-mode:screen}
+.hero-topline,.hero-bottomline{
+  position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;
+  padding:24px 0;font:500 10px "DM Mono",monospace;letter-spacing:.09em;color:#aaa79f
+}
+.availability i{display:inline-block;width:7px;height:7px;background:#62e58d;border-radius:50%;margin-right:7px;box-shadow:0 0 12px #62e58d}
+.hero-v2-stage{position:relative;flex:1;min-height:620px;display:flex;align-items:center}
+.hero-v2-copy{position:relative;z-index:4;width:72%;margin-top:-20px}
+.hero-v2 .eyebrow{color:#aaa79f;margin-bottom:18px}
+.hero-display{margin:0;font-size:clamp(72px,11.8vw,185px);line-height:.76;letter-spacing:-.085em;font-weight:600}
+.hero-display span{display:block}
+.hero-display .outline-word{
+  color:transparent;-webkit-text-stroke:1.5px #f5f3ee;margin-left:10vw;
+  transition:color .45s ease,text-shadow .45s ease
+}
+.hero-v2:hover .outline-word{color:rgba(255,77,36,.09);text-shadow:0 0 60px rgba(255,77,36,.2)}
+.hero-v2-intro{width:min(410px,90%);font-size:15px;line-height:1.55;color:#b8b5ae;margin:35px 0 25px 10vw}
+.hero-actions{display:flex;gap:25px;align-items:center;margin-left:10vw}
+.hero-v2 .pill{border-color:#f5f3ee}
+.hero-v2 .pill:hover{background:#f5f3ee;color:#11110f}
+.text-link{font:11px "DM Mono",monospace;color:#aaa79f;border-bottom:1px solid #555;padding-bottom:7px}
+.text-link:hover{color:#fff;border-color:#fff}
+.hero-orbit{position:absolute;left:48%;top:50%;width:470px;height:470px;transform:translate(-50%,-50%);pointer-events:none;z-index:2}
+.orbit-ring{position:absolute;border:1px solid rgba(245,243,238,.18);border-radius:50%;inset:0;animation:spin 18s linear infinite}
+.ring-two{inset:58px;animation-direction:reverse;animation-duration:13s;border-style:dashed}
+.orbit-label{position:absolute;font:500 9px "DM Mono",monospace;letter-spacing:.12em;background:#11110f;padding:4px 7px}
+.label-one{top:8%;left:47%}.label-two{right:2%;top:49%}.label-three{bottom:8%;left:43%}
+.orbit-star{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:36px;color:#ff4d24;animation:pulseStar 2s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulseStar{50%{transform:translate(-50%,-50%) scale(1.35) rotate(90deg);opacity:.65}}
+.hero-v2-photo-wrap{position:absolute;z-index:3;right:3vw;bottom:4vh;width:min(28vw,360px)}
+.hero-v2-photo{height:min(60vh,600px);overflow:hidden;background:#222;border-radius:180px 180px 10px 10px;border:1px solid rgba(245,243,238,.22);box-shadow:0 35px 90px rgba(0,0,0,.35)}
+.hero-v2-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:saturate(.75) contrast(1.04);transition:transform 1s cubic-bezier(.2,.8,.2,1),filter .5s}
+.hero-v2-photo-wrap:hover .hero-v2-photo img{transform:scale(1.06) translateY(-6px);filter:saturate(1) contrast(1.05)}
+.hero-photo-tag{position:absolute;z-index:2;left:-42px;top:16%;font:500 9px "DM Mono",monospace;line-height:1.35;letter-spacing:.09em;transform:rotate(-90deg);transform-origin:left top;color:#aaa79f}
+.hero-photo-tag span{color:#ff4d24}
+.photo-caption{font:9px "DM Mono",monospace;color:#aaa79f;margin-top:10px;letter-spacing:.08em}
+.hero-bottomline{border-top:1px solid rgba(245,243,238,.16)}
+.hero-v2 .cursor-glow{position:fixed}
+.interaction-note{display:flex;justify-content:center;align-items:center;gap:14px;padding:13px;border-bottom:1px solid var(--line);font:9px "DM Mono",monospace;letter-spacing:.1em;color:var(--muted)}
+.interaction-note b{color:var(--accent);font-size:13px}
+@media(max-width:800px){
+  .hero-v2{min-height:calc(100svh - 68px);padding:0 6vw}
+  .hero-topline{font-size:8px}.availability{display:none}
+  .hero-v2-stage{min-height:680px;align-items:flex-start;padding-top:18vh}
+  .hero-v2-copy{width:100%;margin:0;position:relative;z-index:5}
+  .hero-display{font-size:19vw;line-height:.78}
+  .hero-display .outline-word{margin-left:9vw;-webkit-text-stroke:1px #f5f3ee}
+  .hero-v2-intro{margin:30px 0 22px 9vw;font-size:14px}
+  .hero-actions{margin-left:9vw;gap:18px}
+  .hero-orbit{width:320px;height:320px;left:52%;top:58%;opacity:.55}
+  .hero-v2-photo-wrap{width:48vw;right:0;bottom:5vh;opacity:.88}
+  .hero-v2-photo{height:48vh;border-radius:120px 120px 8px 8px}
+  .hero-photo-tag{left:-20px;font-size:7px}
+  .photo-caption{font-size:7px}
+  .hero-bottomline{font-size:8px}.hero-bottomline span:nth-child(2){display:none}
+}
