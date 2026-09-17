@@ -644,3 +644,173 @@ body > header.nav{display:none!important}
     transform:translate3d(0,0,0) scale(.3) !important;
   }
 }
+
+
+/* =========================================================
+   V18 FINAL — CLEAN, CONFLICT-PROOF INTERACTION LAYER
+   ========================================================= */
+
+/* Keep title fully inside the left column. */
+.hero-v2-copy{overflow:visible!important;min-width:0!important}
+.hero-display{
+  width:auto!important;
+  max-width:100%!important;
+  overflow:visible!important;
+  font-size:clamp(68px,6.15vw,104px)!important;
+}
+.hero-display span{
+  display:block!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  padding-right:10px!important;
+}
+
+/* Hero art is the coordinate system for all tools. */
+.hero-art{
+  position:relative!important;
+  overflow:visible!important;
+  isolation:isolate!important;
+}
+
+/* Six-icon layer: ALWAYS visible unless the JS hover state is active. */
+#iconLayer{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:50!important;
+  pointer-events:none!important;
+  transform:none!important;
+}
+
+/* Override every old icon positioning rule. */
+#iconLayer .app-icon{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:absolute!important;
+  left:var(--x)!important;
+  top:var(--y)!important;
+  width:74px!important;
+  height:74px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:none!important;
+  box-shadow:none!important;
+  transform-origin:center!important;
+  transition:transform .75s cubic-bezier(.22,1,.36,1),opacity .55s ease,filter .55s ease!important;
+  animation:iconDrift var(--duration) ease-in-out infinite!important;
+  animation-delay:var(--delay)!important;
+  will-change:transform!important;
+}
+#iconLayer .app-icon img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  background:transparent!important;
+  filter:drop-shadow(0 14px 18px rgba(0,0,0,.55))!important;
+}
+#iconLayer .icon-figma{width:88px!important;height:88px!important}
+#iconLayer .icon-capcut{width:78px!important;height:78px!important}
+
+/* Fixed, easy-to-see positions on desktop. */
+#iconLayer .icon-ai{--x:16%;--y:28%;--duration:4.8s;--delay:-.3s}
+#iconLayer .icon-figma{--x:7%;--y:48%;--duration:5.5s;--delay:-1.4s}
+#iconLayer .icon-capcut{--x:16%;--y:70%;--duration:4.6s;--delay:-2.2s}
+#iconLayer .icon-pr{--x:78%;--y:17%;--duration:5.9s;--delay:-.8s}
+#iconLayer .icon-ps{--x:89%;--y:42%;--duration:5.1s;--delay:-2.8s}
+#iconLayer .icon-ae{--x:81%;--y:69%;--duration:5.7s;--delay:-1.8s}
+
+@keyframes iconDrift{
+  0%,100%{translate:0 0;rotate:-2deg}
+  50%{translate:5px -9px;rotate:2deg}
+}
+
+/* Portrait is in front of icons and slightly larger. */
+#portraitTarget{
+  position:absolute!important;
+  right:-3vw!important;
+  bottom:-1px!important;
+  width:min(53vw,735px)!important;
+  height:96%!important;
+  z-index:100!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  transform:translate3d(0,0,0)!important;
+  transition:transform .22s cubic-bezier(.22,1,.36,1)!important;
+}
+#portraitTarget img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  display:block!important;
+  filter:drop-shadow(0 25px 38px rgba(0,0,0,.4))!important;
+}
+
+/* When JS detects the cursor over the portrait, icons retreat
+   toward the portrait center — they do NOT travel outward. */
+.interactive-hero.icon-retreat #iconLayer .app-icon{
+  animation-play-state:paused!important;
+  opacity:0!important;
+  filter:blur(3px)!important;
+}
+.interactive-hero.icon-retreat #iconLayer .icon-ai{transform:translate(220px,150px) scale(.18)!important}
+.interactive-hero.icon-retreat #iconLayer .icon-figma{transform:translate(265px,40px) scale(.18)!important}
+.interactive-hero.icon-retreat #iconLayer .icon-capcut{transform:translate(225px,-115px) scale(.18)!important}
+.interactive-hero.icon-retreat #iconLayer .icon-pr{transform:translate(-205px,150px) scale(.18)!important}
+.interactive-hero.icon-retreat #iconLayer .icon-ps{transform:translate(-275px,45px) scale(.18)!important}
+.interactive-hero.icon-retreat #iconLayer .icon-ae{transform:translate(-225px,-110px) scale(.18)!important}
+
+/* A gentle interactive spotlight follows the cursor. */
+.interactive-hero{
+  --mx:50%;
+  --my:50%;
+}
+.interactive-hero .hero-bg-grid{
+  transition:transform .35s ease-out!important;
+}
+.interactive-hero::after{
+  content:""!important;
+  position:absolute!important;
+  left:var(--mx)!important;
+  top:var(--my)!important;
+  width:360px!important;
+  height:360px!important;
+  transform:translate(-50%,-50%)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(255,52,42,.14),transparent 68%)!important;
+  pointer-events:none!important;
+  z-index:2!important;
+}
+
+/* Desktop/tablet */
+@media(max-width:1100px) and (min-width:801px){
+  .hero-display{font-size:clamp(62px,6.3vw,92px)!important}
+  #portraitTarget{width:min(54vw,610px)!important}
+  #iconLayer .app-icon{width:64px!important;height:64px!important}
+  #iconLayer .icon-figma{width:76px!important;height:76px!important}
+  #iconLayer .icon-capcut{width:68px!important;height:68px!important}
+}
+
+/* Mobile: icons remain visible around the portrait. */
+@media(max-width:800px){
+  .hero-display{font-size:15.5vw!important;max-width:none!important}
+  #portraitTarget{right:0!important;width:100%!important;height:100%!important}
+  #iconLayer .app-icon{width:52px!important;height:52px!important}
+  #iconLayer .icon-figma{width:62px!important;height:62px!important}
+  #iconLayer .icon-capcut{width:58px!important;height:58px!important}
+  #iconLayer .icon-ai{--x:3%;--y:24%}
+  #iconLayer .icon-figma{--x:3%;--y:46%}
+  #iconLayer .icon-capcut{--x:8%;--y:69%}
+  #iconLayer .icon-pr{--x:80%;--y:14%}
+  #iconLayer .icon-ps{--x:91%;--y:41%}
+  #iconLayer .icon-ae{--x:82%;--y:67%}
+  .interactive-hero.icon-retreat #iconLayer .app-icon{
+    transform:translate(0,0) scale(.22)!important;
+  }
+}
