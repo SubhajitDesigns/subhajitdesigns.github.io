@@ -325,3 +325,30 @@ body > header.nav{display:none!important}
   .app-icon{width:68px!important;height:68px!important}
   .portrait-interactive img{transform:scale(1.03)!important}
 }
+
+
+/* ===== V14 — GUARANTEED VISIBLE PEEKING ICONS ===== */
+.hero-art{position:relative!important;overflow:visible!important;perspective:none!important;transform-style:flat!important}
+.app-icons{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;pointer-events:none!important;transform:none!important;perspective:none!important;transform-style:flat!important}
+.app-icons-back{z-index:10!important}
+.app-icons-front{z-index:30!important}
+.app-icon{position:absolute!important;left:auto!important;top:auto!important;right:auto!important;bottom:auto!important;width:92px!important;height:92px!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;opacity:1!important;filter:drop-shadow(0 15px 18px rgba(0,0,0,.55))!important;transform:none!important;transition:left .65s cubic-bezier(.2,.8,.2,1),top .65s cubic-bezier(.2,.8,.2,1),transform .65s cubic-bezier(.2,.8,.2,1),opacity .45s ease,filter .45s ease!important;will-change:left,top,transform,opacity!important}
+.app-icon img{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;background:transparent!important}
+/* Back row: these sit behind the portrait and visibly peek around the shoulders/head. */
+.app-icons-back .icon-ai{left:29%!important;top:27%!important;z-index:5!important}
+.app-icons-back .icon-extra{left:71%!important;top:28%!important;z-index:5!important}
+/* Front row: these sit around the lower arms/waist. */
+.app-icons-front .icon-pr{left:25%!important;top:69%!important;z-index:35!important}
+.app-icons-front .icon-ae{left:75%!important;top:67%!important;z-index:35!important}
+.app-icons-front .icon-ps{left:50%!important;top:86%!important;z-index:35!important}
+/* When hovering the portrait, every tool dives into the portrait center. */
+.interactive-hero.portrait-hover .app-icons-back .app-icon,
+.interactive-hero.portrait-hover .app-icons-front .app-icon{left:50%!important;top:51%!important;transform:scale(.12) rotate(180deg)!important;opacity:0!important;filter:blur(10px)!important}
+@media(max-width:800px){
+ .app-icon{width:66px!important;height:66px!important}
+ .app-icons-back .icon-ai{left:25%!important;top:26%!important}
+ .app-icons-back .icon-extra{left:75%!important;top:27%!important}
+ .app-icons-front .icon-pr{left:20%!important;top:70%!important}
+ .app-icons-front .icon-ae{left:80%!important;top:69%!important}
+ .app-icons-front .icon-ps{left:50%!important;top:86%!important}
+}
