@@ -42,3 +42,45 @@
 /* V6 CLEANUP: single hero navigation + refined signature */
 body > header.nav{display:none!important}
 .signature{font-family:'Caveat',cursive!important;font-weight:600!important;letter-spacing:.01em!important}
+
+
+/* V7 ICON + PORTRAIT POLISH */
+.hero-art{overflow:visible!important}
+.app-icons{position:absolute!important;inset:0!important;z-index:20!important;pointer-events:none!important}
+.app-icon{position:absolute!important;display:grid!important;place-items:center!important;width:74px!important;height:74px!important;border-radius:18px!important;background:rgba(8,8,10,.72)!important;border:1px solid rgba(255,255,255,.18)!important;box-shadow:0 12px 35px rgba(0,0,0,.45),0 0 22px rgba(255,40,30,.12)!important;backdrop-filter:blur(8px)!important;transition:transform .25s ease,box-shadow .25s ease!important;pointer-events:auto!important}
+.app-icon:hover{box-shadow:0 16px 42px rgba(0,0,0,.55),0 0 30px rgba(255,55,35,.35)!important}
+.app-icon img{width:43px!important;height:43px!important;display:block!important}
+.app-icon.ps{left:8%!important;top:49%!important}
+.app-icon.ai{left:22%!important;bottom:11%!important}
+.app-icon.id{left:34%!important;top:35%!important}
+.app-icon.ae{right:20%!important;top:25%!important}
+.app-icon.lr{right:5%!important;top:48%!important}
+.app-icon.pr{right:8%!important;bottom:13%!important}
+.note-left,.note-right,.signature{display:none!important}
+.location-mark{right:8%!important;bottom:6%!important}
+.hero-type-back{z-index:2!important}
+.orbit-lines{z-index:4!important}
+.portrait-interactive{z-index:8!important}
+@media(max-width:800px){.app-icon{width:58px!important;height:58px!important;border-radius:15px!important}.app-icon img{width:34px!important;height:34px!important}.app-icon.ps{left:3%!important;top:45%!important}.app-icon.ai{left:18%!important;bottom:13%!important}.app-icon.id{left:31%!important;top:30%!important}.app-icon.ae{right:18%!important;top:22%!important}.app-icon.lr{right:2%!important;top:45%!important}.app-icon.pr{right:5%!important;bottom:12%!important}.location-mark{right:5%!important;bottom:3%!important}}
+
+
+/* V8 CINEMATIC PORTRAIT ORBIT */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+.hero-display{font-family:'Bebas Neue','Arial Narrow',Impact,sans-serif!important;font-weight:400!important;letter-spacing:.012em!important;line-height:.82!important}
+.hero-display span:first-child{font-size:1.02em!important;letter-spacing:.018em!important;text-shadow:0 0 28px rgba(255,50,30,.12)!important}
+.hero-display .outline-word{-webkit-text-stroke:1.6px #f5dfd4!important;letter-spacing:.02em!important}
+.hero-art{overflow:visible!important;isolation:isolate!important}
+.portrait-interactive{z-index:30!important;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .45s ease!important}
+.app-icons{z-index:24!important;pointer-events:none!important;transform-style:preserve-3d!important}
+.app-icon{pointer-events:none!important;width:78px!important;height:78px!important;border-radius:19px!important;overflow:visible!important;background:linear-gradient(145deg,rgba(42,44,52,.96),rgba(7,8,11,.96))!important;border:1px solid rgba(255,255,255,.28)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -10px 20px rgba(0,0,0,.28),0 18px 34px rgba(0,0,0,.5),0 0 22px rgba(255,40,30,.13)!important;backdrop-filter:none!important;will-change:transform,opacity!important;transition:transform .7s cubic-bezier(.16,1,.3,1),opacity .45s ease,box-shadow .3s ease!important}
+.app-icon:before{content:'';position:absolute;inset:3px;border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.11),transparent 38%,rgba(0,0,0,.18));pointer-events:none}
+.app-icon:after{inset:-7px!important;border-radius:23px!important;border:1px solid rgba(255,70,45,.22)!important;filter:blur(3px)!important}
+.app-glyph{position:relative;z-index:2;font-family:Arial,sans-serif;font-size:31px;font-weight:800;letter-spacing:-.07em;text-shadow:0 2px 8px rgba(0,0,0,.35)}
+.app-icon.ps{background:linear-gradient(145deg,#0c3349,#07131c)!important}.app-icon.ps .app-glyph{color:#31a8ff}
+.app-icon.ai{background:linear-gradient(145deg,#5b2800,#160b02)!important}.app-icon.ai .app-glyph{color:#ff9a00}
+.app-icon.id{background:linear-gradient(145deg,#5a092e,#16040c)!important}.app-icon.id .app-glyph{color:#ff3366}
+.app-icon.ae{background:linear-gradient(145deg,#35265f,#100b1d)!important}.app-icon.ae .app-glyph{color:#c6a4ff}
+.app-icon.lr{background:linear-gradient(145deg,#073d55,#06151d)!important}.app-icon.lr .app-glyph{color:#31a8ff}
+.app-icon.pr{background:linear-gradient(145deg,#4a1760,#13061b)!important}.app-icon.pr .app-glyph{color:#c38bff}
+.portrait-hover .app-icon{box-shadow:0 5px 10px rgba(0,0,0,.18)!important}
+@media(max-width:800px){.hero-display{font-size:18vw!important}.app-icon{width:60px!important;height:60px!important}.app-glyph{font-size:24px}}
