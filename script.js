@@ -2,86 +2,49 @@
   const hero = document.querySelector('.interactive-hero');
   const art = document.querySelector('.hero-art');
   const portrait = document.querySelector('#portraitTarget');
-  const portraitImg = portrait?.querySelector('img');
-  const icons = [...document.querySelectorAll('#iconLayer .app-icon')];
   const cursor = document.querySelector('.cursor-dot');
   const magnetic = document.querySelector('.magnetic');
-
-  let mouseX = innerWidth / 2, mouseY = innerHeight / 2;
-  let sx = mouseX, sy = mouseY;
-  let hovering = false;
+  const navLinks = [...document.querySelectorAll('.hero-nav nav a, .hero-nav .nav-cta')];
+  let mx = innerWidth/2, my = innerHeight/2, sx = mx, sy = my;
 
   addEventListener('mousemove', e => {
-    mouseX=e.clientX; mouseY=e.clientY;
-    if(cursor){cursor.style.left=`${mouseX}px`;cursor.style.top=`${mouseY}px`;}
-    if(hero){
-      const r=hero.getBoundingClientRect();
-      hero.style.setProperty('--mx',`${((mouseX-r.left)/r.width)*100}%`);
-      hero.style.setProperty('--my',`${((mouseY-r.top)/r.height)*100}%`);
-    }
+    mx=e.clientX; my=e.clientY;
+    if(cursor){cursor.style.left=mx+'px';cursor.style.top=my+'px';}
+    if(hero){const r=hero.getBoundingClientRect(); hero.style.setProperty('--mx',((mx-r.left)/r.width*100)+'%'); hero.style.setProperty('--my',((my-r.top)/r.height*100)+'%');}
   },{passive:true});
 
-  function hoverOn(){
-    if(hovering)return;
-    hovering=true;
-    hero?.classList.add('icon-retreat');
-  }
-  function hoverOff(){
-    if(!hovering)return;
-    hovering=false;
-    hero?.classList.remove('icon-retreat');
-  }
+  portrait?.addEventListener('mouseenter',()=>hero?.classList.add('icon-retreat'));
+  portrait?.addEventListener('mouseleave',()=>hero?.classList.remove('icon-retreat'));
 
-  portrait?.addEventListener('mouseenter',hoverOn);
-  portrait?.addEventListener('mouseleave',hoverOff);
-  portraitImg?.addEventListener('mouseenter',hoverOn);
-  portraitImg?.addEventListener('mouseleave',hoverOff);
+  // Keep the depth effect predictable: the portrait owns the hover, icons stay behind it.
+  portrait?.addEventListener('pointerenter',()=>hero?.classList.add('icon-retreat'));
+  portrait?.addEventListener('pointerleave',()=>hero?.classList.remove('icon-retreat'));
 
 
-  // Premium nav interaction: hover bump + clicked active state.
-  const navLinks = [...document.querySelectorAll('.hero-nav nav a, .hero-nav .nav-cta')];
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      navLinks.forEach(item => item.classList.remove('nav-active'));
-      link.classList.add('nav-active');
-      window.setTimeout(() => link.classList.remove('nav-active'), 700);
-    });
-  });
+  navLinks.forEach(link=>link.addEventListener('click',()=>{
+    navLinks.forEach(x=>x.classList.remove('nav-active'));
+    link.classList.add('nav-active');
+    setTimeout(()=>link.classList.remove('nav-active'),600);
+  }));
 
-  function animate(){
-    sx += (mouseX-sx)*.055;
-    sy += (mouseY-sy)*.055;
-
+  function frame(){
+    sx += (mx-sx)*.055; sy += (my-sy)*.055;
     if(art && portrait && innerWidth>800){
-      const ar=art.getBoundingClientRect();
-      const px=Math.max(-1,Math.min(1,(sx-(ar.left+ar.width/2))/ar.width));
-      const py=Math.max(-1,Math.min(1,(sy-(ar.top+ar.height/2))/ar.height));
-
-      portrait.style.transform=`translate3d(${px*(hovering?2.5:8)}px,${py*(hovering?2:6)}px,0) rotateX(${py*(hovering?1.5:3)}deg) rotateY(${px*(hovering?-2:4)}deg)`;
-
-      icons.forEach((icon,i)=>{
-        if(!hovering){
-          const f=1+i*.04;
-          icon.style.marginLeft=`${px*1.6*f}px`;
-          icon.style.marginTop=`${py*1.6*f}px`;
-        }else{
-          icon.style.marginLeft='0px';
-          icon.style.marginTop='0px';
-        }
-      });
-
+      const r=art.getBoundingClientRect();
+      const px=Math.max(-1,Math.min(1,(sx-(r.left+r.width/2))/(r.width/2)));
+      const py=Math.max(-1,Math.min(1,(sy-(r.top+r.height/2))/(r.height/2)));
+      const retreat=hero?.classList.contains('icon-retreat');
+      const move=retreat?2.5:9;
+      portrait.style.transform=`translate3d(${px*move}px,${py*move*.7}px,0) rotateX(${py*(retreat?1.5:3)}deg) rotateY(${px*(retreat?-2:4)}deg)`;
       const grid=hero.querySelector('.hero-bg-grid');
-      if(grid)grid.style.transform=`translate(${px*3}px,${py*3}px)`;
+      if(grid)grid.style.transform=`translate3d(${px*4}px,${py*3}px,0)`;
     }
-    requestAnimationFrame(animate);
+    requestAnimationFrame(frame);
   }
-  requestAnimationFrame(animate);
+  requestAnimationFrame(frame);
 
   if(magnetic){
-    magnetic.addEventListener('mousemove',e=>{
-      const r=magnetic.getBoundingClientRect();
-      magnetic.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.10}px,${(e.clientY-r.top-r.height/2)*.10}px)`;
-    });
+    magnetic.addEventListener('mousemove',e=>{const r=magnetic.getBoundingClientRect(); magnetic.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.1}px,${(e.clientY-r.top-r.height/2)*.1}px)`});
     magnetic.addEventListener('mouseleave',()=>magnetic.style.transform='');
   }
 })();
