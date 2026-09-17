@@ -1,50 +1,9 @@
-const dot = document.querySelector('.cursor-dot');
-window.addEventListener('mousemove', e => {
-  if (!dot) return;
-  dot.style.left = e.clientX + 'px';
-  dot.style.top = e.clientY + 'px';
-});
-const reveals = document.querySelectorAll('.project, .process-grid > div, .about, .contact');
-const io = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-      io.unobserve(entry.target);
-    }
-  });
-}, {threshold:.08});
-reveals.forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(28px)';
-  el.style.transition = 'opacity .8s ease, transform .8s ease';
-  io.observe(el);
-});
+const dot=document.querySelector('.cursor-dot');
+window.addEventListener('mousemove',e=>{if(dot){dot.style.left=e.clientX+'px';dot.style.top=e.clientY+'px'}});
 
-/* Magnetic buttons + cursor-responsive hero composition */
-(() => {
-  const hero = document.querySelector('.hero-v2');
-  const title = document.querySelector('.hero-display');
-  const photo = document.querySelector('.hero-v2-photo-wrap');
-  const magnetic = document.querySelector('.magnetic');
-  if (!hero) return;
+const reveals=document.querySelectorAll('.project,.process-grid > div,.about,.contact');
+if('IntersectionObserver' in window){const io=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.style.opacity='1';entry.target.style.transform='translateY(0)';io.unobserve(entry.target)}})},{threshold:.08});reveals.forEach(el=>{el.style.opacity='0';el.style.transform='translateY(28px)';el.style.transition='opacity .8s ease, transform .8s ease';io.observe(el)})}
 
-  hero.addEventListener('mousemove', (e) => {
-    const r = hero.getBoundingClientRect();
-    const x = (e.clientX-r.left)/r.width-.5;
-    const y = (e.clientY-r.top)/r.height-.5;
-    if (title) title.style.transform = `translate(${x*12}px,${y*8}px)`;
-    if (photo) photo.style.transform = `translate(${x*-10}px,${y*-7}px)`;
-  });
-  hero.addEventListener('mouseleave', () => {
-    if (title) title.style.transform = '';
-    if (photo) photo.style.transform = '';
-  });
-  if (magnetic) {
-    magnetic.addEventListener('mousemove', (e) => {
-      const r = magnetic.getBoundingClientRect();
-      magnetic.style.transform = `translate(${(e.clientX-r.left-r.width/2)*.14}px,${(e.clientY-r.top-r.height/2)*.14}px)`;
-    });
-    magnetic.addEventListener('mouseleave', () => magnetic.style.transform = '');
-  }
-})();
+(()=>{const hero=document.querySelector('.interactive-hero');const art=document.querySelector('.hero-art');const portrait=document.querySelector('.portrait-interactive');const type=document.querySelector('.hero-type-back');const icons=[...document.querySelectorAll('.app-icon')];if(!hero||!art)return;let raf=0;function move(e){const r=art.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;hero.classList.add('is-hovered');cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{if(portrait)portrait.style.transform=`translate3d(${x*18}px,${y*-8}px,0) scale(1.018)`;if(type)type.style.transform=`translate3d(${x*-20}px,calc(-50% + ${y*-8}px),0)`;icons.forEach((icon,i)=>{const d=Number(icon.dataset.depth||1);icon.style.marginLeft=`${x*12*d}px`;icon.style.marginTop=`${y*10*d}px`})})}function leave(){hero.classList.remove('is-hovered');if(portrait)portrait.style.transform='';if(type)type.style.transform='';icons.forEach(icon=>{icon.style.marginLeft='';icon.style.marginTop=''})}art.addEventListener('mousemove',move);art.addEventListener('mouseenter',move);art.addEventListener('mouseleave',leave)})();
+
+const magnetic=document.querySelector('.magnetic');if(magnetic){magnetic.addEventListener('mousemove',e=>{const r=magnetic.getBoundingClientRect();magnetic.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.1}px,${(e.clientY-r.top-r.height/2)*.1}px)`});magnetic.addEventListener('mouseleave',()=>magnetic.style.transform='')}
