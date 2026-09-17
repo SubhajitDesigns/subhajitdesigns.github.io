@@ -208,3 +208,52 @@ body > header.nav{display:none!important}
   .hero-art::before{width:86vw;height:86vw}
   .hero-art::after{width:72vw;height:48vw}
 }
+
+
+/* ===== V11 PORTRAIT PEEK INTERACTION ===== */
+.hero-v2-copy{max-width:720px!important;overflow:visible!important}
+.hero-display{font-size:clamp(68px,7vw,116px)!important;line-height:.86!important;letter-spacing:-.012em!important;overflow:visible!important}
+.hero-display span{display:block!important;white-space:nowrap!important;overflow:visible!important}
+.hero-display span:first-child{
+  color:transparent!important;
+  background:linear-gradient(180deg,#fffaf6 0%,#e9dfdb 42%,#9d9693 100%)!important;
+  -webkit-background-clip:text!important;background-clip:text!important;
+  text-shadow:0 8px 30px rgba(255,255,255,.06)!important;
+  margin-bottom:12px!important;
+}
+.hero-display .outline-word{
+  color:transparent!important;
+  -webkit-text-stroke:0!important;
+  background:linear-gradient(180deg,#f6efeb 0%,#c9c0bd 48%,#77716f 100%)!important;
+  -webkit-background-clip:text!important;background-clip:text!important;
+  text-shadow:0 8px 28px rgba(255,255,255,.05)!important;
+}
+.hero-stats{gap:0!important;margin-top:42px!important}
+.hero-stats div{min-width:92px!important;padding:0 16px!important}
+.hero-stats div:first-child{padding-left:0!important}
+.hero-stats strong{font-size:19px!important}
+.hero-art{perspective:1200px!important;transform-style:preserve-3d!important;overflow:visible!important}
+.hero-type-back{z-index:1!important;opacity:.58!important}
+.portrait-interactive{z-index:20!important}
+.app-icons{position:absolute!important;inset:0!important;z-index:10!important;pointer-events:none!important;transform-style:preserve-3d!important}
+.app-icon{position:absolute!important;width:86px!important;height:86px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;transform-style:preserve-3d!important;will-change:transform,opacity,filter!important;transition:transform .85s cubic-bezier(.22,1,.36,1),opacity .55s ease,filter .55s ease!important}
+.app-icon img{width:100%!important;height:100%!important;object-fit:contain!important;display:block!important;filter:drop-shadow(0 16px 20px rgba(0,0,0,.45))!important}
+.app-icon::after{display:none!important}
+/* Static starting positions; JS gives each icon a small natural bob/peek. */
+.app-icon.icon-ae{left:32%!important;top:25%!important}
+.app-icon.icon-ai{left:16%!important;top:57%!important}
+.app-icon.icon-extra{left:65%!important;top:29%!important}
+.app-icon.icon-pr{left:72%!important;top:58%!important}
+.app-icon.icon-ps{left:42%!important;top:72%!important}
+.app-icon.peek-back{z-index:8!important}
+.app-icon.peek-front{z-index:30!important}
+.interactive-hero.portrait-hover .app-icon{opacity:0!important;filter:blur(4px)!important}
+@media(min-width:801px){
+  .hero-display{max-width:700px!important}
+}
+@media(max-width:800px){
+  .hero-display{font-size:17vw!important;line-height:.88!important}
+  .hero-display span:first-child{margin-bottom:9px!important}
+  .hero-stats div{min-width:82px!important;padding:0 11px!important}
+  .app-icon{width:64px!important;height:64px!important}
+}
