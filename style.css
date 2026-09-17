@@ -300,3 +300,28 @@ body > header.nav{display:none!important}
   .app-icon{width:68px!important;height:68px!important}
   .portrait-interactive img{transform:scale(1.03)!important}
 }
+
+
+/* ===== V13 — PEEKING 3D ICONS: SPLIT FRONT/BACK LAYERS ===== */
+.hero-art{position:relative!important;overflow:visible!important;isolation:auto!important}
+.app-icons{position:absolute!important;inset:0!important;transform-style:preserve-3d!important;pointer-events:none!important}
+.app-icons-back{z-index:10!important}
+.app-icons-front{z-index:60!important}
+.app-icon{position:absolute!important;left:50%!important;top:50%!important;width:94px!important;height:94px!important;padding:0!important;margin:0!important;background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important;transform-style:preserve-3d!important;will-change:transform,opacity,filter!important;transition:opacity .65s ease,filter .65s ease!important}
+.app-icon img{width:100%!important;height:100%!important;object-fit:contain!important;display:block!important;background:transparent!important}
+.app-icons-back .app-icon{z-index:5!important}
+.app-icons-front .app-icon{z-index:65!important}
+.portrait-interactive{position:relative!important;z-index:40!important;transform-style:preserve-3d!important}
+.portrait-interactive img{position:relative!important;z-index:41!important;transform:scale(1.10)!important;transform-origin:bottom center!important}
+/* Back icons sit visibly outside the silhouette, while their inner edges tuck behind the portrait. */
+.app-icons-back .icon-ai{margin-left:-12px!important}
+.app-icons-back .icon-extra{margin-left:12px!important}
+/* Front icons are kept near the lower arms/waist so they read as a peek, not an orbit. */
+.app-icons-front .icon-pr{margin-left:8px!important}
+.app-icons-front .icon-ae{margin-left:-2px!important}
+.app-icons-front .icon-ps{margin-left:-10px!important}
+.interactive-hero.portrait-hover .app-icon{opacity:.03!important;filter:blur(7px)!important}
+@media(max-width:800px){
+  .app-icon{width:68px!important;height:68px!important}
+  .portrait-interactive img{transform:scale(1.03)!important}
+}

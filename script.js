@@ -9,7 +9,7 @@ if('IntersectionObserver' in window){const io=new IntersectionObserver(entries=>
   const hero=document.querySelector('.interactive-hero');
   const art=document.querySelector('.hero-art');
   const portrait=document.querySelector('.portrait-interactive');
-  const icons=[...document.querySelectorAll('.app-icon')];
+  const icons=[...document.querySelectorAll('.app-icons .app-icon')];
   if(!hero||!art||!portrait||!icons.length)return;
 
   // x/y are percentages of the portrait area. z controls depth.
@@ -45,12 +45,12 @@ if('IntersectionObserver' in window){const io=new IntersectionObserver(entries=>
       if(hover){
         // Pull the object toward the portrait center and sink it behind the body.
         const dx=cx-x, dy=cy-y;
-        icon.style.zIndex='5';
+        icon.style.zIndex='1';
         icon.style.transform=`translate3d(calc(${x}px - 50% + ${dx*.72}px),calc(${y}px - 50% + ${dy*.72}px),-260px) rotate(${p.rot*1.4}deg) scale(.16)`;
         icon.style.opacity='.04';
         icon.style.filter='blur(7px) brightness(.28)';
       }else{
-        icon.style.zIndex=p.back?'8':'45';
+        icon.style.zIndex=p.back?'5':'65';
         icon.style.transform=`translate3d(calc(${x}px - 50%),calc(${y}px - 50%),${z}px) rotateZ(${p.rot+Math.sin(t*.5+p.phase)*3}deg) rotateX(${Math.sin(t*.7+p.phase)*5}deg) rotateY(${Math.cos(t*.6+p.phase)*7}deg) scale(${p.scale})`;
         icon.style.opacity=p.back?'.90':'1';
         icon.style.filter=p.back?'brightness(.72) saturate(.88) drop-shadow(0 12px 18px rgba(0,0,0,.42))':'drop-shadow(0 18px 22px rgba(0,0,0,.52))';
