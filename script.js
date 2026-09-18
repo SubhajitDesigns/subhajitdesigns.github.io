@@ -92,49 +92,35 @@
 })();
 
 
-/* FINAL 3D CLIENT LOGO EFFECT */
+/* CLEAN CLIENT LOGO 3D EFFECT */
 
-const clientLogoStrip = document.querySelector('.client-logo-strip');
-const clientLogoTrack = document.querySelector('.client-logo-track');
+const clientTrack = document.querySelector('.client-logo-track');
 
-if (clientLogoStrip && clientLogoTrack) {
+if (clientTrack) {
+  function updateClientLogos() {
 
-  function updateClientLogo3D() {
-
-    const stripRect = clientLogoStrip.getBoundingClientRect();
-    const centerX = stripRect.left + stripRect.width / 2;
-
-    const logos = clientLogoTrack.querySelectorAll('.client-logo-item');
+    const logos = clientTrack.querySelectorAll('.client-logo-item img');
+    const center = window.innerWidth / 2;
 
     logos.forEach((logo) => {
 
       const rect = logo.getBoundingClientRect();
       const logoCenter = rect.left + rect.width / 2;
 
-      const distance = Math.abs(centerX - logoCenter);
+      const distance = Math.abs(center - logoCenter);
+      const range = window.innerWidth * 0.50;
 
-      const maxDistance = stripRect.width * 0.55;
+      let amount = 1 - (distance / range);
+      amount = Math.max(0, Math.min(1, amount));
 
-      let progress = distance / maxDistance;
+      /* Very subtle size change */
+      const scale = 1 + (amount * 0.16);
 
-      progress = Math.min(progress, 1);
-
-      /* CENTER = BIG / SIDES = SMALL */
-      const scale = 1.28 - (progress * 0.46);
-
-      /* Subtle 3D perspective */
-      const offset = logoCenter - centerX;
-      const rotateY = Math.max(-10, Math.min(10, offset * 0.025));
-
-      logo.style.transform =
-        `scale(${scale}) rotateY(${rotateY}deg)`;
-
-      logo.style.opacity =
-        0.82 + ((1 - progress) * 0.18);
+      logo.style.transform = `scale(${scale})`;
     });
 
-    requestAnimationFrame(updateClientLogo3D);
+    requestAnimationFrame(updateClientLogos);
   }
 
-  updateClientLogo3D();
+  updateClientLogos();
 }
