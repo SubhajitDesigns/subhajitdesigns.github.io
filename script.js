@@ -244,7 +244,7 @@ if (clientTrack) {
 })();
 
 
-/* CRAFTED DESIGNS — PINNED 2x2 HORIZONTAL SCROLL */
+/* CRAFTED DESIGNS — 2x2 HORIZONTAL CAROUSEL */
 
 (() => {
   const section = document.querySelector("#work");
@@ -252,87 +252,61 @@ if (clientTrack) {
 
   if (!section || !grid) return;
 
-  let progress = 0;
-  let target = 0;
-  let active = false;
+  let currentX = 0;
+  let targetX = 0;
 
-  const getMax = () => {
-    return Math.max(0, grid.scrollWidth - window.innerWidth + 80);
-  };
+  const update = () => {
+    currentX += (targetX - currentX) * 0.12;
 
-  const animate = () => {
-    progress += (target - progress) * 0.12;
+    grid.style.transform = `translate3d(${-currentX}px, 0, 0)`;
 
-    grid.style.transform =
-      `translate3d(${-progress}px, 0, 0)`;
-
-    if (Math.abs(target - progress) > 0.5) {
-      requestAnimationFrame(animate);
+    if (Math.abs(targetX - currentX) > 0.5) {
+      requestAnimationFrame(update);
     } else {
-      progress = target;
+      currentX = targetX;
     }
   };
 
-  const isCraftedActive = () => {
-    const rect = section.getBoundingClientRect();
-
-    return (
-      rect.top <= 0 &&
-      rect.bottom >= window.innerHeight
-    );
+  const getMaxScroll = () => {
+    return Math.max(0, grid.scrollWidth - window.innerWidth + 80);
   };
 
-  window.addEventListener(
-    "wheel",
-    (e) => {
+  const isActive = () => {
+    const rect = section.getBoundingClientRect();
 
-      if (!isCraftedActive()) {
-        active = false;
-        return;
-      }
+    return rect.top <= 0 && rect.bottom >= window.innerHeight;
+  };
 
-      const max = getMax();
+  window.addEventListener("wheel", (e) => {
 
-      if (max <= 0) return;
+    if (!isActive()) return;
 
-      /* SCROLL DOWN */
-      if (e.deltaY > 0) {
+    const max = getMaxScroll();
 
-        if (target < max) {
-          e.preventDefault();
+    if (max <= 0) return;
 
-          active = true;
+    if (e.deltaY > 0 && targetX < max) {
+      e.preventDefault();
 
-          target = Math.min(
-            max,
-            target + e.deltaY
-          );
+      targetX = Math.min(
+        max,
+        targetX + e.deltaY
+      );
 
-          requestAnimationFrame(animate);
-        }
+      requestAnimationFrame(update);
+    }
 
-        return;
-      }
+    if (e.deltaY < 0 && targetX > 0) {
+      e.preventDefault();
 
-      /* SCROLL UP */
-      if (e.deltaY < 0) {
+      targetX = Math.max(
+        0,
+        targetX + e.deltaY
+      );
 
-        if (target > 0) {
-          e.preventDefault();
+      requestAnimationFrame(update);
+    }
 
-          active = true;
-
-          target = Math.max(
-            0,
-            target + e.deltaY
-          );
-
-          requestAnimationFrame(animate);
-        }
-      }
-
-    },
-    { passive: false }
-  );
+  }, { passive: false });
 
 })();
