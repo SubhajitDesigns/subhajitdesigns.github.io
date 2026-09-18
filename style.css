@@ -495,3 +495,51 @@ body.cursor-active .cursor-glow {
     font-size: clamp(3rem, 12vw, 5rem) !important;
   }
 }
+
+
+/* CLIENT LOGO STRIP */
+.client-logo-strip{
+  width:100%;
+  overflow:hidden;
+  padding:28px 0;
+  background:rgba(8,2,2,.82);
+  border-top:1px solid rgba(255,255,255,.07);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.client-logo-track{
+  display:flex;
+  align-items:center;
+  width:max-content;
+  gap:22px;
+  animation:clientLogosRightToLeft 32s linear infinite;
+}
+
+.client-logo-item{
+  width:170px;
+  height:78px;
+  flex:0 0 170px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 16px;
+  border-radius:14px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.07);
+}
+
+.client-logo-item img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+@keyframes clientLogosRightToLeft{
+  from{
+    transform:translateX(0);
+  }
+  to{
+    transform:translateX(-50%);
+  }
+}
