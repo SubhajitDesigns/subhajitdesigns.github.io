@@ -1771,8 +1771,7 @@ body.cursor-active .cursor-glow {
   transform:translate(-50%,-50%) scale(1);
 }
 
-
-/* CRAFTED — 2x2 HORIZONTAL CAROUSEL */
+/* CRAFTED — 3x2 HORIZONTAL CAROUSEL */
 
 #work {
   overflow: hidden;
@@ -1793,42 +1792,8 @@ body.cursor-active .cursor-glow {
 
   margin: 0 auto !important;
 }
-/* FIRST 2x2 PAGE */
-
-#work .crafted-folder:nth-child(1) {
-  grid-column: 1;
-  grid-row: 1;
-}
-
-#work .crafted-folder:nth-child(2) {
-  grid-column: 2;
-  grid-row: 1;
-}
-
-#work .crafted-folder:nth-child(3) {
-  grid-column: 1;
-  grid-row: 2;
-}
-
-#work .crafted-folder:nth-child(4) {
-  grid-column: 2;
-  grid-row: 2;
-}
-
-/* SECOND PAGE */
-
-#work .crafted-folder:nth-child(5) {
-  grid-column: 5;
-  grid-row: 1;
-}
-
-#work .crafted-folder:nth-child(6) {
-  grid-column: 5;
-  grid-row: 2;
-}
 
 #work .crafted-folder {
   width: 280px !important;
   height: 330px !important;
 }
-
