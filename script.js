@@ -127,11 +127,12 @@ if (clientTrack) {
 
 
 /* =========================================================
-   SUBHAJIT CLIENT CAROUSEL — NO RANDOM STRETCH
-   Uniform scale only. No vertical movement. No tilt.
+   SUBHAJIT CLIENTS — CLEAN CENTER FOCUS
+   No stretch • No vertical movement • No tilt
    ========================================================= */
 
 (function(){
+
   const carousel = document.querySelector('.client-carousel');
   const track = document.querySelector('.client-carousel-track');
 
@@ -141,30 +142,68 @@ if (clientTrack) {
     track.querySelectorAll('.client-card')
   );
 
+
   function updateClientFocus(){
+
     const centerX = window.innerWidth / 2;
 
-    cards.forEach(function(card){
-      const rect = card.getBoundingClientRect();
-      const cardCenter = rect.left + rect.width / 2;
-      const distance = Math.abs(cardCenter - centerX);
 
-      /* Wide focus zone = multiple logos stay visible */
+    cards.forEach(function(card){
+
+      const rect = card.getBoundingClientRect();
+
+      const cardCenter =
+        rect.left + rect.width / 2;
+
+      const distance =
+        Math.abs(cardCenter - centerX);
+
+
+      /*
+       * Wide focus zone.
+       * This keeps several logos visible.
+       */
+
       const influence = Math.min(
-        distance / (window.innerWidth * 0.52),
+        distance / (window.innerWidth * 0.58),
         1
       );
 
-      const focus = Math.pow(1 - influence, 1.25);
 
-      /* UNIFORM scale — never stretches X or Y separately */
-      const scale = 0.82 + (0.18 * focus);
+      const focus =
+        Math.pow(1 - influence, 1.15);
 
-      /* Center = fully visible, sides = still visible */
-      const opacity = 0.30 + (0.70 * focus);
 
-      /* Only very light softness */
-      const blur = 1.4 * (1 - focus);
+      /*
+       * UNIFORM SCALE ONLY.
+       *
+       * No separate X/Y scaling.
+       * No stretching.
+       */
+
+      const scale =
+        0.84 + (0.16 * focus);
+
+
+      /*
+       * Side logos remain visible.
+       * Center logo becomes fully visible.
+       */
+
+      const opacity =
+        0.38 + (0.62 * focus);
+
+
+      /*
+       * Very small amount of blur.
+       *
+       * Center = 0px
+       * Far sides = 0.7px
+       */
+
+      const blur =
+        0.7 * (1 - focus);
+
 
       card.style.setProperty(
         'transform',
@@ -172,17 +211,34 @@ if (clientTrack) {
         'important'
       );
 
-      card.style.opacity = opacity.toFixed(3);
+
+      card.style.opacity =
+        opacity.toFixed(3);
+
 
       card.style.filter =
         'blur(' + blur.toFixed(2) + 'px)';
 
+
       card.style.zIndex =
-        String(Math.round(100 + focus * 100));
+        String(
+          Math.round(
+            100 + focus * 100
+          )
+        );
+
     });
 
-    requestAnimationFrame(updateClientFocus);
+
+    requestAnimationFrame(
+      updateClientFocus
+    );
+
   }
 
-  requestAnimationFrame(updateClientFocus);
+
+  requestAnimationFrame(
+    updateClientFocus
+  );
+
 })();
