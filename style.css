@@ -1807,3 +1807,37 @@ body.cursor-active .cursor-glow {
   margin: 0 auto !important;
   overflow: hidden !important;
 }
+
+
+/* CRAFTED — FULL WIDTH 3-COLUMN VIEW */
+
+#work .crafted-viewport {
+  width: calc(100% + 12vw) !important;
+  max-width: none !important;
+
+  margin-left: -6vw !important;
+  margin-right: 0 !important;
+
+  overflow: hidden !important;
+}
+
+#work .crafted-grid {
+  grid-template-rows: 330px 330px !important;
+
+  grid-auto-flow: column !important;
+
+  grid-auto-columns: calc((100vw - 90px) / 3) !important;
+
+  width: max-content !important;
+  max-width: none !important;
+
+  column-gap: 45px !important;
+  row-gap: 40px !important;
+
+  margin: 0 !important;
+}
+
+#work .crafted-folder {
+  width: 280px !important;
+  justify-self: center !important;
+}
