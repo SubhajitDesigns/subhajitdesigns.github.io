@@ -1022,105 +1022,120 @@ body.cursor-active .cursor-glow {
 
 
 /* =========================================
-   CRAFTED — RED 3D FOLDERS
+   RED FOLDER — UPLOADED REFERENCE STYLE
 ========================================= */
 
 .crafted-folder{
   position:relative;
   display:block;
-  height:300px;
+  height:285px;
   text-decoration:none;
   cursor:pointer;
-  perspective:1000px;
-  transition:transform .45s cubic-bezier(.2,.8,.2,1);
+  transition:transform .4s ease;
 }
 
 .crafted-folder:hover{
   transform:translateY(-10px);
 }
 
-/* FOLDER AREA */
 .folder-icon{
   position:relative;
   width:100%;
-  height:225px;
-  perspective:1000px;
+  height:220px;
 }
 
-/* BACK OF FOLDER */
+/* BACK / TAB */
 .folder-back{
   position:absolute;
-  left:7%;
-  top:25px;
-  width:86%;
+  left:8%;
+  top:28px;
+  width:84%;
   height:175px;
-  border-radius:14px 20px 20px 20px;
+  border-radius:12px 18px 18px 18px;
+
   background:linear-gradient(
-    145deg,
-    #ff5548 0%,
-    #e52d26 45%,
-    #a91412 100%
+    180deg,
+    #ff3d32 0%,
+    #ef211c 55%,
+    #d91512 100%
   );
+
   box-shadow:
-    0 25px 45px rgba(0,0,0,.45),
-    inset 0 1px 0 rgba(255,255,255,.25);
+    inset 0 2px 3px rgba(255,255,255,.25),
+    0 15px 25px rgba(0,0,0,.35);
+
   z-index:1;
 }
 
-/* FOLDER TAB */
+/* RAISED FOLDER TAB */
 .folder-back::before{
   content:"";
   position:absolute;
   left:0;
-  top:-22px;
-  width:43%;
-  height:35px;
+  top:-30px;
+  width:36%;
+  height:38px;
+
   border-radius:13px 15px 0 0;
-  background:#e52d26;
+
+  background:linear-gradient(
+    180deg,
+    #ff463a,
+    #ed211b
+  );
+
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.25);
 }
 
-/* WORK PREVIEWS */
+/* PROJECT PREVIEWS */
 .folder-previews{
   position:absolute;
-  left:12%;
+  left:13%;
   top:5px;
-  width:76%;
-  height:170px;
+  width:74%;
+  height:175px;
   z-index:3;
   pointer-events:none;
 }
 
 .folder-previews img{
   position:absolute;
+
   width:42%;
   height:115px;
+
   object-fit:cover;
-  border-radius:10px;
+
   background:#fff;
   padding:5px;
+
+  border-radius:10px;
+
   box-shadow:0 12px 25px rgba(0,0,0,.35);
+
   transition:
-    transform .55s cubic-bezier(.2,.8,.2,1),
-    opacity .4s ease;
+    transform .55s cubic-bezier(.2,.8,.2,1);
 }
 
-/* CARD POSITIONS */
+/* PREVIEW POSITIONS */
+
 .folder-previews img:nth-child(1){
-  left:3%;
-  top:28px;
-  transform:rotate(-9deg);
+  left:0;
+  top:35px;
+  transform:rotate(-8deg);
 }
 
 .folder-previews img:nth-child(2){
-  left:27%;
+  left:29%;
   top:8px;
   transform:rotate(2deg);
 }
 
 .folder-previews img:nth-child(3){
-  right:4%;
-  top:28px;
-  transform:rotate(9deg);
+  right:0;
+  top:35px;
+  transform:rotate(8deg);
 }
 
 .folder-previews img:nth-child(4){
@@ -1134,53 +1149,60 @@ body.cursor-active .cursor-glow {
   position:absolute;
   left:0;
   bottom:0;
+
   width:100%;
   height:145px;
-  border-radius:16px;
+
+  border-radius:15px;
+
   background:linear-gradient(
-    145deg,
-    #ff6658 0%,
-    #e33129 50%,
-    #c51d19 100%
+    180deg,
+    #ff463b 0%,
+    #f12620 55%,
+    #df1815 100%
   );
+
   box-shadow:
-    0 22px 40px rgba(0,0,0,.5),
-    inset 0 1px 0 rgba(255,255,255,.22);
+    inset 0 2px 3px rgba(255,255,255,.22),
+    0 18px 30px rgba(0,0,0,.45);
+
   transform-origin:bottom center;
+
   transition:
-    transform .6s cubic-bezier(.2,.8,.2,1),
-    height .6s cubic-bezier(.2,.8,.2,1);
+    transform .55s cubic-bezier(.2,.8,.2,1),
+    height .55s cubic-bezier(.2,.8,.2,1);
+
   z-index:5;
 }
 
-/* OPEN EFFECT */
+/* OPEN FOLDER */
 .crafted-folder:hover .folder-front{
   height:120px;
   transform:
-    rotateX(48deg)
+    rotateX(45deg)
     translateY(12px);
 }
 
-/* PREVIEWS MOVE OUT */
+/* PROJECTS MOVE OUT */
 .crafted-folder:hover .folder-previews img:nth-child(1){
-  transform:translate(-25px,-25px) rotate(-13deg);
+  transform:translate(-18px,-25px) rotate(-11deg);
 }
 
 .crafted-folder:hover .folder-previews img:nth-child(2){
-  transform:translateY(-35px) rotate(3deg);
+  transform:translateY(-32px) rotate(2deg);
 }
 
 .crafted-folder:hover .folder-previews img:nth-child(3){
-  transform:translate(25px,-25px) rotate(13deg);
+  transform:translate(18px,-25px) rotate(11deg);
 }
 
 .crafted-folder:hover .folder-previews img:nth-child(4){
   transform:translateY(-15px) rotate(-2deg);
 }
 
-/* CATEGORY NAME */
+/* CATEGORY TEXT */
 .crafted-folder h3{
-  margin:25px 0 5px;
+  margin:24px 0 5px;
   color:#fff;
   font-family:"DM Sans",sans-serif;
   font-size:21px;
@@ -1194,27 +1216,29 @@ body.cursor-active .cursor-glow {
   letter-spacing:2px;
 }
 
-/* =========================================
-   MOTION GRAPHICS — COMING SOON
-========================================= */
+/* MOTION GRAPHICS — COMING SOON */
 
 .motion-coming-soon .coming-soon-text{
   position:absolute;
   left:50%;
   top:45%;
+
   transform:translate(-50%,-50%) scale(.85);
+
   z-index:20;
 
-  padding:12px 20px;
-  border-radius:999px;
+  padding:11px 19px;
 
   background:#ff3426;
   color:#fff;
+
+  border-radius:999px;
 
   font-family:"DM Sans",Arial,sans-serif;
   font-size:13px;
   font-weight:700;
   letter-spacing:1.5px;
+
   white-space:nowrap;
 
   opacity:0;
@@ -1224,7 +1248,7 @@ body.cursor-active .cursor-glow {
     opacity .25s ease,
     transform .25s ease;
 
-  box-shadow:0 12px 30px rgba(0,0,0,.4);
+  box-shadow:0 10px 25px rgba(0,0,0,.4);
 }
 
 .motion-coming-soon:hover .coming-soon-text{
