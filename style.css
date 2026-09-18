@@ -1820,3 +1820,19 @@ body.cursor-active .cursor-glow {
 #work .folder-previews {
   overflow: visible !important;
 }
+
+
+/* CRAFTED — CORRECT 3x2 ORDER */
+
+#work .crafted-grid {
+  grid-auto-flow: row !important;
+  grid-template-columns: repeat(3, 280px) !important;
+  grid-template-rows: repeat(4, 330px) !important;
+  grid-auto-columns: auto !important;
+  grid-auto-rows: 330px !important;
+
+  column-gap: 45px !important;
+  row-gap: 40px !important;
+
+  width: max-content !important;
+}
