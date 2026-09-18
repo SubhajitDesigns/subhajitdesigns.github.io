@@ -254,7 +254,18 @@ if (clientTrack) {
   const grid = document.querySelector("#work .crafted-grid");
 
   if (!section || !viewport || !grid) return;
+  /* Arrange folders as 3 across × 2 down */
+  const folders = Array.from(
+    grid.querySelectorAll(".crafted-folder")
+  );
 
+  const order = [0, 3, 1, 4, 2, 5, 6, 9, 7, 10, 8];
+
+  order.forEach((index) => {
+    if (folders[index]) {
+      grid.appendChild(folders[index]);
+    }
+  });
   let currentX = 0;
   let targetX = 0;
   let animating = false;
