@@ -244,7 +244,7 @@ if (clientTrack) {
 })();
 
 
-/* CRAFTED DESIGNS — 2 ROW HORIZONTAL SCROLL */
+/* CRAFTED DESIGNS — 2x2 HORIZONTAL SCROLL */
 
 (() => {
   const section = document.querySelector("#work");
@@ -252,54 +252,65 @@ if (clientTrack) {
 
   if (!section || !grid) return;
 
-  let x = 0;
-  let targetX = 0;
+  let position = 0;
+  let isAnimating = false;
 
-  function getMaxX() {
-    return Math.max(0, grid.scrollWidth - window.innerWidth + 120);
+  function maxPosition() {
+    return Math.max(
+      0,
+      grid.scrollWidth - section.clientWidth
+    );
   }
 
-  function animate() {
-    x += (targetX - x) * 0.1;
+  function moveTo(value) {
+    const max = maxPosition();
 
-    grid.style.transform = `translateX(${-x}px)`;
+    position = Math.max(0, Math.min(value, max));
 
-    if (Math.abs(targetX - x) > 0.5) {
-      requestAnimationFrame(animate);
-    }
+    grid.style.transform =
+      `translate3d(${-position}px, 0, 0)`;
   }
 
-  window.addEventListener("wheel", (e) => {
+  window.addEventListener("wheel", function(e) {
+
     const rect = section.getBoundingClientRect();
 
-    const sectionLocked =
-      rect.top <= 0 &&
-      rect.bottom >= window.innerHeight;
-
-    if (!sectionLocked) return;
-
-    const maxX = getMaxX();
-
-    if (e.deltaY > 0 && targetX < maxX) {
-      e.preventDefault();
-
-      targetX = Math.min(
-        maxX,
-        targetX + e.deltaY
-      );
-
-      requestAnimationFrame(animate);
+    /* Only activate when Crafted section fills the screen */
+    if (
+      rect.top > 5 ||
+      rect.bottom < window.innerHeight - 5
+    ) {
+      return;
     }
 
-    if (e.deltaY < 0 && targetX > 0) {
+    const max = maxPosition();
+
+    /* DOWN = move folders right → left */
+    if (e.deltaY > 0 && position < max) {
+
       e.preventDefault();
 
-      targetX = Math.max(
-        0,
-        targetX + e.deltaY
-      );
+      moveTo(position + e.deltaY);
 
-      requestAnimationFrame(animate);
+      return;
     }
-  }, { passive:false });
+
+    /* UP = move folders left → right */
+    if (e.deltaY < 0 && position > 0) {
+
+      e.preventDefault();
+
+      moveTo(position + e.deltaY);
+
+      return;
+    }
+
+    /*
+      When position reaches either end,
+      we DON'T prevent the wheel.
+      Normal page scrolling continues.
+    */
+
+  }, { passive: false });
+
 })();
