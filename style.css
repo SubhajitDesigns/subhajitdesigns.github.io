@@ -1648,3 +1648,50 @@ body.cursor-active .cursor-glow {
   top:28px !important;
   transform:rotate(9deg) !important;
 }
+
+
+/* PERFECT POP-OUT PHOTO EFFECT */
+
+.crafted-folder .folder-previews{
+  z-index: 10 !important;
+  pointer-events: none;
+}
+
+/* Keep the exact square photo shape */
+.crafted-folder .folder-previews img{
+  width:112px !important;
+  height:112px !important;
+  object-fit:contain !important;
+  box-sizing:border-box !important;
+
+  transition:
+    transform .65s cubic-bezier(.2,.8,.2,1),
+    top .65s cubic-bezier(.2,.8,.2,1),
+    left .65s cubic-bezier(.2,.8,.2,1);
+}
+
+/* POP THEM OUT ON HOVER */
+
+.crafted-folder:hover .folder-previews img:nth-child(1){
+  left:-8px !important;
+  top:-32px !important;
+  transform:rotate(-12deg) scale(1.03) !important;
+}
+
+.crafted-folder:hover .folder-previews img:nth-child(2){
+  left:48px !important;
+  top:-52px !important;
+  transform:rotate(-4deg) scale(1.03) !important;
+}
+
+.crafted-folder:hover .folder-previews img:nth-child(3){
+  left:104px !important;
+  top:-52px !important;
+  transform:rotate(4deg) scale(1.03) !important;
+}
+
+.crafted-folder:hover .folder-previews img:nth-child(4){
+  left:160px !important;
+  top:-32px !important;
+  transform:rotate(12deg) scale(1.03) !important;
+}
