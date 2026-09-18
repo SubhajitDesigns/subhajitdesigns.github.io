@@ -569,3 +569,223 @@ body.cursor-active .cursor-glow {
     max-height:52px;
   }
 }
+
+
+/* =========================================================
+   SUBHAJIT CLIENT CAROUSEL — REFERENCE STYLE
+   Flat 2D cards. Center = sharp/full-size.
+   Sides = smaller + blurred + faded.
+   ========================================================= */
+
+.client-showcase{
+  width:100%;
+  overflow:hidden;
+  padding:72px 0 54px;
+  background:transparent;
+  position:relative;
+}
+
+.client-showcase-heading{
+  text-align:center;
+  margin:0 0 54px;
+  pointer-events:none;
+}
+
+.client-kicker{
+  font-size:14px;
+  font-weight:500;
+  letter-spacing:8px;
+  color:rgba(255,255,255,.62);
+  margin-bottom:10px;
+}
+
+.client-showcase-heading h2{
+  margin:0;
+  font-size:72px;
+  line-height:.95;
+  font-weight:900;
+  letter-spacing:-2px;
+  color:#d8c8c8;
+  background:linear-gradient(180deg,#f1dddd 0%,#a8a4ba 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.client-carousel{
+  width:100%;
+  overflow:hidden;
+  position:relative;
+  isolation:isolate;
+}
+
+/* Soft fade at both viewport edges */
+.client-carousel::before,
+.client-carousel::after{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:18%;
+  z-index:5;
+  pointer-events:none;
+}
+
+.client-carousel::before{
+  left:0;
+  background:linear-gradient(90deg,rgba(10,13,15,1),rgba(10,13,15,0));
+}
+
+.client-carousel::after{
+  right:0;
+  background:linear-gradient(270deg,rgba(10,13,15,1),rgba(10,13,15,0));
+}
+
+.client-carousel-track{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  width:max-content;
+  animation:subhajitClientMove 48s linear infinite;
+  will-change:transform;
+}
+
+.client-card{
+  width:260px;
+  height:205px;
+  flex:0 0 260px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  box-sizing:border-box;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:10px;
+  background:rgba(12,15,17,.62);
+  overflow:hidden;
+  transform:scale(.68);
+  opacity:.10;
+  filter:blur(5px);
+  transition:
+    transform .12s linear,
+    opacity .12s linear,
+    filter .12s linear;
+  will-change:transform,opacity,filter;
+}
+
+.client-card img{
+  display:block;
+  width:auto;
+  height:auto;
+  max-width:190px;
+  max-height:125px;
+  object-fit:contain;
+  background:transparent;
+  border:0;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+
+/* The JS drives the exact center-focus effect.
+   This animation only moves the whole logo row. */
+@keyframes subhajitClientMove{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+
+.client-dots{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin-top:48px;
+}
+
+.client-dots span{
+  width:40px;
+  height:5px;
+  border-radius:999px;
+  background:rgba(255,255,255,.18);
+}
+
+.client-dots span.active{
+  width:40px;
+  background:rgba(255,255,255,.9);
+}
+
+/* Do not use old client-card / marquee effects */
+.marquee,
+.interaction-note{
+  display:none !important;
+}
+
+@media(max-width:900px){
+  .client-showcase{
+    padding:56px 0 42px;
+  }
+
+  .client-showcase-heading{
+    margin-bottom:38px;
+  }
+
+  .client-showcase-heading h2{
+    font-size:56px;
+  }
+
+  .client-kicker{
+    font-size:11px;
+    letter-spacing:6px;
+  }
+
+  .client-card{
+    width:220px;
+    height:175px;
+    flex-basis:220px;
+  }
+}
+
+@media(max-width:600px){
+  .client-showcase{
+    padding:46px 0 34px;
+  }
+
+  .client-showcase-heading h2{
+    font-size:48px;
+  }
+
+  .client-kicker{
+    font-size:10px;
+    letter-spacing:5px;
+  }
+
+  .client-carousel-track{
+    gap:14px;
+    animation-duration:52s;
+  }
+
+  .client-card{
+    width:190px;
+    height:150px;
+    flex-basis:190px;
+    padding:18px;
+  }
+
+  .client-card img{
+    max-width:145px;
+    max-height:95px;
+  }
+
+  .client-dots{
+    margin-top:34px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .client-carousel-track{
+    animation:none;
+  }
+
+  .client-card{
+    transition:none;
+  }
+}
