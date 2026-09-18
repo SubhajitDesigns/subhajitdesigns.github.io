@@ -1722,3 +1722,10 @@ body.cursor-active .cursor-glow {
 .crafted-folder:hover .folder-previews img:nth-child(4){
   transform:translate(8px,-12px) rotate(9deg) !important;
 }
+
+
+/* FOLDER FRONT — BRING IT IN FRONT OF PHOTOS */
+
+.crafted-folder .folder-front{
+  z-index:20 !important;
+}
