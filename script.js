@@ -92,40 +92,49 @@
 })();
 
 
-/* CLIENT LOGO 3D CENTER EFFECT */
+/* FINAL 3D CLIENT LOGO EFFECT */
 
-const clientTrack = document.querySelector('.client-logo-track');
+const clientLogoStrip = document.querySelector('.client-logo-strip');
+const clientLogoTrack = document.querySelector('.client-logo-track');
 
-if (clientTrack) {
-  function animateClientLogos() {
-    const logos = clientTrack.querySelectorAll('.client-logo-item');
-    const screenCenter = window.innerWidth / 2;
+if (clientLogoStrip && clientLogoTrack) {
+
+  function updateClientLogo3D() {
+
+    const stripRect = clientLogoStrip.getBoundingClientRect();
+    const centerX = stripRect.left + stripRect.width / 2;
+
+    const logos = clientLogoTrack.querySelectorAll('.client-logo-item');
 
     logos.forEach((logo) => {
-      const box = logo.getBoundingClientRect();
-      const logoCenter = box.left + box.width / 2;
 
-      const distance = Math.abs(screenCenter - logoCenter);
-      const maxDistance = window.innerWidth * 0.48;
+      const rect = logo.getBoundingClientRect();
+      const logoCenter = rect.left + rect.width / 2;
 
-      const progress = Math.min(distance / maxDistance, 1);
+      const distance = Math.abs(centerX - logoCenter);
 
-      /* Small at sides → bigger in center */
-      const scale = 1.18 - (progress * 0.30);
+      const maxDistance = stripRect.width * 0.55;
 
-      /* Subtle 3D tilt */
-      const position = logoCenter - screenCenter;
-      const rotateY = Math.max(-8, Math.min(8, position * 0.025));
+      let progress = distance / maxDistance;
+
+      progress = Math.min(progress, 1);
+
+      /* CENTER = BIG / SIDES = SMALL */
+      const scale = 1.28 - (progress * 0.46);
+
+      /* Subtle 3D perspective */
+      const offset = logoCenter - centerX;
+      const rotateY = Math.max(-10, Math.min(10, offset * 0.025));
 
       logo.style.transform =
         `scale(${scale}) rotateY(${rotateY}deg)`;
 
       logo.style.opacity =
-        0.75 + ((1 - progress) * 0.25);
+        0.82 + ((1 - progress) * 0.18);
     });
 
-    requestAnimationFrame(animateClientLogos);
+    requestAnimationFrame(updateClientLogo3D);
   }
 
-  animateClientLogos();
+  updateClientLogo3D();
 }
