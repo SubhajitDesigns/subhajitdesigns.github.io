@@ -1790,7 +1790,7 @@ body.cursor-active .cursor-glow {
   column-gap: 45px !important;
   row-gap: 40px !important;
 
-  margin: 0 auto !important;
+  margin: 0 !important;
 }
 
 #work .crafted-folder {
