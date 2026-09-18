@@ -245,7 +245,7 @@ if (clientTrack) {
 
 
 /* =========================================
-   CRAFTED — FINAL 2-FOLDER SCROLL
+   CRAFTED — FINAL 2-FOLDER COLUMN SCROLL
 ========================================= */
 
 (() => {
@@ -259,12 +259,8 @@ if (clientTrack) {
   let targetX = 0;
   let animating = false;
 
-  const getStep = () => {
-    const folderWidth = 280;
-    const gap = 45;
-
-    return folderWidth + gap;
-  };
+  /* One horizontal column = 2 folders */
+  const getStep = () => 325;
 
   const getMax = () => {
     return Math.max(
@@ -288,7 +284,23 @@ if (clientTrack) {
     }
   };
 
-  const isActive = () => {
+  const move = (direction) => {
+    const max = getMax();
+
+    targetX = Math.max(
+      0,
+      Math.min(
+        max,
+        targetX + (direction * getStep())
+      )
+    );
+
+    if (!animating) {
+      requestAnimationFrame(animate);
+    }
+  };
+
+  const isCraftedActive = () => {
     const rect = section.getBoundingClientRect();
 
     return (
@@ -301,53 +313,21 @@ if (clientTrack) {
     "wheel",
     (e) => {
 
-      if (!isActive()) return;
+      if (!isCraftedActive()) return;
 
       const max = getMax();
-      const step = getStep();
 
       if (max <= 0) return;
 
-      /* SCROLL DOWN */
-
-      if (e.deltaY > 0) {
-
-        if (targetX < max) {
-
-          e.preventDefault();
-
-          targetX = Math.min(
-            max,
-            targetX + step
-          );
-
-          if (!animating) {
-            requestAnimationFrame(animate);
-          }
-
-          return;
-        }
-
+      if (e.deltaY > 0 && targetX < max) {
+        e.preventDefault();
+        move(1);
         return;
       }
 
-      /* SCROLL UP */
-
-      if (e.deltaY < 0) {
-
-        if (targetX > 0) {
-
-          e.preventDefault();
-
-          targetX = Math.max(
-            0,
-            targetX - step
-          );
-
-          if (!animating) {
-            requestAnimationFrame(animate);
-          }
-        }
+      if (e.deltaY < 0 && targetX > 0) {
+        e.preventDefault();
+        move(-1);
       }
 
     },
