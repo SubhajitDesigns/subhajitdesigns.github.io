@@ -497,49 +497,65 @@ body.cursor-active .cursor-glow {
 }
 
 
-/* CLIENT LOGO STRIP */
+/* FINAL CLIENT LOGO STRIP */
+
 .client-logo-strip{
   width:100%;
   overflow:hidden;
-  padding:22px 0;
-  background:rgba(8,2,2,.82);
-  border-top:1px solid rgba(255,255,255,.07);
+  padding:28px 0;
+  background:transparent;
+  border:0;
+  perspective:1000px;
 }
 
 .client-logo-track{
   display:flex;
   align-items:center;
+  gap:48px;
   width:max-content;
-  gap:22px;
-  animation:clientLogosRightToLeft 32s linear infinite;
+  animation:clientLogosMove 32s linear infinite;
+  will-change:transform;
 }
 
 .client-logo-item{
-  width:170px;
-  height:78px;
-  flex:0 0 170px;
+  width:150px;
+  height:80px;
+  flex:0 0 150px;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:8px 14px;
-  border-radius:14px;
-  background:rgba(255,255,255,.035);
-  border:1px solid rgba(255,255,255,.07);
+  padding:0;
+  background:transparent;
+  border:0;
+  transform-origin:center;
 }
 
 .client-logo-item img{
-  width:90%;
-  height:90%;
+  width:100%;
+  height:100%;
   object-fit:contain;
   display:block;
-  filter:none;
+  background:transparent;
+  border:0;
 }
 
-@keyframes clientLogosRightToLeft{
+@keyframes clientLogosMove{
   from{
     transform:translateX(0);
   }
   to{
     transform:translateX(-50%);
+  }
+}
+
+@media(max-width:700px){
+  .client-logo-track{
+    gap:32px;
+  }
+
+  .client-logo-item{
+    width:125px;
+    height:70px;
+    flex-basis:125px;
   }
 }
