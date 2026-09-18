@@ -501,10 +501,9 @@ body.cursor-active .cursor-glow {
 .client-logo-strip{
   width:100%;
   overflow:hidden;
-  padding:28px 0;
+  padding:22px 0;
   background:rgba(8,2,2,.82);
   border-top:1px solid rgba(255,255,255,.07);
-  border-bottom:1px solid rgba(255,255,255,.07);
 }
 
 .client-logo-track{
@@ -522,17 +521,18 @@ body.cursor-active .cursor-glow {
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:10px 16px;
+  padding:8px 14px;
   border-radius:14px;
   background:rgba(255,255,255,.035);
   border:1px solid rgba(255,255,255,.07);
 }
 
 .client-logo-item img{
-  width:100%;
-  height:100%;
+  width:90%;
+  height:90%;
   object-fit:contain;
   display:block;
+  filter:none;
 }
 
 @keyframes clientLogosRightToLeft{
