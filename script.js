@@ -243,3 +243,63 @@ if (clientTrack) {
 
 })();
 
+
+/* CRAFTED DESIGNS — 2 ROW HORIZONTAL SCROLL */
+
+(() => {
+  const section = document.querySelector("#work");
+  const grid = document.querySelector("#work .crafted-grid");
+
+  if (!section || !grid) return;
+
+  let x = 0;
+  let targetX = 0;
+
+  function getMaxX() {
+    return Math.max(0, grid.scrollWidth - window.innerWidth + 120);
+  }
+
+  function animate() {
+    x += (targetX - x) * 0.1;
+
+    grid.style.transform = `translateX(${-x}px)`;
+
+    if (Math.abs(targetX - x) > 0.5) {
+      requestAnimationFrame(animate);
+    }
+  }
+
+  window.addEventListener("wheel", (e) => {
+    const rect = section.getBoundingClientRect();
+
+    const sectionLocked =
+      rect.top <= 0 &&
+      rect.bottom >= window.innerHeight;
+
+    if (!sectionLocked) return;
+
+    const maxX = getMaxX();
+
+    if (e.deltaY > 0 && targetX < maxX) {
+      e.preventDefault();
+
+      targetX = Math.min(
+        maxX,
+        targetX + e.deltaY
+      );
+
+      requestAnimationFrame(animate);
+    }
+
+    if (e.deltaY < 0 && targetX > 0) {
+      e.preventDefault();
+
+      targetX = Math.max(
+        0,
+        targetX + e.deltaY
+      );
+
+      requestAnimationFrame(animate);
+    }
+  }, { passive:false });
+})();
