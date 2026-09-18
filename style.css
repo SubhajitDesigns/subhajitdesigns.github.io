@@ -1102,46 +1102,47 @@ body.cursor-active .cursor-glow {
 .folder-previews img{
   position:absolute;
 
-  width:42%;
-  height:115px;
+  width:105px;
+  height:105px;
 
-  object-fit:cover;
+  object-fit:contain;
+  box-sizing:border-box;
 
+  padding:4px;
   background:#fff;
-  padding:5px;
 
-  border-radius:10px;
+  border-radius:8px;
 
-  box-shadow:0 12px 25px rgba(0,0,0,.35);
+  box-shadow:0 10px 22px rgba(0,0,0,.4);
 
   transition:
-    transform .55s cubic-bezier(.2,.8,.2,1);
+    transform .7s cubic-bezier(.2,.8,.2,1);
 }
 
 /* PREVIEW POSITIONS */
 
 .folder-previews img:nth-child(1){
   left:0;
-  top:35px;
-  transform:rotate(-8deg);
+  top:30px;
+  transform:rotate(-9deg);
 }
 
 .folder-previews img:nth-child(2){
-  left:29%;
+  left:53px;
   top:8px;
-  transform:rotate(2deg);
+  transform:rotate(-3deg);
 }
 
 .folder-previews img:nth-child(3){
-  right:0;
-  top:35px;
-  transform:rotate(8deg);
+  left:106px;
+  top:8px;
+  transform:rotate(3deg);
 }
 
 .folder-previews img:nth-child(4){
-  left:29%;
-  top:48px;
-  transform:rotate(-2deg);
+  left:159px;
+  top:30px;
+  transform:rotate(9deg);
 }
 
 /* FRONT OF FOLDER */
