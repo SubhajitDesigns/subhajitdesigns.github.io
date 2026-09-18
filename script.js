@@ -124,3 +124,76 @@ if (clientTrack) {
 
   updateClientLogos();
 }
+
+
+/* =========================================================
+   SUBHAJIT CLIENT CAROUSEL — EXACT CENTER FOCUS
+   Center = large, sharp, full opacity
+   Sides = smaller, blurred, faded
+   ========================================================= */
+
+(function () {
+  const carousel = document.querySelector('.client-carousel');
+  const track = document.querySelector('.client-carousel-track');
+
+  if (!carousel || !track) return;
+
+  const cards = Array.from(
+    track.querySelectorAll('.client-card')
+  );
+
+  function updateClientFocus() {
+    const centerX = window.innerWidth / 2;
+
+    cards.forEach(function (card) {
+      const rect = card.getBoundingClientRect();
+
+      const cardCenter = rect.left + rect.width / 2;
+      const distance = Math.abs(cardCenter - centerX);
+
+      /* Distance from screen center */
+      const influence = Math.min(
+        distance / (window.innerWidth * 0.42),
+        1
+      );
+
+      /* Smooth center focus */
+      const focus = Math.pow(1 - influence, 1.7);
+
+      /* Center = 1.12
+         Sides = 0.68 */
+      const scale = 0.68 + (0.44 * focus);
+
+      /* Center = 100%
+         Sides = 8% */
+      const opacity = 0.08 + (0.92 * focus);
+
+      /* Center = 0 blur
+         Sides = 5px blur */
+      const blur = 5 * (1 - focus);
+
+      card.style.transform =
+        'scale(' + scale.toFixed(3) + ')';
+
+      card.style.opacity =
+        opacity.toFixed(3);
+
+      card.style.filter =
+        'blur(' + blur.toFixed(2) + 'px)';
+
+      card.style.zIndex =
+        String(Math.round(100 + focus * 100));
+    });
+
+    requestAnimationFrame(updateClientFocus);
+  }
+
+  /* Respect reduced-motion settings */
+  if (
+    !window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches
+  ) {
+    requestAnimationFrame(updateClientFocus);
+  }
+})();
