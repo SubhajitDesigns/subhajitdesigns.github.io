@@ -1729,3 +1729,44 @@ body.cursor-active .cursor-glow {
 .crafted-folder .folder-front{
   z-index:20 !important;
 }
+
+/* MOTION GRAPHICS — COMING SOON */
+
+.motion-coming-soon{
+  position:relative;
+  cursor:pointer;
+}
+
+.motion-coming-soon .coming-soon-text{
+  position:absolute;
+  left:50%;
+  top:42%;
+  transform:translate(-50%,-50%) scale(.85);
+
+  z-index:30;
+
+  padding:12px 22px;
+  border-radius:10px;
+
+  background:rgba(0,0,0,.88);
+  border:1px solid rgba(255,255,255,.25);
+
+  color:#fff;
+  font-size:16px;
+  font-weight:700;
+  letter-spacing:2px;
+  white-space:nowrap;
+
+  opacity:0;
+
+  transition:
+    opacity .35s ease,
+    transform .35s cubic-bezier(.2,.8,.2,1);
+
+  pointer-events:none;
+}
+
+.motion-coming-soon:hover .coming-soon-text{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+}
