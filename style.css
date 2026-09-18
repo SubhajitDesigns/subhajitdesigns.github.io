@@ -1771,23 +1771,3 @@ body.cursor-active .cursor-glow {
   transform:translate(-50%,-50%) scale(1);
 }
 
-/* CRAFTED — 2 ROW HORIZONTAL SLIDE */
-
-#work{
-  overflow:hidden;
-}
-
-#work .crafted-grid{
-  display:grid !important;
-  grid-template-rows:repeat(2, auto) !important;
-  grid-auto-flow:column !important;
-  grid-auto-columns:280px !important;
-  grid-template-columns:none !important;
-
-  width:max-content !important;
-  gap:80px 100px !important;
-}
-
-#work .crafted-folder{
-  width:280px !important;
-}
