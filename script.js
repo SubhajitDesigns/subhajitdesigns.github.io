@@ -244,69 +244,126 @@ if (clientTrack) {
 })();
 
 
-/* CRAFTED DESIGNS — 2x2 HORIZONTAL CAROUSEL */
+/* =========================================
+   CRAFTED — FINAL 2-FOLDER SCROLL
+========================================= */
 
 (() => {
   const section = document.querySelector("#work");
+  const viewport = document.querySelector("#work .crafted-viewport");
   const grid = document.querySelector("#work .crafted-grid");
 
-  if (!section || !grid) return;
+  if (!section || !viewport || !grid) return;
 
   let currentX = 0;
   let targetX = 0;
+  let animating = false;
 
-  const update = () => {
-    currentX += (targetX - currentX) * 0.12;
+  const getStep = () => {
+    const folderWidth = 280;
+    const gap = 45;
 
-    grid.style.transform = `translate3d(${-currentX}px, 0, 0)`;
-
-    if (Math.abs(targetX - currentX) > 0.5) {
-      requestAnimationFrame(update);
-    } else {
-      currentX = targetX;
-    }
+    return folderWidth + gap;
   };
 
-  const getMaxScroll = () => {
-    return Math.max(0, grid.scrollWidth - window.innerWidth + 80);
+  const getMax = () => {
+    return Math.max(
+      0,
+      grid.scrollWidth - viewport.clientWidth
+    );
+  };
+
+  const animate = () => {
+    currentX += (targetX - currentX) * 0.12;
+
+    grid.style.transform =
+      `translate3d(${-currentX}px, 0, 0)`;
+
+    if (Math.abs(targetX - currentX) > 0.5) {
+      animating = true;
+      requestAnimationFrame(animate);
+    } else {
+      currentX = targetX;
+      animating = false;
+    }
   };
 
   const isActive = () => {
     const rect = section.getBoundingClientRect();
 
-    return rect.top <= 0 && rect.bottom >= window.innerHeight;
+    return (
+      rect.top <= 10 &&
+      rect.bottom >= window.innerHeight - 10
+    );
   };
 
-  window.addEventListener("wheel", (e) => {
+  window.addEventListener(
+    "wheel",
+    (e) => {
 
-    if (!isActive()) return;
+      if (!isActive()) return;
 
-    const max = getMaxScroll();
+      const max = getMax();
+      const step = getStep();
 
-    if (max <= 0) return;
+      if (max <= 0) return;
 
-    if (e.deltaY > 0 && targetX < max) {
-      e.preventDefault();
+      /* SCROLL DOWN */
 
-      targetX = Math.min(
-        max,
-        targetX + e.deltaY
-      );
+      if (e.deltaY > 0) {
 
-      requestAnimationFrame(update);
-    }
+        if (targetX < max) {
 
-    if (e.deltaY < 0 && targetX > 0) {
-      e.preventDefault();
+          e.preventDefault();
 
-      targetX = Math.max(
-        0,
-        targetX + e.deltaY
-      );
+          targetX = Math.min(
+            max,
+            targetX + step
+          );
 
-      requestAnimationFrame(update);
-    }
+          if (!animating) {
+            requestAnimationFrame(animate);
+          }
 
-  }, { passive: false });
+          return;
+        }
+
+        return;
+      }
+
+      /* SCROLL UP */
+
+      if (e.deltaY < 0) {
+
+        if (targetX > 0) {
+
+          e.preventDefault();
+
+          targetX = Math.max(
+            0,
+            targetX - step
+          );
+
+          if (!animating) {
+            requestAnimationFrame(animate);
+          }
+        }
+      }
+
+    },
+    { passive: false }
+  );
+
+  window.addEventListener("resize", () => {
+
+    const max = getMax();
+
+    targetX = Math.min(targetX, max);
+    currentX = Math.min(currentX, max);
+
+    grid.style.transform =
+      `translate3d(${-currentX}px, 0, 0)`;
+
+  });
 
 })();
