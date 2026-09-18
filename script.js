@@ -127,56 +127,52 @@ if (clientTrack) {
 
 
 /* =========================================================
-   SUBHAJIT CLIENT CAROUSEL — EXACT CENTER FOCUS
-   Center = large, sharp, full opacity
-   Sides = smaller, blurred, faded
+   SUBHAJIT CLIENT CAROUSEL — NO RANDOM STRETCH
+   Uniform scale only. No vertical movement. No tilt.
    ========================================================= */
 
-(function () {
+(function(){
   const carousel = document.querySelector('.client-carousel');
   const track = document.querySelector('.client-carousel-track');
 
-  if (!carousel || !track) return;
+  if(!carousel || !track) return;
 
   const cards = Array.from(
     track.querySelectorAll('.client-card')
   );
 
-  function updateClientFocus() {
+  function updateClientFocus(){
     const centerX = window.innerWidth / 2;
 
-    cards.forEach(function (card) {
+    cards.forEach(function(card){
       const rect = card.getBoundingClientRect();
-
       const cardCenter = rect.left + rect.width / 2;
       const distance = Math.abs(cardCenter - centerX);
 
-      /* Distance from screen center */
+      /* Wide focus zone = multiple logos stay visible */
       const influence = Math.min(
-        distance / (window.innerWidth * 0.42),
+        distance / (window.innerWidth * 0.52),
         1
       );
 
-      /* Smooth center focus */
-      const focus = Math.pow(1 - influence, 1.7);
+      const focus = Math.pow(1 - influence, 1.25);
 
-      /* Center = 1.12
-         Sides = 0.68 */
-      const scale = 0.68 + (0.44 * focus);
+      /* UNIFORM scale — never stretches X or Y separately */
+      const scale = 0.82 + (0.18 * focus);
 
-      /* Center = 100%
-         Sides = 8% */
-      const opacity = 0.08 + (0.92 * focus);
+      /* Center = fully visible, sides = still visible */
+      const opacity = 0.30 + (0.70 * focus);
 
-      /* Center = 0 blur
-         Sides = 5px blur */
-      const blur = 5 * (1 - focus);
+      /* Only very light softness */
+      const blur = 1.4 * (1 - focus);
 
-      card.style.transform =
-        'scale(' + scale.toFixed(3) + ')';
+      card.style.setProperty(
+        'transform',
+        'scale(' + scale.toFixed(3) + ')',
+        'important'
+      );
 
-      card.style.opacity =
-        opacity.toFixed(3);
+      card.style.opacity = opacity.toFixed(3);
 
       card.style.filter =
         'blur(' + blur.toFixed(2) + 'px)';
@@ -188,12 +184,5 @@ if (clientTrack) {
     requestAnimationFrame(updateClientFocus);
   }
 
-  /* Respect reduced-motion settings */
-  if (
-    !window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches
-  ) {
-    requestAnimationFrame(updateClientFocus);
-  }
+  requestAnimationFrame(updateClientFocus);
 })();
