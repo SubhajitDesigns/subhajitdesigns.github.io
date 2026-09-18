@@ -1184,21 +1184,30 @@ body.cursor-active .cursor-glow {
     translateY(12px);
 }
 
-/* PROJECTS MOVE OUT */
+/* NATURAL FOLDER POP-OUT */
+
 .crafted-folder:hover .folder-previews img:nth-child(1){
-  transform:translate(-18px,-25px) rotate(-11deg);
+  left:-2px !important;
+  top:18px !important;
+  transform:rotate(-9deg) scale(1.03) !important;
 }
 
 .crafted-folder:hover .folder-previews img:nth-child(2){
-  transform:translateY(-32px) rotate(2deg);
+  left:51px !important;
+  top:-4px !important;
+  transform:rotate(-3deg) scale(1.03) !important;
 }
 
 .crafted-folder:hover .folder-previews img:nth-child(3){
-  transform:translate(18px,-25px) rotate(11deg);
+  left:104px !important;
+  top:-4px !important;
+  transform:rotate(3deg) scale(1.03) !important;
 }
 
 .crafted-folder:hover .folder-previews img:nth-child(4){
-  transform:translateY(-15px) rotate(-2deg);
+  left:157px !important;
+  top:18px !important;
+  transform:rotate(9deg) scale(1.03) !important;
 }
 
 /* CATEGORY TEXT */
@@ -1694,4 +1703,22 @@ body.cursor-active .cursor-glow {
   left:160px !important;
   top:-32px !important;
   transform:rotate(12deg) scale(1.03) !important;
+}
+
+/* FINAL NATURAL POP-OUT */
+
+.crafted-folder:hover .folder-previews img:nth-child(1){
+  transform:translate(-8px,-12px) rotate(-9deg) !important;
+}
+
+.crafted-folder:hover .folder-previews img:nth-child(2){
+  transform:translate(-3px,-22px) rotate(-3deg) !important;
+}
+
+.crafted-folder:hover .folder-previews img:nth-child(3){
+  transform:translate(3px,-22px) rotate(3deg) !important;
+}
+
+.crafted-folder:hover .folder-previews img:nth-child(4){
+  transform:translate(8px,-12px) rotate(9deg) !important;
 }
