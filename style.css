@@ -1781,8 +1781,9 @@ body.cursor-active .cursor-glow {
 #work .crafted-grid {
   display: grid !important;
 
-  grid-template-columns: repeat(6, 280px) !important;
   grid-template-rows: 330px 330px !important;
+  grid-auto-flow: column !important;
+  grid-auto-columns: 280px !important;
 
   width: max-content !important;
   max-width: none !important;
@@ -1790,9 +1791,8 @@ body.cursor-active .cursor-glow {
   column-gap: 45px !important;
   row-gap: 40px !important;
 
-  margin: 0 !important;
+  margin: 0 auto !important;
 }
-
 /* FIRST 2x2 PAGE */
 
 #work .crafted-folder:nth-child(1) {
