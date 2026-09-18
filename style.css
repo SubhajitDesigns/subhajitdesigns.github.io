@@ -1771,20 +1771,3 @@ body.cursor-active .cursor-glow {
   transform:translate(-50%,-50%) scale(1);
 }
 
-/* HORIZONTAL CRAFTED DESIGNS */
-
-#work{
-  overflow:hidden;
-}
-
-#work .crafted-grid{
-  display:flex !important;
-  flex-wrap:nowrap !important;
-  width:max-content !important;
-  gap:80px !important;
-}
-
-#work .crafted-folder{
-  flex:0 0 280px !important;
-  width:280px !important;
-}
