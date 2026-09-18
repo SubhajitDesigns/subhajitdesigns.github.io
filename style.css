@@ -1599,3 +1599,52 @@ body.cursor-active .cursor-glow {
   }
 
 }
+
+/* FINAL PHOTO SIZE OVERRIDE */
+
+.folder-previews{
+  left:8px !important;
+  top:0 !important;
+  width:264px !important;
+  height:180px !important;
+}
+
+.folder-previews img{
+  width:112px !important;
+  height:112px !important;
+
+  object-fit:contain !important;
+  box-sizing:border-box !important;
+
+  padding:4px !important;
+  background:#fff !important;
+  border-radius:8px !important;
+
+  box-shadow:0 10px 22px rgba(0,0,0,.4) !important;
+}
+
+/* FOUR FULL SQUARE PHOTOS */
+
+.folder-previews img:nth-child(1){
+  left:-2px !important;
+  top:28px !important;
+  transform:rotate(-9deg) !important;
+}
+
+.folder-previews img:nth-child(2){
+  left:51px !important;
+  top:4px !important;
+  transform:rotate(-3deg) !important;
+}
+
+.folder-previews img:nth-child(3){
+  left:104px !important;
+  top:4px !important;
+  transform:rotate(3deg) !important;
+}
+
+.folder-previews img:nth-child(4){
+  left:157px !important;
+  top:28px !important;
+  transform:rotate(9deg) !important;
+}
