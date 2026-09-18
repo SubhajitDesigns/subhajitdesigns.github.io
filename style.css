@@ -1831,3 +1831,13 @@ body.cursor-active .cursor-glow {
   width: 280px !important;
   height: 330px !important;
 }
+
+
+/* CRAFTED — SHOW ONLY 4 FOLDERS */
+
+#work .crafted-viewport {
+  width: 605px !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+}
