@@ -572,36 +572,37 @@ body.cursor-active .cursor-glow {
 
 
 /* =========================================================
-   SUBHAJIT CLIENT CAROUSEL — NO STRETCH / NO TILT
-   Exact flat reference behavior.
+   SUBHAJIT CLIENTS — CLEAN COMPACT REFERENCE FIX
+   Flat 2D • No 3D • No stretch • No edge haze
    ========================================================= */
 
 .client-showcase{
   width:100%;
   overflow:hidden;
-  padding:72px 0 54px;
+  padding:34px 0 18px;
   background:transparent;
   position:relative;
 }
 
 .client-showcase-heading{
   text-align:center;
-  margin:0 0 48px;
+  margin:0 0 22px;
+  padding:0;
   pointer-events:none;
 }
 
 .client-kicker{
-  font-size:14px;
+  font-size:12px;
   font-weight:500;
-  letter-spacing:8px;
-  color:rgba(255,255,255,.62);
-  margin-bottom:10px;
+  letter-spacing:7px;
+  color:rgba(255,255,255,.58);
+  margin:0 0 5px;
 }
 
 .client-showcase-heading h2{
   margin:0;
-  font-size:68px;
-  line-height:.95;
+  font-size:60px;
+  line-height:.92;
   font-weight:900;
   letter-spacing:-2px;
   background:linear-gradient(180deg,#f1dddd 0%,#a8a4ba 100%);
@@ -612,31 +613,16 @@ body.cursor-active .cursor-glow {
 
 .client-carousel{
   width:100%;
-  height:210px;
+  height:188px;
   overflow:hidden;
   position:relative;
   isolation:isolate;
 }
 
+/* Remove the old gray/black side haze */
 .client-carousel::before,
 .client-carousel::after{
-  content:"";
-  position:absolute;
-  top:0;
-  bottom:0;
-  width:15%;
-  z-index:20;
-  pointer-events:none;
-}
-
-.client-carousel::before{
-  left:0;
-  background:linear-gradient(90deg,rgba(8,10,12,1),rgba(8,10,12,0));
-}
-
-.client-carousel::after{
-  right:0;
-  background:linear-gradient(270deg,rgba(8,10,12,1),rgba(8,10,12,0));
+  display:none !important;
 }
 
 .client-carousel-track{
@@ -664,74 +650,95 @@ body.cursor-active .cursor-glow {
 
   padding:22px;
   box-sizing:border-box;
-  border:1px solid rgba(255,255,255,.14);
+
+  border:1px solid rgba(255,255,255,.13);
   border-radius:9px;
-  background:rgba(10,13,15,.78);
+  background:rgba(10,13,15,.72);
   overflow:hidden;
 
-  /* JS changes ONLY uniform scale/opacity/blur */
-  transform:scale(.82) !important;
+  transform:scale(.84) !important;
   transform-origin:center center !important;
-  opacity:.30;
-  filter:blur(1px);
 
-  transition:none !important;
+  opacity:.38;
+  filter:blur(.7px);
+
   rotate:none !important;
   translate:none !important;
+  transition:none !important;
+
   will-change:transform,opacity,filter;
 }
 
 .client-card img{
   display:block;
+
   width:auto !important;
   height:auto !important;
+
   max-width:185px !important;
   max-height:118px !important;
+
   object-fit:contain;
+
+  transform:none !important;
+
   background:transparent;
   border:0;
+
   user-select:none;
   -webkit-user-drag:none;
-  transform:none !important;
 }
 
 @keyframes subhajitClientMove{
-  from{transform:translateX(0)}
-  to{transform:translateX(-50%)}
+  from{
+    transform:translateX(0);
+  }
+
+  to{
+    transform:translateX(-50%);
+  }
 }
 
+/* Remove the three bottom lines */
 .client-dots{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:10px;
-  margin-top:42px;
+  display:none !important;
 }
 
-.client-dots span{
-  width:40px;
-  height:5px;
-  border-radius:999px;
-  background:rgba(255,255,255,.18);
-}
-
-.client-dots span.active{
-  background:rgba(255,255,255,.9);
-}
-
+/* Remove old content if still present */
 .marquee,
 .interaction-note{
   display:none !important;
 }
 
+
+/* =========================
+   TABLET
+   ========================= */
+
 @media(max-width:1000px){
+
+  .client-showcase{
+    padding:30px 0 14px;
+  }
+
+  .client-showcase-heading{
+    margin-bottom:18px;
+  }
+
+  .client-showcase-heading h2{
+    font-size:54px;
+  }
+
   .client-card{
     width:220px !important;
-    height:170px !important;
+    height:165px !important;
+
     min-width:220px !important;
     max-width:220px !important;
-    min-height:170px !important;
-    max-height:170px !important;
+
+    min-height:165px !important;
+    max-height:165px !important;
+
     flex-basis:220px !important;
   }
 
@@ -741,26 +748,32 @@ body.cursor-active .cursor-glow {
   }
 }
 
+
+/* =========================
+   MOBILE
+   ========================= */
+
 @media(max-width:700px){
+
   .client-showcase{
-    padding:52px 0 38px;
+    padding:26px 0 12px;
   }
 
   .client-showcase-heading{
-    margin-bottom:34px;
+    margin-bottom:15px;
   }
 
   .client-showcase-heading h2{
-    font-size:52px;
+    font-size:46px;
   }
 
   .client-kicker{
-    font-size:10px;
+    font-size:9px;
     letter-spacing:5px;
   }
 
   .client-carousel{
-    height:180px;
+    height:155px;
   }
 
   .client-carousel-track{
@@ -770,21 +783,21 @@ body.cursor-active .cursor-glow {
 
   .client-card{
     width:190px !important;
-    height:145px !important;
+    height:140px !important;
+
     min-width:190px !important;
     max-width:190px !important;
-    min-height:145px !important;
-    max-height:145px !important;
+
+    min-height:140px !important;
+    max-height:140px !important;
+
     flex-basis:190px !important;
+
     padding:16px;
   }
 
   .client-card img{
     max-width:145px !important;
     max-height:92px !important;
-  }
-
-  .client-dots{
-    margin-top:32px;
   }
 }
