@@ -244,7 +244,7 @@ if (clientTrack) {
 })();
 
 
-/* CRAFTED DESIGNS — 2x2 HORIZONTAL SCROLL */
+/* CRAFTED DESIGNS — PINNED 2x2 HORIZONTAL SCROLL */
 
 (() => {
   const section = document.querySelector("#work");
@@ -252,65 +252,87 @@ if (clientTrack) {
 
   if (!section || !grid) return;
 
-  let position = 0;
-  let isAnimating = false;
+  let progress = 0;
+  let target = 0;
+  let active = false;
 
-  function maxPosition() {
-    return Math.max(
-      0,
-      grid.scrollWidth - section.clientWidth
-    );
-  }
+  const getMax = () => {
+    return Math.max(0, grid.scrollWidth - window.innerWidth + 80);
+  };
 
-  function moveTo(value) {
-    const max = maxPosition();
-
-    position = Math.max(0, Math.min(value, max));
+  const animate = () => {
+    progress += (target - progress) * 0.12;
 
     grid.style.transform =
-      `translate3d(${-position}px, 0, 0)`;
-  }
+      `translate3d(${-progress}px, 0, 0)`;
 
-  window.addEventListener("wheel", function(e) {
+    if (Math.abs(target - progress) > 0.5) {
+      requestAnimationFrame(animate);
+    } else {
+      progress = target;
+    }
+  };
 
+  const isCraftedActive = () => {
     const rect = section.getBoundingClientRect();
 
-    /* Only activate when Crafted section fills the screen */
-    if (
-      rect.top > 5 ||
-      rect.bottom < window.innerHeight - 5
-    ) {
-      return;
-    }
+    return (
+      rect.top <= 0 &&
+      rect.bottom >= window.innerHeight
+    );
+  };
 
-    const max = maxPosition();
+  window.addEventListener(
+    "wheel",
+    (e) => {
 
-    /* DOWN = move folders right → left */
-    if (e.deltaY > 0 && position < max) {
+      if (!isCraftedActive()) {
+        active = false;
+        return;
+      }
 
-      e.preventDefault();
+      const max = getMax();
 
-      moveTo(position + e.deltaY);
+      if (max <= 0) return;
 
-      return;
-    }
+      /* SCROLL DOWN */
+      if (e.deltaY > 0) {
 
-    /* UP = move folders left → right */
-    if (e.deltaY < 0 && position > 0) {
+        if (target < max) {
+          e.preventDefault();
 
-      e.preventDefault();
+          active = true;
 
-      moveTo(position + e.deltaY);
+          target = Math.min(
+            max,
+            target + e.deltaY
+          );
 
-      return;
-    }
+          requestAnimationFrame(animate);
+        }
 
-    /*
-      When position reaches either end,
-      we DON'T prevent the wheel.
-      Normal page scrolling continues.
-    */
+        return;
+      }
 
-  }, { passive: false });
+      /* SCROLL UP */
+      if (e.deltaY < 0) {
+
+        if (target > 0) {
+          e.preventDefault();
+
+          active = true;
+
+          target = Math.max(
+            0,
+            target + e.deltaY
+          );
+
+          requestAnimationFrame(animate);
+        }
+      }
+
+    },
+    { passive: false }
+  );
 
 })();
