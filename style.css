@@ -1771,3 +1771,34 @@ body.cursor-active .cursor-glow {
   transform:translate(-50%,-50%) scale(1);
 }
 
+
+/* CRAFTED — 2x2 HORIZONTAL CAROUSEL */
+
+#work {
+  overflow: hidden;
+}
+
+#work .crafted-grid {
+  display: grid !important;
+
+  grid-template-rows: repeat(2, 330px) !important;
+  grid-auto-flow: column !important;
+  grid-auto-columns: 280px !important;
+
+  grid-template-columns: none !important;
+
+  width: max-content !important;
+
+  column-gap: 100px !important;
+  row-gap: 40px !important;
+
+  max-width: none !important;
+
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+#work .crafted-folder {
+  width: 280px !important;
+  height: 330px !important;
+}
