@@ -90,3 +90,42 @@
   };
   requestAnimationFrame(tick);
 })();
+
+
+/* CLIENT LOGO 3D CENTER EFFECT */
+
+const clientTrack = document.querySelector('.client-logo-track');
+
+if (clientTrack) {
+  function animateClientLogos() {
+    const logos = clientTrack.querySelectorAll('.client-logo-item');
+    const screenCenter = window.innerWidth / 2;
+
+    logos.forEach((logo) => {
+      const box = logo.getBoundingClientRect();
+      const logoCenter = box.left + box.width / 2;
+
+      const distance = Math.abs(screenCenter - logoCenter);
+      const maxDistance = window.innerWidth * 0.48;
+
+      const progress = Math.min(distance / maxDistance, 1);
+
+      /* Small at sides → bigger in center */
+      const scale = 1.18 - (progress * 0.30);
+
+      /* Subtle 3D tilt */
+      const position = logoCenter - screenCenter;
+      const rotateY = Math.max(-8, Math.min(8, position * 0.025));
+
+      logo.style.transform =
+        `scale(${scale}) rotateY(${rotateY}deg)`;
+
+      logo.style.opacity =
+        0.75 + ((1 - progress) * 0.25);
+    });
+
+    requestAnimationFrame(animateClientLogos);
+  }
+
+  animateClientLogos();
+}
