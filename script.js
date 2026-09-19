@@ -244,252 +244,304 @@ if (clientTrack) {
 })();
 
 
-/* =========================================
-   CRAFTED — FINAL 2-FOLDER COLUMN SCROLL
-========================================= */
-
-(() => {
-  const section = document.querySelector("#work");
-  const viewport = document.querySelector("#work .crafted-viewport");
-  const grid = document.querySelector("#work .crafted-grid");
-
-  if (!section || !viewport || !grid) return;
- 
-  let currentX = 0;
-  let targetX = 0;
-  let animating = false;
-
-  /* One horizontal column = 2 folders */
-  const getStep = () => 325;
-
-  const getMax = () => {
-    return Math.max(
-      0,
-      grid.scrollWidth - viewport.clientWidth
-    );
-  };
-
-  const animate = () => {
-    currentX += (targetX - currentX) * 0.12;
-
-    grid.style.transform =
-      `translate3d(${-currentX}px, 0, 0)`;
-
-    if (Math.abs(targetX - currentX) > 0.5) {
-      animating = true;
-      requestAnimationFrame(animate);
-    } else {
-      currentX = targetX;
-      animating = false;
-    }
-  };
-
-  const move = (direction) => {
-    const max = getMax();
-
-    targetX = Math.max(
-      0,
-      Math.min(
-        max,
-        targetX + (direction * getStep())
-      )
-    );
-
-    if (!animating) {
-      requestAnimationFrame(animate);
-    }
-  };
-
-  const isCraftedActive = () => {
-    const rect = section.getBoundingClientRect();
-
-    return (
-      rect.top <= 10 &&
-      rect.bottom >= window.innerHeight - 10
-    );
-  };
-
-  window.addEventListener(
-    "wheel",
-    (e) => {
-
-      if (!isCraftedActive()) return;
-
-      const max = getMax();
-
-      if (max <= 0) return;
-
-      if (e.deltaY > 0 && targetX < max) {
-        e.preventDefault();
-        move(1);
-        return;
-      }
-
-      if (e.deltaY < 0 && targetX > 0) {
-        e.preventDefault();
-        move(-1);
-      }
-
-    },
-    { passive: false }
-  );
-
-  window.addEventListener("resize", () => {
-
-    const max = getMax();
-
-    targetX = Math.min(targetX, max);
-    currentX = Math.min(currentX, max);
-
-    grid.style.transform =
-      `translate3d(${-currentX}px, 0, 0)`;
-
-  });
-
-})();
-
-
 /* =========================================================
-   CRAFTED — SINGLE ROW, SLOW CONTINUOUS MOTION
-   - One row only.
-   - Folders continuously enter from the right and leave left.
-   - The folder nearest the screen center becomes largest.
-   - Folders shrink toward both edges.
-   - Hover pauses.
-   - Click toggles pause/resume.
-   - No wheel scrolling is used.
+   CRAFTED DESIGNS — FINAL CAROUSEL
+   ONE ROW / SAME SIZE / SLOW RIGHT → LEFT
+   HOVER PAUSE + HOVER BUMP
+   SCROLL SUPPORT
    ========================================================= */
 
 (function () {
+
   const section = document.querySelector('#work');
   if (!section) return;
 
   const viewport = section.querySelector('.crafted-viewport');
   const track = section.querySelector('.crafted-grid');
+
   if (!viewport || !track) return;
 
-  /* Duplicate the original set once for a seamless loop. */
+
+  /* =======================================================
+     CREATE SEAMLESS LOOP
+     ======================================================= */
+
   if (!track.dataset.looped) {
-    const originals = Array.from(track.children);
-    originals.forEach(item => track.appendChild(item.cloneNode(true)));
+
+    const originalFolders =
+      Array.from(track.children);
+
+    originalFolders.forEach(function (folder) {
+      track.appendChild(
+        folder.cloneNode(true)
+      );
+    });
+
     track.dataset.looped = 'true';
   }
+
+
+  /* =======================================================
+     VARIABLES
+     ======================================================= */
 
   let setWidth = 0;
   let offset = 0;
   let lastTime = null;
+
   let paused = false;
+  let clickPaused = false;
+
+
+  /* =======================================================
+     MEASURE
+     ======================================================= */
 
   function measure() {
     setWidth = track.scrollWidth / 2;
   }
 
-  function getCenterScale(folder) {
-    const rect = folder.getBoundingClientRect();
-    const viewportRect = viewport.getBoundingClientRect();
 
-    const folderCenter = rect.left + rect.width / 2;
-    const viewportCenter = viewportRect.left + viewportRect.width / 2;
+  /* =======================================================
+     LOOP POSITION
+     ======================================================= */
 
-    const distance = Math.abs(folderCenter - viewportCenter);
-    const maxDistance = viewportRect.width / 2 + rect.width;
+  function normalize() {
 
-    const t = Math.min(1, distance / maxDistance);
+    if (setWidth <= 0) return;
 
-    const centerScale =
-      parseFloat(
-        getComputedStyle(section)
-          .getPropertyValue('--folder-scale-center')
-      ) || 1.12;
+    if (offset >= setWidth) {
+      offset -= setWidth;
+    }
 
-    const edgeScale =
-      parseFloat(
-        getComputedStyle(section)
-          .getPropertyValue('--folder-scale-edge')
-      ) || 0.72;
-
-    /* Smooth size transition toward the center. */
-    const smooth = t * t * (3 - 2 * t);
-
-    return centerScale + (edgeScale - centerScale) * smooth;
+    if (offset < 0) {
+      offset += setWidth;
+    }
   }
 
-  function updateScales() {
-    const folders = track.querySelectorAll('.crafted-folder');
 
-    folders.forEach(folder => {
-      const icon = folder.querySelector('.folder-icon');
-      if (!icon) return;
+  /* =======================================================
+     MOVE TRACK
+     ======================================================= */
 
-      icon.style.transform =
-        'scale(' + getCenterScale(folder).toFixed(3) + ')';
-    });
+  function moveTrack() {
+
+    track.style.transform =
+      'translate3d(' +
+      (-offset).toFixed(2) +
+      'px, 0, 0)';
   }
 
-  function frame(timestamp) {
-    if (lastTime === null) lastTime = timestamp;
 
-    const dt = (timestamp - lastTime) / 1000;
+  /* =======================================================
+     AUTOMATIC MOTION
+     ======================================================= */
+
+  function animate(timestamp) {
+
+    if (lastTime === null) {
+      lastTime = timestamp;
+    }
+
+    const delta =
+      (timestamp - lastTime) / 1000;
+
     lastTime = timestamp;
 
+
     if (!paused && setWidth > 0) {
+
       const speed =
         parseFloat(
-          getComputedStyle(section).getPropertyValue('--speed')
-        ) || 42;
+          getComputedStyle(section)
+            .getPropertyValue('--speed')
+        ) || 38;
 
-      offset += speed * dt;
+      offset += speed * delta;
 
-      if (offset >= setWidth) {
-        offset -= setWidth;
+      normalize();
+
+      moveTrack();
+    }
+
+
+    requestAnimationFrame(animate);
+  }
+
+
+  /* =======================================================
+     HOVER
+     =======================================================
+
+     Hover pauses the movement.
+
+     Your CSS handles the bump/open/photo-pop.
+     ======================================================= */
+
+  viewport.addEventListener(
+    'mouseenter',
+    function () {
+
+      if (!clickPaused) {
+        paused = true;
       }
 
-      track.style.transform =
-        'translate3d(' + (-offset).toFixed(2) + 'px,0,0)';
     }
+  );
 
-    updateScales();
-    requestAnimationFrame(frame);
-  }
 
-  function pause() {
-    paused = true;
-    section.classList.add('is-paused');
-  }
+  viewport.addEventListener(
+    'mouseleave',
+    function () {
 
-  function resume() {
-    paused = false;
-    section.classList.remove('is-paused');
-  }
+      if (!clickPaused) {
+        paused = false;
+      }
 
-  function togglePause(event) {
-    /* Don't interfere with normal links/navigation. */
-    if (event && event.target.closest('a')) return;
-
-    paused = !paused;
-    section.classList.toggle('is-paused', paused);
-  }
-
-  /* Hover pauses the movement. */
-  viewport.addEventListener('mouseenter', pause);
-  viewport.addEventListener('mouseleave', resume);
-
-  /* Click toggles pause/resume. */
-  viewport.addEventListener('click', togglePause);
-
-  /* Touch support. */
-  viewport.addEventListener('touchstart', pause, { passive: true });
-  viewport.addEventListener('touchend', resume, { passive: true });
-
-  window.addEventListener('load', measure);
-  window.addEventListener('resize', measure);
-
-  section.querySelectorAll('img').forEach(img => {
-    if (!img.complete) {
-      img.addEventListener('load', measure, { once: true });
     }
-  });
+  );
+
+
+  /* =======================================================
+     CLICK = PAUSE / RESUME
+     ======================================================= */
+
+  viewport.addEventListener(
+    'click',
+    function (event) {
+
+      /*
+       Don't interfere with actual folder links.
+      */
+      if (event.target.closest('a')) {
+        return;
+      }
+
+      clickPaused = !clickPaused;
+      paused = clickPaused;
+
+    }
+  );
+
+
+  /* =======================================================
+     SCROLL SUPPORT
+     ======================================================= */
+
+  viewport.addEventListener(
+    'wheel',
+    function (event) {
+
+      if (setWidth <= 0) return;
+
+      if (
+        Math.abs(event.deltaY) >
+        Math.abs(event.deltaX)
+      ) {
+
+        event.preventDefault();
+
+        /*
+         * Scroll down → move left
+         * Scroll up   → move right
+         */
+
+        offset += event.deltaY * 0.8;
+
+        normalize();
+
+        moveTrack();
+      }
+
+    },
+    {
+      passive: false
+    }
+  );
+
+
+  /* =======================================================
+     TOUCH
+     ======================================================= */
+
+  viewport.addEventListener(
+    'touchstart',
+    function () {
+      paused = true;
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  viewport.addEventListener(
+    'touchend',
+    function () {
+
+      if (!clickPaused) {
+        paused = false;
+      }
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  /* =======================================================
+     RESIZE
+     ======================================================= */
+
+  window.addEventListener(
+    'resize',
+    function () {
+
+      measure();
+      normalize();
+      moveTrack();
+
+    }
+  );
+
+
+  /* =======================================================
+     IMAGE LOADING
+     ======================================================= */
+
+  section
+    .querySelectorAll('img')
+    .forEach(function (img) {
+
+      if (!img.complete) {
+
+        img.addEventListener(
+          'load',
+          function () {
+
+            measure();
+            normalize();
+            moveTrack();
+
+          },
+          {
+            once: true
+          }
+        );
+
+      }
+
+    });
+
+
+  /* =======================================================
+     START
+     ======================================================= */
 
   measure();
-  requestAnimationFrame(frame);
+  moveTrack();
+
+  requestAnimationFrame(animate);
+
 })();
