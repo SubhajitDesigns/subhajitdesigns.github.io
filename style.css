@@ -1831,7 +1831,8 @@ body.cursor-active .cursor-glow {
   column-gap: 100px !important;
   row-gap: 40px !important;
 
-  margin: 0 !important;
+  margin-left: auto !important;
+margin-right: auto !important;
   padding: 0 6vw 40px !important;
 
   box-sizing: border-box !important;
