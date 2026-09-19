@@ -1899,7 +1899,7 @@ body.cursor-active .cursor-glow {
   --visible:       3;       /* how many folders on screen at once  */
   --rows:          2;       /* 1 = single row, 2 = two rows        */
   --ease:          0.10;    /* slide smoothing, lower = floatier   */
-  --edge-fade:     55px;    /* width of the fade at each side edge */
+  --edge-fade:     150px;   /* width of the fade at each side edge */
 
   position: relative;
   background: #070101;
@@ -1954,7 +1954,10 @@ body.cursor-active .cursor-glow {
   padding-top: 80px;
   box-sizing: content-box;
 
-  overflow-x: hidden;
+  overflow-x: clip;   /* NOT "hidden" — hidden silently forces the
+                          other axis to scroll too, which is that
+                          unwanted vertical slider you saw. "clip"
+                          doesn't have that side effect. */
   overflow-y: visible;
 
   -webkit-mask-image: linear-gradient(
