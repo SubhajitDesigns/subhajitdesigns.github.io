@@ -350,8 +350,9 @@ if (clientTrack) {
 
 
 /* =========================================================
-   CRAFTED — vertical scroll drives the horizontal slide.
-   Paste at the very bottom of script.js.
+   CRAFTED — one wheel notch = one column, edge to edge.
+   Paste at the very bottom of script.js (replace the old
+   "CRAFTED — vertical scroll drives..." block if present).
    No HTML changes needed — the sticky wrapper is built here.
    ========================================================= */
 
@@ -374,74 +375,87 @@ if (clientTrack) {
 
   const MOBILE = () => window.matchMedia('(max-width: 760px)').matches;
 
-  let maxShift  = 0;
-  let target    = 0;
-  let current   = 0;
-  let ease      = 0.10;
-  let numPages  = 1;   // groups of --visible columns (never shows a cropped folder)
+  let colStep  = 0;   // px per column step (card width + gap)
+  let maxIndex = 0;   // last valid column index
+  let index    = 0;   // current column index
+  let current  = 0;
+  let target   = 0;
+  const EASE   = 0.16;
+  let cooldown = false;
 
   function measure() {
     if (MOBILE()) {
       section.style.height = '';
       track.style.transform = '';
-      maxShift = 0;
-      target = current = 0;
       return;
     }
 
-    ease = parseFloat(
-      getComputedStyle(section).getPropertyValue('--ease')
-    ) || 0.10;
+    const styles  = getComputedStyle(section);
+    const rows    = parseInt(styles.getPropertyValue('--rows'))    || 1;
+    const visible = parseInt(styles.getPropertyValue('--visible')) || 3;
+    const gap     = parseFloat(styles.getPropertyValue('--col-gap')) || 0;
 
-    const rows    = parseInt(getComputedStyle(section).getPropertyValue('--rows')) || 1;
-    const visible = parseInt(getComputedStyle(section).getPropertyValue('--visible')) || 3;
+    /* size the columns so exactly --visible of them fill the
+       viewport's full width — flush to both true edges */
+    const availW = viewport.clientWidth;
+    const colW   = (availW - (visible - 1) * gap) / visible;
+    section.style.setProperty('--card-w', colW + 'px');
+    colStep = colW + gap;
 
     const folders   = track.querySelectorAll('.crafted-folder').length;
     const totalCols = Math.ceil(folders / rows);
-    numPages        = Math.max(1, Math.ceil(totalCols / visible));
+    maxIndex = Math.max(0, totalCols - visible);
 
-    /* how far the track has to travel to reveal the last folder */
-    maxShift = Math.max(0, track.scrollWidth - viewport.clientWidth);
+    index   = Math.min(index, maxIndex);
+    target  = -index * colStep;
+    current = target;
+    track.style.transform = 'translate3d(' + current + 'px,0,0)';
 
-    /* scroll runway = one screen to sit still in + the travel distance */
-    section.style.height = (window.innerHeight + maxShift) + 'px';
-
-    update();
-  }
-
-  function update() {
-    if (MOBILE()) return;
-
-    const runway = section.offsetHeight - window.innerHeight;
-    if (runway <= 0) { target = 0; return; }
-
-    const passed   = -section.getBoundingClientRect().top;
-    const progress = Math.min(1, Math.max(0, passed / runway));
-
-    /* snap to whole pages of --visible columns, so you only ever
-       see complete folders — never one sliced at the edge */
-    const pageIndex = numPages > 1
-      ? Math.round(progress * (numPages - 1))
-      : 0;
-    const pageProgress = numPages > 1 ? pageIndex / (numPages - 1) : 0;
-
-    target = -pageProgress * maxShift;
+    /* just enough runway for the section to stay pinned while
+       you're stepping through it */
+    section.style.height = (window.innerHeight + 220) + 'px';
   }
 
   function frame() {
     if (!MOBILE()) {
-      current += (target - current) * ease;
-      if (Math.abs(target - current) < 0.05) current = target;
+      current += (target - current) * EASE;
+      if (Math.abs(target - current) < 0.4) current = target;
       track.style.transform = 'translate3d(' + current.toFixed(2) + 'px,0,0)';
     }
     requestAnimationFrame(frame);
   }
 
-  window.addEventListener('scroll', update, { passive: true });
+  function inPinZone() {
+    const r = section.getBoundingClientRect();
+    return r.top <= 1 && r.bottom > window.innerHeight;
+  }
+
+  function onWheel(e) {
+    if (MOBILE() || !inPinZone()) return;
+
+    const goingDown = e.deltaY > 0;
+    const atEnd   = goingDown && index >= maxIndex;
+    const atStart = !goingDown && index <= 0;
+
+    /* at either end, hand scrolling back to the normal page */
+    if (atEnd || atStart) return;
+
+    e.preventDefault();
+    if (cooldown) return;
+
+    index  += goingDown ? 1 : -1;
+    index   = Math.max(0, Math.min(maxIndex, index));
+    target  = -index * colStep;
+
+    /* one physical scroll gesture = exactly one column step */
+    cooldown = true;
+    setTimeout(() => { cooldown = false; }, 550);
+  }
+
+  window.addEventListener('wheel', onWheel, { passive: false });
   window.addEventListener('resize', measure);
   window.addEventListener('load', measure);
 
-  /* images change the track width as they load */
   section.querySelectorAll('img').forEach(img => {
     if (!img.complete) img.addEventListener('load', measure, { once: true });
   });
