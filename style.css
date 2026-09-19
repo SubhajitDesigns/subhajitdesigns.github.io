@@ -1781,12 +1781,13 @@ body.cursor-active .cursor-glow {
 #work{
   --card-w:        330px;   /* width of one folder cell            */
   --card-h:        410px;   /* height of one folder cell           */
-  --col-gap:       130px;   /* SIDE GAP between folders            */
-  --row-gap:       70px;    /* gap between rows (only if --rows:2) */
+  --col-gap:       55px;    /* SIDE GAP between folders            */
+  --row-gap:       35px;    /* gap between rows (only if --rows:2) */
   --folder-scale:  1.20;    /* FOLDER SIZE — 1 = original          */
   --visible:       3;       /* how many folders on screen at once  */
   --rows:          2;       /* 1 = single row, 2 = two rows        */
   --ease:          0.10;    /* slide smoothing, lower = floatier   */
+  --edge-fade:     90px;    /* width of the fade at each side edge */
 
   position: relative;
   background: #070101;
@@ -1825,8 +1826,8 @@ body.cursor-active .cursor-glow {
 
 /* ---- WINDOW: shows exactly --visible folders, edge to edge ----
    width is 100% of the section — no centered box, no leftover
-   margin. JS measures this and sets --card-w so the columns fill
-   it exactly, so the outer folders touch the true left/right edge. */
+   margin. Whatever of the next/previous folder peeks in at the
+   very edge is faded out with a mask instead of hard-clipped. */
 #work .crafted-viewport{
   position: relative;
   width: 100%;
@@ -1836,9 +1837,23 @@ body.cursor-active .cursor-glow {
   padding-top: 80px;
   box-sizing: border-box;
 
-  /* clip sideways, stay open vertically */
-  overflow-x: clip;
+  overflow-x: hidden;
   overflow-y: visible;
+
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black var(--edge-fade),
+    black calc(100% - var(--edge-fade)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black var(--edge-fade),
+    black calc(100% - var(--edge-fade)),
+    transparent 100%
+  );
 }
 
 /* ---- THE TRACK THAT SLIDES ---- */
@@ -1926,6 +1941,8 @@ body.cursor-active .cursor-glow {
     width: 100%;
     padding-top: 40px;
     overflow: visible;
+    mask-image: none;
+    -webkit-mask-image: none;
   }
 
   #work .crafted-grid{
