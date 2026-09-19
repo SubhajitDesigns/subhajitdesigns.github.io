@@ -347,3 +347,90 @@ if (clientTrack) {
   });
 
 })();
+
+
+/* =========================================================
+   CRAFTED — vertical scroll drives the horizontal slide.
+   Paste at the very bottom of script.js.
+   No HTML changes needed — the sticky wrapper is built here.
+   ========================================================= */
+
+(function () {
+  const section = document.querySelector('#work');
+  if (!section) return;
+
+  const viewport = section.querySelector('.crafted-viewport');
+  const track    = section.querySelector('.crafted-grid');
+  if (!viewport || !track) return;
+
+  /* --- build the sticky stage around the existing markup --- */
+  let pin = section.querySelector('.crafted-pin');
+  if (!pin) {
+    pin = document.createElement('div');
+    pin.className = 'crafted-pin';
+    while (section.firstChild) pin.appendChild(section.firstChild);
+    section.appendChild(pin);
+  }
+
+  const MOBILE = () => window.matchMedia('(max-width: 760px)').matches;
+
+  let maxShift = 0;
+  let target   = 0;
+  let current  = 0;
+  let ease     = 0.10;
+
+  function measure() {
+    if (MOBILE()) {
+      section.style.height = '';
+      track.style.transform = '';
+      maxShift = 0;
+      target = current = 0;
+      return;
+    }
+
+    ease = parseFloat(
+      getComputedStyle(section).getPropertyValue('--ease')
+    ) || 0.10;
+
+    /* how far the track has to travel to reveal the last folder */
+    maxShift = Math.max(0, track.scrollWidth - viewport.clientWidth);
+
+    /* scroll runway = one screen to sit still in + the travel distance */
+    section.style.height = (window.innerHeight + maxShift) + 'px';
+
+    update();
+  }
+
+  function update() {
+    if (MOBILE()) return;
+
+    const runway = section.offsetHeight - window.innerHeight;
+    if (runway <= 0) { target = 0; return; }
+
+    const passed   = -section.getBoundingClientRect().top;
+    const progress = Math.min(1, Math.max(0, passed / runway));
+
+    target = -progress * maxShift;
+  }
+
+  function frame() {
+    if (!MOBILE()) {
+      current += (target - current) * ease;
+      if (Math.abs(target - current) < 0.05) current = target;
+      track.style.transform = 'translate3d(' + current.toFixed(2) + 'px,0,0)';
+    }
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', measure);
+  window.addEventListener('load', measure);
+
+  /* images change the track width as they load */
+  section.querySelectorAll('img').forEach(img => {
+    if (!img.complete) img.addEventListener('load', measure, { once: true });
+  });
+
+  measure();
+  requestAnimationFrame(frame);
+})();
