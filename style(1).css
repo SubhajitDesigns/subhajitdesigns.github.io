@@ -2350,11 +2350,20 @@ body.cursor-active .cursor-glow {
   margin-top: 0 !important;
 }
 
-/* ---------------------------------------------------------
-   SHORTER BACK LAYER
-   --------------------------------------------------------- */
+/* =========================================================
+   CRAFTED — FINAL BACK FOLDER SIZE
+   ========================================================= */
 
 #work .crafted-folder .folder-back {
+  top: 18px !important;
   height: 125px !important;
-  top: 15px !important;
+}
+
+#work .crafted-folder .folder-front {
+  width: 100% !important;
+}
+
+#work .crafted-folder {
+  width: var(--card-w) !important;
+  min-width: var(--card-w) !important;
 }
