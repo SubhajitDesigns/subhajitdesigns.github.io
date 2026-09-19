@@ -1772,64 +1772,74 @@ body.cursor-active .cursor-glow {
 }
 
 /* =========================================================
-   CRAFTED DESIGNS — FINAL CSS
-   ONE ROW / CONSTANT SIZE / HOVER BUMP ONLY
+   CRAFTED DESIGNS — FINAL
+   ONE ROW / CONSTANT SIZE / HOVER POP ONLY
    ========================================================= */
 
 #work{
   --card-w: 340px;
-  --gap: 45px;
+  --gap: 60px;
   --speed: 38px;
 
   position: relative;
   background: #140505;
 
-  /* Compact section spacing */
-  padding: 45px 0 70px;
+  padding: 45px 0 80px;
 
-  overflow: hidden;
+  /* IMPORTANT: allow popped photos to escape vertically */
+  overflow: visible;
 }
 
 
-/* =========================================================
-   HEADING
-   ========================================================= */
+/* ================= HEADING ================= */
 
 #work .crafted-heading{
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   padding: 0 5vw;
 }
 
+#work .crafted-heading p{
+  margin: 0 0 10px;
+}
 
-/* =========================================================
-   SINGLE ROW VIEWPORT
-   ========================================================= */
+#work .crafted-heading h2{
+  margin: 0;
+  line-height: .9;
+}
+
+#work .crafted-heading div{
+  margin-top: 14px;
+}
+
+
+/* ================= VIEWPORT ================= */
 
 #work .crafted-viewport{
   position: relative;
-
   width: 100%;
 
-  /* Small gap between subtitle and folders */
-  padding-top: 70px;
+  /* Space for photos above the folder */
+  padding-top: 75px;
+  padding-bottom: 90px;
 
-  overflow-x: hidden;
+  /*
+     Clip only horizontally.
+     Photos are allowed to pop vertically.
+  */
+  overflow-x: clip;
   overflow-y: visible;
 }
 
 
-/* =========================================================
-   SINGLE HORIZONTAL ROW
-   ========================================================= */
+/* ================= ONE ROW ================= */
 
 #work .crafted-grid{
   display: flex !important;
-
   flex-direction: row !important;
   flex-wrap: nowrap !important;
 
-  align-items: flex-end;
+  align-items: flex-start;
 
   gap: var(--gap);
 
@@ -1843,33 +1853,35 @@ body.cursor-active .cursor-glow {
 }
 
 
-/* =========================================================
-   FOLDER
-   ========================================================= */
+/* ================= FOLDERS ================= */
 
 #work .crafted-folder{
   flex: 0 0 var(--card-w) !important;
-
   width: var(--card-w) !important;
+  min-width: var(--card-w) !important;
 
-  height: auto;
+  /*
+     Give enough vertical room for:
+     folder + title + description.
+  */
+  min-height: 410px;
 
   position: relative;
 
   text-decoration: none;
   cursor: pointer;
+
+  z-index: 1;
 }
 
 
-/* =========================================================
-   NORMAL FOLDER SIZE
-   =========================================================
-
-   IMPORTANT:
-   The folder NEVER changes size based on position.
-   */
+/* ================= NORMAL FOLDER ================= */
 
 #work .crafted-folder .folder-icon{
+  /*
+     CONSTANT SIZE.
+     This never changes based on position.
+  */
   transform: scale(1.20) !important;
 
   transform-origin: top center;
@@ -1877,26 +1889,32 @@ body.cursor-active .cursor-glow {
   overflow: visible !important;
 
   transition:
-    transform 0.35s cubic-bezier(.2,.8,.2,1);
+    transform .35s cubic-bezier(.2,.8,.2,1);
+
+  z-index: 2;
 }
 
 
-/* =========================================================
-   HOVER — ONLY THE SELECTED FOLDER
-   ========================================================= */
+/* ================= HOVER ================= */
+
+/*
+   ONLY THE FOLDER BEING HOVERED BUMPS UP.
+*/
+
+#work .crafted-folder:hover{
+  z-index: 100;
+}
 
 #work .crafted-folder:hover .folder-icon{
   transform:
-    translateY(-10px)
+    translateY(-12px)
     scale(1.27) !important;
 
   z-index: 100;
 }
 
 
-/* =========================================================
-   PHOTOS
-   ========================================================= */
+/* ================= PHOTOS ================= */
 
 #work .folder-previews{
   overflow: visible !important;
@@ -1907,40 +1925,50 @@ body.cursor-active .cursor-glow {
 }
 
 
-/* =========================================================
-   FOLDER TEXT
-   ========================================================= */
+/* ================= TEXT ================= */
 
 #work .crafted-folder h3{
-  margin-top: 25px;
+  position: relative;
+
+  margin-top: 28px;
+
   text-align: center;
+
+  z-index: 20;
 }
 
 #work .crafted-folder > p{
+  position: relative;
+
   text-align: center;
+
+  z-index: 20;
 }
 
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
+/* ================= MOBILE ================= */
 
 @media (max-width: 760px){
 
   #work{
-    --card-w: 250px;
-    --gap: 30px;
+    --card-w: 260px;
+    --gap: 35px;
     --speed: 28px;
 
     padding: 35px 0 60px;
   }
 
   #work .crafted-heading{
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
 
   #work .crafted-viewport{
-    padding-top: 55px;
+    padding-top: 60px;
+    padding-bottom: 70px;
+  }
+
+  #work .crafted-folder{
+    min-height: 330px;
   }
 
   #work .crafted-folder .folder-icon{
@@ -1949,7 +1977,7 @@ body.cursor-active .cursor-glow {
 
   #work .crafted-folder:hover .folder-icon{
     transform:
-      translateY(-8px)
+      translateY(-9px)
       scale(1.11) !important;
   }
 }
