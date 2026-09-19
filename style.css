@@ -1772,23 +1772,26 @@ body.cursor-active .cursor-glow {
 }
 
 /* =========================================================
-   CRAFTED DESIGNS — 3D FOLDER OPEN
-   SINGLE ROW / AUTO CAROUSEL / REALISTIC HOVER
+   SUBHAJIT — CRAFTED DESIGNS
+   FINAL 2 x 3 FOLDER CAROUSEL
+   REAL 3D FOLDER OPEN + PHOTO POP
    ========================================================= */
 
 #work{
-  --card-w: 340px;
-  --gap: 60px;
-  --speed: 38px;
+  --folder-width: 280px;
+  --folder-height: 250px;
+  --cell-width: 300px;
+  --column-gap: 85px;
+  --row-gap: 34px;
 
-  position: relative;
-  background: #140505;
+  position:relative;
+  background:#070101;
 
-  padding: 45px 0 45px;
+  padding:75px 0 55px;
 
-  overflow: visible;
+  overflow:visible;
 
-  perspective: 1600px;
+  perspective:1600px;
 }
 
 
@@ -1797,28 +1800,54 @@ body.cursor-active .cursor-glow {
    ========================================================= */
 
 #work .crafted-heading{
-  position: relative;
-  z-index: 1000;
+  position:relative;
+  z-index:1000;
 
-  text-align: center;
+  text-align:center;
 
-  margin-bottom: 0;
-  padding: 0 5vw;
+  margin:0 auto 18px;
+  padding:0 20px;
 
-  isolation: isolate;
+  pointer-events:none;
 }
 
 #work .crafted-heading p{
-  margin: 0 0 10px;
+  margin:0 0 10px;
+
+  color:#ff3426;
+
+  font-size:13px;
+  font-weight:700;
+
+  letter-spacing:6px;
 }
 
 #work .crafted-heading h2{
-  margin: 0;
-  line-height: .9;
+  margin:0;
+
+  color:#fff;
+
+  font-family:"Bebas Neue",sans-serif;
+
+  font-size:clamp(65px,8vw,120px);
+
+  line-height:.88;
+
+  letter-spacing:1px;
+}
+
+#work .crafted-heading h2 span{
+  color:#ff3426;
 }
 
 #work .crafted-heading div{
-  margin-top: 12px;
+  margin-top:13px;
+
+  color:#8d8585;
+
+  font-size:12px;
+
+  letter-spacing:6px;
 }
 
 
@@ -1827,134 +1856,260 @@ body.cursor-active .cursor-glow {
    ========================================================= */
 
 #work .crafted-viewport{
-  position: relative;
+  position:relative;
 
-  width: 100%;
+  width:1070px;
+  max-width:calc(100vw - 30px);
 
-  padding-top: 48px;
-  padding-bottom: 10px;
+  margin:0 auto;
 
-  overflow-x: clip;
-  overflow-y: visible;
+  padding-top:58px;
+  padding-bottom:0;
 
-  perspective: 1600px;
+  overflow-x:clip;
+  overflow-y:visible;
+
+  perspective:1600px;
 }
 
 
 /* =========================================================
-   SINGLE ROW
+   6-COLUMN TRACK
+   3 COLUMNS VISIBLE
+   2 ROWS VISIBLE
    ========================================================= */
 
 #work .crafted-grid{
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
 
-  align-items: flex-start;
+  display:grid !important;
 
-  gap: var(--gap);
+  grid-template-columns:
+    repeat(6, var(--cell-width)) !important;
 
-  width: max-content !important;
-  max-width: none !important;
+  grid-template-rows:
+    330px 330px !important;
 
-  margin: 0;
-  padding: 0;
+  grid-auto-flow:initial !important;
 
-  will-change: transform;
+  column-gap:var(--column-gap) !important;
+  row-gap:var(--row-gap) !important;
 
-  transform-style: preserve-3d;
+  width:max-content !important;
+  max-width:none !important;
+
+  margin:0 auto !important;
+  padding:0 !important;
+
+  position:relative;
+
+  transform-style:preserve-3d;
+
+  will-change:transform;
 }
 
 
 /* =========================================================
-   EACH FOLDER
+   EXACT 2 x 3 ORDER
+
+   COLUMN 1
+   Social Media
+   Branding
+
+   COLUMN 2
+   Google Ads
+   Other Designs
+
+   COLUMN 3
+   Product Ads
+   Motion Graphics
+
+   COLUMN 4
+   Flyer Designs
+   Banners
+
+   COLUMN 5
+   Logos
+   Printables
+
+   COLUMN 6
+   Creatives
+   ========================================================= */
+
+#work .crafted-folder:nth-child(1){
+  grid-column:1;
+  grid-row:1;
+}
+
+#work .crafted-folder:nth-child(2){
+  grid-column:2;
+  grid-row:1;
+}
+
+#work .crafted-folder:nth-child(3){
+  grid-column:3;
+  grid-row:1;
+}
+
+#work .crafted-folder:nth-child(4){
+  grid-column:1;
+  grid-row:2;
+}
+
+#work .crafted-folder:nth-child(5){
+  grid-column:2;
+  grid-row:2;
+}
+
+#work .crafted-folder:nth-child(6){
+  grid-column:3;
+  grid-row:2;
+}
+
+#work .crafted-folder:nth-child(7){
+  grid-column:4;
+  grid-row:1;
+}
+
+#work .crafted-folder:nth-child(8){
+  grid-column:4;
+  grid-row:2;
+}
+
+#work .crafted-folder:nth-child(9){
+  grid-column:5;
+  grid-row:1;
+}
+
+#work .crafted-folder:nth-child(10){
+  grid-column:5;
+  grid-row:2;
+}
+
+#work .crafted-folder:nth-child(11){
+  grid-column:6;
+  grid-row:1;
+}
+
+
+/* =========================================================
+   FOLDER ITEM
    ========================================================= */
 
 #work .crafted-folder{
-  flex: 0 0 var(--card-w) !important;
-  width: var(--card-w) !important;
-  min-width: var(--card-w) !important;
 
-  height: 365px;
+  position:relative;
 
-  position: relative;
+  width:var(--cell-width) !important;
+  min-width:var(--cell-width) !important;
 
-  cursor: pointer;
-  text-decoration: none;
+  height:330px !important;
 
-  z-index: 1;
+  display:block;
 
-  perspective: 1400px;
-  transform-style: preserve-3d;
-}
+  text-decoration:none;
 
+  cursor:pointer;
 
-/* =========================================================
-   FOLDER ICON / WHOLE FOLDER
-   ========================================================= */
+  z-index:10;
 
-#work .crafted-folder .folder-icon{
-  position: relative;
+  perspective:1400px;
 
-  width: 280px;
-  height: 250px;
-
-  margin: 0 auto;
-
-  overflow: visible !important;
-
-  transform:
-    translateY(0)
-    scale(1.20);
-
-  transform-origin: center bottom;
-
-  transform-style: preserve-3d;
-
-  z-index: 5;
+  transform-style:preserve-3d;
 
   transition:
-    transform .75s cubic-bezier(.16,.84,.24,1);
+    transform .72s cubic-bezier(.16,.84,.24,1);
+
 }
 
 
 /* =========================================================
-   HOVER — WHOLE FOLDER RISES
+   HOVERED FOLDER
+   ONLY THE HOVERED FOLDER MOVES UP
    ========================================================= */
 
 #work .crafted-folder:hover{
-  z-index: 500;
-}
 
-#work .crafted-folder:hover .folder-icon{
-
-  /*
-     The entire folder rises slightly.
-     Size remains essentially the same.
-  */
   transform:
-    translateY(-22px)
-    scale(1.20);
+    translateY(-16px);
 
-  z-index: 500;
+  z-index:900;
 }
 
 
 /* =========================================================
-   FOLDER BACK / BODY
+   FOLDER ICON
+   ========================================================= */
+
+#work .crafted-folder .folder-icon{
+
+  position:relative;
+
+  width:var(--folder-width);
+  height:var(--folder-height);
+
+  margin:0 auto;
+
+  overflow:visible !important;
+
+  perspective:1200px;
+
+  transform-style:preserve-3d;
+
+  transform:
+    scale(1.08);
+
+  transform-origin:center bottom;
+
+  transition:
+    transform .75s cubic-bezier(.16,.84,.24,1);
+
+  z-index:10;
+}
+
+
+/* Hover bump becomes slightly stronger */
+#work .crafted-folder:hover .folder-icon{
+
+  transform:
+    scale(1.08)
+    translateZ(10px);
+
+  z-index:900;
+}
+
+
+/* =========================================================
+   FOLDER BACK
    ========================================================= */
 
 #work .crafted-folder .folder-back{
 
-  transform-origin:
-    center bottom;
+  position:absolute;
 
-  transform-style: preserve-3d;
+  left:8px;
+  top:48px;
 
-  transition:
-    transform .75s cubic-bezier(.16,.84,.24,1);
+  width:264px;
+  height:202px;
 
-  z-index: 2;
+  border-radius:
+    14px 18px 18px 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ff4b3f 0%,
+      #f12620 48%,
+      #d91412 100%
+    );
+
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.25),
+    0 20px 32px rgba(0,0,0,.48);
+
+  transform-style:preserve-3d;
+
+  z-index:5;
 }
 
 
@@ -1962,12 +2117,30 @@ body.cursor-active .cursor-glow {
    FOLDER TAB
    ========================================================= */
 
-#work .crafted-folder .folder-tab{
+#work .crafted-folder .folder-back::before{
 
-  transform-style: preserve-3d;
+  content:"";
 
-  transition:
-    transform .75s cubic-bezier(.16,.84,.24,1);
+  position:absolute;
+
+  left:0;
+  top:-30px;
+
+  width:105px;
+  height:38px;
+
+  border-radius:
+    13px 14px 0 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ff4c40,
+      #e91f1a
+    );
+
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.25);
 }
 
 
@@ -1977,26 +2150,30 @@ body.cursor-active .cursor-glow {
 
 #work .crafted-folder .folder-previews{
 
-  position: absolute;
+  position:absolute;
 
-  left: 8px;
-  top: 0;
+  left:8px;
+  top:0;
 
-  width: 264px;
-  height: 180px;
+  width:264px;
+  height:180px;
 
-  overflow: visible !important;
+  overflow:visible !important;
+
+  pointer-events:none;
 
   transform:
-    translateY(18px)
-    translateZ(20px);
+    translateY(10px)
+    translateZ(30px);
 
-  transform-style: preserve-3d;
+  transform-style:preserve-3d;
 
-  z-index: 20;
+  z-index:30;
 
   transition:
-    transform .8s cubic-bezier(.16,.84,.24,1);
+    transform
+      1s
+      cubic-bezier(.16,.84,.24,1);
 }
 
 
@@ -2006,105 +2183,250 @@ body.cursor-active .cursor-glow {
 
 #work .crafted-folder .folder-previews img{
 
-  object-fit: contain !important;
+  position:absolute;
 
-  transform-origin: center bottom;
+  width:112px !important;
+  height:112px !important;
 
-  backface-visibility: visible;
+  object-fit:contain !important;
+
+  box-sizing:border-box;
+
+  padding:4px;
+
+  background:#fff;
+
+  border-radius:8px;
+
+  box-shadow:
+    0 12px 24px rgba(0,0,0,.42);
+
+  transform-style:preserve-3d;
+
+  backface-visibility:visible;
+
+  will-change:
+    transform,
+    left,
+    top;
 
   transition:
-    transform .8s cubic-bezier(.16,.84,.24,1),
-    filter .8s ease;
+    transform
+      1s
+      cubic-bezier(.16,.84,.24,1),
 
+    left
+      1s
+      cubic-bezier(.16,.84,.24,1),
+
+    top
+      1s
+      cubic-bezier(.16,.84,.24,1),
+
+    box-shadow
+      .8s ease;
 }
 
 
 /* =========================================================
-   HOVER — PHOTOS COME OUT OF THE FOLDER
+   NORMAL PHOTO POSITIONS
+   PHOTOS ARE TUCKED INSIDE THE FOLDER
+   ========================================================= */
+
+#work .folder-previews img:nth-child(1){
+
+  left:-2px;
+  top:28px;
+
+  transform:
+    rotate(-9deg);
+}
+
+#work .folder-previews img:nth-child(2){
+
+  left:51px;
+  top:4px;
+
+  transform:
+    rotate(-3deg);
+}
+
+#work .folder-previews img:nth-child(3){
+
+  left:104px;
+  top:4px;
+
+  transform:
+    rotate(3deg);
+}
+
+#work .folder-previews img:nth-child(4){
+
+  left:157px;
+  top:28px;
+
+  transform:
+    rotate(9deg);
+}
+
+
+/* =========================================================
+   HOVER — PHOTOS POP OUT
+   NOT TOO HIGH
+   NOT INTO THE HEADLINE
    ========================================================= */
 
 #work .crafted-folder:hover .folder-previews{
 
-  /*
-     Photos come UP and slightly FORWARD,
-     but remain connected to the folder.
-  */
   transform:
-    translateY(-58px)
-    translateZ(55px);
+    translateY(-34px)
+    translateZ(72px);
 
-  z-index: 350;
+  z-index:950;
+}
+
+
+/* LEFT PHOTO */
+
+#work .crafted-folder:hover
+.folder-previews img:nth-child(1){
+
+  left:-6px;
+
+  top:20px;
+
+  transform:
+    translateZ(28px)
+    rotate(-10deg)
+    scale(1.05);
+
+  box-shadow:
+    0 20px 30px rgba(0,0,0,.48);
+}
+
+
+/* SECOND PHOTO */
+
+#work .crafted-folder:hover
+.folder-previews img:nth-child(2){
+
+  left:49px;
+
+  top:-2px;
+
+  transform:
+    translateZ(40px)
+    rotate(-3deg)
+    scale(1.05);
+
+  box-shadow:
+    0 20px 30px rgba(0,0,0,.48);
+}
+
+
+/* THIRD PHOTO */
+
+#work .crafted-folder:hover
+.folder-previews img:nth-child(3){
+
+  left:104px;
+
+  top:-2px;
+
+  transform:
+    translateZ(50px)
+    rotate(3deg)
+    scale(1.05);
+
+  box-shadow:
+    0 20px 30px rgba(0,0,0,.48);
+}
+
+
+/* RIGHT PHOTO */
+
+#work .crafted-folder:hover
+.folder-previews img:nth-child(4){
+
+  left:159px;
+
+  top:20px;
+
+  transform:
+    translateZ(28px)
+    rotate(10deg)
+    scale(1.05);
+
+  box-shadow:
+    0 20px 30px rgba(0,0,0,.48);
 }
 
 
 /* =========================================================
-   INDIVIDUAL PHOTO POP
-   ========================================================= */
-
-#work .crafted-folder:hover .folder-previews img{
-
-  filter:
-    drop-shadow(0 18px 24px rgba(0,0,0,.42));
-
-}
-
-
-/* =========================================================
-   FRONT FLAP — CLOSED
+   FRONT FLAP
    ========================================================= */
 
 #work .crafted-folder .folder-front{
 
-  position: relative;
+  position:absolute;
+
+  left:0;
+  bottom:0;
+
+  width:280px;
+  height:145px;
+
+  border-radius:15px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ff463b 0%,
+      #f12620 55%,
+      #df1815 100%
+    );
+
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.22),
+    0 20px 34px rgba(0,0,0,.48);
 
   transform-origin:
-    center bottom;
+    50% 100%;
 
-  transform-style: preserve-3d;
+  transform-style:preserve-3d;
 
-  backface-visibility: visible;
+  backface-visibility:visible;
 
-  z-index: 40;
+  z-index:50;
 
   transition:
-    transform .8s cubic-bezier(.16,.84,.24,1),
-    filter .8s ease;
+    transform
+      1s
+      cubic-bezier(.16,.84,.24,1),
 
+    box-shadow
+      1s ease;
 }
 
 
 /* =========================================================
-   FRONT FLAP — REAL 3D OPEN
-   =========================================================
-
-   The front panel rotates forward/downward,
-   creating the appearance of a real folder opening.
-   */
+   REAL FOLDER OPEN
+   SIDE-PERSPECTIVE 3D FLAP
+   ========================================================= */
 
 #work .crafted-folder:hover .folder-front{
 
   transform:
-    perspective(900px)
-    rotateX(-48deg)
-    translateY(20px)
-    translateZ(8px);
+    rotateX(-52deg)
+    rotateY(-8deg)
+    translateY(7px)
+    translateZ(12px);
 
-  filter:
-    drop-shadow(0 18px 20px rgba(0,0,0,.30));
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.20),
+    0 30px 45px rgba(0,0,0,.35);
 
-  z-index: 45;
-}
-
-
-/* =========================================================
-   EXTRA SIDE DEPTH
-   ========================================================= */
-
-#work .crafted-folder .folder-back,
-#work .crafted-folder .folder-front{
-
-  backface-visibility: visible;
-
+  z-index:25;
 }
 
 
@@ -2114,52 +2436,151 @@ body.cursor-active .cursor-glow {
 
 #work .crafted-folder h3{
 
-  position: relative;
+  position:relative;
 
-  margin: 10px 0 0;
+  margin:
+    5px 0 5px;
 
-  text-align: center;
+  padding:0;
 
-  z-index: 600;
+  color:#fff;
 
+  font-family:"DM Sans",sans-serif;
+
+  font-size:21px;
+
+  font-weight:700;
+
+  line-height:1.1;
+
+  text-align:center;
+
+  z-index:700;
+
+  transition:
+    transform .72s cubic-bezier(.16,.84,.24,1);
 }
 
 #work .crafted-folder > p{
 
-  position: relative;
+  position:relative;
 
-  margin: 7px 0 0;
+  margin:
+    0;
 
-  text-align: center;
+  padding:0;
 
-  z-index: 600;
+  color:#8d8585;
 
+  font-size:11px;
+
+  letter-spacing:2.8px;
+
+  line-height:1.3;
+
+  text-align:center;
+
+  z-index:700;
 }
 
 
 /* =========================================================
-   HEADING ALWAYS ABOVE THE CAROUSEL
+   TEXT ALSO MOVES SLIGHTLY WITH THE HOVERED FOLDER
    ========================================================= */
 
-#work .crafted-heading,
-#work .crafted-heading *{
-
-  position: relative;
-
-  z-index: 1000;
-
+#work .crafted-folder:hover h3{
+  transform:translateY(-2px);
 }
 
 
 /* =========================================================
-   COMING SOON
+   COMING SOON FOLDERS
    ========================================================= */
 
-#work .coming-soon,
-#work .folder-coming-soon{
+#work .motion-coming-soon{
 
-  z-index: 600;
+  position:relative;
 
+  cursor:pointer;
+}
+
+#work .motion-coming-soon .coming-soon-text{
+
+  position:absolute;
+
+  left:50%;
+  top:47%;
+
+  transform:
+    translate(-50%,-50%)
+    scale(.88);
+
+  z-index:100;
+
+  padding:
+    11px 20px;
+
+  border-radius:999px;
+
+  background:#ff3426;
+
+  border:
+    1px solid rgba(255,255,255,.25);
+
+  color:#fff;
+
+  font-family:"DM Sans",Arial,sans-serif;
+
+  font-size:13px;
+
+  font-weight:700;
+
+  letter-spacing:1.5px;
+
+  white-space:nowrap;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:
+    opacity .4s ease,
+    transform .55s cubic-bezier(.16,.84,.24,1);
+
+  box-shadow:
+    0 12px 25px rgba(0,0,0,.4);
+}
+
+#work .motion-coming-soon:hover
+.coming-soon-text{
+
+  opacity:1;
+
+  transform:
+    translate(-50%,-50%)
+    scale(1);
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media(max-width:1150px){
+
+  #work{
+    --cell-width:270px;
+    --column-gap:55px;
+  }
+
+  #work .crafted-viewport{
+    width:920px;
+  }
+
+  #work .crafted-folder{
+    width:270px !important;
+    min-width:270px !important;
+  }
 }
 
 
@@ -2167,47 +2588,100 @@ body.cursor-active .cursor-glow {
    MOBILE
    ========================================================= */
 
-@media (max-width:760px){
+@media(max-width:760px){
 
   #work{
-    --card-w: 260px;
-    --gap: 35px;
-    --speed: 28px;
 
-    padding: 35px 0 35px;
+    padding:
+      55px 0 50px;
+
+    --cell-width:240px;
+    --column-gap:30px;
+    --row-gap:25px;
+  }
+
+  #work .crafted-heading{
+    margin-bottom:10px;
+  }
+
+  #work .crafted-heading h2{
+    font-size:
+      clamp(48px,13vw,78px);
+  }
+
+  #work .crafted-heading p{
+    font-size:10px;
+    letter-spacing:4px;
+  }
+
+  #work .crafted-heading div{
+    font-size:9px;
+    letter-spacing:4px;
   }
 
   #work .crafted-viewport{
-    padding-top: 35px;
+
+    width:
+      calc(
+        2 * var(--cell-width)
+        + var(--column-gap)
+      );
+
+    max-width:
+      calc(100vw - 20px);
+
+    padding-top:40px;
+  }
+
+  #work .crafted-grid{
+
+    grid-template-columns:
+      repeat(6,var(--cell-width)) !important;
+
+    grid-template-rows:
+      285px 285px !important;
+
+    column-gap:
+      var(--column-gap) !important;
+
+    row-gap:
+      var(--row-gap) !important;
   }
 
   #work .crafted-folder{
-    height: 310px;
+
+    height:285px !important;
+
+    width:var(--cell-width) !important;
+    min-width:var(--cell-width) !important;
   }
 
   #work .crafted-folder .folder-icon{
+
     transform:
-      translateY(0)
-      scale(1.05);
+      scale(.90);
   }
 
   #work .crafted-folder:hover .folder-icon{
+
     transform:
-      translateY(-14px)
-      scale(1.05);
+      scale(.90)
+      translateZ(8px);
   }
 
   #work .crafted-folder:hover .folder-previews{
+
     transform:
-      translateY(-42px)
-      translateZ(35px);
+      translateY(-28px)
+      translateZ(50px);
   }
 
-  #work .crafted-folder:hover .folder-front{
-    transform:
-      perspective(700px)
-      rotateX(-42deg)
-      translateY(14px);
+  #work .crafted-folder h3{
+    font-size:18px;
   }
 
+  #work .crafted-folder > p{
+    font-size:9px;
+    letter-spacing:2px;
+  }
 }
