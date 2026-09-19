@@ -392,17 +392,13 @@ if (clientTrack) {
 
     const styles  = getComputedStyle(section);
     const rows    = parseInt(styles.getPropertyValue('--rows'))    || 1;
-    const visible = parseInt(styles.getPropertyValue('--visible')) || 3;
     const gap     = parseFloat(styles.getPropertyValue('--col-gap')) || 0;
+    const cardW   = parseFloat(styles.getPropertyValue('--card-w'))  || 330;
 
-    /* size the columns so exactly --visible of them fill the
-       viewport's full width — flush to both true edges */
-    const availW = viewport.clientWidth;
-    const colW   = (availW - (visible - 1) * gap) / visible;
-    section.style.setProperty('--card-w', colW + 'px');
-    colStep = colW + gap;
+    colStep = cardW + gap;
 
     const folders   = track.querySelectorAll('.crafted-folder').length;
+    const visible   = parseInt(styles.getPropertyValue('--visible')) || 3;
     const totalCols = Math.ceil(folders / rows);
     maxIndex = Math.max(0, totalCols - visible);
 
