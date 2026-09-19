@@ -2377,3 +2377,9 @@ body.cursor-active .cursor-glow {
   width: var(--card-w) !important;
   min-width: var(--card-w) !important;
 }
+
+/* Crafted — increase gap below folder */
+#work .crafted-folder .folder-title,
+#work .crafted-folder .crafted-title {
+  margin-top: 12px !important;
+}
