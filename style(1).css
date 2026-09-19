@@ -2435,3 +2435,172 @@ body.cursor-active .cursor-glow {
     0 22px 40px rgba(0,0,0,.44),
     inset 0 1px 0 rgba(255,255,255,.2) !important;
 }
+
+
+/* =========================================================
+   CRAFTED — FINAL SMALL TWEAKS
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1. FRONT LAYER
+   Keep the exact height/position.
+   Only make the UPPER portion slightly wider.
+   --------------------------------------------------------- */
+
+#work .crafted-folder .folder-front {
+  position: absolute !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 190px !important;
+  z-index: 10 !important;
+}
+
+/* Slightly wider upper section — lower part stays unchanged */
+#work .crafted-folder .folder-front::before {
+  content: "" !important;
+  position: absolute !important;
+  left: -6px !important;
+  top: 0 !important;
+  width: calc(100% + 12px) !important;
+  height: 48px !important;
+
+  background: inherit !important;
+
+  border-radius: 16px 18px 10px 10px !important;
+
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+
+/* ---------------------------------------------------------
+   2. PHOTOS — POP OUT MORE ON HOVER
+   --------------------------------------------------------- */
+
+#work .crafted-folder .folder-previews img {
+  transition:
+    top .75s cubic-bezier(.16,.84,.24,1),
+    transform .75s cubic-bezier(.16,.84,.24,1),
+    box-shadow .75s cubic-bezier(.16,.84,.24,1) !important;
+}
+
+/* Closed position */
+#work .crafted-folder .folder-previews img:nth-child(1) {
+  top: 50px !important;
+  transform: rotate(-8deg) scale(.90) !important;
+}
+
+#work .crafted-folder .folder-previews img:nth-child(2) {
+  top: 38px !important;
+  transform: rotate(-3deg) scale(.90) !important;
+}
+
+#work .crafted-folder .folder-previews img:nth-child(3) {
+  top: 38px !important;
+  transform: rotate(3deg) scale(.90) !important;
+}
+
+#work .crafted-folder .folder-previews img:nth-child(4) {
+  top: 50px !important;
+  transform: rotate(8deg) scale(.90) !important;
+}
+
+/* Hover — photos rise clearly out of the folder */
+#work .crafted-folder:hover .folder-previews img:nth-child(1) {
+  top: 12px !important;
+  transform: rotate(-8deg) translateY(-22px) scale(1.03) !important;
+  box-shadow: 0 14px 26px rgba(0,0,0,.38) !important;
+}
+
+#work .crafted-folder:hover .folder-previews img:nth-child(2) {
+  top: -4px !important;
+  transform: rotate(-3deg) translateY(-22px) scale(1.03) !important;
+  box-shadow: 0 14px 26px rgba(0,0,0,.38) !important;
+}
+
+#work .crafted-folder:hover .folder-previews img:nth-child(3) {
+  top: -4px !important;
+  transform: rotate(3deg) translateY(-22px) scale(1.03) !important;
+  box-shadow: 0 14px 26px rgba(0,0,0,.38) !important;
+}
+
+#work .crafted-folder:hover .folder-previews img:nth-child(4) {
+  top: 12px !important;
+  transform: rotate(8deg) translateY(-22px) scale(1.03) !important;
+  box-shadow: 0 14px 26px rgba(0,0,0,.38) !important;
+}
+
+
+/* ---------------------------------------------------------
+   3. TITLE + SUBTITLE
+   More gap below folder.
+   NEVER moves during hover.
+   --------------------------------------------------------- */
+
+#work .crafted-folder {
+  padding-bottom: 50px !important;
+}
+
+#work .crafted-folder .crafted-folder-info,
+#work .crafted-folder .folder-title,
+#work .crafted-folder .folder-subtitle,
+#work .crafted-folder .crafted-title {
+  transform: none !important;
+  transition: none !important;
+}
+
+/* Increase the gap below the folder */
+#work .crafted-folder .folder-title,
+#work .crafted-folder .crafted-title {
+  margin-top: 38px !important;
+}
+
+#work .crafted-folder .folder-subtitle {
+  margin-top: 4px !important;
+}
+
+/* Absolutely prevent hover from moving the text */
+#work .crafted-folder:hover .crafted-folder-info,
+#work .crafted-folder:hover .folder-title,
+#work .crafted-folder:hover .folder-subtitle,
+#work .crafted-folder:hover .crafted-title {
+  transform: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   4. COMING SOON
+   Hidden normally → pops up on hover.
+   --------------------------------------------------------- */
+
+#work .motion-coming-soon .coming-soon-text {
+  position: absolute !important;
+  left: 50% !important;
+  top: 42% !important;
+
+  z-index: 100 !important;
+
+  opacity: 0 !important;
+
+  transform:
+    translate(-50%,-50%)
+    translateY(12px)
+    scale(.82) !important;
+
+  transition:
+    opacity .4s ease,
+    transform .5s cubic-bezier(.16,.84,.24,1) !important;
+
+  pointer-events: none !important;
+}
+
+/* POP UP on hover */
+#work .motion-coming-soon:hover .coming-soon-text {
+  opacity: 1 !important;
+
+  transform:
+    translate(-50%,-50%)
+    translateY(-8px)
+    scale(1) !important;
+}
