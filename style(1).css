@@ -2361,7 +2361,7 @@ body.cursor-active .cursor-glow {
 /* Rear folder layer */
 #work .crafted-folder .folder-back {
   top: 18px !important;
-  height: 140px !important;
+  height: 145px !important;
 }
 
 /* Keep the front panel in the same position */
