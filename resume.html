@@ -1,1 +1,113 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Subhajit Das — Resume</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: #080808;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      padding: 30px 20px 50px;
+    }
+
+    .resume-page {
+      width: min(900px, 100%);
+      margin: 0 auto;
+    }
+
+    .resume-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 18px;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      background: #ff3028;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .download-btn:hover {
+      background: #ff4b44;
+      transform: translateY(-2px);
+    }
+
+    .resume-viewer {
+      width: 100%;
+      height: 1200px;
+      border: 0;
+      border-radius: 10px;
+      background: #fff;
+      display: block;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 15px 10px 30px;
+      }
+
+      .resume-toolbar {
+        justify-content: center;
+      }
+
+      .resume-viewer {
+        height: 850px;
+        border-radius: 6px;
+      }
+
+      .download-btn {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="resume-page">
+
+    <div class="resume-toolbar">
+      <a
+        class="download-btn"
+        href="Resume.pdf"
+        download="Subhajit-Das-Resume.pdf"
+      >
+        ↓ Download Resume
+      </a>
+    </div>
+
+    <iframe
+      class="resume-viewer"
+      src="Resume.pdf"
+      title="Subhajit Das Resume">
+    </iframe>
+
+  </main>
+
+</body>
+</html>
