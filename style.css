@@ -1785,7 +1785,7 @@ body.cursor-active .cursor-glow {
   --row-gap:       70px;    /* gap between rows (only if --rows:2) */
   --folder-scale:  1.20;    /* FOLDER SIZE — 1 = original          */
   --visible:       3;       /* how many folders on screen at once  */
-  --rows:          1;       /* 1 = single row, 2 = two rows        */
+  --rows:          2;       /* 1 = single row, 2 = two rows        */
   --ease:          0.10;    /* slide smoothing, lower = floatier   */
 
   position: relative;
