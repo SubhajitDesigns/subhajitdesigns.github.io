@@ -2383,3 +2383,23 @@ body.cursor-active .cursor-glow {
 #work .crafted-folder .crafted-title {
   margin-top: 12px !important;
 }
+
+#work .crafted-folder .folder-front {
+  height: 120px !important;
+}
+
+#work .crafted-folder:hover .folder-front {
+  height: 115px !important;
+}
+
+#work .crafted-folder .folder-previews img {
+  width: 110px !important;
+  height: 110px !important;
+}
+
+#work .crafted-folder .folder-title,
+#work .crafted-folder .crafted-title {
+  margin-top: 28px !important;
+  position: relative !important;
+  z-index: 30 !important;
+}
