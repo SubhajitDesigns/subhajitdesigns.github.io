@@ -246,337 +246,116 @@ if (clientTrack) {
 
 /* =========================================================
    SUBHAJIT — CRAFTED DESIGNS
-   FINAL 2 x 3 HORIZONTAL COLUMN SLIDER
-
-   3 columns visible
-   2 rows visible
-
-   Scroll DOWN:
-   Column 1 leaves
-   Column 4 enters
-
-   Scroll DOWN again:
-   Column 2 leaves
-   Column 5 enters
-
-   Scroll DOWN again:
-   Column 3 leaves
-   Column 6 enters
-
-   After the final position, normal page scrolling resumes.
+   CONTINUOUS RIGHT → LEFT INFINITE MARQUEE
    ========================================================= */
 
 (() => {
 
-  const section =
-    document.querySelector("#work");
+  const section = document.querySelector("#work");
+  const grid = section?.querySelector(".crafted-grid");
 
-  const viewport =
-    section?.querySelector(".crafted-viewport");
+  if (!section || !grid) return;
 
-  const grid =
-    section?.querySelector(".crafted-grid");
+  /*
+     Keep the original folders.
+     We duplicate them once so the marquee
+     can loop seamlessly.
+  */
 
-  if (!section || !viewport || !grid) {
-    return;
+  const originalFolders = Array.from(
+    grid.querySelectorAll(".crafted-folder")
+  );
+
+  if (!originalFolders.length) return;
+
+  originalFolders.forEach(folder => {
+    grid.appendChild(folder.cloneNode(true));
+  });
+
+  let position = 0;
+  let loopWidth = 0;
+  let lastTime = performance.now();
+
+  /*
+     Speed in pixels per second.
+     Lower = slower
+     Higher = faster
+  */
+
+  const SPEED = 35;
+
+
+  /* ---------------------------------------------------------
+     CALCULATE THE WIDTH OF ONE COMPLETE SET
+     --------------------------------------------------------- */
+
+  function calculateLoopWidth() {
+
+    const firstOriginal = grid.children[0];
+    const firstClone = grid.children[originalFolders.length];
+
+    if (!firstOriginal || !firstClone) return;
+
+    loopWidth =
+      firstClone.getBoundingClientRect().left -
+      firstOriginal.getBoundingClientRect().left;
+
   }
 
 
   /* ---------------------------------------------------------
-     SETTINGS
+     INFINITE MARQUEE
      --------------------------------------------------------- */
 
-  const COLUMN_STEP = 385;
+  function animate(time) {
 
-  /*
-     300px folder cell
-     + 85px horizontal gap
-     = 385px
-  */
+    const deltaTime =
+      Math.min((time - lastTime) / 1000, 0.05);
 
-  const MAX_STEPS = 3;
+    lastTime = time;
 
-  /*
-     0 = columns 1,2,3
-     1 = columns 2,3,4
-     2 = columns 3,4,5
-     3 = columns 4,5,6
-  */
+    position += SPEED * deltaTime;
 
+    /*
+       When the first complete set has moved away,
+       jump back by exactly one set width.
 
-  let currentX = 0;
-  let targetX = 0;
+       Because the duplicated folders are identical,
+       this jump is invisible.
+    */
 
-  let animationFrame = null;
-
-  let wheelLocked = false;
-
-  let unlockTimer = null;
-
-
-  /* ---------------------------------------------------------
-     CALCULATE MAXIMUM MOVEMENT
-     --------------------------------------------------------- */
-
-  function getMaxX() {
-
-    const max =
-      grid.scrollWidth -
-      viewport.clientWidth;
-
-    return Math.max(0, max);
-  }
-
-
-  /* ---------------------------------------------------------
-     SMOOTH TRACK ANIMATION
-     --------------------------------------------------------- */
-
-  function animate() {
-
-    const difference =
-      targetX - currentX;
-
-    currentX +=
-      difference * 0.10;
-
-    if (Math.abs(difference) < 0.5) {
-
-      currentX = targetX;
-
-      animationFrame = null;
-
-      return;
+    if (loopWidth > 0 && position >= loopWidth) {
+      position -= loopWidth;
     }
 
     grid.style.transform =
-      `translate3d(${-currentX}px,0,0)`;
+      `translate3d(${-position}px, 0, 0)`;
 
-    animationFrame =
-      requestAnimationFrame(animate);
-  }
-
-
-  function startAnimation() {
-
-    if (animationFrame !== null) {
-      return;
-    }
-
-    animationFrame =
-      requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
   }
 
 
   /* ---------------------------------------------------------
-     DETERMINE CURRENT COLUMN
+     START
      --------------------------------------------------------- */
 
-  function getCurrentStep() {
-
-    return Math.round(
-      targetX / COLUMN_STEP
-    );
-  }
-
-
-  /* ---------------------------------------------------------
-     MOVE ONE COLUMN
-     --------------------------------------------------------- */
-
-  function moveColumn(direction) {
-
-    const currentStep =
-      getCurrentStep();
-
-    let nextStep =
-      currentStep + direction;
-
-
-    nextStep =
-      Math.max(
-        0,
-        Math.min(
-          MAX_STEPS,
-          nextStep
-        )
-      );
-
-
-    if (nextStep === currentStep) {
-
-      /*
-         We are already at the beginning
-         or end.
-
-         Returning false tells the wheel
-         handler that normal page scrolling
-         should continue.
-      */
-
-      return false;
-    }
-
-
-    targetX =
-      nextStep * COLUMN_STEP;
-
-
-    const maxX =
-      getMaxX();
-
-
-    targetX =
-      Math.min(
-        targetX,
-        maxX
-      );
-
-
-    startAnimation();
-
-
-    return true;
-  }
-
-
-  /* ---------------------------------------------------------
-     CRAFTED SECTION ACTIVE CHECK
-     --------------------------------------------------------- */
-
-  function isCraftedActive() {
-
-    const rect =
-      section.getBoundingClientRect();
-
-
-    /*
-       Only take control when the Crafted
-       section is occupying the viewport.
-    */
-
-    return (
-      rect.top <= 5 &&
-      rect.bottom >=
-        window.innerHeight - 5
-    );
-  }
-
-
-  /* ---------------------------------------------------------
-     WHEEL CONTROL
-     --------------------------------------------------------- */
-
-  window.addEventListener(
-    "wheel",
-    (event) => {
-
-      if (!isCraftedActive()) {
-        return;
-      }
-
-
-      /*
-         Don't allow the browser to fire
-         many column movements from one
-         physical wheel gesture.
-      */
-
-      if (wheelLocked) {
-        return;
-      }
-
-
-      const direction =
-        event.deltaY > 0
-          ? 1
-          : event.deltaY < 0
-            ? -1
-            : 0;
-
-
-      if (!direction) {
-        return;
-      }
-
-
-      const moved =
-        moveColumn(direction);
-
-
-      /*
-         IMPORTANT:
-
-         Only stop the page when the folder
-         carousel actually has another
-         column to show.
-
-         Once we reach the beginning/end,
-         normal page scrolling works again.
-      */
-
-      if (moved) {
-
-        event.preventDefault();
-
-        wheelLocked = true;
-
-
-        clearTimeout(
-          unlockTimer
-        );
-
-
-        unlockTimer =
-          setTimeout(() => {
-
-            wheelLocked = false;
-
-          }, 650);
-      }
-
-    },
-    {
-      passive:false
-    }
-  );
-
-
-  /* ---------------------------------------------------------
-     RESIZE
-     --------------------------------------------------------- */
-
-  window.addEventListener(
-    "resize",
-    () => {
-
-      const maxX =
-        getMaxX();
-
-      targetX =
-        Math.min(
-          targetX,
-          maxX
-        );
-
-      currentX =
-        Math.min(
-          currentX,
-          maxX
-        );
-
-
-      grid.style.transform =
-        `translate3d(${-currentX}px,0,0)`;
-    }
-  );
-
-
-  /* ---------------------------------------------------------
-     INITIAL POSITION
-     --------------------------------------------------------- */
+  calculateLoopWidth();
 
   grid.style.transform =
-    "translate3d(0,0,0)";
+    "translate3d(0, 0, 0)";
+
+  requestAnimationFrame(animate);
+
+
+  /* ---------------------------------------------------------
+     RECALCULATE AFTER RESIZE
+     --------------------------------------------------------- */
+
+  window.addEventListener("resize", () => {
+
+    calculateLoopWidth();
+
+  });
+
 
 })();
