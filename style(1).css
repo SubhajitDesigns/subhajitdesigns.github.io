@@ -2039,135 +2039,292 @@ body.cursor-active .cursor-glow {
 
 
 /* =========================================================
-   CRAFTED — FINAL NATURAL PHOTO POP
+   CRAFTED — FOLDER OPEN ANIMATION
+   Reference-style: flap opens → photos rise → smooth close
    ========================================================= */
 
-/* Folder stays exactly the same */
+/* ---------------------------------------------------------
+   FOLDER BASE
+   --------------------------------------------------------- */
+
 #work .crafted-folder .folder-icon {
-  transform: none !important;
+  position: relative !important;
   overflow: visible !important;
+  transform: none !important;
   transform-style: preserve-3d !important;
 }
 
-/* Photos stay inside the folder */
+
+/* ---------------------------------------------------------
+   DARKER BACK OF FOLDER
+   --------------------------------------------------------- */
+
+#work .crafted-folder .folder-back {
+  left: 5% !important;
+  top: 18px !important;
+  width: 90% !important;
+  height: 165px !important;
+
+  z-index: 2 !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #e52b25 0%,
+      #a91514 100%
+    ) !important;
+
+  box-shadow:
+    0 22px 45px rgba(0,0,0,.42),
+    inset 0 1px 0 rgba(255,255,255,.16) !important;
+
+  transition:
+    filter .75s cubic-bezier(.16,.84,.24,1),
+    box-shadow .75s cubic-bezier(.16,.84,.24,1) !important;
+}
+
+
+/* Dark inner area becomes more visible when opening */
+#work .crafted-folder:hover .folder-back {
+  filter: brightness(.78) saturate(.95) !important;
+
+  box-shadow:
+    0 25px 48px rgba(0,0,0,.48),
+    inset 0 1px 0 rgba(255,255,255,.12) !important;
+}
+
+
+/* ---------------------------------------------------------
+   PHOTOS
+   --------------------------------------------------------- */
+
 #work .crafted-folder .folder-previews {
   position: absolute !important;
+
   left: 8px !important;
   top: 25px !important;
+
   width: 264px !important;
   height: 160px !important;
+
   overflow: visible !important;
+
   z-index: 5 !important;
   pointer-events: none !important;
 }
 
+
 /* Individual photos */
 #work .crafted-folder .folder-previews img {
   position: absolute !important;
+
   width: 105px !important;
   height: 105px !important;
+
   object-fit: cover !important;
+
   border-radius: 8px !important;
 
-  transition:
-    transform 0.7s cubic-bezier(.16,.84,.24,1),
-    top 0.7s cubic-bezier(.16,.84,.24,1),
-    box-shadow 0.7s ease !important;
+  box-shadow:
+    0 7px 15px rgba(0,0,0,.28) !important;
 
-  will-change: transform, top !important;
+  transform-origin: center bottom !important;
+
+  transition:
+    top .75s cubic-bezier(.16,.84,.24,1),
+    transform .75s cubic-bezier(.16,.84,.24,1),
+    box-shadow .75s cubic-bezier(.16,.84,.24,1) !important;
+
+  will-change: top, transform !important;
 }
 
-/* CLOSED — tucked behind the folder */
+
+/* CLOSED
+   Photos are tucked down inside the folder
+*/
+
 #work .crafted-folder .folder-previews img:nth-child(1) {
   left: 0 !important;
-  top: 55px !important;
-  transform: rotate(-8deg) scale(.88) !important;
+  top: 50px !important;
+
+  transform:
+    rotate(-8deg)
+    scale(.90) !important;
 }
 
 #work .crafted-folder .folder-previews img:nth-child(2) {
   left: 53px !important;
-  top: 42px !important;
-  transform: rotate(-3deg) scale(.88) !important;
+  top: 38px !important;
+
+  transform:
+    rotate(-3deg)
+    scale(.90) !important;
 }
 
 #work .crafted-folder .folder-previews img:nth-child(3) {
   left: 106px !important;
-  top: 42px !important;
-  transform: rotate(3deg) scale(.88) !important;
+  top: 38px !important;
+
+  transform:
+    rotate(3deg)
+    scale(.90) !important;
 }
 
 #work .crafted-folder .folder-previews img:nth-child(4) {
   left: 159px !important;
-  top: 55px !important;
-  transform: rotate(8deg) scale(.88) !important;
+  top: 50px !important;
+
+  transform:
+    rotate(8deg)
+    scale(.90) !important;
 }
 
 
-/* =========================================================
-   HOVER — PHOTOS SLIDE OUT FROM BEHIND THE FLAP
-   ========================================================= */
+/* ---------------------------------------------------------
+   OPEN
+   Photos rise from INSIDE the folder.
+   They remain overlapping the folder instead of flying away.
+   --------------------------------------------------------- */
 
 #work .crafted-folder:hover .folder-previews {
-  z-index: 20 !important;
+  z-index: 7 !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(1) {
-  top: 22px !important;
-  transform: rotate(-8deg) translateY(-18px) scale(.98) !important;
+  top: 20px !important;
+
+  transform:
+    rotate(-8deg)
+    translateY(-12px)
+    scale(1) !important;
+
+  box-shadow:
+    0 12px 22px rgba(0,0,0,.36) !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(2) {
-  top: 8px !important;
-  transform: rotate(-3deg) translateY(-18px) scale(.98) !important;
+  top: 5px !important;
+
+  transform:
+    rotate(-3deg)
+    translateY(-12px)
+    scale(1) !important;
+
+  box-shadow:
+    0 12px 22px rgba(0,0,0,.36) !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(3) {
-  top: 8px !important;
-  transform: rotate(3deg) translateY(-18px) scale(.98) !important;
+  top: 5px !important;
+
+  transform:
+    rotate(3deg)
+    translateY(-12px)
+    scale(1) !important;
+
+  box-shadow:
+    0 12px 22px rgba(0,0,0,.36) !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(4) {
-  top: 22px !important;
-  transform: rotate(8deg) translateY(-18px) scale(.98) !important;
+  top: 20px !important;
+
+  transform:
+    rotate(8deg)
+    translateY(-12px)
+    scale(1) !important;
+
+  box-shadow:
+    0 12px 22px rgba(0,0,0,.36) !important;
 }
 
 
-/* =========================================================
+/* ---------------------------------------------------------
    FRONT FLAP
-   ========================================================= */
+   --------------------------------------------------------- */
 
 #work .crafted-folder .folder-front {
   position: absolute !important;
+
   left: 0 !important;
   bottom: 0 !important;
 
   width: 100% !important;
   height: 145px !important;
 
-  transform-origin: bottom center !important;
-  transform: rotateX(0deg) !important;
+  border-radius: 15px !important;
 
   z-index: 10 !important;
 
+  transform-origin: bottom center !important;
+
+  transform:
+    translateY(0)
+    rotateX(0deg) !important;
+
   transition:
-    height .7s cubic-bezier(.16,.84,.24,1),
-    transform .7s cubic-bezier(.16,.84,.24,1) !important;
+    height .75s cubic-bezier(.16,.84,.24,1),
+    transform .75s cubic-bezier(.16,.84,.24,1),
+    box-shadow .75s cubic-bezier(.16,.84,.24,1) !important;
 
   will-change: height, transform !important;
 }
 
 
-/* GENTLE OPEN */
+/* ---------------------------------------------------------
+   OPENING FLAP
+   The front panel moves down slightly and becomes shorter,
+   exposing the photos and darker inside of the folder.
+   --------------------------------------------------------- */
+
 #work .crafted-folder:hover .folder-front {
-  height: 132px !important;
-  transform: rotateX(12deg) translateY(2px) !important;
+  height: 108px !important;
+
+  transform:
+    translateY(8px)
+    rotateX(-7deg) !important;
+
+  box-shadow:
+    0 20px 35px rgba(0,0,0,.42),
+    inset 0 1px 0 rgba(255,255,255,.18) !important;
 }
 
 
-/* Photos become visible above the flap */
-#work .crafted-folder:hover .folder-previews img {
-  z-index: 30 !important;
+/* ---------------------------------------------------------
+   KEEP PHOTOS ABOVE THE FRONT EDGE WHEN OPEN
+   --------------------------------------------------------- */
 
-  box-shadow:
-    0 10px 22px rgba(0,0,0,.35) !important;
+#work .crafted-folder:hover .folder-previews img {
+  position: absolute !important;
+  z-index: 20 !important;
+}
+
+
+/* ---------------------------------------------------------
+   EXTRA DEPTH INSIDE THE OPEN FOLDER
+   --------------------------------------------------------- */
+
+#work .crafted-folder:hover .folder-back::after {
+  content: "" !important;
+
+  position: absolute !important;
+
+  left: 5% !important;
+  right: 5% !important;
+  bottom: 8px !important;
+
+  height: 55px !important;
+
+  border-radius: 12px !important;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(40,0,0,.30),
+      rgba(40,0,0,.08)
+    ) !important;
+
+  opacity: 1 !important;
+
+  pointer-events: none !important;
 }
