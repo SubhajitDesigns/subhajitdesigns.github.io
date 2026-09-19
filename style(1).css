@@ -2328,3 +2328,33 @@ body.cursor-active .cursor-glow {
 
   pointer-events: none !important;
 }
+
+/* =========================================================
+   CRAFTED — FINAL SPACING + SHORTER BACK LAYER
+   ========================================================= */
+
+/* Keep title + subtitle completely stationary */
+#work .crafted-folder .crafted-folder-info,
+#work .crafted-folder .folder-title,
+#work .crafted-folder .folder-subtitle {
+  transform: none !important;
+  transition: none !important;
+}
+
+/* If the text is directly after the folder icon,
+   keep its position fixed during hover */
+#work .crafted-folder:hover .crafted-folder-info,
+#work .crafted-folder:hover .folder-title,
+#work .crafted-folder:hover .folder-subtitle {
+  transform: none !important;
+  margin-top: 0 !important;
+}
+
+/* ---------------------------------------------------------
+   SHORTER BACK LAYER
+   --------------------------------------------------------- */
+
+#work .crafted-folder .folder-back {
+  height: 135px !important;
+  top: 28px !important;
+}
