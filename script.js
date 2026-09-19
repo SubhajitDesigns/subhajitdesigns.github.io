@@ -374,10 +374,11 @@ if (clientTrack) {
 
   const MOBILE = () => window.matchMedia('(max-width: 760px)').matches;
 
-  let maxShift = 0;
-  let target   = 0;
-  let current  = 0;
-  let ease     = 0.10;
+  let maxShift  = 0;
+  let target    = 0;
+  let current   = 0;
+  let ease      = 0.10;
+  let numPages  = 1;   // groups of --visible columns (never shows a cropped folder)
 
   function measure() {
     if (MOBILE()) {
@@ -391,6 +392,13 @@ if (clientTrack) {
     ease = parseFloat(
       getComputedStyle(section).getPropertyValue('--ease')
     ) || 0.10;
+
+    const rows    = parseInt(getComputedStyle(section).getPropertyValue('--rows')) || 1;
+    const visible = parseInt(getComputedStyle(section).getPropertyValue('--visible')) || 3;
+
+    const folders   = track.querySelectorAll('.crafted-folder').length;
+    const totalCols = Math.ceil(folders / rows);
+    numPages        = Math.max(1, Math.ceil(totalCols / visible));
 
     /* how far the track has to travel to reveal the last folder */
     maxShift = Math.max(0, track.scrollWidth - viewport.clientWidth);
@@ -410,7 +418,14 @@ if (clientTrack) {
     const passed   = -section.getBoundingClientRect().top;
     const progress = Math.min(1, Math.max(0, passed / runway));
 
-    target = -progress * maxShift;
+    /* snap to whole pages of --visible columns, so you only ever
+       see complete folders — never one sliced at the edge */
+    const pageIndex = numPages > 1
+      ? Math.round(progress * (numPages - 1))
+      : 0;
+    const pageProgress = numPages > 1 ? pageIndex / (numPages - 1) : 0;
+
+    target = -pageProgress * maxShift;
   }
 
   function frame() {
