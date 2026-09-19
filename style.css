@@ -1778,11 +1778,11 @@ body.cursor-active .cursor-glow {
 }
 
 #work .crafted-viewport {
-  width: 100vw !important;
-  max-width: none !important;
+ width: 1040px !important;
+max-width: calc(100vw - 40px) !important;
 
-  margin-left: calc(50% - 50vw) !important;
-  margin-right: 0 !important;
+  margin-left: auto !important;
+margin-right: auto !important;
 
   position: relative;
 
