@@ -1772,211 +1772,116 @@ body.cursor-active .cursor-glow {
 }
 
 /* =========================================================
-   CRAFTED — PINNED HORIZONTAL SCROLL TRACK
-   Replaces everything from "CRAFTED — FINAL 2x3 SLIDING WINDOW"
-   to the end of your old style.css.
+   CRAFTED — AUTO-PLAYING COVERFLOW (single row)
+   Replaces EVERYTHING from your old crafted-fix block.
+   Folders drift right → left on their own. The one nearest
+   the center grows; the rest shrink and fade toward the
+   edges. Hovering (or touching) pauses the motion.
    ========================================================= */
 
-/* ---- THE ONLY NUMBERS YOU NEED TO TOUCH ---- */
 #work{
-  --card-w:        330px;   /* width of one folder cell            */
-  --card-h:        410px;   /* height of one folder cell           */
-  --col-gap:       55px;    /* SIDE GAP between folders            */
-  --row-gap:       35px;    /* gap between rows (only if --rows:2) */
-  --folder-scale:  1.20;    /* FOLDER SIZE — 1 = original          */
-  --visible:       3;       /* how many folders on screen at once  */
-  --rows:          2;       /* 1 = single row, 2 = two rows        */
-  --ease:          0.10;    /* slide smoothing, lower = floatier   */
-  --edge-fade:     200px;   /* width of the fade shown WHILE sliding */
-  --bg:            #140505; /* section background — softer than pure black */
+  /* ---- THE KNOBS ---- */
+  --card-w:        320px;   /* base width of one folder cell        */
+  --gap:           70px;    /* space between folders                */
+  --folder-scale:  1.05;    /* base folder size (before emphasis)   */
+  --min-scale:     0.6;     /* size of a folder at the far edge     */
+  --max-scale:     1.55;    /* size of the folder centered — BIG    */
+  --speed:         55;      /* drift speed, px per second           */
+  --bg:            #140505; /* section background                  */
 
   position: relative;
   background: var(--bg);
-  padding: 0;
-  overflow: visible;
+  padding: 90px 0 110px;
+  overflow: hidden;
 }
 
-/* ---- STICKY STAGE ----
-   JS gives #work a tall height; this layer pins to the screen
-   while you scroll past it. */
-.crafted-pin{
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0;              /* 0 so the track can reach the true screen edge */
-  box-sizing: border-box;
-  overflow: visible;
+.crafted-heading{
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 0 5vw;
 }
 
-#work .crafted-heading{
-  padding: 0 5vw;           /* heading keeps a normal margin, track doesn't */
+.crafted-heading p{
+  margin: 0 0 12px;
+  color: #ff3426;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 6px;
 }
 
-#work .crafted-heading{
-  margin-bottom: 16px;
-  flex: 0 0 auto;
+.crafted-heading h2{
+  margin: 0;
+  color: #fff;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(52px, 6vw, 92px);
+  line-height: .9;
 }
 
-#work .crafted-heading h2{
-  font-size: clamp(44px, 5vw, 78px);
+.crafted-heading h2 span{ color: #ff3426; }
+
+.crafted-heading div{
+  margin-top: 18px;
+  color: #8d8585;
+  font-size: 12px;
+  letter-spacing: 6px;
 }
 
-/* ---- WINDOW: shows exactly --visible folders, no more, no less ----
-   sized to exactly 3 columns so nothing extra peeks in at rest.
-   Whatever crosses the edge mid-slide fades instead of getting
-   sliced. */
+/* ---- THE TRACK'S WINDOW ---- */
 #work .crafted-viewport{
   position: relative;
-  width: calc(
-    var(--visible) * var(--card-w) +
-    (var(--visible) - 1) * var(--col-gap)
-  );
-  max-width: 100%;
-  margin: 0 auto;
-
-  /* breathing room so hovered photos pop above the folder
-     without being cut off */
-  padding-top: 170px;
-  box-sizing: content-box;
-
-  overflow-x: clip;   /* NOT "hidden" — hidden silently forces the
-                          other axis to scroll too, which is that
-                          unwanted vertical slider you saw. "clip"
-                          doesn't have that side effect. */
-  overflow-y: visible;
+  width: 100%;
+  height: 480px;          /* room for the biggest (center) folder */
+  overflow: hidden;
+  cursor: pointer;
 }
 
-/* the fade only appears WHILE a folder is actively sliding across
-   the edge — JS adds this class during motion and removes it the
-   moment the track settles, so at rest all folders are fully clear */
-#work .crafted-viewport.is-sliding{
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    rgba(0,0,0,.12)  calc(var(--edge-fade) * .25),
-    rgba(0,0,0,.5)   calc(var(--edge-fade) * .6),
-    black var(--edge-fade),
-    black calc(100% - var(--edge-fade)),
-    rgba(0,0,0,.5)   calc(100% - var(--edge-fade) * .6),
-    rgba(0,0,0,.12)  calc(100% - var(--edge-fade) * .25),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    rgba(0,0,0,.12)  calc(var(--edge-fade) * .25),
-    rgba(0,0,0,.5)   calc(var(--edge-fade) * .6),
-    black var(--edge-fade),
-    black calc(100% - var(--edge-fade)),
-    rgba(0,0,0,.5)   calc(100% - var(--edge-fade) * .6),
-    rgba(0,0,0,.12)  calc(100% - var(--edge-fade) * .25),
-    transparent 100%
-  );
-}
-
-/* ---- THE TRACK THAT SLIDES ---- */
+/* ---- THE DRIFTING TRACK ---- */
 #work .crafted-grid{
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: var(--card-w);
-  grid-template-rows: repeat(var(--rows), var(--card-h));
-
-  column-gap: var(--col-gap);
-  row-gap: var(--row-gap);
-
+  display: flex;
+  align-items: flex-end;   /* folders share a common baseline */
+  gap: var(--gap);
   width: max-content;
-  max-width: none;
-  margin: 0;
-  padding: 0;
-
-  transform: translate3d(0, 0, 0);
   will-change: transform;
 }
 
-/* ---- FOLDER CELL ---- */
+/* ---- EACH FOLDER ---- */
 #work .crafted-folder{
+  flex: 0 0 var(--card-w);
   width: var(--card-w);
   height: auto;
-  justify-self: center;
-  align-self: start;
+  text-decoration: none;
+  cursor: pointer;
+  transform-origin: center bottom;
+  /* JS sets the live scale/opacity every frame — no CSS
+     transition here, it would fight the per-frame updates */
 }
 
-/* ---- BIGGER FOLDER, IDENTICAL SHAPE ----
-   scale() grows the folder AND its photo stack together, so every
-   proportion, rotation and shadow stays exactly as you built it.
-   The margin below reclaims the layout space scale() doesn't take. */
 #work .folder-icon{
   transform: scale(var(--folder-scale));
   transform-origin: top center;
-  margin-bottom: calc(250px * (var(--folder-scale) - 1));
   overflow: visible;
 }
 
-#work .folder-previews{
-  overflow: visible;
-}
+#work .folder-previews{ overflow: visible; }
 
 #work .crafted-folder h3{
-  margin-top: 30px;
+  margin-top: 25px;
+  text-align: center;
 }
 
-/* ---- SHORT LAPTOP SCREENS ---- */
-@media (max-height: 860px){
-  #work{
-    --folder-scale: 1.02;
-    --card-h: 360px;
-  }
-  #work .crafted-heading{ margin-bottom: 10px; }
-  #work .crafted-heading h2{ font-size: clamp(38px, 4.5vw, 60px); }
-  #work .crafted-viewport{ padding-top: 130px; }
+#work .crafted-folder > p{
+  text-align: center;
 }
 
-/* ---- TABLET ---- */
-@media (max-width: 1100px){
-  #work{
-    --visible: 2;
-    --col-gap: 80px;
-    --folder-scale: 1.05;
-  }
-}
-
-/* ---- MOBILE: no pinning, just stack them ---- */
+/* ---- MOBILE: smaller, simpler, still auto-drifts ---- */
 @media (max-width: 760px){
   #work{
+    --card-w: 220px;
+    --gap: 40px;
     --folder-scale: 1;
-    height: auto !important;   /* undo the height JS set */
-    padding: 80px 0 100px;
+    --speed: 40;
+    padding: 60px 0 80px;
   }
-
-  .crafted-pin{
-    position: static;
-    height: auto;
-    display: block;
-    padding: 0 6vw;
-  }
-
-  #work .crafted-viewport{
-    width: 100%;
-    padding-top: 40px;
-    overflow: visible;
-    mask-image: none;
-    -webkit-mask-image: none;
-  }
-
-  #work .crafted-grid{
-    grid-auto-flow: row;
-    grid-template-rows: none;
-    grid-template-columns: 1fr;
-    row-gap: 50px;
-    width: 100%;
-    transform: none !important;
-  }
-
-  #work .crafted-folder{
-    width: 100%;
-  }
+  #work .crafted-viewport{ height: 340px; }
+  #work .crafted-heading h2{ font-size: clamp(38px, 8vw, 60px); }
 }
