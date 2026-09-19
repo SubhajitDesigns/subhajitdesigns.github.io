@@ -245,273 +245,290 @@ if (clientTrack) {
 
 
 /* =========================================================
-   CRAFTED DESIGNS — FINAL 3D CAROUSEL JS
+   SUBHAJIT — CRAFTED DESIGNS
+   FINAL 2 x 3 HORIZONTAL COLUMN SLIDER
+
+   3 columns visible
+   2 rows visible
+
+   Scroll DOWN:
+   Column 1 leaves
+   Column 4 enters
+
+   Scroll DOWN again:
+   Column 2 leaves
+   Column 5 enters
+
+   Scroll DOWN again:
+   Column 3 leaves
+   Column 6 enters
+
+   After the final position, normal page scrolling resumes.
    ========================================================= */
 
-(function () {
+(() => {
 
   const section =
-    document.querySelector('#work');
-
-  if (!section) return;
-
+    document.querySelector("#work");
 
   const viewport =
-    section.querySelector('.crafted-viewport');
+    section?.querySelector(".crafted-viewport");
 
-  const track =
-    section.querySelector('.crafted-grid');
+  const grid =
+    section?.querySelector(".crafted-grid");
 
-  if (!viewport || !track) return;
+  if (!section || !viewport || !grid) {
+    return;
+  }
 
 
-  /* =======================================================
-     CREATE SEAMLESS LOOP
-     ======================================================= */
+  /* ---------------------------------------------------------
+     SETTINGS
+     --------------------------------------------------------- */
 
-  if (!track.dataset.looped) {
+  const COLUMN_STEP = 385;
 
-    const originals =
-      Array.from(track.children);
+  /*
+     300px folder cell
+     + 85px horizontal gap
+     = 385px
+  */
 
-    originals.forEach(function (folder) {
+  const MAX_STEPS = 3;
 
-      track.appendChild(
-        folder.cloneNode(true)
+  /*
+     0 = columns 1,2,3
+     1 = columns 2,3,4
+     2 = columns 3,4,5
+     3 = columns 4,5,6
+  */
+
+
+  let currentX = 0;
+  let targetX = 0;
+
+  let animationFrame = null;
+
+  let wheelLocked = false;
+
+  let unlockTimer = null;
+
+
+  /* ---------------------------------------------------------
+     CALCULATE MAXIMUM MOVEMENT
+     --------------------------------------------------------- */
+
+  function getMaxX() {
+
+    const max =
+      grid.scrollWidth -
+      viewport.clientWidth;
+
+    return Math.max(0, max);
+  }
+
+
+  /* ---------------------------------------------------------
+     SMOOTH TRACK ANIMATION
+     --------------------------------------------------------- */
+
+  function animate() {
+
+    const difference =
+      targetX - currentX;
+
+    currentX +=
+      difference * 0.10;
+
+    if (Math.abs(difference) < 0.5) {
+
+      currentX = targetX;
+
+      animationFrame = null;
+
+      return;
+    }
+
+    grid.style.transform =
+      `translate3d(${-currentX}px,0,0)`;
+
+    animationFrame =
+      requestAnimationFrame(animate);
+  }
+
+
+  function startAnimation() {
+
+    if (animationFrame !== null) {
+      return;
+    }
+
+    animationFrame =
+      requestAnimationFrame(animate);
+  }
+
+
+  /* ---------------------------------------------------------
+     DETERMINE CURRENT COLUMN
+     --------------------------------------------------------- */
+
+  function getCurrentStep() {
+
+    return Math.round(
+      targetX / COLUMN_STEP
+    );
+  }
+
+
+  /* ---------------------------------------------------------
+     MOVE ONE COLUMN
+     --------------------------------------------------------- */
+
+  function moveColumn(direction) {
+
+    const currentStep =
+      getCurrentStep();
+
+    let nextStep =
+      currentStep + direction;
+
+
+    nextStep =
+      Math.max(
+        0,
+        Math.min(
+          MAX_STEPS,
+          nextStep
+        )
       );
 
-    });
 
-    track.dataset.looped = 'true';
-  }
-
-
-  /* =======================================================
-     VARIABLES
-     ======================================================= */
-
-  let setWidth = 0;
-  let offset = 0;
-  let lastTime = null;
-
-  let paused = false;
-  let clickPaused = false;
-
-  const MAX_WHEEL_MOVES = 2;
-
-  let wheelMoves = 0;
-  let wheelLocked = false;
-  let wheelTimer = null;
-
-
-  /* =======================================================
-     MEASURE
-     ======================================================= */
-
-  function measure() {
-
-    setWidth =
-      track.scrollWidth / 2;
-
-  }
-
-
-  /* =======================================================
-     NORMALIZE
-     ======================================================= */
-
-  function normalize() {
-
-    if (setWidth <= 0) return;
-
-    while (offset >= setWidth) {
-      offset -= setWidth;
-    }
-
-    while (offset < 0) {
-      offset += setWidth;
-    }
-
-  }
-
-
-  /* =======================================================
-     MOVE
-     ======================================================= */
-
-  function moveTrack() {
-
-    track.style.transform =
-      'translate3d(' +
-      (-offset).toFixed(2) +
-      'px, 0, 0)';
-
-  }
-
-
-  /* =======================================================
-     AUTO MOTION
-     ======================================================= */
-
-  function animate(timestamp) {
-
-    if (lastTime === null) {
-      lastTime = timestamp;
-    }
-
-    const delta =
-      (timestamp - lastTime) / 1000;
-
-    lastTime = timestamp;
-
-
-    if (!paused && setWidth > 0) {
-
-      const speed =
-        parseFloat(
-          getComputedStyle(section)
-            .getPropertyValue('--speed')
-        ) || 38;
-
-      offset +=
-        speed * delta;
-
-      normalize();
-
-      moveTrack();
-
-    }
-
-
-    requestAnimationFrame(animate);
-
-  }
-
-
-  /* =======================================================
-     HOVER PAUSE
-     ======================================================= */
-
-  track.addEventListener(
-    'mouseover',
-    function (event) {
-
-      const folder =
-        event.target.closest('.crafted-folder');
-
-      if (!folder) return;
-
-      paused = true;
-
-    }
-  );
-
-
-  track.addEventListener(
-    'mouseout',
-    function (event) {
-
-      const folder =
-        event.target.closest('.crafted-folder');
-
-      if (!folder) return;
-
-      const related =
-        event.relatedTarget;
+    if (nextStep === currentStep) {
 
       /*
-         Don't resume when moving from one element
-         inside the same folder to another element
-         inside that same folder.
+         We are already at the beginning
+         or end.
+
+         Returning false tells the wheel
+         handler that normal page scrolling
+         should continue.
       */
 
-      if (
-        related &&
-        folder.contains(related)
-      ) {
-        return;
-      }
-
-      if (!clickPaused) {
-        paused = false;
-      }
-
+      return false;
     }
-  );
 
 
-  /* =======================================================
-     CLICK = PAUSE / RESUME
-     ======================================================= */
-
-  viewport.addEventListener(
-    'click',
-    function (event) {
-
-      if (event.target.closest('a')) {
-        return;
-      }
-
-      clickPaused =
-        !clickPaused;
-
-      paused =
-        clickPaused;
-
-    }
-  );
+    targetX =
+      nextStep * COLUMN_STEP;
 
 
-  /* =======================================================
-     LIMITED WHEEL SCROLL
-     ======================================================= */
-
-  viewport.addEventListener(
-    'wheel',
-    function (event) {
-
-      if (setWidth <= 0) return;
+    const maxX =
+      getMaxX();
 
 
-      if (
-        Math.abs(event.deltaY) <=
-        Math.abs(event.deltaX)
-      ) {
+    targetX =
+      Math.min(
+        targetX,
+        maxX
+      );
+
+
+    startAnimation();
+
+
+    return true;
+  }
+
+
+  /* ---------------------------------------------------------
+     CRAFTED SECTION ACTIVE CHECK
+     --------------------------------------------------------- */
+
+  function isCraftedActive() {
+
+    const rect =
+      section.getBoundingClientRect();
+
+
+    /*
+       Only take control when the Crafted
+       section is occupying the viewport.
+    */
+
+    return (
+      rect.top <= 5 &&
+      rect.bottom >=
+        window.innerHeight - 5
+    );
+  }
+
+
+  /* ---------------------------------------------------------
+     WHEEL CONTROL
+     --------------------------------------------------------- */
+
+  window.addEventListener(
+    "wheel",
+    (event) => {
+
+      if (!isCraftedActive()) {
         return;
       }
 
 
       /*
-         After two wheel gestures,
-         let the website scroll normally.
+         Don't allow the browser to fire
+         many column movements from one
+         physical wheel gesture.
       */
 
-      if (wheelMoves >= MAX_WHEEL_MOVES) {
+      if (wheelLocked) {
         return;
       }
 
 
-      event.preventDefault();
+      const direction =
+        event.deltaY > 0
+          ? 1
+          : event.deltaY < 0
+            ? -1
+            : 0;
 
 
-      offset +=
-        event.deltaY * 0.8;
-
-      normalize();
-
-      moveTrack();
+      if (!direction) {
+        return;
+      }
 
 
-      if (!wheelLocked) {
+      const moved =
+        moveColumn(direction);
 
-        wheelMoves++;
+
+      /*
+         IMPORTANT:
+
+         Only stop the page when the folder
+         carousel actually has another
+         column to show.
+
+         Once we reach the beginning/end,
+         normal page scrolling works again.
+      */
+
+      if (moved) {
+
+        event.preventDefault();
 
         wheelLocked = true;
 
-        clearTimeout(wheelTimer);
 
-        wheelTimer =
-          setTimeout(function () {
+        clearTimeout(
+          unlockTimer
+        );
+
+
+        unlockTimer =
+          setTimeout(() => {
 
             wheelLocked = false;
 
@@ -520,123 +537,46 @@ if (clientTrack) {
 
     },
     {
-      passive: false
+      passive:false
     }
   );
 
 
-  /* =======================================================
-     RESET WHEEL COUNT WHEN LEAVING SECTION
-     ======================================================= */
-
-  const observer =
-    new IntersectionObserver(
-      function (entries) {
-
-        if (!entries[0].isIntersecting) {
-
-          wheelMoves = 0;
-          wheelLocked = false;
-
-          clearTimeout(wheelTimer);
-
-        }
-
-      },
-      {
-        threshold: 0.05
-      }
-    );
-
-
-  observer.observe(section);
-
-
-  /* =======================================================
-     TOUCH
-     ======================================================= */
-
-  viewport.addEventListener(
-    'touchstart',
-    function () {
-
-      paused = true;
-
-    },
-    {
-      passive: true
-    }
-  );
-
-
-  viewport.addEventListener(
-    'touchend',
-    function () {
-
-      if (!clickPaused) {
-        paused = false;
-      }
-
-    },
-    {
-      passive: true
-    }
-  );
-
-
-  /* =======================================================
+  /* ---------------------------------------------------------
      RESIZE
-     ======================================================= */
+     --------------------------------------------------------- */
 
   window.addEventListener(
-    'resize',
-    function () {
+    "resize",
+    () => {
 
-      measure();
-      normalize();
-      moveTrack();
+      const maxX =
+        getMaxX();
 
+      targetX =
+        Math.min(
+          targetX,
+          maxX
+        );
+
+      currentX =
+        Math.min(
+          currentX,
+          maxX
+        );
+
+
+      grid.style.transform =
+        `translate3d(${-currentX}px,0,0)`;
     }
   );
 
 
-  /* =======================================================
-     IMAGE LOAD
-     ======================================================= */
+  /* ---------------------------------------------------------
+     INITIAL POSITION
+     --------------------------------------------------------- */
 
-  section
-    .querySelectorAll('img')
-    .forEach(function (img) {
-
-      if (!img.complete) {
-
-        img.addEventListener(
-          'load',
-          function () {
-
-            measure();
-            normalize();
-            moveTrack();
-
-          },
-          {
-            once: true
-          }
-        );
-
-      }
-
-    });
-
-
-  /* =======================================================
-     START
-     ======================================================= */
-
-  measure();
-
-  moveTrack();
-
-  requestAnimationFrame(animate);
+  grid.style.transform =
+    "translate3d(0,0,0)";
 
 })();
