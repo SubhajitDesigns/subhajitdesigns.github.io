@@ -350,118 +350,104 @@ if (clientTrack) {
 
 
 /* =========================================================
-   CRAFTED — one wheel notch = one column, edge to edge.
-   Paste at the very bottom of script.js (replace the old
-   "CRAFTED — vertical scroll drives..." block if present).
-   No HTML changes needed — the sticky wrapper is built here.
+   CRAFTED — AUTO-PLAYING COVERFLOW
+   Replaces EVERYTHING from your old crafted-fix block at the
+   bottom of script.js. No HTML changes needed.
+
+   - Folders drift continuously right → left, looping forever.
+   - The folder nearest the center grows; others shrink and
+     fade the further they are from center.
+   - Hovering (or touching on mobile) pauses the drift.
    ========================================================= */
 
 (function () {
-  const section = document.querySelector('#work');
+  const section  = document.querySelector('#work');
   if (!section) return;
 
   const viewport = section.querySelector('.crafted-viewport');
   const track    = section.querySelector('.crafted-grid');
   if (!viewport || !track) return;
 
-  /* --- build the sticky stage around the existing markup --- */
-  let pin = section.querySelector('.crafted-pin');
-  if (!pin) {
-    pin = document.createElement('div');
-    pin.className = 'crafted-pin';
-    while (section.firstChild) pin.appendChild(section.firstChild);
-    section.appendChild(pin);
-  }
-
   const MOBILE = () => window.matchMedia('(max-width: 760px)').matches;
 
-  let colStep  = 0;   // px per column step (card width + gap)
-  let maxIndex = 0;   // last valid column index
-  let index    = 0;   // current column index
-  let current  = 0;
-  let target   = 0;
-  const EASE   = 0.16;
-  let cooldown = false;
-  let fadeTimer = null;
-
-  function showFadeBriefly() {
-    viewport.classList.add('is-sliding');
-    clearTimeout(fadeTimer);
-    fadeTimer = setTimeout(() => {
-      viewport.classList.remove('is-sliding');
-    }, 650); // roughly how long the ease takes to settle
+  /* duplicate the folder set once so the loop is seamless —
+     only do this once, even if this script somehow runs twice */
+  if (!track.dataset.looped) {
+    const originals = Array.from(track.children);
+    originals.forEach(item => track.appendChild(item.cloneNode(true)));
+    track.dataset.looped = 'true';
   }
+
+  let setWidth = 0;   // px width of one full set of folders
+  let offset   = 0;   // how far the track has drifted so far
+  let lastTime = null;
+  let paused   = false;
 
   function measure() {
-    if (MOBILE()) {
-      section.style.height = '';
-      track.style.transform = '';
-      return;
-    }
-
-    const styles  = getComputedStyle(section);
-    const rows    = parseInt(styles.getPropertyValue('--rows'))    || 1;
-    const gap     = parseFloat(styles.getPropertyValue('--col-gap')) || 0;
-    const cardW   = parseFloat(styles.getPropertyValue('--card-w'))  || 330;
-
-    colStep = cardW + gap;
-
-    const folders   = track.querySelectorAll('.crafted-folder').length;
-    const visible   = parseInt(styles.getPropertyValue('--visible')) || 3;
-    const totalCols = Math.ceil(folders / rows);
-    maxIndex = Math.max(0, totalCols - visible);
-
-    index   = Math.min(index, maxIndex);
-    target  = -index * colStep;
-    current = target;
-    track.style.transform = 'translate3d(' + current + 'px,0,0)';
-
-    /* just enough runway for the section to stay pinned while
-       you're stepping through it */
-    section.style.height = (window.innerHeight + 220) + 'px';
+    /* the track is exactly two copies of the same set back to back */
+    setWidth = track.scrollWidth / 2;
   }
 
-  function frame() {
-    if (!MOBILE()) {
-      current += (target - current) * EASE;
-      if (Math.abs(target - current) < 0.4) current = target;
-      track.style.transform = 'translate3d(' + current.toFixed(2) + 'px,0,0)';
+  function updateScales() {
+    const vpRect  = viewport.getBoundingClientRect();
+    const centerX = vpRect.left + vpRect.width / 2;
+
+    /* how far from center a folder needs to be before it's
+       treated as fully "edge" (minimum size/opacity) */
+    const range = vpRect.width / 2 + 160;
+
+    const minScale = parseFloat(getComputedStyle(section).getPropertyValue('--min-scale')) || 0.6;
+    const maxScale = parseFloat(getComputedStyle(section).getPropertyValue('--max-scale')) || 1.5;
+
+    Array.from(track.children).forEach(el => {
+      const r = el.getBoundingClientRect();
+      const elCenter = r.left + r.width / 2;
+      const dist = Math.abs(elCenter - centerX);
+      const t = Math.min(1, dist / range);          // 0 = center, 1 = edge
+      const ease = 1 - t * t;                        // smooth falloff
+
+      const scale   = minScale + (maxScale - minScale) * ease;
+      const opacity = 0.28 + 0.72 * ease;
+
+      el.style.transform = 'scale(' + scale.toFixed(3) + ')';
+      el.style.opacity   = opacity.toFixed(2);
+      el.style.zIndex    = Math.round(ease * 100);
+    });
+  }
+
+  function frame(timestamp) {
+    if (lastTime === null) lastTime = timestamp;
+    const dt = (timestamp - lastTime) / 1000;
+    lastTime = timestamp;
+
+    if (!paused && setWidth > 0) {
+      const speed = parseFloat(getComputedStyle(section).getPropertyValue('--speed')) || 50;
+      offset += speed * dt;
+      if (offset >= setWidth) offset -= setWidth;
+      track.style.transform = 'translate3d(' + (-offset).toFixed(2) + 'px,0,0)';
     }
+
+    updateScales();
     requestAnimationFrame(frame);
   }
 
-  function inPinZone() {
-    const r = section.getBoundingClientRect();
-    return r.top <= 1 && r.bottom > window.innerHeight;
-  }
+  function pause()  { paused = true;  }
+  function resume() { paused = false; }
 
-  function onWheel(e) {
-    if (MOBILE() || !inPinZone()) return;
+  viewport.addEventListener('mouseenter', pause);
+  viewport.addEventListener('mouseleave', resume);
+  viewport.addEventListener('touchstart', pause,  { passive: true });
+  viewport.addEventListener('touchend',   resume, { passive: true });
 
-    const goingDown = e.deltaY > 0;
-    const atEnd   = goingDown && index >= maxIndex;
-    const atStart = !goingDown && index <= 0;
+  /* clicking pauses/resumes too, for touch devices without hover —
+     real folder links still navigate normally */
+  viewport.addEventListener('click', (e) => {
+    if (e.target.closest('a.crafted-folder')) return; // let real links work
+    paused = !paused;
+  });
 
-    /* at either end, hand scrolling back to the normal page */
-    if (atEnd || atStart) return;
-
-    e.preventDefault();
-    if (cooldown) return;
-
-    index  += goingDown ? 1 : -1;
-    index   = Math.max(0, Math.min(maxIndex, index));
-    target  = -index * colStep;
-    showFadeBriefly();
-
-    /* one physical scroll gesture = exactly one column step */
-    cooldown = true;
-    setTimeout(() => { cooldown = false; }, 550);
-  }
-
-  window.addEventListener('wheel', onWheel, { passive: false });
-  window.addEventListener('resize', measure);
   window.addEventListener('load', measure);
-
+  window.addEventListener('resize', measure);
   section.querySelectorAll('img').forEach(img => {
     if (!img.complete) img.addEventListener('load', measure, { once: true });
   });
