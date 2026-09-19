@@ -350,106 +350,144 @@ if (clientTrack) {
 
 
 /* =========================================================
-   CRAFTED — AUTO-PLAYING COVERFLOW
-   Replaces EVERYTHING from your old crafted-fix block at the
-   bottom of script.js. No HTML changes needed.
-
-   - Folders drift continuously right → left, looping forever.
-   - The folder nearest the center grows; others shrink and
-     fade the further they are from center.
-   - Hovering (or touching on mobile) pauses the drift.
+   CRAFTED — SINGLE ROW, SLOW CONTINUOUS MOTION
+   - One row only.
+   - Folders continuously enter from the right and leave left.
+   - The folder nearest the screen center becomes largest.
+   - Folders shrink toward both edges.
+   - Hover pauses.
+   - Click toggles pause/resume.
+   - No wheel scrolling is used.
    ========================================================= */
 
 (function () {
-  const section  = document.querySelector('#work');
+  const section = document.querySelector('#work');
   if (!section) return;
 
   const viewport = section.querySelector('.crafted-viewport');
-  const track    = section.querySelector('.crafted-grid');
+  const track = section.querySelector('.crafted-grid');
   if (!viewport || !track) return;
 
-  const MOBILE = () => window.matchMedia('(max-width: 760px)').matches;
-
-  /* duplicate the folder set once so the loop is seamless —
-     only do this once, even if this script somehow runs twice */
+  /* Duplicate the original set once for a seamless loop. */
   if (!track.dataset.looped) {
     const originals = Array.from(track.children);
     originals.forEach(item => track.appendChild(item.cloneNode(true)));
     track.dataset.looped = 'true';
   }
 
-  let setWidth = 0;   // px width of one full set of folders
-  let offset   = 0;   // how far the track has drifted so far
+  let setWidth = 0;
+  let offset = 0;
   let lastTime = null;
-  let paused   = false;
+  let paused = false;
 
   function measure() {
-    /* the track is exactly two copies of the same set back to back */
     setWidth = track.scrollWidth / 2;
   }
 
+  function getCenterScale(folder) {
+    const rect = folder.getBoundingClientRect();
+    const viewportRect = viewport.getBoundingClientRect();
+
+    const folderCenter = rect.left + rect.width / 2;
+    const viewportCenter = viewportRect.left + viewportRect.width / 2;
+
+    const distance = Math.abs(folderCenter - viewportCenter);
+    const maxDistance = viewportRect.width / 2 + rect.width;
+
+    const t = Math.min(1, distance / maxDistance);
+
+    const centerScale =
+      parseFloat(
+        getComputedStyle(section)
+          .getPropertyValue('--folder-scale-center')
+      ) || 1.12;
+
+    const edgeScale =
+      parseFloat(
+        getComputedStyle(section)
+          .getPropertyValue('--folder-scale-edge')
+      ) || 0.72;
+
+    /* Smooth size transition toward the center. */
+    const smooth = t * t * (3 - 2 * t);
+
+    return centerScale + (edgeScale - centerScale) * smooth;
+  }
+
   function updateScales() {
-    const vpRect  = viewport.getBoundingClientRect();
-    const centerX = vpRect.left + vpRect.width / 2;
+    const folders = track.querySelectorAll('.crafted-folder');
 
-    /* how far from center a folder needs to be before it's
-       treated as fully "edge" (minimum size/opacity) */
-    const range = vpRect.width / 2 + 160;
+    folders.forEach(folder => {
+      const icon = folder.querySelector('.folder-icon');
+      if (!icon) return;
 
-    const minScale = parseFloat(getComputedStyle(section).getPropertyValue('--min-scale')) || 0.6;
-    const maxScale = parseFloat(getComputedStyle(section).getPropertyValue('--max-scale')) || 1.5;
-
-    Array.from(track.children).forEach(el => {
-      const r = el.getBoundingClientRect();
-      const elCenter = r.left + r.width / 2;
-      const dist = Math.abs(elCenter - centerX);
-      const t = Math.min(1, dist / range);          // 0 = center, 1 = edge
-      const ease = 1 - t * t;                        // smooth falloff
-
-      const scale   = minScale + (maxScale - minScale) * ease;
-      const opacity = 0.28 + 0.72 * ease;
-
-      el.style.transform = 'scale(' + scale.toFixed(3) + ')';
-      el.style.opacity   = opacity.toFixed(2);
-      el.style.zIndex    = Math.round(ease * 100);
+      icon.style.transform =
+        'scale(' + getCenterScale(folder).toFixed(3) + ')';
     });
   }
 
   function frame(timestamp) {
     if (lastTime === null) lastTime = timestamp;
+
     const dt = (timestamp - lastTime) / 1000;
     lastTime = timestamp;
 
     if (!paused && setWidth > 0) {
-      const speed = parseFloat(getComputedStyle(section).getPropertyValue('--speed')) || 50;
+      const speed =
+        parseFloat(
+          getComputedStyle(section).getPropertyValue('--speed')
+        ) || 42;
+
       offset += speed * dt;
-      if (offset >= setWidth) offset -= setWidth;
-      track.style.transform = 'translate3d(' + (-offset).toFixed(2) + 'px,0,0)';
+
+      if (offset >= setWidth) {
+        offset -= setWidth;
+      }
+
+      track.style.transform =
+        'translate3d(' + (-offset).toFixed(2) + 'px,0,0)';
     }
 
     updateScales();
     requestAnimationFrame(frame);
   }
 
-  function pause()  { paused = true;  }
-  function resume() { paused = false; }
+  function pause() {
+    paused = true;
+    section.classList.add('is-paused');
+  }
 
+  function resume() {
+    paused = false;
+    section.classList.remove('is-paused');
+  }
+
+  function togglePause(event) {
+    /* Don't interfere with normal links/navigation. */
+    if (event && event.target.closest('a')) return;
+
+    paused = !paused;
+    section.classList.toggle('is-paused', paused);
+  }
+
+  /* Hover pauses the movement. */
   viewport.addEventListener('mouseenter', pause);
   viewport.addEventListener('mouseleave', resume);
-  viewport.addEventListener('touchstart', pause,  { passive: true });
-  viewport.addEventListener('touchend',   resume, { passive: true });
 
-  /* clicking pauses/resumes too, for touch devices without hover —
-     real folder links still navigate normally */
-  viewport.addEventListener('click', (e) => {
-    if (e.target.closest('a.crafted-folder')) return; // let real links work
-    paused = !paused;
-  });
+  /* Click toggles pause/resume. */
+  viewport.addEventListener('click', togglePause);
+
+  /* Touch support. */
+  viewport.addEventListener('touchstart', pause, { passive: true });
+  viewport.addEventListener('touchend', resume, { passive: true });
 
   window.addEventListener('load', measure);
   window.addEventListener('resize', measure);
+
   section.querySelectorAll('img').forEach(img => {
-    if (!img.complete) img.addEventListener('load', measure, { once: true });
+    if (!img.complete) {
+      img.addEventListener('load', measure, { once: true });
+    }
   });
 
   measure();
