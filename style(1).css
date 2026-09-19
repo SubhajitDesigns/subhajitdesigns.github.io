@@ -2709,3 +2709,157 @@ body.cursor-active .cursor-glow {
 
   transform: translateZ(0) !important;
 }
+
+
+/* =========================================================
+   STICKY HEADER — GLASS + 3D NAVIGATION
+   ========================================================= */
+
+.hero-nav {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+
+  width: 100% !important;
+  min-height: 78px !important;
+
+  display: flex !important;
+  align-items: center !important;
+
+  padding: 0 34px !important;
+
+  z-index: 99999 !important;
+
+  /* Glass effect */
+  background: rgba(12, 6, 7, 0.62) !important;
+  backdrop-filter: blur(18px) saturate(130%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(130%) !important;
+
+  /* Glass edge + 3D depth */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.45),
+    0 3px 14px rgba(255, 45, 35, 0.10),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+
+/* ---------------------------------------------------------
+   SUBHAJIT — move away from left edge
+   --------------------------------------------------------- */
+
+.hero-nav .brand {
+  margin-left: 4px !important;
+  margin-right: auto !important;
+}
+
+/* ---------------------------------------------------------
+   NAVIGATION LINKS
+   --------------------------------------------------------- */
+
+.hero-nav nav {
+  display: flex !important;
+  align-items: center !important;
+  gap: 34px !important;
+}
+
+.hero-nav nav a {
+  position: relative !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+
+  padding: 8px 2px !important;
+
+  font-size: 15px !important;
+  font-weight: 500 !important;
+
+  color: rgba(255, 255, 255, 0.78) !important;
+
+  text-decoration: none !important;
+
+  transition:
+    color 0.22s ease,
+    transform 0.22s cubic-bezier(.16,.84,.24,1),
+    text-shadow 0.22s ease !important;
+}
+
+/* Hover / focus = small pop + red */
+.hero-nav nav a:hover,
+.hero-nav nav a:focus-visible {
+  color: #ff3b32 !important;
+
+  transform: translateY(-3px) scale(1.04) !important;
+
+  text-shadow:
+    0 0 12px rgba(255, 55, 45, 0.30) !important;
+
+  outline: none !important;
+}
+
+/* Small red underline/glow */
+.hero-nav nav a::after {
+  content: "" !important;
+
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 0 !important;
+
+  width: 0 !important;
+  height: 2px !important;
+
+  border-radius: 10px !important;
+
+  background: #ff3b32 !important;
+
+  transform: translateX(-50%) !important;
+
+  transition:
+    width 0.22s ease,
+    box-shadow 0.22s ease !important;
+}
+
+.hero-nav nav a:hover::after,
+.hero-nav nav a:focus-visible::after {
+  width: 70% !important;
+
+  box-shadow:
+    0 0 8px rgba(255, 55, 45, 0.45) !important;
+}
+
+/* ---------------------------------------------------------
+   LET'S TALK — keep it comfortably away from right edge
+   --------------------------------------------------------- */
+
+.hero-nav .nav-cta {
+  margin-left: 38px !important;
+  margin-right: 4px !important;
+
+  flex-shrink: 0 !important;
+}
+
+/* ---------------------------------------------------------
+   MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 700px) {
+
+  .hero-nav {
+    min-height: 68px !important;
+    padding: 0 18px !important;
+  }
+
+  .hero-nav nav {
+    gap: 18px !important;
+  }
+
+  .hero-nav nav a {
+    font-size: 13px !important;
+  }
+
+  .hero-nav .nav-cta {
+    margin-left: 18px !important;
+    margin-right: 0 !important;
+  }
+}
