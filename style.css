@@ -1772,56 +1772,63 @@ body.cursor-active .cursor-glow {
 }
 
 /* =========================================================
-   CRAFTED — SINGLE ROW / LARGE FOLDERS / SLOW CAROUSEL
+   CRAFTED DESIGNS — FINAL CSS
+   ONE ROW / CONSTANT SIZE / HOVER BUMP ONLY
    ========================================================= */
 
 #work{
   --card-w: 340px;
   --gap: 45px;
-
-  /* Bigger folder + photos */
-  --folder-scale: 1.2;
-
-  /* Slow automatic movement */
   --speed: 38px;
 
-  --bg: #140505;
-
   position: relative;
-  background: var(--bg);
-  padding: 90px 0 110px;
+  background: #140505;
+
+  /* Compact section spacing */
+  padding: 45px 0 70px;
+
   overflow: hidden;
 }
 
 
-/* ---------- HEADING ---------- */
+/* =========================================================
+   HEADING
+   ========================================================= */
 
 #work .crafted-heading{
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   padding: 0 5vw;
 }
 
 
-/* ---------- SINGLE ROW VIEWPORT ---------- */
+/* =========================================================
+   SINGLE ROW VIEWPORT
+   ========================================================= */
 
 #work .crafted-viewport{
   position: relative;
-  width: 100%;
-  padding-top: 150px;
 
-  /* Hide folders outside the website edges */
+  width: 100%;
+
+  /* Small gap between subtitle and folders */
+  padding-top: 70px;
+
   overflow-x: hidden;
   overflow-y: visible;
 }
 
 
-/* ---------- ONE SINGLE HORIZONTAL ROW ---------- */
+/* =========================================================
+   SINGLE HORIZONTAL ROW
+   ========================================================= */
 
 #work .crafted-grid{
   display: flex !important;
+
   flex-direction: row !important;
   flex-wrap: nowrap !important;
+
   align-items: flex-end;
 
   gap: var(--gap);
@@ -1829,41 +1836,80 @@ body.cursor-active .cursor-glow {
   width: max-content !important;
   max-width: none !important;
 
+  margin: 0;
+  padding: 0;
+
   will-change: transform;
 }
 
 
-/* ---------- FOLDER ---------- */
+/* =========================================================
+   FOLDER
+   ========================================================= */
 
 #work .crafted-folder{
   flex: 0 0 var(--card-w) !important;
+
   width: var(--card-w) !important;
 
   height: auto;
+
+  position: relative;
 
   text-decoration: none;
   cursor: pointer;
 }
 
 
-/* ---------- LARGE FOLDER ---------- */
+/* =========================================================
+   NORMAL FOLDER SIZE
+   =========================================================
 
-#work .folder-icon{
-  transform: scale(var(--folder-scale));
+   IMPORTANT:
+   The folder NEVER changes size based on position.
+   */
+
+#work .crafted-folder .folder-icon{
+  transform: scale(1.20) !important;
+
   transform-origin: top center;
 
-  overflow: visible;
+  overflow: visible !important;
+
+  transition:
+    transform 0.35s cubic-bezier(.2,.8,.2,1);
 }
 
 
-/* ---------- PHOTOS CAN POP OUT ---------- */
+/* =========================================================
+   HOVER — ONLY THE SELECTED FOLDER
+   ========================================================= */
+
+#work .crafted-folder:hover .folder-icon{
+  transform:
+    translateY(-10px)
+    scale(1.27) !important;
+
+  z-index: 100;
+}
+
+
+/* =========================================================
+   PHOTOS
+   ========================================================= */
 
 #work .folder-previews{
   overflow: visible !important;
 }
 
+#work .folder-previews img{
+  object-fit: contain !important;
+}
 
-/* ---------- TEXT ---------- */
+
+/* =========================================================
+   FOLDER TEXT
+   ========================================================= */
 
 #work .crafted-folder h3{
   margin-top: 25px;
@@ -1884,13 +1930,26 @@ body.cursor-active .cursor-glow {
   #work{
     --card-w: 250px;
     --gap: 30px;
-    --folder-scale: 1.05;
     --speed: 28px;
 
-    padding: 60px 0 80px;
+    padding: 35px 0 60px;
+  }
+
+  #work .crafted-heading{
+    margin-bottom: 15px;
   }
 
   #work .crafted-viewport{
-    padding-top: 110px;
+    padding-top: 55px;
+  }
+
+  #work .crafted-folder .folder-icon{
+    transform: scale(1.05) !important;
+  }
+
+  #work .crafted-folder:hover .folder-icon{
+    transform:
+      translateY(-8px)
+      scale(1.11) !important;
   }
 }
