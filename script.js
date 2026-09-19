@@ -415,8 +415,10 @@ if (clientTrack) {
   function frame() {
     if (!MOBILE()) {
       current += (target - current) * EASE;
-      if (Math.abs(target - current) < 0.4) current = target;
+      const moving = Math.abs(target - current) >= 0.4;
+      if (!moving) current = target;
       track.style.transform = 'translate3d(' + current.toFixed(2) + 'px,0,0)';
+      viewport.classList.toggle('is-sliding', moving);
     }
     requestAnimationFrame(frame);
   }
