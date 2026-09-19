@@ -245,8 +245,7 @@ if (clientTrack) {
 
 
 /* =========================================================
-   CRAFTED DESIGNS — FINAL CAROUSEL
-   SLOW AUTO MOTION / HOVER / LIMITED SCROLL
+   CRAFTED DESIGNS — FINAL 3D CAROUSEL JS
    ========================================================= */
 
 (function () {
@@ -267,7 +266,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     DUPLICATE ORIGINAL FOLDERS
+     CREATE SEAMLESS LOOP
      ======================================================= */
 
   if (!track.dataset.looped) {
@@ -298,16 +297,11 @@ if (clientTrack) {
   let paused = false;
   let clickPaused = false;
 
-  /*
-     Maximum number of manual wheel movements
-     before normal page scrolling takes over.
-  */
   const MAX_WHEEL_MOVES = 2;
 
   let wheelMoves = 0;
-  let wheelGestureLocked = false;
-
-  let wheelResetTimer = null;
+  let wheelLocked = false;
+  let wheelTimer = null;
 
 
   /* =======================================================
@@ -323,7 +317,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     LOOP POSITION
+     NORMALIZE
      ======================================================= */
 
   function normalize() {
@@ -342,7 +336,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     APPLY MOVEMENT
+     MOVE
      ======================================================= */
 
   function moveTrack() {
@@ -356,7 +350,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     AUTOMATIC MOTION
+     AUTO MOTION
      ======================================================= */
 
   function animate(timestamp) {
@@ -385,6 +379,7 @@ if (clientTrack) {
       normalize();
 
       moveTrack();
+
     }
 
 
@@ -394,7 +389,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     HOVER — PAUSE ONLY WHEN A FOLDER IS HOVERED
+     HOVER PAUSE
      ======================================================= */
 
   track.addEventListener(
@@ -421,9 +416,21 @@ if (clientTrack) {
 
       if (!folder) return;
 
+      const related =
+        event.relatedTarget;
+
       /*
-         Don't resume if user manually paused it.
+         Don't resume when moving from one element
+         inside the same folder to another element
+         inside that same folder.
       */
+
+      if (
+        related &&
+        folder.contains(related)
+      ) {
+        return;
+      }
 
       if (!clickPaused) {
         paused = false;
@@ -434,17 +441,12 @@ if (clientTrack) {
 
 
   /* =======================================================
-     CLICK — PAUSE / RESUME
+     CLICK = PAUSE / RESUME
      ======================================================= */
 
   viewport.addEventListener(
     'click',
     function (event) {
-
-      /*
-         If the user is clicking a real link,
-         allow the link to work normally.
-      */
 
       if (event.target.closest('a')) {
         return;
@@ -461,13 +463,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     LIMITED MANUAL SCROLL
-     =======================================================
-
-     Only the first TWO distinct wheel gestures
-     are captured by the carousel.
-
-     After that, the normal website page scrolls.
+     LIMITED WHEEL SCROLL
      ======================================================= */
 
   viewport.addEventListener(
@@ -476,10 +472,6 @@ if (clientTrack) {
 
       if (setWidth <= 0) return;
 
-
-      /*
-         Ignore horizontal wheel gestures.
-      */
 
       if (
         Math.abs(event.deltaY) <=
@@ -490,9 +482,8 @@ if (clientTrack) {
 
 
       /*
-         If the user has already used the allowed
-         carousel wheel movements, DO NOT prevent
-         the browser's normal page scrolling.
+         After two wheel gestures,
+         let the website scroll normally.
       */
 
       if (wheelMoves >= MAX_WHEEL_MOVES) {
@@ -500,16 +491,8 @@ if (clientTrack) {
       }
 
 
-      /*
-         Prevent page movement for this gesture.
-      */
-
       event.preventDefault();
 
-
-      /*
-         Move carousel.
-      */
 
       offset +=
         event.deltaY * 0.8;
@@ -519,32 +502,21 @@ if (clientTrack) {
       moveTrack();
 
 
-      /*
-         Count this as one wheel gesture.
-      */
-
-      if (!wheelGestureLocked) {
+      if (!wheelLocked) {
 
         wheelMoves++;
 
-        wheelGestureLocked = true;
+        wheelLocked = true;
 
+        clearTimeout(wheelTimer);
 
-        /*
-           Prevent multiple browser wheel events
-           from counting as multiple gestures.
-        */
-
-        clearTimeout(wheelResetTimer);
-
-        wheelResetTimer =
+        wheelTimer =
           setTimeout(function () {
 
-            wheelGestureLocked = false;
+            wheelLocked = false;
 
           }, 650);
       }
-
 
     },
     {
@@ -554,21 +526,19 @@ if (clientTrack) {
 
 
   /* =======================================================
-     RESET MANUAL SCROLL LIMIT WHEN LEAVING SECTION
+     RESET WHEEL COUNT WHEN LEAVING SECTION
      ======================================================= */
 
   const observer =
     new IntersectionObserver(
       function (entries) {
 
-        const entry = entries[0];
-
-        if (!entry.isIntersecting) {
+        if (!entries[0].isIntersecting) {
 
           wheelMoves = 0;
-          wheelGestureLocked = false;
+          wheelLocked = false;
 
-          clearTimeout(wheelResetTimer);
+          clearTimeout(wheelTimer);
 
         }
 
@@ -577,6 +547,7 @@ if (clientTrack) {
         threshold: 0.05
       }
     );
+
 
   observer.observe(section);
 
@@ -622,9 +593,7 @@ if (clientTrack) {
     function () {
 
       measure();
-
       normalize();
-
       moveTrack();
 
     }
@@ -632,7 +601,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     IMAGE LOADING
+     IMAGE LOAD
      ======================================================= */
 
   section
@@ -646,9 +615,7 @@ if (clientTrack) {
           function () {
 
             measure();
-
             normalize();
-
             moveTrack();
 
           },
