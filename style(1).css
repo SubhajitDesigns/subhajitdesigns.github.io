@@ -2397,9 +2397,20 @@ body.cursor-active .cursor-glow {
   height: 110px !important;
 }
 
+/* Keep text safely below the folder during hover */
+#work .crafted-folder {
+  padding-bottom: 45px !important;
+}
+
 #work .crafted-folder .folder-title,
 #work .crafted-folder .crafted-title {
   margin-top: 28px !important;
-  position: relative !important;
-  z-index: 30 !important;
+}
+
+#work .crafted-folder .folder-front {
+  height: 145px !important;
+}
+
+#work .crafted-folder:hover .folder-front {
+  height: 120px !important;
 }
