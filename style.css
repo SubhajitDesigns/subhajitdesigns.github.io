@@ -1772,7 +1772,8 @@ body.cursor-active .cursor-glow {
 }
 
 /* =========================================================
-   CRAFTED DESIGNS — FINAL POLISHED VERSION
+   CRAFTED DESIGNS — 3D FOLDER OPEN
+   SINGLE ROW / AUTO CAROUSEL / REALISTIC HOVER
    ========================================================= */
 
 #work{
@@ -1783,10 +1784,11 @@ body.cursor-active .cursor-glow {
   position: relative;
   background: #140505;
 
-  /* Compact overall section */
   padding: 45px 0 45px;
 
   overflow: visible;
+
+  perspective: 1600px;
 }
 
 
@@ -1796,14 +1798,14 @@ body.cursor-active .cursor-glow {
 
 #work .crafted-heading{
   position: relative;
-  z-index: 100;
+  z-index: 1000;
 
   text-align: center;
 
-  /* Keep heading and folders closer together */
   margin-bottom: 0;
-
   padding: 0 5vw;
+
+  isolation: isolate;
 }
 
 #work .crafted-heading p{
@@ -1826,28 +1828,16 @@ body.cursor-active .cursor-glow {
 
 #work .crafted-viewport{
   position: relative;
+
   width: 100%;
 
-  /*
-     Small controlled gap between subtitle
-     and the moving folders.
-  */
-  padding-top: 42px;
+  padding-top: 48px;
+  padding-bottom: 10px;
 
-  /*
-     Enough room for folder text,
-     but no huge empty space underneath.
-  */
-  padding-bottom: 15px;
-
-  /*
-     Horizontal edges stay hidden.
-     Vertical content can remain visible.
-  */
   overflow-x: clip;
   overflow-y: visible;
 
-  z-index: 10;
+  perspective: 1600px;
 }
 
 
@@ -1857,7 +1847,6 @@ body.cursor-active .cursor-glow {
 
 #work .crafted-grid{
   display: flex !important;
-
   flex-direction: row !important;
   flex-wrap: nowrap !important;
 
@@ -1872,11 +1861,13 @@ body.cursor-active .cursor-glow {
   padding: 0;
 
   will-change: transform;
+
+  transform-style: preserve-3d;
 }
 
 
 /* =========================================================
-   FOLDER
+   EACH FOLDER
    ========================================================= */
 
 #work .crafted-folder{
@@ -1884,23 +1875,22 @@ body.cursor-active .cursor-glow {
   width: var(--card-w) !important;
   min-width: var(--card-w) !important;
 
-  /*
-     Enough room for:
-     folder + title + description.
-  */
   height: 365px;
 
   position: relative;
 
-  text-decoration: none;
   cursor: pointer;
+  text-decoration: none;
 
   z-index: 1;
+
+  perspective: 1400px;
+  transform-style: preserve-3d;
 }
 
 
 /* =========================================================
-   NORMAL FOLDER
+   FOLDER ICON / WHOLE FOLDER
    ========================================================= */
 
 #work .crafted-folder .folder-icon{
@@ -1911,62 +1901,73 @@ body.cursor-active .cursor-glow {
 
   margin: 0 auto;
 
-  /*
-     CONSTANT SIZE WHILE MOVING.
-  */
+  overflow: visible !important;
+
   transform:
     translateY(0)
-    scale(1.20) !important;
+    scale(1.20);
 
   transform-origin: center bottom;
 
-  overflow: visible !important;
+  transform-style: preserve-3d;
 
   z-index: 5;
 
   transition:
-    transform .65s cubic-bezier(.22,.75,.25,1);
+    transform .75s cubic-bezier(.16,.84,.24,1);
 }
 
 
 /* =========================================================
-   HOVERED FOLDER
-   =========================================================
-
-   Only the hovered folder rises.
-   It does NOT become much larger.
-   */
+   HOVER — WHOLE FOLDER RISES
+   ========================================================= */
 
 #work .crafted-folder:hover{
-  z-index: 200;
+  z-index: 500;
 }
 
 #work .crafted-folder:hover .folder-icon{
-  transform:
-    translateY(-16px)
-    scale(1.20) !important;
 
-  z-index: 200;
+  /*
+     The entire folder rises slightly.
+     Size remains essentially the same.
+  */
+  transform:
+    translateY(-22px)
+    scale(1.20);
+
+  z-index: 500;
 }
 
 
 /* =========================================================
-   FOLDER BACK
+   FOLDER BACK / BODY
    ========================================================= */
 
 #work .crafted-folder .folder-back{
+
+  transform-origin:
+    center bottom;
+
+  transform-style: preserve-3d;
+
   transition:
-    transform .65s cubic-bezier(.22,.75,.25,1);
+    transform .75s cubic-bezier(.16,.84,.24,1);
+
+  z-index: 2;
 }
 
 
-/*
-   Back rises gently.
-   */
+/* =========================================================
+   FOLDER TAB
+   ========================================================= */
 
-#work .crafted-folder:hover .folder-back{
-  transform:
-    translateY(-5px);
+#work .crafted-folder .folder-tab{
+
+  transform-style: preserve-3d;
+
+  transition:
+    transform .75s cubic-bezier(.16,.84,.24,1);
 }
 
 
@@ -1975,37 +1976,27 @@ body.cursor-active .cursor-glow {
    ========================================================= */
 
 #work .crafted-folder .folder-previews{
+
   position: absolute;
 
-  /*
-     Photos remain close to the folder.
-     No huge upward jump.
-  */
-  transform:
-    translateY(14px);
+  left: 8px;
+  top: 0;
+
+  width: 264px;
+  height: 180px;
 
   overflow: visible !important;
+
+  transform:
+    translateY(18px)
+    translateZ(20px);
+
+  transform-style: preserve-3d;
 
   z-index: 20;
 
   transition:
-    transform .65s cubic-bezier(.22,.75,.25,1);
-}
-
-
-/* =========================================================
-   HOVER PHOTO POSITION
-   ========================================================= */
-
-#work .crafted-folder:hover .folder-previews{
-  /*
-     Small controlled upward pop.
-     Keeps photos close to folder.
-  */
-  transform:
-    translateY(-2px);
-
-  z-index: 250;
+    transform .8s cubic-bezier(.16,.84,.24,1);
 }
 
 
@@ -2014,72 +2005,161 @@ body.cursor-active .cursor-glow {
    ========================================================= */
 
 #work .crafted-folder .folder-previews img{
+
   object-fit: contain !important;
 
+  transform-origin: center bottom;
+
+  backface-visibility: visible;
+
   transition:
-    transform .65s cubic-bezier(.22,.75,.25,1);
+    transform .8s cubic-bezier(.16,.84,.24,1),
+    filter .8s ease;
+
 }
 
 
 /* =========================================================
-   FOLDER FRONT — SMOOTH OPEN
+   HOVER — PHOTOS COME OUT OF THE FOLDER
+   ========================================================= */
+
+#work .crafted-folder:hover .folder-previews{
+
+  /*
+     Photos come UP and slightly FORWARD,
+     but remain connected to the folder.
+  */
+  transform:
+    translateY(-58px)
+    translateZ(55px);
+
+  z-index: 350;
+}
+
+
+/* =========================================================
+   INDIVIDUAL PHOTO POP
+   ========================================================= */
+
+#work .crafted-folder:hover .folder-previews img{
+
+  filter:
+    drop-shadow(0 18px 24px rgba(0,0,0,.42));
+
+}
+
+
+/* =========================================================
+   FRONT FLAP — CLOSED
    ========================================================= */
 
 #work .crafted-folder .folder-front{
+
   position: relative;
+
+  transform-origin:
+    center bottom;
+
+  transform-style: preserve-3d;
+
+  backface-visibility: visible;
 
   z-index: 40;
 
   transition:
-    transform .65s cubic-bezier(.22,.75,.25,1);
-}
+    transform .8s cubic-bezier(.16,.84,.24,1),
+    filter .8s ease;
 
-
-/*
-   The front gently drops downward.
-   This makes the folder visually open.
-*/
-
-#work .crafted-folder:hover .folder-front{
-  transform:
-    translateY(14px);
 }
 
 
 /* =========================================================
-   TEXT BELOW FOLDER
+   FRONT FLAP — REAL 3D OPEN
+   =========================================================
+
+   The front panel rotates forward/downward,
+   creating the appearance of a real folder opening.
+   */
+
+#work .crafted-folder:hover .folder-front{
+
+  transform:
+    perspective(900px)
+    rotateX(-48deg)
+    translateY(20px)
+    translateZ(8px);
+
+  filter:
+    drop-shadow(0 18px 20px rgba(0,0,0,.30));
+
+  z-index: 45;
+}
+
+
+/* =========================================================
+   EXTRA SIDE DEPTH
+   ========================================================= */
+
+#work .crafted-folder .folder-back,
+#work .crafted-folder .folder-front{
+
+  backface-visibility: visible;
+
+}
+
+
+/* =========================================================
+   TEXT
    ========================================================= */
 
 #work .crafted-folder h3{
+
   position: relative;
 
-  /*
-     Text sits clearly below the folder.
-  */
   margin: 10px 0 0;
 
   text-align: center;
 
-  z-index: 300;
+  z-index: 600;
+
 }
 
 #work .crafted-folder > p{
+
   position: relative;
 
   margin: 7px 0 0;
 
   text-align: center;
 
-  z-index: 300;
+  z-index: 600;
+
 }
 
 
 /* =========================================================
-   HEADING ALWAYS ABOVE POPPED PHOTOS
+   HEADING ALWAYS ABOVE THE CAROUSEL
    ========================================================= */
 
-#work .crafted-heading{
-  isolation: isolate;
+#work .crafted-heading,
+#work .crafted-heading *{
+
+  position: relative;
+
+  z-index: 1000;
+
+}
+
+
+/* =========================================================
+   COMING SOON
+   ========================================================= */
+
+#work .coming-soon,
+#work .folder-coming-soon{
+
+  z-index: 600;
+
 }
 
 
@@ -2087,7 +2167,7 @@ body.cursor-active .cursor-glow {
    MOBILE
    ========================================================= */
 
-@media (max-width: 760px){
+@media (max-width:760px){
 
   #work{
     --card-w: 260px;
@@ -2098,8 +2178,7 @@ body.cursor-active .cursor-glow {
   }
 
   #work .crafted-viewport{
-    padding-top: 32px;
-    padding-bottom: 10px;
+    padding-top: 35px;
   }
 
   #work .crafted-folder{
@@ -2109,17 +2188,26 @@ body.cursor-active .cursor-glow {
   #work .crafted-folder .folder-icon{
     transform:
       translateY(0)
-      scale(1.05) !important;
+      scale(1.05);
   }
 
   #work .crafted-folder:hover .folder-icon{
     transform:
-      translateY(-11px)
-      scale(1.05) !important;
+      translateY(-14px)
+      scale(1.05);
+  }
+
+  #work .crafted-folder:hover .folder-previews{
+    transform:
+      translateY(-42px)
+      translateZ(35px);
   }
 
   #work .crafted-folder:hover .folder-front{
     transform:
-      translateY(10px);
+      perspective(700px)
+      rotateX(-42deg)
+      translateY(14px);
   }
+
 }
