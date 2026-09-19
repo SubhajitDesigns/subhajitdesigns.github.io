@@ -1805,9 +1805,13 @@ body.cursor-active .cursor-glow {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 5vw;
+  padding: 0;              /* 0 so the track can reach the true screen edge */
   box-sizing: border-box;
   overflow: visible;
+}
+
+#work .crafted-heading{
+  padding: 0 5vw;           /* heading keeps a normal margin, track doesn't */
 }
 
 #work .crafted-heading{
@@ -1819,20 +1823,18 @@ body.cursor-active .cursor-glow {
   font-size: clamp(52px, 6vw, 92px);
 }
 
-/* ---- WINDOW: shows exactly --visible folders ---- */
+/* ---- WINDOW: shows exactly --visible folders, edge to edge ----
+   width is 100% of the section — no centered box, no leftover
+   margin. JS measures this and sets --card-w so the columns fill
+   it exactly, so the outer folders touch the true left/right edge. */
 #work .crafted-viewport{
   position: relative;
-  width: calc(
-    var(--visible) * var(--card-w) +
-    (var(--visible) - 1) * var(--col-gap)
-  );
-  max-width: 100%;
-  margin: 0 auto;
+  width: 100%;
 
   /* breathing room so hovered photos pop above the folder
      without being cut off */
   padding-top: 80px;
-  box-sizing: content-box;
+  box-sizing: border-box;
 
   /* clip sideways, stay open vertically */
   overflow-x: clip;
