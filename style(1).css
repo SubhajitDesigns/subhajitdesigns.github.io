@@ -2039,171 +2039,135 @@ body.cursor-active .cursor-glow {
 
 
 /* =========================================================
-   CRAFTED — NATURAL FOLDER OPEN + PHOTO POP
+   CRAFTED — FINAL NATURAL PHOTO POP
    ========================================================= */
 
-/* Keep folder shape stable */
+/* Folder stays exactly the same */
 #work .crafted-folder .folder-icon {
   transform: none !important;
-  transform-style: preserve-3d !important;
   overflow: visible !important;
+  transform-style: preserve-3d !important;
 }
 
-/* ---------------------------------------------------------
-   PHOTO CONTAINER
-   --------------------------------------------------------- */
-
+/* Photos stay inside the folder */
 #work .crafted-folder .folder-previews {
   position: absolute !important;
   left: 8px !important;
-  top: 30px !important;
+  top: 25px !important;
   width: 264px !important;
-  height: 150px !important;
+  height: 160px !important;
   overflow: visible !important;
   z-index: 5 !important;
   pointer-events: none !important;
-
-  transition:
-    transform .65s cubic-bezier(.16,.84,.24,1) !important;
 }
 
-/* ---------------------------------------------------------
-   PHOTOS — CLOSED POSITION
-   --------------------------------------------------------- */
-
+/* Individual photos */
 #work .crafted-folder .folder-previews img {
   position: absolute !important;
-
   width: 105px !important;
   height: 105px !important;
-
   object-fit: cover !important;
   border-radius: 8px !important;
 
-  box-shadow: 0 8px 18px rgba(0,0,0,.32) !important;
-
   transition:
-    transform .65s cubic-bezier(.16,.84,.24,1),
-    top .65s cubic-bezier(.16,.84,.24,1),
-    box-shadow .65s ease !important;
+    transform 0.7s cubic-bezier(.16,.84,.24,1),
+    top 0.7s cubic-bezier(.16,.84,.24,1),
+    box-shadow 0.7s ease !important;
 
   will-change: transform, top !important;
 }
 
-/* Closed — tucked into folder */
+/* CLOSED — tucked behind the folder */
 #work .crafted-folder .folder-previews img:nth-child(1) {
   left: 0 !important;
-  top: 48px !important;
-  transform: rotate(-8deg) scale(.90) !important;
+  top: 55px !important;
+  transform: rotate(-8deg) scale(.88) !important;
 }
 
 #work .crafted-folder .folder-previews img:nth-child(2) {
   left: 53px !important;
-  top: 34px !important;
-  transform: rotate(-3deg) scale(.90) !important;
+  top: 42px !important;
+  transform: rotate(-3deg) scale(.88) !important;
 }
 
 #work .crafted-folder .folder-previews img:nth-child(3) {
   left: 106px !important;
-  top: 34px !important;
-  transform: rotate(3deg) scale(.90) !important;
+  top: 42px !important;
+  transform: rotate(3deg) scale(.88) !important;
 }
 
 #work .crafted-folder .folder-previews img:nth-child(4) {
   left: 159px !important;
-  top: 48px !important;
-  transform: rotate(8deg) scale(.90) !important;
+  top: 55px !important;
+  transform: rotate(8deg) scale(.88) !important;
 }
 
 
-/* ---------------------------------------------------------
-   HOVER — PHOTOS COME OUT OF THE FOLDER
-   --------------------------------------------------------- */
+/* =========================================================
+   HOVER — PHOTOS SLIDE OUT FROM BEHIND THE FLAP
+   ========================================================= */
 
 #work .crafted-folder:hover .folder-previews {
   z-index: 20 !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(1) {
-  top: 12px !important;
-  transform:
-    rotate(-8deg)
-    translateY(-25px)
-    scale(1) !important;
+  top: 22px !important;
+  transform: rotate(-8deg) translateY(-18px) scale(.98) !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(2) {
-  top: -2px !important;
-  transform:
-    rotate(-3deg)
-    translateY(-25px)
-    scale(1) !important;
+  top: 8px !important;
+  transform: rotate(-3deg) translateY(-18px) scale(.98) !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(3) {
-  top: -2px !important;
-  transform:
-    rotate(3deg)
-    translateY(-25px)
-    scale(1) !important;
+  top: 8px !important;
+  transform: rotate(3deg) translateY(-18px) scale(.98) !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(4) {
-  top: 12px !important;
-  transform:
-    rotate(8deg)
-    translateY(-25px)
-    scale(1) !important;
+  top: 22px !important;
+  transform: rotate(8deg) translateY(-18px) scale(.98) !important;
 }
 
 
-/* ---------------------------------------------------------
-   FOLDER FRONT / FLAP
-   --------------------------------------------------------- */
+/* =========================================================
+   FRONT FLAP
+   ========================================================= */
 
 #work .crafted-folder .folder-front {
   position: absolute !important;
-
   left: 0 !important;
   bottom: 0 !important;
 
   width: 100% !important;
   height: 145px !important;
 
-  border-radius: 15px !important;
-
   transform-origin: bottom center !important;
-  transform:
-    rotateX(0deg)
-    translateY(0) !important;
+  transform: rotateX(0deg) !important;
 
   z-index: 10 !important;
 
   transition:
-    height .65s cubic-bezier(.16,.84,.24,1),
-    transform .65s cubic-bezier(.16,.84,.24,1) !important;
+    height .7s cubic-bezier(.16,.84,.24,1),
+    transform .7s cubic-bezier(.16,.84,.24,1) !important;
 
   will-change: height, transform !important;
 }
 
 
-/* ---------------------------------------------------------
-   HOVER — GENTLE FLAP OPEN
-   --------------------------------------------------------- */
-
+/* GENTLE OPEN */
 #work .crafted-folder:hover .folder-front {
-  height: 128px !important;
-
-  transform:
-    rotateX(16deg)
-    translateY(3px) !important;
+  height: 132px !important;
+  transform: rotateX(12deg) translateY(2px) !important;
 }
 
 
-/* Photos sit above the flap only while open */
+/* Photos become visible above the flap */
 #work .crafted-folder:hover .folder-previews img {
   z-index: 30 !important;
 
   box-shadow:
-    0 12px 24px rgba(0,0,0,.38) !important;
+    0 10px 22px rgba(0,0,0,.35) !important;
 }
