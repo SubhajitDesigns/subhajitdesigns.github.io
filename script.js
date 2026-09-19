@@ -245,19 +245,24 @@ if (clientTrack) {
 
 
 /* =========================================================
-   CRAFTED DESIGNS — FINAL CAROUSEL
-   ONE ROW / SAME SIZE / SLOW RIGHT → LEFT
-   HOVER PAUSE + HOVER BUMP
+   CRAFTED DESIGNS — FINAL JAVASCRIPT
+   ONE ROW / CONSTANT SIZE / SLOW RIGHT → LEFT
+   HOVER PAUSE / HOVER BUMP
    SCROLL SUPPORT
    ========================================================= */
 
 (function () {
 
   const section = document.querySelector('#work');
+
   if (!section) return;
 
-  const viewport = section.querySelector('.crafted-viewport');
-  const track = section.querySelector('.crafted-grid');
+
+  const viewport =
+    section.querySelector('.crafted-viewport');
+
+  const track =
+    section.querySelector('.crafted-grid');
 
   if (!viewport || !track) return;
 
@@ -272,9 +277,11 @@ if (clientTrack) {
       Array.from(track.children);
 
     originalFolders.forEach(function (folder) {
+
       track.appendChild(
         folder.cloneNode(true)
       );
+
     });
 
     track.dataset.looped = 'true';
@@ -298,30 +305,34 @@ if (clientTrack) {
      ======================================================= */
 
   function measure() {
-    setWidth = track.scrollWidth / 2;
+
+    setWidth =
+      track.scrollWidth / 2;
+
   }
 
 
   /* =======================================================
-     LOOP POSITION
+     NORMALIZE LOOP
      ======================================================= */
 
   function normalize() {
 
     if (setWidth <= 0) return;
 
-    if (offset >= setWidth) {
+    while (offset >= setWidth) {
       offset -= setWidth;
     }
 
-    if (offset < 0) {
+    while (offset < 0) {
       offset += setWidth;
     }
+
   }
 
 
   /* =======================================================
-     MOVE TRACK
+     MOVE
      ======================================================= */
 
   function moveTrack() {
@@ -330,11 +341,12 @@ if (clientTrack) {
       'translate3d(' +
       (-offset).toFixed(2) +
       'px, 0, 0)';
+
   }
 
 
   /* =======================================================
-     AUTOMATIC MOTION
+     AUTOMATIC SLOW MOTION
      ======================================================= */
 
   function animate(timestamp) {
@@ -357,15 +369,18 @@ if (clientTrack) {
             .getPropertyValue('--speed')
         ) || 38;
 
-      offset += speed * delta;
+      offset +=
+        speed * delta;
 
       normalize();
 
       moveTrack();
+
     }
 
 
     requestAnimationFrame(animate);
+
   }
 
 
@@ -373,9 +388,10 @@ if (clientTrack) {
      HOVER
      =======================================================
 
-     Hover pauses the movement.
+     Hovering the Crafted area pauses movement.
 
-     Your CSS handles the bump/open/photo-pop.
+     The CSS handles the bump and photo pop ONLY
+     on the folder actually under the mouse.
      ======================================================= */
 
   viewport.addEventListener(
@@ -411,21 +427,25 @@ if (clientTrack) {
     function (event) {
 
       /*
-       Don't interfere with actual folder links.
+         Don't interfere with folder links.
       */
+
       if (event.target.closest('a')) {
         return;
       }
 
-      clickPaused = !clickPaused;
-      paused = clickPaused;
+      clickPaused =
+        !clickPaused;
+
+      paused =
+        clickPaused;
 
     }
   );
 
 
   /* =======================================================
-     SCROLL SUPPORT
+     MOUSE WHEEL
      ======================================================= */
 
   viewport.addEventListener(
@@ -441,16 +461,13 @@ if (clientTrack) {
 
         event.preventDefault();
 
-        /*
-         * Scroll down → move left
-         * Scroll up   → move right
-         */
-
-        offset += event.deltaY * 0.8;
+        offset +=
+          event.deltaY * 0.8;
 
         normalize();
 
         moveTrack();
+
       }
 
     },
@@ -467,7 +484,9 @@ if (clientTrack) {
   viewport.addEventListener(
     'touchstart',
     function () {
+
       paused = true;
+
     },
     {
       passive: true
@@ -540,6 +559,7 @@ if (clientTrack) {
      ======================================================= */
 
   measure();
+
   moveTrack();
 
   requestAnimationFrame(animate);
