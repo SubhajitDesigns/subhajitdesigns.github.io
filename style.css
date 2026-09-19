@@ -1771,92 +1771,171 @@ body.cursor-active .cursor-glow {
   transform:translate(-50%,-50%) scale(1);
 }
 
-/* CRAFTED — FINAL 2x3 SLIDING WINDOW */
+/* =========================================================
+   CRAFTED — PINNED HORIZONTAL SCROLL TRACK
+   Replaces everything from "CRAFTED — FINAL 2x3 SLIDING WINDOW"
+   to the end of your old style.css.
+   ========================================================= */
 
-#work {
-  overflow: visible !important;
-}
-
-#work .crafted-viewport {
- width: 1040px !important;
-max-width: calc(100vw - 40px) !important;
-
-  margin-left: auto !important;
-margin-right: auto !important;
+/* ---- THE ONLY NUMBERS YOU NEED TO TOUCH ---- */
+#work{
+  --card-w:        330px;   /* width of one folder cell            */
+  --card-h:        410px;   /* height of one folder cell           */
+  --col-gap:       130px;   /* SIDE GAP between folders            */
+  --row-gap:       70px;    /* gap between rows (only if --rows:2) */
+  --folder-scale:  1.20;    /* FOLDER SIZE — 1 = original          */
+  --visible:       3;       /* how many folders on screen at once  */
+  --rows:          1;       /* 1 = single row, 2 = two rows        */
+  --ease:          0.10;    /* slide smoothing, lower = floatier   */
 
   position: relative;
-
-  /* Extra space so popped photos are never cut at the top */
-  padding-top: 70px !important;
-  box-sizing: border-box !important;
-
- overflow: visible !important;
+  background: #070101;
+  padding: 0;
+  overflow: visible;
 }
 
-#work .crafted-grid {
-  overflow: visible !important;
+/* ---- STICKY STAGE ----
+   JS gives #work a tall height; this layer pins to the screen
+   while you scroll past it. */
+.crafted-pin{
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5vw;
+  box-sizing: border-box;
+  overflow: visible;
 }
-#work .crafted-grid {
-  display: grid !important;
 
-  /* TWO ROWS */
-  grid-template-rows: 330px 330px !important;
+#work .crafted-heading{
+  margin-bottom: 34px;
+  flex: 0 0 auto;
+}
 
-  /* MOVE HORIZONTALLY BY COLUMNS */
-  grid-auto-flow: column !important;
+#work .crafted-heading h2{
+  font-size: clamp(52px, 6vw, 92px);
+}
 
-  /*
-     3 columns visible at once.
-     Each column contains exactly 2 folders.
-  */
- grid-auto-columns: 1fr !important;
+/* ---- WINDOW: shows exactly --visible folders ---- */
+#work .crafted-viewport{
+  position: relative;
+  width: calc(
+    var(--visible) * var(--card-w) +
+    (var(--visible) - 1) * var(--col-gap)
+  );
+  max-width: 100%;
+  margin: 0 auto;
 
-  /* Correct 3-column / 2-row folder order */
-#work .crafted-folder:nth-child(1) { grid-column: 1; grid-row: 1; }
-#work .crafted-folder:nth-child(2) { grid-column: 2; grid-row: 1; }
-#work .crafted-folder:nth-child(3) { grid-column: 3; grid-row: 1; }
+  /* breathing room so hovered photos pop above the folder
+     without being cut off */
+  padding-top: 80px;
+  box-sizing: content-box;
 
-#work .crafted-folder:nth-child(4) { grid-column: 1; grid-row: 2; }
-#work .crafted-folder:nth-child(5) { grid-column: 2; grid-row: 2; }
-#work .crafted-folder:nth-child(6) { grid-column: 3; grid-row: 2; }
+  /* clip sideways, stay open vertically */
+  overflow-x: clip;
+  overflow-y: visible;
+}
 
-#work .crafted-folder:nth-child(7) { grid-column: 4; grid-row: 1; }
-#work .crafted-folder:nth-child(8) { grid-column: 4; grid-row: 2; }
+/* ---- THE TRACK THAT SLIDES ---- */
+#work .crafted-grid{
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: var(--card-w);
+  grid-template-rows: repeat(var(--rows), var(--card-h));
 
-#work .crafted-folder:nth-child(9) { grid-column: 5; grid-row: 1; }
-#work .crafted-folder:nth-child(10) { grid-column: 5; grid-row: 2; }
+  column-gap: var(--col-gap);
+  row-gap: var(--row-gap);
 
-#work .crafted-folder:nth-child(11) { grid-column: 6; grid-row: 1; }
-  
-  width: max-content !important;
-  max-width: none !important;
+  width: max-content;
+  max-width: none;
+  margin: 0;
+  padding: 0;
 
-  column-gap: 100px !important;
-  row-gap: 40px !important;
-
-  margin-left: auto !important;
-margin-right: auto !important;
-  padding: 0 0 40px !important;
-
-  box-sizing: border-box !important;
-
+  transform: translate3d(0, 0, 0);
   will-change: transform;
 }
 
-#work .crafted-folder {
-  width: 280px !important;
-  height: 330px !important;
-
-  justify-self: center !important;
-  align-self: start !important;
+/* ---- FOLDER CELL ---- */
+#work .crafted-folder{
+  width: var(--card-w);
+  height: auto;
+  justify-self: center;
+  align-self: start;
 }
 
-/* NEVER CLIP THE PHOTOS INSIDE THE FOLDER */
-
-#work .folder-icon {
-  overflow: visible !important;
+/* ---- BIGGER FOLDER, IDENTICAL SHAPE ----
+   scale() grows the folder AND its photo stack together, so every
+   proportion, rotation and shadow stays exactly as you built it.
+   The margin below reclaims the layout space scale() doesn't take. */
+#work .folder-icon{
+  transform: scale(var(--folder-scale));
+  transform-origin: top center;
+  margin-bottom: calc(250px * (var(--folder-scale) - 1));
+  overflow: visible;
 }
 
-#work .folder-previews {
-  overflow: visible !important;
+#work .folder-previews{
+  overflow: visible;
+}
+
+#work .crafted-folder h3{
+  margin-top: 30px;
+}
+
+/* ---- SHORT LAPTOP SCREENS ---- */
+@media (max-height: 860px){
+  #work{
+    --folder-scale: 1.02;
+    --card-h: 360px;
+  }
+  #work .crafted-heading{ margin-bottom: 20px; }
+  #work .crafted-heading h2{ font-size: clamp(44px, 5vw, 70px); }
+  #work .crafted-viewport{ padding-top: 60px; }
+}
+
+/* ---- TABLET ---- */
+@media (max-width: 1100px){
+  #work{
+    --visible: 2;
+    --col-gap: 80px;
+    --folder-scale: 1.05;
+  }
+}
+
+/* ---- MOBILE: no pinning, just stack them ---- */
+@media (max-width: 760px){
+  #work{
+    --folder-scale: 1;
+    height: auto !important;   /* undo the height JS set */
+    padding: 80px 0 100px;
+  }
+
+  .crafted-pin{
+    position: static;
+    height: auto;
+    display: block;
+    padding: 0 6vw;
+  }
+
+  #work .crafted-viewport{
+    width: 100%;
+    padding-top: 40px;
+    overflow: visible;
+  }
+
+  #work .crafted-grid{
+    grid-auto-flow: row;
+    grid-template-rows: none;
+    grid-template-columns: 1fr;
+    row-gap: 50px;
+    width: 100%;
+    transform: none !important;
+  }
+
+  #work .crafted-folder{
+    width: 100%;
+  }
 }
