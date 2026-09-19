@@ -276,7 +276,7 @@ if (clientTrack) {
   let lastTime = performance.now();
 
   /* Normal slow movement */
-  const AUTO_SPEED = 35;
+  const AUTO_SPEED = 45;
 
   /* Horizontal movement per wheel */
   const WHEEL_STEP = 420;
