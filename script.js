@@ -382,6 +382,15 @@ if (clientTrack) {
   let target   = 0;
   const EASE   = 0.16;
   let cooldown = false;
+  let fadeTimer = null;
+
+  function showFadeBriefly() {
+    viewport.classList.add('is-sliding');
+    clearTimeout(fadeTimer);
+    fadeTimer = setTimeout(() => {
+      viewport.classList.remove('is-sliding');
+    }, 650); // roughly how long the ease takes to settle
+  }
 
   function measure() {
     if (MOBILE()) {
@@ -415,10 +424,8 @@ if (clientTrack) {
   function frame() {
     if (!MOBILE()) {
       current += (target - current) * EASE;
-      const moving = Math.abs(target - current) >= 0.4;
-      if (!moving) current = target;
+      if (Math.abs(target - current) < 0.4) current = target;
       track.style.transform = 'translate3d(' + current.toFixed(2) + 'px,0,0)';
-      viewport.classList.toggle('is-sliding', moving);
     }
     requestAnimationFrame(frame);
   }
@@ -444,6 +451,7 @@ if (clientTrack) {
     index  += goingDown ? 1 : -1;
     index   = Math.max(0, Math.min(maxIndex, index));
     target  = -index * colStep;
+    showFadeBriefly();
 
     /* one physical scroll gesture = exactly one column step */
     cooldown = true;
