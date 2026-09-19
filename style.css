@@ -1772,7 +1772,7 @@ body.cursor-active .cursor-glow {
 }
 
 /* =========================================================
-   CRAFTED DESIGNS — FINAL HOVER / OPEN VERSION
+   CRAFTED DESIGNS — FINAL POLISHED VERSION
    ========================================================= */
 
 #work{
@@ -1783,7 +1783,8 @@ body.cursor-active .cursor-glow {
   position: relative;
   background: #140505;
 
-  padding: 45px 0 60px;
+  /* Compact overall section */
+  padding: 45px 0 45px;
 
   overflow: visible;
 }
@@ -1795,10 +1796,13 @@ body.cursor-active .cursor-glow {
 
 #work .crafted-heading{
   position: relative;
-  z-index: 5;
+  z-index: 100;
 
   text-align: center;
-  margin-bottom: 5px;
+
+  /* Keep heading and folders closer together */
+  margin-bottom: 0;
+
   padding: 0 5vw;
 }
 
@@ -1812,7 +1816,7 @@ body.cursor-active .cursor-glow {
 }
 
 #work .crafted-heading div{
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 
@@ -1822,18 +1826,28 @@ body.cursor-active .cursor-glow {
 
 #work .crafted-viewport{
   position: relative;
-
   width: 100%;
 
   /*
-     Small amount of room above the folders.
-     Photos stay close to the folder.
+     Small controlled gap between subtitle
+     and the moving folders.
   */
-  padding-top: 45px;
-  padding-bottom: 35px;
+  padding-top: 42px;
 
+  /*
+     Enough room for folder text,
+     but no huge empty space underneath.
+  */
+  padding-bottom: 15px;
+
+  /*
+     Horizontal edges stay hidden.
+     Vertical content can remain visible.
+  */
   overflow-x: clip;
   overflow-y: visible;
+
+  z-index: 10;
 }
 
 
@@ -1843,6 +1857,7 @@ body.cursor-active .cursor-glow {
 
 #work .crafted-grid{
   display: flex !important;
+
   flex-direction: row !important;
   flex-wrap: nowrap !important;
 
@@ -1869,22 +1884,23 @@ body.cursor-active .cursor-glow {
   width: var(--card-w) !important;
   min-width: var(--card-w) !important;
 
-  position: relative;
+  /*
+     Enough room for:
+     folder + title + description.
+  */
+  height: 365px;
 
-  height: 350px;
+  position: relative;
 
   text-decoration: none;
   cursor: pointer;
 
   z-index: 1;
-
-  transition:
-    z-index 0s linear;
 }
 
 
 /* =========================================================
-   FOLDER ICON
+   NORMAL FOLDER
    ========================================================= */
 
 #work .crafted-folder .folder-icon{
@@ -1895,6 +1911,9 @@ body.cursor-active .cursor-glow {
 
   margin: 0 auto;
 
+  /*
+     CONSTANT SIZE WHILE MOVING.
+  */
   transform:
     translateY(0)
     scale(1.20) !important;
@@ -1903,10 +1922,10 @@ body.cursor-active .cursor-glow {
 
   overflow: visible !important;
 
-  z-index: 2;
+  z-index: 5;
 
   transition:
-    transform .45s cubic-bezier(.22,.8,.25,1);
+    transform .65s cubic-bezier(.22,.75,.25,1);
 }
 
 
@@ -1914,20 +1933,20 @@ body.cursor-active .cursor-glow {
    HOVERED FOLDER
    =========================================================
 
-   The WHOLE folder rises slightly.
-   It does NOT become dramatically larger.
+   Only the hovered folder rises.
+   It does NOT become much larger.
    */
 
 #work .crafted-folder:hover{
-  z-index: 100;
+  z-index: 200;
 }
 
 #work .crafted-folder:hover .folder-icon{
   transform:
-    translateY(-18px)
+    translateY(-16px)
     scale(1.20) !important;
 
-  z-index: 100;
+  z-index: 200;
 }
 
 
@@ -1937,18 +1956,17 @@ body.cursor-active .cursor-glow {
 
 #work .crafted-folder .folder-back{
   transition:
-    transform .45s cubic-bezier(.22,.8,.25,1);
+    transform .65s cubic-bezier(.22,.75,.25,1);
 }
 
 
 /*
-   When hovered, the back of the folder rises slightly,
-   creating the feeling that the folder is opening.
-*/
+   Back rises gently.
+   */
 
 #work .crafted-folder:hover .folder-back{
   transform:
-    translateY(-8px);
+    translateY(-5px);
 }
 
 
@@ -1959,107 +1977,109 @@ body.cursor-active .cursor-glow {
 #work .crafted-folder .folder-previews{
   position: absolute;
 
-  overflow: visible !important;
-
   /*
-     Keep photos close to the folder.
+     Photos remain close to the folder.
+     No huge upward jump.
   */
   transform:
-    translateY(22px);
+    translateY(14px);
+
+  overflow: visible !important;
+
+  z-index: 20;
 
   transition:
-    transform .45s cubic-bezier(.22,.8,.25,1);
-
-  z-index: 5;
+    transform .65s cubic-bezier(.22,.75,.25,1);
 }
 
 
 /* =========================================================
-   PHOTOS — NORMAL
+   HOVER PHOTO POSITION
+   ========================================================= */
+
+#work .crafted-folder:hover .folder-previews{
+  /*
+     Small controlled upward pop.
+     Keeps photos close to folder.
+  */
+  transform:
+    translateY(-2px);
+
+  z-index: 250;
+}
+
+
+/* =========================================================
+   PHOTOS
    ========================================================= */
 
 #work .crafted-folder .folder-previews img{
   object-fit: contain !important;
 
   transition:
-    transform .45s cubic-bezier(.22,.8,.25,1);
+    transform .65s cubic-bezier(.22,.75,.25,1);
 }
 
 
 /* =========================================================
-   PHOTOS — HOVER
-   =========================================================
-
-   Small controlled pop.
-   They do NOT fly toward the heading.
-   */
-
-#work .crafted-folder:hover .folder-previews{
-  transform:
-    translateY(-5px);
-
-  z-index: 30;
-}
-
-
-/* =========================================================
-   FRONT OF FOLDER
+   FOLDER FRONT — SMOOTH OPEN
    ========================================================= */
 
 #work .crafted-folder .folder-front{
+  position: relative;
+
+  z-index: 40;
+
   transition:
-    transform .45s cubic-bezier(.22,.8,.25,1);
+    transform .65s cubic-bezier(.22,.75,.25,1);
 }
 
 
 /*
-   The front moves DOWN slightly when hovered.
-
-   This creates an actual "folder opening" feeling:
-   back + photos stay visible while the front drops.
+   The front gently drops downward.
+   This makes the folder visually open.
 */
 
 #work .crafted-folder:hover .folder-front{
   transform:
-    translateY(18px);
+    translateY(14px);
 }
 
 
 /* =========================================================
-   TEXT
+   TEXT BELOW FOLDER
    ========================================================= */
 
 #work .crafted-folder h3{
   position: relative;
 
   /*
-     Text sits clearly underneath the folder.
+     Text sits clearly below the folder.
   */
-  margin: 4px 0 0;
+  margin: 10px 0 0;
 
   text-align: center;
 
-  z-index: 40;
+  z-index: 300;
 }
 
 #work .crafted-folder > p{
   position: relative;
 
-  margin-top: 8px;
+  margin: 7px 0 0;
 
   text-align: center;
 
-  z-index: 40;
+  z-index: 300;
 }
 
 
 /* =========================================================
-   KEEP POPPED PHOTOS ABOVE EVERYTHING
+   HEADING ALWAYS ABOVE POPPED PHOTOS
    ========================================================= */
 
-#work .folder-previews,
-#work .folder-previews img{
-  pointer-events: none;
+#work .crafted-heading{
+  isolation: isolate;
 }
 
 
@@ -2074,20 +2094,16 @@ body.cursor-active .cursor-glow {
     --gap: 35px;
     --speed: 28px;
 
-    padding: 35px 0 50px;
-  }
-
-  #work .crafted-heading{
-    margin-bottom: 0;
+    padding: 35px 0 35px;
   }
 
   #work .crafted-viewport{
-    padding-top: 35px;
-    padding-bottom: 25px;
+    padding-top: 32px;
+    padding-bottom: 10px;
   }
 
   #work .crafted-folder{
-    height: 300px;
+    height: 310px;
   }
 
   #work .crafted-folder .folder-icon{
@@ -2098,12 +2114,12 @@ body.cursor-active .cursor-glow {
 
   #work .crafted-folder:hover .folder-icon{
     transform:
-      translateY(-12px)
+      translateY(-11px)
       scale(1.05) !important;
   }
 
   #work .crafted-folder:hover .folder-front{
     transform:
-      translateY(12px);
+      translateY(10px);
   }
 }
