@@ -1809,7 +1809,7 @@ margin-right: auto !important;
      3 columns visible at once.
      Each column contains exactly 2 folders.
   */
- grid-auto-columns: calc((100vw - 90px) / 3) !important;
+ grid-auto-columns: 1fr !important;
 
   /* Correct 3-column / 2-row folder order */
 #work .crafted-folder:nth-child(1) { grid-column: 1; grid-row: 1; }
