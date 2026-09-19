@@ -246,7 +246,7 @@ if (clientTrack) {
 
 /* =========================================================
    SUBHAJIT — CRAFTED DESIGNS
-   CONTINUOUS RIGHT → LEFT INFINITE MARQUEE
+   AUTO MARQUEE + MANUAL MOUSE DRAG
    ========================================================= */
 
 (() => {
@@ -256,17 +256,15 @@ if (clientTrack) {
 
   if (!section || !grid) return;
 
-  /*
-     Keep the original folders.
-     We duplicate them once so the marquee
-     can loop seamlessly.
-  */
-
   const originalFolders = Array.from(
     grid.querySelectorAll(".crafted-folder")
   );
 
   if (!originalFolders.length) return;
+
+  /* ---------------------------------------------------------
+     CREATE THE INFINITE LOOP
+     --------------------------------------------------------- */
 
   originalFolders.forEach(folder => {
     grid.appendChild(folder.cloneNode(true));
@@ -274,19 +272,23 @@ if (clientTrack) {
 
   let position = 0;
   let loopWidth = 0;
+
   let lastTime = performance.now();
 
-  /*
-     Speed in pixels per second.
-     Lower = slower
-     Higher = faster
-  */
-
+  /* Automatic movement speed */
   const SPEED = 35;
 
+  /* ---------------------------------------------------------
+     DRAG CONTROL
+     --------------------------------------------------------- */
+
+  let isDragging = false;
+  let startPointerX = 0;
+  let startPosition = 0;
+  let hasDragged = false;
 
   /* ---------------------------------------------------------
-     CALCULATE THE WIDTH OF ONE COMPLETE SET
+     CALCULATE LOOP WIDTH
      --------------------------------------------------------- */
 
   function calculateLoopWidth() {
@@ -302,9 +304,37 @@ if (clientTrack) {
 
   }
 
+  /* ---------------------------------------------------------
+     KEEP POSITION INSIDE THE INFINITE LOOP
+     --------------------------------------------------------- */
+
+  function normalizePosition() {
+
+    if (loopWidth <= 0) return;
+
+    while (position >= loopWidth) {
+      position -= loopWidth;
+    }
+
+    while (position < 0) {
+      position += loopWidth;
+    }
+
+  }
 
   /* ---------------------------------------------------------
-     INFINITE MARQUEE
+     APPLY POSITION
+     --------------------------------------------------------- */
+
+  function render() {
+
+    grid.style.transform =
+      `translate3d(${-position}px, 0, 0)`;
+
+  }
+
+  /* ---------------------------------------------------------
+     AUTOMATIC MARQUEE
      --------------------------------------------------------- */
 
   function animate(time) {
@@ -314,26 +344,136 @@ if (clientTrack) {
 
     lastTime = time;
 
-    position += SPEED * deltaTime;
+    /* Only auto-move when user isn't dragging */
+    if (!isDragging) {
 
-    /*
-       When the first complete set has moved away,
-       jump back by exactly one set width.
+      position += SPEED * deltaTime;
 
-       Because the duplicated folders are identical,
-       this jump is invisible.
-    */
+      normalizePosition();
 
-    if (loopWidth > 0 && position >= loopWidth) {
-      position -= loopWidth;
+      render();
+
     }
 
-    grid.style.transform =
-      `translate3d(${-position}px, 0, 0)`;
-
     requestAnimationFrame(animate);
+
   }
 
+  /* ---------------------------------------------------------
+     MOUSE DOWN — START MANUAL CONTROL
+     --------------------------------------------------------- */
+
+  section.addEventListener("pointerdown", (event) => {
+
+    /* Only primary mouse button */
+    if (event.pointerType === "mouse" && event.button !== 0) {
+      return;
+    }
+
+    isDragging = true;
+    hasDragged = false;
+
+    startPointerX = event.clientX;
+    startPosition = position;
+
+    section.setPointerCapture?.(event.pointerId);
+
+    section.style.cursor = "grabbing";
+
+  });
+
+  /* ---------------------------------------------------------
+     MOUSE MOVE — MOVE FOLDERS WITH MOUSE
+     --------------------------------------------------------- */
+
+  section.addEventListener("pointermove", (event) => {
+
+    if (!isDragging) return;
+
+    const distance =
+      event.clientX - startPointerX;
+
+    if (Math.abs(distance) > 5) {
+      hasDragged = true;
+    }
+
+    /*
+      Drag left  → folders move left
+      Drag right → folders move right
+    */
+
+    position =
+      startPosition - distance;
+
+    normalizePosition();
+
+    render();
+
+  });
+
+  /* ---------------------------------------------------------
+     MOUSE UP — RETURN TO AUTO MODE
+     --------------------------------------------------------- */
+
+  function stopDragging(event) {
+
+    if (!isDragging) return;
+
+    isDragging = false;
+
+    section.style.cursor = "";
+
+    try {
+      section.releasePointerCapture?.(event.pointerId);
+    } catch (error) {
+      /* Nothing needed */
+    }
+
+    /*
+      Automatic movement automatically resumes
+      on the next animation frame.
+    */
+
+  }
+
+  section.addEventListener("pointerup", stopDragging);
+
+  section.addEventListener("pointercancel", stopDragging);
+
+  section.addEventListener("pointerleave", (event) => {
+
+    if (isDragging && event.pointerType !== "mouse") {
+      stopDragging(event);
+    }
+
+  });
+
+  /* ---------------------------------------------------------
+     PREVENT A DRAG FROM ACCIDENTALLY CLICKING A FOLDER
+     --------------------------------------------------------- */
+
+  section.addEventListener("click", (event) => {
+
+    if (!hasDragged) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    hasDragged = false;
+
+  }, true);
+
+  /* ---------------------------------------------------------
+     RESIZE
+     --------------------------------------------------------- */
+
+  window.addEventListener("resize", () => {
+
+    calculateLoopWidth();
+    normalizePosition();
+    render();
+
+  });
 
   /* ---------------------------------------------------------
      START
@@ -341,21 +481,15 @@ if (clientTrack) {
 
   calculateLoopWidth();
 
-  grid.style.transform =
-    "translate3d(0, 0, 0)";
+  /*
+    Start slightly to the left so the marquee
+    immediately has movement.
+  */
+
+  position = 0;
+
+  render();
 
   requestAnimationFrame(animate);
-
-
-  /* ---------------------------------------------------------
-     RECALCULATE AFTER RESIZE
-     --------------------------------------------------------- */
-
-  window.addEventListener("resize", () => {
-
-    calculateLoopWidth();
-
-  });
-
 
 })();
