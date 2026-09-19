@@ -1899,10 +1899,11 @@ body.cursor-active .cursor-glow {
   --visible:       3;       /* how many folders on screen at once  */
   --rows:          2;       /* 1 = single row, 2 = two rows        */
   --ease:          0.10;    /* slide smoothing, lower = floatier   */
-  --edge-fade:     150px;   /* width of the fade at each side edge */
+  --edge-fade:     150px;   /* width of the fade shown WHILE sliding */
+  --bg:            #140505; /* section background — softer than pure black */
 
   position: relative;
-  background: #070101;
+  background: var(--bg);
   padding: 0;
   overflow: visible;
 }
@@ -1959,7 +1960,12 @@ body.cursor-active .cursor-glow {
                           unwanted vertical slider you saw. "clip"
                           doesn't have that side effect. */
   overflow-y: visible;
+}
 
+/* the fade only appears WHILE a folder is actively sliding across
+   the edge — JS adds this class during motion and removes it the
+   moment the track settles, so at rest all folders are fully clear */
+#work .crafted-viewport.is-sliding{
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0,
