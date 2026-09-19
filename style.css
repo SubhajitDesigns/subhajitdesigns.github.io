@@ -1772,116 +1772,98 @@ body.cursor-active .cursor-glow {
 }
 
 /* =========================================================
-   CRAFTED — AUTO-PLAYING COVERFLOW (single row)
-   Replaces EVERYTHING from your old crafted-fix block.
-   Folders drift right → left on their own. The one nearest
-   the center grows; the rest shrink and fade toward the
-   edges. Hovering (or touching) pauses the motion.
+   CRAFTED — SINGLE ROW, SLOW CONTINUOUS MARQUEE
+   One row only. Folders enter from the right and leave left.
+   Center folders are large; edge folders shrink smoothly.
+   Hover/click pause is handled by the matching JS.
    ========================================================= */
 
 #work{
-  /* ---- THE KNOBS ---- */
-  --card-w:        320px;   /* base width of one folder cell        */
-  --gap:           70px;    /* space between folders                */
-  --folder-scale:  1.05;    /* base folder size (before emphasis)   */
-  --min-scale:     0.6;     /* size of a folder at the far edge     */
-  --max-scale:     1.55;    /* size of the folder centered — BIG    */
-  --speed:         55;      /* drift speed, px per second           */
-  --bg:            #140505; /* section background                  */
+  --card-w: 360px;
+  --gap: 120px;
+  --folder-scale-center: 1.12;
+  --folder-scale-edge: .72;
+  --speed: 42;
+  --bg: #140505;
 
   position: relative;
   background: var(--bg);
-  padding: 90px 0 110px;
+  padding: 90px 0 120px;
   overflow: hidden;
 }
 
-.crafted-heading{
-  text-align: center;
-  margin-bottom: 50px;
+#work .crafted-heading{
+  text-align:center;
+  margin-bottom: 65px;
   padding: 0 5vw;
 }
 
-.crafted-heading p{
-  margin: 0 0 12px;
-  color: #ff3426;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 6px;
-}
-
-.crafted-heading h2{
-  margin: 0;
-  color: #fff;
-  font-family: "Bebas Neue", sans-serif;
-  font-size: clamp(52px, 6vw, 92px);
-  line-height: .9;
-}
-
-.crafted-heading h2 span{ color: #ff3426; }
-
-.crafted-heading div{
-  margin-top: 18px;
-  color: #8d8585;
-  font-size: 12px;
-  letter-spacing: 6px;
-}
-
-/* ---- THE TRACK'S WINDOW ---- */
 #work .crafted-viewport{
   position: relative;
   width: 100%;
-  height: 480px;          /* room for the biggest (center) folder */
+  height: 560px;
+  padding-top: 120px;
   overflow: hidden;
-  cursor: pointer;
+  box-sizing: border-box;
 }
 
-/* ---- THE DRIFTING TRACK ---- */
 #work .crafted-grid{
   display: flex;
-  align-items: flex-end;   /* folders share a common baseline */
+  align-items: flex-start;
+  flex-wrap: nowrap;
   gap: var(--gap);
   width: max-content;
   will-change: transform;
+  transform: translate3d(0,0,0);
 }
 
-/* ---- EACH FOLDER ---- */
 #work .crafted-folder{
   flex: 0 0 var(--card-w);
   width: var(--card-w);
+  min-width: var(--card-w);
   height: auto;
   text-decoration: none;
   cursor: pointer;
-  transform-origin: center bottom;
-  /* JS sets the live scale/opacity every frame — no CSS
-     transition here, it would fight the per-frame updates */
+  transition: transform .35s ease;
 }
 
 #work .folder-icon{
-  transform: scale(var(--folder-scale));
+  overflow: visible;
   transform-origin: top center;
+  transition: transform .35s ease;
+}
+
+#work .folder-previews{
   overflow: visible;
 }
 
-#work .folder-previews{ overflow: visible; }
-
 #work .crafted-folder h3{
-  margin-top: 25px;
-  text-align: center;
+  margin-top: 28px;
+  text-align:center;
 }
 
 #work .crafted-folder > p{
-  text-align: center;
+  text-align:center;
 }
 
-/* ---- MOBILE: smaller, simpler, still auto-drifts ---- */
+/* JS adds this while a folder is being held/hovered. */
+#work.is-paused .crafted-grid{
+  transition: none;
+}
+
+/* On smaller screens keep the same one-row behavior. */
 @media (max-width: 760px){
   #work{
-    --card-w: 220px;
-    --gap: 40px;
-    --folder-scale: 1;
-    --speed: 40;
-    padding: 60px 0 80px;
+    --card-w: 280px;
+    --gap: 80px;
+    --folder-scale-center: 1.05;
+    --folder-scale-edge: .68;
+    --speed: 32;
+    padding: 60px 0 90px;
   }
-  #work .crafted-viewport{ height: 340px; }
-  #work .crafted-heading h2{ font-size: clamp(38px, 8vw, 60px); }
+
+  #work .crafted-viewport{
+    height: 470px;
+    padding-top: 90px;
+  }
 }
