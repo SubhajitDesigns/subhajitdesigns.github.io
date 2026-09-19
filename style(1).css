@@ -2438,186 +2438,99 @@ body.cursor-active .cursor-glow {
 
 
 /* =========================================================
-   CRAFTED — ACTUAL FOLDER PHOTO EFFECT
+   CRAFTED — SIMPLE PHOTO PEEK + POP
    ========================================================= */
 
-/* Folder stays exactly where it is */
 #work .crafted-folder .folder-icon {
   position: relative !important;
   overflow: visible !important;
-  transform: none !important;
 }
 
-/* No artificial strip */
-#work .crafted-folder .folder-front::before {
-  content: none !important;
-}
-
-
-/* ---------------------------------------------------------
-   PHOTOS
-   Photos stay BEHIND the front panel.
-   --------------------------------------------------------- */
-
+/* Photo container */
 #work .crafted-folder .folder-previews {
   position: absolute !important;
-
   left: 8px !important;
-  top: 25px !important;
-
+  top: 0 !important;
   width: 264px !important;
   height: 180px !important;
-
   overflow: visible !important;
   pointer-events: none !important;
-
   z-index: 5 !important;
 }
 
+/* Photos */
 #work .crafted-folder .folder-previews img {
   position: absolute !important;
-
   width: 110px !important;
   height: 110px !important;
-
   object-fit: cover !important;
-
   border-radius: 8px !important;
-
   z-index: 5 !important;
-
-  transform-origin: center bottom !important;
 
   transition:
     top .7s cubic-bezier(.16,.84,.24,1),
-    transform .7s cubic-bezier(.16,.84,.24,1),
-    box-shadow .7s cubic-bezier(.16,.84,.24,1) !important;
+    transform .7s cubic-bezier(.16,.84,.24,1) !important;
 }
 
 
-/* ---------------------------------------------------------
-   NORMAL
-   Just a small amount of each photo peeks out.
-   --------------------------------------------------------- */
+/* =========================================================
+   NORMAL — PHOTOS VISIBLY PEEK OUT
+   ========================================================= */
 
 #work .crafted-folder .folder-previews img:nth-child(1) {
   left: 0 !important;
-  top: 35px !important;
-  transform: rotate(-8deg) scale(.90) !important;
+  top: 12px !important;
+  transform: rotate(-8deg) !important;
 }
 
 #work .crafted-folder .folder-previews img:nth-child(2) {
   left: 53px !important;
-  top: 23px !important;
-  transform: rotate(-3deg) scale(.90) !important;
+  top: 0 !important;
+  transform: rotate(-3deg) !important;
 }
 
 #work .crafted-folder .folder-previews img:nth-child(3) {
   left: 106px !important;
-  top: 23px !important;
-  transform: rotate(3deg) scale(.90) !important;
+  top: 0 !important;
+  transform: rotate(3deg) !important;
 }
 
 #work .crafted-folder .folder-previews img:nth-child(4) {
   left: 159px !important;
-  top: 35px !important;
-  transform: rotate(8deg) scale(.90) !important;
+  top: 12px !important;
+  transform: rotate(8deg) !important;
 }
 
 
-/* ---------------------------------------------------------
-   FRONT PANEL
-   ALWAYS stays in front of the photos.
-   --------------------------------------------------------- */
+/* =========================================================
+   FRONT PANEL STAYS IN FRONT
+   ========================================================= */
 
 #work .crafted-folder .folder-front {
-  position: absolute !important;
   z-index: 20 !important;
 }
 
 
-/* ---------------------------------------------------------
-   HOVER
-   Photos rise OUT of the folder.
-   --------------------------------------------------------- */
+/* =========================================================
+   HOVER — PHOTOS COME OUT
+   ========================================================= */
 
 #work .crafted-folder:hover .folder-previews img:nth-child(1) {
   top: -55px !important;
   transform: rotate(-8deg) scale(1) !important;
-  box-shadow: 0 14px 25px rgba(0,0,0,.35) !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(2) {
-  top: -67px !important;
+  top: -55px !important;
   transform: rotate(-3deg) scale(1) !important;
-  box-shadow: 0 14px 25px rgba(0,0,0,.35) !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(3) {
-  top: -67px !important;
+  top: -55px !important;
   transform: rotate(3deg) scale(1) !important;
-  box-shadow: 0 14px 25px rgba(0,0,0,.35) !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(4) {
   top: -55px !important;
   transform: rotate(8deg) scale(1) !important;
-  box-shadow: 0 14px 25px rgba(0,0,0,.35) !important;
-}
-
-
-/* ---------------------------------------------------------
-   TITLE — STAYS FIXED
-   --------------------------------------------------------- */
-
-#work .crafted-folder {
-  padding-bottom: 60px !important;
-}
-
-#work .crafted-folder .folder-title,
-#work .crafted-folder .crafted-title,
-#work .crafted-folder .folder-subtitle {
-  transform: none !important;
-  transition: none !important;
-}
-
-#work .crafted-folder .folder-title,
-#work .crafted-folder .crafted-title {
-  margin-top: 38px !important;
-}
-
-
-/* ---------------------------------------------------------
-   COMING SOON
-   --------------------------------------------------------- */
-
-#work .motion-coming-soon .coming-soon-text {
-  position: absolute !important;
-
-  left: 50% !important;
-  top: 45% !important;
-
-  z-index: 50 !important;
-
-  opacity: 0 !important;
-
-  pointer-events: none !important;
-
-  transform:
-    translate(-50%, -50%)
-    translateY(15px)
-    scale(.85) !important;
-
-  transition:
-    opacity .4s ease,
-    transform .5s cubic-bezier(.16,.84,.24,1) !important;
-}
-
-#work .motion-coming-soon:hover .coming-soon-text {
-  opacity: 1 !important;
-
-  transform:
-    translate(-50%, -50%)
-    translateY(-8px)
-    scale(1) !important;
 }
