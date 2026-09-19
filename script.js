@@ -245,10 +245,7 @@ if (clientTrack) {
 
 
 /* =========================================================
-   CRAFTED DESIGNS — FINAL JAVASCRIPT
-   ONE ROW / CONSTANT SIZE / SLOW RIGHT → LEFT
-   HOVER PAUSE / HOVER BUMP
-   SCROLL SUPPORT
+   CRAFTED DESIGNS — FINAL CAROUSEL JS
    ========================================================= */
 
 (function () {
@@ -268,15 +265,15 @@ if (clientTrack) {
 
 
   /* =======================================================
-     CREATE SEAMLESS LOOP
+     DUPLICATE FOLDERS FOR SEAMLESS LOOP
      ======================================================= */
 
   if (!track.dataset.looped) {
 
-    const originalFolders =
+    const originals =
       Array.from(track.children);
 
-    originalFolders.forEach(function (folder) {
+    originals.forEach(function (folder) {
 
       track.appendChild(
         folder.cloneNode(true)
@@ -313,7 +310,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     NORMALIZE LOOP
+     NORMALIZE
      ======================================================= */
 
   function normalize() {
@@ -346,7 +343,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     AUTOMATIC SLOW MOTION
+     AUTOMATIC MOTION
      ======================================================= */
 
   function animate(timestamp) {
@@ -385,13 +382,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     HOVER
-     =======================================================
-
-     Hovering the Crafted area pauses movement.
-
-     The CSS handles the bump and photo pop ONLY
-     on the folder actually under the mouse.
+     HOVER = PAUSE
      ======================================================= */
 
   viewport.addEventListener(
@@ -427,7 +418,7 @@ if (clientTrack) {
     function (event) {
 
       /*
-         Don't interfere with folder links.
+         Do not interfere with actual folder links.
       */
 
       if (event.target.closest('a')) {
@@ -518,7 +509,9 @@ if (clientTrack) {
     function () {
 
       measure();
+
       normalize();
+
       moveTrack();
 
     }
@@ -540,7 +533,9 @@ if (clientTrack) {
           function () {
 
             measure();
+
             normalize();
+
             moveTrack();
 
           },
