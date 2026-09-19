@@ -2195,7 +2195,7 @@ body.cursor-active .cursor-glow {
 
   transform:
     rotate(-8deg)
-    translateY(-12px)
+    translateY(-20px)
     scale(1) !important;
 
   box-shadow:
@@ -2207,7 +2207,7 @@ body.cursor-active .cursor-glow {
 
   transform:
     rotate(-3deg)
-    translateY(-12px)
+    translateY(-20px)
     scale(1) !important;
 
   box-shadow:
@@ -2219,7 +2219,7 @@ body.cursor-active .cursor-glow {
 
   transform:
     rotate(3deg)
-    translateY(-12px)
+    translateY(-20px)
     scale(1) !important;
 
   box-shadow:
@@ -2231,7 +2231,7 @@ body.cursor-active .cursor-glow {
 
   transform:
     rotate(8deg)
-    translateY(-12px)
+    translateY(-20px)
     scale(1) !important;
 
   box-shadow:
