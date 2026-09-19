@@ -1772,98 +1772,125 @@ body.cursor-active .cursor-glow {
 }
 
 /* =========================================================
-   CRAFTED — SINGLE ROW, SLOW CONTINUOUS MARQUEE
-   One row only. Folders enter from the right and leave left.
-   Center folders are large; edge folders shrink smoothly.
-   Hover/click pause is handled by the matching JS.
+   CRAFTED — SINGLE ROW / LARGE FOLDERS / SLOW CAROUSEL
    ========================================================= */
 
 #work{
-  --card-w: 360px;
-  --gap: 120px;
-  --folder-scale-center: 1.12;
-  --folder-scale-edge: .72;
-  --speed: 42;
+  --card-w: 340px;
+  --gap: 45px;
+
+  /* Bigger folder + photos */
+  --folder-scale: 1.2;
+
+  /* Slow automatic movement */
+  --speed: 38px;
+
   --bg: #140505;
 
   position: relative;
   background: var(--bg);
-  padding: 90px 0 120px;
+  padding: 90px 0 110px;
   overflow: hidden;
 }
 
+
+/* ---------- HEADING ---------- */
+
 #work .crafted-heading{
-  text-align:center;
-  margin-bottom: 65px;
+  text-align: center;
+  margin-bottom: 50px;
   padding: 0 5vw;
 }
+
+
+/* ---------- SINGLE ROW VIEWPORT ---------- */
 
 #work .crafted-viewport{
   position: relative;
   width: 100%;
-  height: 560px;
-  padding-top: 120px;
-  overflow: hidden;
-  box-sizing: border-box;
+  padding-top: 150px;
+
+  /* Hide folders outside the website edges */
+  overflow-x: hidden;
+  overflow-y: visible;
 }
+
+
+/* ---------- ONE SINGLE HORIZONTAL ROW ---------- */
 
 #work .crafted-grid{
-  display: flex;
-  align-items: flex-start;
-  flex-wrap: nowrap;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: flex-end;
+
   gap: var(--gap);
-  width: max-content;
+
+  width: max-content !important;
+  max-width: none !important;
+
   will-change: transform;
-  transform: translate3d(0,0,0);
 }
+
+
+/* ---------- FOLDER ---------- */
 
 #work .crafted-folder{
-  flex: 0 0 var(--card-w);
-  width: var(--card-w);
-  min-width: var(--card-w);
+  flex: 0 0 var(--card-w) !important;
+  width: var(--card-w) !important;
+
   height: auto;
+
   text-decoration: none;
   cursor: pointer;
-  transition: transform .35s ease;
 }
+
+
+/* ---------- LARGE FOLDER ---------- */
 
 #work .folder-icon{
-  overflow: visible;
+  transform: scale(var(--folder-scale));
   transform-origin: top center;
-  transition: transform .35s ease;
+
+  overflow: visible;
 }
+
+
+/* ---------- PHOTOS CAN POP OUT ---------- */
 
 #work .folder-previews{
-  overflow: visible;
+  overflow: visible !important;
 }
 
+
+/* ---------- TEXT ---------- */
+
 #work .crafted-folder h3{
-  margin-top: 28px;
-  text-align:center;
+  margin-top: 25px;
+  text-align: center;
 }
 
 #work .crafted-folder > p{
-  text-align:center;
+  text-align: center;
 }
 
-/* JS adds this while a folder is being held/hovered. */
-#work.is-paused .crafted-grid{
-  transition: none;
-}
 
-/* On smaller screens keep the same one-row behavior. */
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
 @media (max-width: 760px){
+
   #work{
-    --card-w: 280px;
-    --gap: 80px;
-    --folder-scale-center: 1.05;
-    --folder-scale-edge: .68;
-    --speed: 32;
-    padding: 60px 0 90px;
+    --card-w: 250px;
+    --gap: 30px;
+    --folder-scale: 1.05;
+    --speed: 28px;
+
+    padding: 60px 0 80px;
   }
 
   #work .crafted-viewport{
-    height: 470px;
-    padding-top: 90px;
+    padding-top: 110px;
   }
 }
