@@ -2039,145 +2039,136 @@ body.cursor-active .cursor-glow {
 
 
 /* =========================================================
-   CRAFTED — FINAL PHOTO POP + SIMPLE FOLDER OPEN
+   CRAFTED — FINAL SMOOTH PHOTO POP + FOLDER OPEN
    ========================================================= */
 
-/* Keep folder stable */
+/* Keep the folder itself stable */
 #work .crafted-folder .folder-icon {
   transform: none !important;
+  transform-style: preserve-3d !important;
   overflow: visible !important;
 }
 
-/* Folder back */
-#work .crafted-folder .folder-back {
-  left: 5% !important;
-  top: 18px !important;
-  width: 90% !important;
-  height: 165px !important;
-  z-index: 1 !important;
-}
-
-/* =========================================================
-   PHOTOS
-   ========================================================= */
-
+/* Photo area */
 #work .crafted-folder .folder-previews {
   position: absolute !important;
-
   left: 8px !important;
-  top: 25px !important;
-
+  top: 35px !important;
   width: 264px !important;
-  height: 145px !important;
-
+  height: 135px !important;
   overflow: visible !important;
-
-  z-index: 8 !important;
+  z-index: 4 !important;
   pointer-events: none !important;
 }
 
+/* Individual photos */
 #work .crafted-folder .folder-previews img {
   position: absolute !important;
-
   width: 105px !important;
   height: 105px !important;
-
   object-fit: cover !important;
   border-radius: 8px !important;
 
-  box-shadow: 0 8px 18px rgba(0,0,0,.35) !important;
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.32) !important;
 
   transition:
     transform .65s cubic-bezier(.16,.84,.24,1),
-    top .65s cubic-bezier(.16,.84,.24,1) !important;
+    top .65s cubic-bezier(.16,.84,.24,1),
+    box-shadow .65s ease !important;
+
+  will-change: transform, top !important;
 }
 
-/* Normal position — photos stay inside folder */
+/* Photos sitting inside the folder */
 #work .crafted-folder .folder-previews img:nth-child(1) {
   left: 0 !important;
-  top: 42px !important;
+  top: 35px !important;
   transform: rotate(-8deg) scale(.92) !important;
 }
 
 #work .crafted-folder .folder-previews img:nth-child(2) {
   left: 53px !important;
-  top: 28px !important;
+  top: 20px !important;
   transform: rotate(-3deg) scale(.92) !important;
 }
 
 #work .crafted-folder .folder-previews img:nth-child(3) {
   left: 106px !important;
-  top: 28px !important;
+  top: 20px !important;
   transform: rotate(3deg) scale(.92) !important;
 }
 
 #work .crafted-folder .folder-previews img:nth-child(4) {
   left: 159px !important;
-  top: 42px !important;
+  top: 35px !important;
   transform: rotate(8deg) scale(.92) !important;
 }
 
 
 /* =========================================================
-   HOVER — PHOTOS POP UP
+   HOVER — PHOTOS POP OUT FROM INSIDE
    ========================================================= */
 
+#work .crafted-folder:hover .folder-previews {
+  z-index: 12 !important;
+}
+
 #work .crafted-folder:hover .folder-previews img:nth-child(1) {
-  top: 12px !important;
-  transform: rotate(-9deg) scale(1) !important;
+  top: 0 !important;
+  transform: rotate(-8deg) translateY(-25px) scale(1.02) !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(2) {
-  top: -2px !important;
-  transform: rotate(-3deg) scale(1) !important;
+  top: 0 !important;
+  transform: rotate(-3deg) translateY(-30px) scale(1.02) !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(3) {
-  top: -2px !important;
-  transform: rotate(3deg) scale(1) !important;
+  top: 0 !important;
+  transform: rotate(3deg) translateY(-30px) scale(1.02) !important;
 }
 
 #work .crafted-folder:hover .folder-previews img:nth-child(4) {
-  top: 12px !important;
-  transform: rotate(9deg) scale(1) !important;
+  top: 0 !important;
+  transform: rotate(8deg) translateY(-25px) scale(1.02) !important;
 }
 
 
 /* =========================================================
-   FOLDER FRONT
+   FOLDER FRONT / FLAP
    ========================================================= */
 
 #work .crafted-folder .folder-front {
   position: absolute !important;
-
   left: 0 !important;
   bottom: 0 !important;
-
   width: 100% !important;
   height: 145px !important;
 
   border-radius: 15px !important;
 
   transform-origin: bottom center !important;
+  transform: rotateX(0deg) translateY(0) !important;
 
-  transform: none !important;
-
-  z-index: 10 !important;
+  z-index: 8 !important;
 
   transition:
-    height .55s cubic-bezier(.2,.8,.2,1),
-    transform .55s cubic-bezier(.2,.8,.2,1) !important;
+    height .65s cubic-bezier(.16,.84,.24,1),
+    transform .65s cubic-bezier(.16,.84,.24,1) !important;
+
+  will-change: height, transform !important;
 }
 
 
-/* =========================================================
-   SIMPLE PREVIOUS-STYLE OPENING
-   ========================================================= */
-
+/* Smooth folder opening */
 #work .crafted-folder:hover .folder-front {
-  height: 120px !important;
+  height: 128px !important;
+  transform: rotateX(18deg) translateY(4px) !important;
+}
 
-  transform:
-    rotateX(45deg)
-    translateY(12px) !important;
+
+/* Make sure the photo pop remains above the opened flap */
+#work .crafted-folder:hover .folder-previews img {
+  z-index: 20 !important;
 }
