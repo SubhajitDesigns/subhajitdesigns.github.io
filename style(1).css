@@ -2354,9 +2354,19 @@ body.cursor-active .cursor-glow {
    CRAFTED — FINAL BACK FOLDER SIZE
    ========================================================= */
 
+/* =========================================================
+   CRAFTED — FIX BACK/FONT LAYER ALIGNMENT
+   ========================================================= */
+
+/* Rear folder layer */
 #work .crafted-folder .folder-back {
   top: 18px !important;
-  height: 125px !important;
+  height: 140px !important;
+}
+
+/* Keep the front panel in the same position */
+#work .crafted-folder .folder-front {
+  bottom: 0 !important;
 }
 
 #work .crafted-folder .folder-front {
