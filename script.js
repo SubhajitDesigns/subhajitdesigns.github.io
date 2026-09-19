@@ -245,12 +245,14 @@ if (clientTrack) {
 
 
 /* =========================================================
-   CRAFTED DESIGNS — FINAL CAROUSEL JS
+   CRAFTED DESIGNS — FINAL CAROUSEL
+   SLOW AUTO MOTION / HOVER / LIMITED SCROLL
    ========================================================= */
 
 (function () {
 
-  const section = document.querySelector('#work');
+  const section =
+    document.querySelector('#work');
 
   if (!section) return;
 
@@ -265,7 +267,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     DUPLICATE FOLDERS FOR SEAMLESS LOOP
+     DUPLICATE ORIGINAL FOLDERS
      ======================================================= */
 
   if (!track.dataset.looped) {
@@ -296,6 +298,17 @@ if (clientTrack) {
   let paused = false;
   let clickPaused = false;
 
+  /*
+     Maximum number of manual wheel movements
+     before normal page scrolling takes over.
+  */
+  const MAX_WHEEL_MOVES = 2;
+
+  let wheelMoves = 0;
+  let wheelGestureLocked = false;
+
+  let wheelResetTimer = null;
+
 
   /* =======================================================
      MEASURE
@@ -310,7 +323,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     NORMALIZE
+     LOOP POSITION
      ======================================================= */
 
   function normalize() {
@@ -329,7 +342,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     MOVE
+     APPLY MOVEMENT
      ======================================================= */
 
   function moveTrack() {
@@ -372,7 +385,6 @@ if (clientTrack) {
       normalize();
 
       moveTrack();
-
     }
 
 
@@ -382,24 +394,36 @@ if (clientTrack) {
 
 
   /* =======================================================
-     HOVER = PAUSE
+     HOVER — PAUSE ONLY WHEN A FOLDER IS HOVERED
      ======================================================= */
 
-  viewport.addEventListener(
-    'mouseenter',
-    function () {
+  track.addEventListener(
+    'mouseover',
+    function (event) {
 
-      if (!clickPaused) {
-        paused = true;
-      }
+      const folder =
+        event.target.closest('.crafted-folder');
+
+      if (!folder) return;
+
+      paused = true;
 
     }
   );
 
 
-  viewport.addEventListener(
-    'mouseleave',
-    function () {
+  track.addEventListener(
+    'mouseout',
+    function (event) {
+
+      const folder =
+        event.target.closest('.crafted-folder');
+
+      if (!folder) return;
+
+      /*
+         Don't resume if user manually paused it.
+      */
 
       if (!clickPaused) {
         paused = false;
@@ -410,7 +434,7 @@ if (clientTrack) {
 
 
   /* =======================================================
-     CLICK = PAUSE / RESUME
+     CLICK — PAUSE / RESUME
      ======================================================= */
 
   viewport.addEventListener(
@@ -418,7 +442,8 @@ if (clientTrack) {
     function (event) {
 
       /*
-         Do not interfere with actual folder links.
+         If the user is clicking a real link,
+         allow the link to work normally.
       */
 
       if (event.target.closest('a')) {
@@ -436,7 +461,13 @@ if (clientTrack) {
 
 
   /* =======================================================
-     MOUSE WHEEL
+     LIMITED MANUAL SCROLL
+     =======================================================
+
+     Only the first TWO distinct wheel gestures
+     are captured by the carousel.
+
+     After that, the normal website page scrolls.
      ======================================================= */
 
   viewport.addEventListener(
@@ -445,27 +476,109 @@ if (clientTrack) {
 
       if (setWidth <= 0) return;
 
+
+      /*
+         Ignore horizontal wheel gestures.
+      */
+
       if (
-        Math.abs(event.deltaY) >
+        Math.abs(event.deltaY) <=
         Math.abs(event.deltaX)
       ) {
-
-        event.preventDefault();
-
-        offset +=
-          event.deltaY * 0.8;
-
-        normalize();
-
-        moveTrack();
-
+        return;
       }
+
+
+      /*
+         If the user has already used the allowed
+         carousel wheel movements, DO NOT prevent
+         the browser's normal page scrolling.
+      */
+
+      if (wheelMoves >= MAX_WHEEL_MOVES) {
+        return;
+      }
+
+
+      /*
+         Prevent page movement for this gesture.
+      */
+
+      event.preventDefault();
+
+
+      /*
+         Move carousel.
+      */
+
+      offset +=
+        event.deltaY * 0.8;
+
+      normalize();
+
+      moveTrack();
+
+
+      /*
+         Count this as one wheel gesture.
+      */
+
+      if (!wheelGestureLocked) {
+
+        wheelMoves++;
+
+        wheelGestureLocked = true;
+
+
+        /*
+           Prevent multiple browser wheel events
+           from counting as multiple gestures.
+        */
+
+        clearTimeout(wheelResetTimer);
+
+        wheelResetTimer =
+          setTimeout(function () {
+
+            wheelGestureLocked = false;
+
+          }, 650);
+      }
+
 
     },
     {
       passive: false
     }
   );
+
+
+  /* =======================================================
+     RESET MANUAL SCROLL LIMIT WHEN LEAVING SECTION
+     ======================================================= */
+
+  const observer =
+    new IntersectionObserver(
+      function (entries) {
+
+        const entry = entries[0];
+
+        if (!entry.isIntersecting) {
+
+          wheelMoves = 0;
+          wheelGestureLocked = false;
+
+          clearTimeout(wheelResetTimer);
+
+        }
+
+      },
+      {
+        threshold: 0.05
+      }
+    );
+
+  observer.observe(section);
 
 
   /* =======================================================
