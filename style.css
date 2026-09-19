@@ -1790,9 +1790,12 @@ margin-right: auto !important;
   padding-top: 70px !important;
   box-sizing: border-box !important;
 
-  overflow: hidden !important;
+ overflow: visible !important;
 }
 
+#work .crafted-grid {
+  overflow: visible !important;
+}
 #work .crafted-grid {
   display: grid !important;
 
