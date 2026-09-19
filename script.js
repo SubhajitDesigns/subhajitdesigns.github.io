@@ -246,7 +246,7 @@ if (clientTrack) {
 
 /* =========================================================
    SUBHAJIT — CRAFTED DESIGNS
-   AUTO MARQUEE + MANUAL MOUSE DRAG
+   AUTO MARQUEE + 2-WHEEL HORIZONTAL CONTROL
    ========================================================= */
 
 (() => {
@@ -263,7 +263,7 @@ if (clientTrack) {
   if (!originalFolders.length) return;
 
   /* ---------------------------------------------------------
-     CREATE THE INFINITE LOOP
+     INFINITE LOOP
      --------------------------------------------------------- */
 
   originalFolders.forEach(folder => {
@@ -275,20 +275,25 @@ if (clientTrack) {
 
   let lastTime = performance.now();
 
-  /* Automatic movement speed */
-  const SPEED = 35;
+  /* Normal slow movement */
+  const AUTO_SPEED = 35;
+
+  /* Horizontal movement per wheel */
+  const WHEEL_STEP = 420;
+
+  /* Only allow 2 wheel movements */
+  const MAX_WHEEL_MOVES = 2;
+
+  let wheelMoves = 0;
+
+  let wheelAnimating = false;
+
+  let wheelTarget = 0;
+
+  let wasInsideCrafted = false;
 
   /* ---------------------------------------------------------
-     DRAG CONTROL
-     --------------------------------------------------------- */
-
-  let isDragging = false;
-  let startPointerX = 0;
-  let startPosition = 0;
-  let hasDragged = false;
-
-  /* ---------------------------------------------------------
-     CALCULATE LOOP WIDTH
+     LOOP WIDTH
      --------------------------------------------------------- */
 
   function calculateLoopWidth() {
@@ -305,7 +310,7 @@ if (clientTrack) {
   }
 
   /* ---------------------------------------------------------
-     KEEP POSITION INSIDE THE INFINITE LOOP
+     KEEP INFINITE LOOP
      --------------------------------------------------------- */
 
   function normalizePosition() {
@@ -323,7 +328,7 @@ if (clientTrack) {
   }
 
   /* ---------------------------------------------------------
-     APPLY POSITION
+     RENDER
      --------------------------------------------------------- */
 
   function render() {
@@ -334,7 +339,7 @@ if (clientTrack) {
   }
 
   /* ---------------------------------------------------------
-     AUTOMATIC MARQUEE
+     AUTO MARQUEE
      --------------------------------------------------------- */
 
   function animate(time) {
@@ -344,10 +349,14 @@ if (clientTrack) {
 
     lastTime = time;
 
-    /* Only auto-move when user isn't dragging */
-    if (!isDragging) {
+    /*
+      Automatic movement continues normally,
+      except while a wheel movement is animating.
+    */
 
-      position += SPEED * deltaTime;
+    if (!wheelAnimating) {
+
+      position += AUTO_SPEED * deltaTime;
 
       normalizePosition();
 
@@ -360,133 +369,196 @@ if (clientTrack) {
   }
 
   /* ---------------------------------------------------------
-     MOUSE DOWN — START MANUAL CONTROL
+     CHECK WHETHER CRAFTED IS ACTIVE
      --------------------------------------------------------- */
 
-  section.addEventListener("pointerdown", (event) => {
+  function isCraftedActive() {
 
-    /* Only primary mouse button */
-    if (event.pointerType === "mouse" && event.button !== 0) {
-      return;
-    }
-
-    isDragging = true;
-    hasDragged = false;
-
-    startPointerX = event.clientX;
-    startPosition = position;
-
-    section.setPointerCapture?.(event.pointerId);
-
-    section.style.cursor = "grabbing";
-
-  });
-
-  /* ---------------------------------------------------------
-     MOUSE MOVE — MOVE FOLDERS WITH MOUSE
-     --------------------------------------------------------- */
-
-  section.addEventListener("pointermove", (event) => {
-
-    if (!isDragging) return;
-
-    const distance =
-      event.clientX - startPointerX;
-
-    if (Math.abs(distance) > 5) {
-      hasDragged = true;
-    }
+    const rect =
+      section.getBoundingClientRect();
 
     /*
-      Drag left  → folders move left
-      Drag right → folders move right
+      Crafted must be substantially inside
+      the viewport before horizontal scrolling activates.
     */
 
-    position =
-      startPosition - distance;
-
-    normalizePosition();
-
-    render();
-
-  });
-
-  /* ---------------------------------------------------------
-     MOUSE UP — RETURN TO AUTO MODE
-     --------------------------------------------------------- */
-
-  function stopDragging(event) {
-
-    if (!isDragging) return;
-
-    isDragging = false;
-
-    section.style.cursor = "";
-
-    try {
-      section.releasePointerCapture?.(event.pointerId);
-    } catch (error) {
-      /* Nothing needed */
-    }
-
-    /*
-      Automatic movement automatically resumes
-      on the next animation frame.
-    */
+    return (
+      rect.top <= window.innerHeight * 0.25 &&
+      rect.bottom >= window.innerHeight * 0.75
+    );
 
   }
 
-  section.addEventListener("pointerup", stopDragging);
-
-  section.addEventListener("pointercancel", stopDragging);
-
-  section.addEventListener("pointerleave", (event) => {
-
-    if (isDragging && event.pointerType !== "mouse") {
-      stopDragging(event);
-    }
-
-  });
-
   /* ---------------------------------------------------------
-     PREVENT A DRAG FROM ACCIDENTALLY CLICKING A FOLDER
+     SMOOTH HORIZONTAL WHEEL MOVEMENT
      --------------------------------------------------------- */
 
-  section.addEventListener("click", (event) => {
+  function animateWheelTo(target) {
 
-    if (!hasDragged) return;
+    wheelAnimating = true;
 
-    event.preventDefault();
-    event.stopPropagation();
+    const start = position;
 
-    hasDragged = false;
+    let startTime = null;
 
-  }, true);
+    const duration = 650;
+
+    function step(timestamp) {
+
+      if (!startTime) {
+        startTime = timestamp;
+      }
+
+      const progress =
+        Math.min(
+          (timestamp - startTime) / duration,
+          1
+        );
+
+      /*
+        Smooth ease-out
+      */
+
+      const eased =
+        1 - Math.pow(1 - progress, 3);
+
+      position =
+        start + (target - start) * eased;
+
+      normalizePosition();
+
+      render();
+
+      if (progress < 1) {
+
+        requestAnimationFrame(step);
+
+      } else {
+
+        position = target;
+
+        normalizePosition();
+
+        render();
+
+        wheelAnimating = false;
+
+      }
+
+    }
+
+    requestAnimationFrame(step);
+
+  }
+
+  /* ---------------------------------------------------------
+     MOUSE WHEEL
+     --------------------------------------------------------- */
+
+  window.addEventListener(
+    "wheel",
+    (event) => {
+
+      if (!isCraftedActive()) {
+
+        /*
+          When we leave Crafted,
+          reset the special wheel counter.
+        */
+
+        wheelMoves = 0;
+        wasInsideCrafted = false;
+
+        return;
+
+      }
+
+      wasInsideCrafted = true;
+
+      /*
+        DOWN = later folders
+        UP = previous folders
+      */
+
+      const direction =
+        event.deltaY > 0 ? 1 : -1;
+
+      /*
+        Only intercept the first two
+        wheel movements.
+      */
+
+      if (wheelMoves < MAX_WHEEL_MOVES) {
+
+        event.preventDefault();
+
+        wheelMoves++;
+
+        wheelTarget =
+          position +
+          direction * WHEEL_STEP;
+
+        animateWheelTo(wheelTarget);
+
+      }
+
+      /*
+        After two wheel movements:
+        DO NOT preventDefault().
+        The website resumes normal
+        vertical scrolling.
+      */
+
+    },
+    {
+      passive: false
+    }
+  );
+
+  /* ---------------------------------------------------------
+     RESET WHEN CRAFTED IS LEFT
+     --------------------------------------------------------- */
+
+  window.addEventListener(
+    "scroll",
+    () => {
+
+      if (!isCraftedActive()) {
+
+        if (wasInsideCrafted) {
+
+          wheelMoves = 0;
+          wasInsideCrafted = false;
+
+        }
+
+      }
+
+    }
+  );
 
   /* ---------------------------------------------------------
      RESIZE
      --------------------------------------------------------- */
 
-  window.addEventListener("resize", () => {
+  window.addEventListener(
+    "resize",
+    () => {
 
-    calculateLoopWidth();
-    normalizePosition();
-    render();
+      calculateLoopWidth();
 
-  });
+      normalizePosition();
+
+      render();
+
+    }
+  );
 
   /* ---------------------------------------------------------
      START
      --------------------------------------------------------- */
 
   calculateLoopWidth();
-
-  /*
-    Start slightly to the left so the marquee
-    immediately has movement.
-  */
-
-  position = 0;
 
   render();
 
