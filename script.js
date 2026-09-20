@@ -575,7 +575,6 @@ if (clientTrack) {
   if (!section) return;
 
   const slides = [...section.querySelectorAll('.creating-slide')];
-  const current = section.querySelector('#creatingCurrent');
   const progress = section.querySelector('#creatingProgress');
   const title = section.querySelector('#creatingTitle');
   const category = section.querySelector('#creatingCategory');
@@ -591,7 +590,7 @@ if (clientTrack) {
 
   let index = 0;
   let timer = null;
-  let remaining = 5000;
+  const DISPLAY_TIME = 5000;
 
   function restartProgress() {
     if (!progress) return;
@@ -603,39 +602,24 @@ if (clientTrack) {
   function showSlide(nextIndex) {
     index = (nextIndex + slides.length) % slides.length;
     slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index));
-    if (current) current.textContent = String(index + 1).padStart(2, '0');
     if (title) title.textContent = details[index].title;
     if (category) category.textContent = details[index].category;
     restartProgress();
     clearTimeout(timer);
-    timer = setTimeout(() => showSlide(index + 1), 5000);
+    timer = setTimeout(() => showSlide(index + 1), DISPLAY_TIME);
   }
 
   next?.addEventListener('click', () => showSlide(index + 1));
 
-  // Keep the work visible while someone is actively looking at it.
-  section.querySelector('.creating-stage')?.addEventListener('mouseenter', () => {
-    if (!timer) return;
-    remaining = 5000;
-    clearTimeout(timer);
-    timer = null;
-    progress?.classList.remove('is-running');
-  });
-
-  section.querySelector('.creating-stage')?.addEventListener('mouseleave', () => {
-    if (timer) return;
-    restartProgress();
-    timer = setTimeout(() => showSlide(index + 1), remaining);
-  });
-
+  // Always rotate automatically every 5 seconds.
+  // Hovering no longer pauses the slideshow.
   document.addEventListener('visibilitychange', () => {
+    clearTimeout(timer);
     if (document.hidden) {
-      clearTimeout(timer);
       timer = null;
       progress?.classList.remove('is-running');
     } else {
-      restartProgress();
-      timer = setTimeout(() => showSlide(index + 1), 5000);
+      showSlide(index);
     }
   });
 
