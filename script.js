@@ -568,7 +568,7 @@ if (clientTrack) {
 
 
 /* =========================================================
-   CURRENTLY CREATING — 10 SECOND CREATIVE ROTATION
+   CURRENTLY CREATING — 5 SECOND CREATIVE ROTATION
    ========================================================= */
 (() => {
   const section = document.querySelector('.currently-creating');
@@ -591,7 +591,7 @@ if (clientTrack) {
 
   let index = 0;
   let timer = null;
-  let remaining = 10000;
+  let remaining = 5000;
 
   function restartProgress() {
     if (!progress) return;
@@ -608,7 +608,7 @@ if (clientTrack) {
     if (category) category.textContent = details[index].category;
     restartProgress();
     clearTimeout(timer);
-    timer = setTimeout(() => showSlide(index + 1), 10000);
+    timer = setTimeout(() => showSlide(index + 1), 5000);
   }
 
   next?.addEventListener('click', () => showSlide(index + 1));
@@ -616,7 +616,7 @@ if (clientTrack) {
   // Keep the work visible while someone is actively looking at it.
   section.querySelector('.creating-stage')?.addEventListener('mouseenter', () => {
     if (!timer) return;
-    remaining = 10000;
+    remaining = 5000;
     clearTimeout(timer);
     timer = null;
     progress?.classList.remove('is-running');
@@ -635,7 +635,7 @@ if (clientTrack) {
       progress?.classList.remove('is-running');
     } else {
       restartProgress();
-      timer = setTimeout(() => showSlide(index + 1), 10000);
+      timer = setTimeout(() => showSlide(index + 1), 5000);
     }
   });
 
