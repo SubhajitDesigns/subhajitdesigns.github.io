@@ -2991,7 +2991,7 @@ body.cursor-active .cursor-glow {
 .creating-stage{
   position:relative;
   width:min(100%,650px);
-  height:690px;
+  height:560px;
   margin-left:auto;
   overflow:visible;
   border:0;
@@ -3030,7 +3030,8 @@ body.cursor-active .cursor-glow {
   width:auto;
   height:auto;
   max-width:100%;
-  max-height:690px;
+  max-height:520px;
+  max-width:430px;
   object-fit:contain;
   background:transparent;
   user-select:none;
@@ -3039,8 +3040,8 @@ body.cursor-active .cursor-glow {
 .creating-live-badge{
   position:absolute;
   z-index:5;
-  top:18px;
-  right:18px;
+  top:8px;
+  right:8px;
   display:flex;
   align-items:center;
   gap:8px;
@@ -3055,8 +3056,8 @@ body.cursor-active .cursor-glow {
 }
 .creating-live-badge .status-dot{width:6px;height:6px;flex-basis:6px}
 .creating-caption{
-  width:min(100%,650px);
-  margin:18px 0 0 auto;
+  width:min(100%,430px);
+  margin:14px 0 0 auto;
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
@@ -3094,7 +3095,7 @@ body.cursor-active .cursor-glow {
   .creating-shell{grid-template-columns:1fr;gap:55px}
   .creating-copy{max-width:680px}
   .creating-stage,.creating-caption{margin-left:0;margin-right:0;width:100%}
-  .creating-stage{height:min(780px,82vw)}
+  .creating-stage{height:min(620px,82vw)}
   .creating-meta{margin-top:40px}
 }
 @media(max-width:700px){
@@ -3102,7 +3103,7 @@ body.cursor-active .cursor-glow {
   .creating-copy h2{font-size:18vw}
   .creating-intro{font-size:14px;margin-top:25px}
   .creating-status{margin-top:30px}
-  .creating-stage{height:118vw;max-height:650px}
+  .creating-stage{height:105vw;max-height:560px}
   .creating-live-badge{top:12px;right:12px;font-size:8px;padding:8px 10px}
   .creating-caption h3{font-size:18px}
   .creating-next{width:42px;height:42px;flex-basis:42px}
