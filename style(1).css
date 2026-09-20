@@ -2870,8 +2870,8 @@ body.cursor-active .cursor-glow {
    ========================================================= */
 .currently-creating{
   position:relative;
-  min-height:860px;
-  padding:120px 6vw;
+  min-height:760px;
+  padding:80px 6vw;
   overflow:hidden;
   background:
     radial-gradient(circle at 78% 50%,rgba(255,52,38,.10),transparent 34%),
@@ -2896,9 +2896,9 @@ body.cursor-active .cursor-glow {
   display:grid;
   grid-template-columns:minmax(320px,.78fr) minmax(520px,1.22fr);
   gap:7vw;
-  align-items:center;
+  align-items:start;
 }
-.creating-copy{align-self:center;max-width:500px}
+.creating-copy{align-self:start;max-width:500px;padding-top:54px}
 .creating-eyebrow{
   margin:0 0 24px;
   color:#8f7770;
@@ -2998,7 +2998,7 @@ body.cursor-active .cursor-glow {
   background:transparent;
   box-shadow:none;
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:center;
 }
 .creating-slide{
@@ -3023,14 +3023,14 @@ body.cursor-active .cursor-glow {
   width:auto;
   height:auto;
   max-width:100%;
-  max-height:600px;
-  max-width:520px;
+  max-height:540px;
+  max-width:650px;
   object-fit:contain;
   background:transparent;
   user-select:none;
   -webkit-user-drag:none;
 }
-.creating-live-badge{display:none;
+.creating-live-badge{display:none !important;
   position:absolute;
   z-index:5;
   top:8px;
@@ -3049,13 +3049,14 @@ body.cursor-active .cursor-glow {
 }
 .creating-live-badge .status-dot{width:6px;height:6px;flex-basis:6px}
 .creating-caption{
-  width:min(100%,520px);
-  margin:14px 0 0 auto;
+  width:min(100%,650px);
+  margin:12px 0 0 auto;
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
   gap:20px;
 }
+.creating-caption > div{margin-left:auto;text-align:right}
 .creating-caption p{
   margin:0 0 6px;
   color:#806b64;
@@ -3084,11 +3085,11 @@ body.cursor-active .cursor-glow {
 .creating-next:hover{transform:translateY(-3px) rotate(6deg);border-color:#fff;background:rgba(255,255,255,.06)}
 .creating-visual:hover .creating-stage{box-shadow:none}
 @media(max-width:1000px){
-  .currently-creating{padding:90px 6vw}
+  .currently-creating{padding:70px 6vw}
   .creating-shell{grid-template-columns:1fr;gap:55px}
   .creating-copy{max-width:680px}
   .creating-stage,.creating-caption{margin-left:0;margin-right:0;width:100%}
-  .creating-stage{height:min(620px,82vw)}
+  .creating-stage{height:min(560px,82vw)}
   .creating-meta{margin-top:40px}
 }
 @media(max-width:700px){
