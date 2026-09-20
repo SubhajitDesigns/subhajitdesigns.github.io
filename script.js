@@ -603,7 +603,10 @@ if (clientTrack) {
     const left = Math.max(0, rect.left - stageRect.left);
     visual.style.setProperty('--creating-image-width', width + 'px');
     visual.style.setProperty('--creating-caption-left', left + 'px');
+    // Collapse the stage to the actual artwork height so there is no giant empty area.
+    if (rect.height > 0) stage.style.height = rect.height + 'px';
   }
+
 
   let index = 0;
   let timer = null;
