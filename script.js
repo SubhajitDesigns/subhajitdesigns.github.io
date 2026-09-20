@@ -565,3 +565,79 @@ if (clientTrack) {
   requestAnimationFrame(animate);
 
 })();
+
+
+/* =========================================================
+   CURRENTLY CREATING — 10 SECOND CREATIVE ROTATION
+   ========================================================= */
+(() => {
+  const section = document.querySelector('.currently-creating');
+  if (!section) return;
+
+  const slides = [...section.querySelectorAll('.creating-slide')];
+  const current = section.querySelector('#creatingCurrent');
+  const progress = section.querySelector('#creatingProgress');
+  const title = section.querySelector('#creatingTitle');
+  const category = section.querySelector('#creatingCategory');
+  const next = section.querySelector('#creatingNext');
+  if (!slides.length) return;
+
+  const details = [
+    { title: 'FONT FAILS', category: 'TYPOGRAPHY / ART DIRECTION' },
+    { title: 'GOOD DESIGN?', category: 'EDITORIAL / CONCEPTUAL DESIGN' },
+    { title: 'CAPCUT', category: 'VISUAL CAMPAIGN / CREATIVE DESIGN' },
+    { title: 'IDEA OVERLOAD', category: 'EDITORIAL / PHOTO MANIPULATION' }
+  ];
+
+  let index = 0;
+  let timer = null;
+  let remaining = 10000;
+
+  function restartProgress() {
+    if (!progress) return;
+    progress.classList.remove('is-running');
+    void progress.offsetWidth;
+    progress.classList.add('is-running');
+  }
+
+  function showSlide(nextIndex) {
+    index = (nextIndex + slides.length) % slides.length;
+    slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index));
+    if (current) current.textContent = String(index + 1).padStart(2, '0');
+    if (title) title.textContent = details[index].title;
+    if (category) category.textContent = details[index].category;
+    restartProgress();
+    clearTimeout(timer);
+    timer = setTimeout(() => showSlide(index + 1), 10000);
+  }
+
+  next?.addEventListener('click', () => showSlide(index + 1));
+
+  // Keep the work visible while someone is actively looking at it.
+  section.querySelector('.creating-stage')?.addEventListener('mouseenter', () => {
+    if (!timer) return;
+    remaining = 10000;
+    clearTimeout(timer);
+    timer = null;
+    progress?.classList.remove('is-running');
+  });
+
+  section.querySelector('.creating-stage')?.addEventListener('mouseleave', () => {
+    if (timer) return;
+    restartProgress();
+    timer = setTimeout(() => showSlide(index + 1), remaining);
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      clearTimeout(timer);
+      timer = null;
+      progress?.classList.remove('is-running');
+    } else {
+      restartProgress();
+      timer = setTimeout(() => showSlide(index + 1), 10000);
+    }
+  });
+
+  showSlide(0);
+})();
