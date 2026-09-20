@@ -588,6 +588,23 @@ if (clientTrack) {
     { title: 'IDEA OVERLOAD', category: 'EDITORIAL / PHOTO MANIPULATION' }
   ];
 
+  const visual = section.querySelector('.creating-visual');
+  const stage = section.querySelector('#creatingStage');
+  const caption = section.querySelector('.creating-caption');
+
+  function syncCaptionToImage() {
+    if (!visual || !stage || !caption) return;
+    const active = slides[index];
+    const img = active?.querySelector('img');
+    if (!img) return;
+    const rect = img.getBoundingClientRect();
+    const stageRect = stage.getBoundingClientRect();
+    const width = Math.min(rect.width, stageRect.width);
+    const left = Math.max(0, rect.left - stageRect.left);
+    visual.style.setProperty('--creating-image-width', width + 'px');
+    visual.style.setProperty('--creating-caption-left', left + 'px');
+  }
+
   let index = 0;
   let timer = null;
   const DISPLAY_TIME = 5000;
@@ -605,6 +622,7 @@ if (clientTrack) {
     if (title) title.textContent = details[index].title;
     if (category) category.textContent = details[index].category;
     restartProgress();
+    requestAnimationFrame(syncCaptionToImage);
     clearTimeout(timer);
     timer = setTimeout(() => showSlide(index + 1), DISPLAY_TIME);
   }
@@ -622,6 +640,12 @@ if (clientTrack) {
       showSlide(index);
     }
   });
+
+  slides.forEach(slide => {
+    const img = slide.querySelector('img');
+    img?.addEventListener('load', syncCaptionToImage);
+  });
+  window.addEventListener('resize', syncCaptionToImage);
 
   showSlide(0);
 })();

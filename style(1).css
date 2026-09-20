@@ -687,6 +687,7 @@ body.cursor-active .cursor-glow {
 
   user-select:none;
   -webkit-user-drag:none;
+  border-radius:10px;
 }
 
 @keyframes subhajitClientMove{
@@ -3049,8 +3050,9 @@ body.cursor-active .cursor-glow {
 }
 .creating-live-badge .status-dot{width:6px;height:6px;flex-basis:6px}
 .creating-caption{
-  width:min(100%,650px);
+  width:var(--creating-image-width, min(100%,650px));
   margin:12px 0 0 auto;
+  margin-left:var(--creating-caption-left, auto);
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
@@ -3088,7 +3090,7 @@ body.cursor-active .cursor-glow {
   .currently-creating{padding:70px 6vw}
   .creating-shell{grid-template-columns:1fr;gap:55px}
   .creating-copy{max-width:680px}
-  .creating-stage,.creating-caption{margin-left:0;margin-right:0;width:100%}
+  .creating-stage{margin-left:0;margin-right:0;width:100%}.creating-caption{margin-right:0}
   .creating-stage{height:min(560px,82vw)}
   .creating-meta{margin-top:40px}
 }
