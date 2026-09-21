@@ -285,293 +285,234 @@
       <p class="statement-copy">Every project starts with a question. I shape that question into a visual system that communicates, connects and gives people a reason to stop scrolling.</p>
     </section>
 
-  <!-- WHAT I DO — CREATIVE SYSTEM -->
-<section id="what-i-do" class="do2 section" aria-label="What I Do">
-  <div class="do2-head">
+  <!-- WHAT I DO — VISUAL BOARD -->
+<section id="what-i-do" class="wdo3 section" aria-label="What I Do">
+  <div class="wdo3-head">
     <div>
-      <p class="do2-eyebrow">02 / WHAT I DO</p>
-      <h2>I TURN IDEAS<br><em>INTO VISUALS.</em></h2>
+      <p class="wdo3-eyebrow">02 / WHAT I DO</p>
+      <h2>THINGS I<br><em>CREATE.</em></h2>
     </div>
-    <p class="do2-intro">AI, Photoshop, video and motion — different tools, one visual language.</p>
+    <p class="wdo3-sub">A visual toolkit built around AI, Photoshop, video and motion — designed to turn ideas into attention.</p>
   </div>
 
-  <div class="do2-stage" id="creativeStage">
-    <div class="do2-grid-lines" aria-hidden="true"></div>
+  <div class="wdo3-board" id="wdo3Board">
+    <div class="wdo3-noise" aria-hidden="true"></div>
+    <div class="wdo3-grid" aria-hidden="true"></div>
 
-    <div class="do2-orbit do2-orbit-1" aria-hidden="true"></div>
-    <div class="do2-orbit do2-orbit-2" aria-hidden="true"></div>
-    <div class="do2-cross c1" aria-hidden="true">+</div>
-    <div class="do2-cross c2" aria-hidden="true">+</div>
-    <div class="do2-dot d1" aria-hidden="true"></div>
-    <div class="do2-dot d2" aria-hidden="true"></div>
-    <div class="do2-dot d3" aria-hidden="true"></div>
+    <!-- decorative connecting paths -->
+    <svg class="wdo3-paths" viewBox="0 0 1200 680" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M120 145 C270 145 300 235 430 255 S670 210 800 145 S1040 150 1090 105"/>
+      <path d="M90 520 C250 500 300 420 420 395 S650 420 790 505 S1010 530 1110 455"/>
+      <path d="M230 80 C300 190 400 190 500 145 S760 85 900 230"/>
+      <path d="M300 590 C430 530 520 545 620 590 S850 610 960 520"/>
+    </svg>
 
-    <!-- floating visual objects -->
-    <div class="do2-object obj-ai" data-depth="1" aria-hidden="true">
-      <span class="do2-mini-label">GENERATE</span>
-      <strong>AI</strong>
-      <small>✦</small>
+    <!-- top labels -->
+    <div class="wdo3-label label-ai"><span>01</span><b>AI DESIGN</b><small>GENERATE / IMAGINE / CREATE</small></div>
+    <div class="wdo3-label label-ps"><span>02</span><b>PHOTOSHOP</b><small>EDIT / COMPOSITE / RETOUCH</small></div>
+    <div class="wdo3-label label-video"><span>03</span><b>VIDEO EDITING</b><small>REELS / ADS / PROMOS</small></div>
+    <div class="wdo3-label label-motion"><span>04</span><b>MOTION GRAPHICS</b><small>ANIMATE / MOVE / REVEAL</small></div>
+
+    <!-- visual tiles -->
+    <div class="wdo3-tile tile-ai" data-depth="1">
+      <div class="tile-meta">AI / 01</div>
+      <div class="ai-symbol">AI</div>
+      <div class="ai-orbit"></div>
+      <div class="ai-spark s1">✦</div><div class="ai-spark s2">✦</div>
     </div>
 
-    <div class="do2-object obj-ps" data-depth="2" aria-hidden="true">
-      <span class="do2-mini-label">EDIT</span>
-      <strong>Ps</strong>
-    </div>
-
-    <div class="do2-object obj-reel" data-depth="3" aria-hidden="true">
-      <span class="do2-mini-label">REEL</span>
-      <div class="do2-reel-frame"><span>▶</span></div>
-    </div>
-
-    <div class="do2-object obj-ad" data-depth="2" aria-hidden="true">
-      <span class="do2-mini-label">AD</span>
-      <div class="do2-ad-card"><b>IDEA</b><i>01</i></div>
-    </div>
-
-    <div class="do2-object obj-motion" data-depth="1" aria-hidden="true">
-      <span class="do2-mini-label">MOTION</span>
-      <div class="do2-keyframes"><i></i><i></i><i></i><span></span></div>
-    </div>
-
-    <!-- central canvas -->
-    <div class="do2-center">
-      <div class="do2-center-top">
-        <span>CREATIVE SYSTEM</span>
-        <span>SUBHAJIT / 2026</span>
-      </div>
-
-      <div class="do2-center-art">
-        <div class="do2-frame frame-a"></div>
-        <div class="do2-frame frame-b"></div>
-        <div class="do2-frame frame-c"></div>
-        <div class="do2-art-ring"></div>
-        <div class="do2-art-core">
-          <span>CREATE</span>
-          <strong>01</strong>
-        </div>
-        <div class="do2-art-lines"></div>
-      </div>
-
-      <div class="do2-center-bottom">
-        <span>IDEA → VISUAL → IMPACT</span>
-        <span class="do2-live"><i></i> EXPERIMENTING</span>
+    <div class="wdo3-tile tile-ps" data-depth="2">
+      <div class="tile-meta">PS / 02</div>
+      <div class="ps-window">
+        <div class="ps-bar"><i></i><i></i><i></i><span>SUBHAJIT.PSD</span></div>
+        <div class="ps-art"><strong>Ps</strong><span>CREATIVE<br>COMPOSITE</span></div>
       </div>
     </div>
 
-    <!-- capability labels -->
-    <button class="do2-cap cap-ai" type="button" data-focus="ai">
-      <span class="do2-cap-no">01</span>
-      <span class="do2-cap-name">AI DESIGN</span>
-      <span class="do2-cap-desc">Generate / manipulate / imagine</span>
-      <span class="do2-cap-arrow">↗</span>
-    </button>
-
-    <button class="do2-cap cap-graphic" type="button" data-focus="graphic">
-      <span class="do2-cap-no">02</span>
-      <span class="do2-cap-name">GRAPHIC DESIGN</span>
-      <span class="do2-cap-desc">Photoshop / social / campaigns</span>
-      <span class="do2-cap-arrow">↗</span>
-    </button>
-
-    <button class="do2-cap cap-video" type="button" data-focus="video">
-      <span class="do2-cap-no">03</span>
-      <span class="do2-cap-name">VIDEO EDITING</span>
-      <span class="do2-cap-desc">Reels / ads / promos</span>
-      <span class="do2-cap-arrow">↗</span>
-    </button>
-
-    <button class="do2-cap cap-motion" type="button" data-focus="motion">
-      <span class="do2-cap-no">04</span>
-      <span class="do2-cap-name">MOTION GRAPHICS</span>
-      <span class="do2-cap-desc">Animation / logos / movement</span>
-      <span class="do2-cap-arrow">↗</span>
-    </button>
-
-    <div class="do2-focus-note" aria-live="polite">
-      <span class="do2-focus-number">01</span>
-      <strong id="do2FocusTitle">AI DESIGN</strong>
-      <p id="do2FocusText">Generative visuals, creative concepts, image manipulation and AI-powered experiments.</p>
+    <div class="wdo3-tile tile-reel" data-depth="2">
+      <div class="tile-meta">REEL / 03</div>
+      <div class="reel-window">
+        <div class="reel-top"><span>00:17</span><span>VERTICAL / 9:16</span></div>
+        <div class="reel-image"><span>▶</span><i></i></div>
+        <div class="reel-timeline"><b></b><b></b><b></b><b></b><b></b></div>
+      </div>
     </div>
+
+    <div class="wdo3-tile tile-ad" data-depth="2">
+      <div class="tile-meta">AD / 04</div>
+      <div class="ad-window">
+        <small>CAMPAIGN / 01</small>
+        <strong>MAKE<br>THEM<br>LOOK.</strong>
+        <i>↗</i>
+      </div>
+    </div>
+
+    <div class="wdo3-tile tile-motion" data-depth="1">
+      <div class="tile-meta">MOTION / 05</div>
+      <div class="motion-art">
+        <span></span><span></span><span></span><i></i><i></i>
+      </div>
+    </div>
+
+    <!-- center statement -->
+    <div class="wdo3-center">
+      <div class="center-top"><span>SUBHAJIT DESIGNS</span><span>VISUAL LAB / 2026</span></div>
+      <div class="center-main">
+        <p>IDEA →</p>
+        <h3>VISUAL<br><em>IMPACT.</em></h3>
+        <span class="center-mark">✦</span>
+      </div>
+      <div class="center-bottom">
+        <span>AI / DESIGN / VIDEO / MOTION</span>
+        <span><i></i> CURRENTLY CREATING</span>
+      </div>
+    </div>
+
+    <!-- capability detail strips -->
+    <button class="wdo3-strip strip-ai" type="button" data-focus="ai">
+      <span>AI DESIGN</span><b>GENERATIVE VISUALS · CREATIVE CONCEPTS · IMAGE MANIPULATION</b><i>↗</i>
+    </button>
+    <button class="wdo3-strip strip-ps" type="button" data-focus="ps">
+      <span>PHOTOSHOP</span><b>SOCIAL · ADS · THUMBNAILS · POSTERS · RETOUCHING</b><i>↗</i>
+    </button>
+    <button class="wdo3-strip strip-video" type="button" data-focus="video">
+      <span>VIDEO</span><b>REELS · AD EDITS · PROMOS · SHORT-FORM STORYTELLING</b><i>↗</i>
+    </button>
+    <button class="wdo3-strip strip-motion" type="button" data-focus="motion">
+      <span>MOTION</span><b>LOGO ANIMATION · MOTION GRAPHICS · ANIMATED SOCIAL</b><i>↗</i>
+    </button>
+
+    <div class="wdo3-corner corner-a">SCROLL / EXPLORE</div>
+    <div class="wdo3-corner corner-b">04 DISCIPLINES / 01 SYSTEM</div>
   </div>
 
-  <div class="do2-ticker" aria-hidden="true">
-    <div>
-      <span>AI DESIGN</span><b>✦</b><span>PHOTOSHOP</span><b>✦</b><span>VIDEO EDITING</span><b>✦</b><span>MOTION GRAPHICS</span><b>✦</b>
-      <span>AI DESIGN</span><b>✦</b><span>PHOTOSHOP</span><b>✦</b><span>VIDEO EDITING</span><b>✦</b><span>MOTION GRAPHICS</span><b>✦</b>
-    </div>
+  <div class="wdo3-ticker" aria-hidden="true">
+    <div><span>AI DESIGN</span><b>✦</b><span>PHOTOSHOP</span><b>✦</b><span>VIDEO EDITING</span><b>✦</b><span>MOTION GRAPHICS</span><b>✦</b><span>AI DESIGN</span><b>✦</b><span>PHOTOSHOP</span><b>✦</b><span>VIDEO EDITING</span><b>✦</b><span>MOTION GRAPHICS</span><b>✦</b></div>
   </div>
 </section>
 
 <style>
-.do2{position:relative;overflow:hidden;padding-top:105px!important;padding-bottom:95px!important}
-.do2-head{display:grid;grid-template-columns:1.15fr .65fr;gap:8vw;align-items:end;margin-bottom:45px}
-.do2-eyebrow{margin:0 0 18px;font:10px 'DM Mono',monospace;letter-spacing:.22em;color:#806860}
-.do2-head h2{margin:0;font-size:clamp(48px,7vw,104px);line-height:.83;letter-spacing:-.055em;color:#ead8cf}
-.do2-head h2 em{font-style:normal;color:var(--red,#ff3d35)}
-.do2-intro{max-width:370px;margin:0 0 4px;color:#a99289;font-size:15px;line-height:1.7}
+.wdo3{position:relative;overflow:hidden;padding-top:105px!important;padding-bottom:95px!important}
+.wdo3-head{display:grid;grid-template-columns:1fr .55fr;gap:8vw;align-items:end;margin-bottom:42px}
+.wdo3-eyebrow{margin:0 0 18px;color:#806860;font:10px 'DM Mono',monospace;letter-spacing:.24em}
+.wdo3-head h2{margin:0;color:#ead8cf;font-size:clamp(52px,7vw,105px);line-height:.82;letter-spacing:-.06em}
+.wdo3-head h2 em{font-style:normal;color:#ff3d35}
+.wdo3-sub{max-width:360px;margin:0 0 4px;color:#a99289;font-size:15px;line-height:1.7}
 
-.do2-stage{position:relative;min-height:720px;border:1px solid rgba(255,255,255,.12);background:#070304;overflow:hidden;isolation:isolate}
-.do2-grid-lines{position:absolute;inset:0;opacity:.35;background:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:90px 90px;mask-image:linear-gradient(to bottom,transparent,#000 18%,#000 82%,transparent)}
-.do2-orbit{position:absolute;border:1px solid rgba(255,61,53,.16);border-radius:50%;pointer-events:none}
-.do2-orbit-1{width:530px;height:530px;left:50%;top:50%;transform:translate(-50%,-50%) rotate(18deg);animation:do2Orbit 18s linear infinite}
-.do2-orbit-2{width:700px;height:260px;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-25deg);border-color:rgba(234,216,207,.07)}
-.do2-cross{position:absolute;color:#ff3d35;font:20px 'DM Mono',monospace;opacity:.65}
-.c1{top:9%;left:6%}.c2{right:7%;bottom:12%}
-.do2-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:#ff3d35;box-shadow:0 0 24px rgba(255,61,53,.6);animation:do2Float 5s ease-in-out infinite}
-.d1{left:24%;top:22%}.d2{right:23%;top:28%;animation-delay:-2s}.d3{left:43%;bottom:17%;width:4px;height:4px;animation-delay:-3s}
+.wdo3-board{position:relative;height:680px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:#080304;isolation:isolate}
+.wdo3-noise{position:absolute;inset:0;opacity:.035;background-image:radial-gradient(rgba(255,255,255,.8) .6px,transparent .7px);background-size:5px 5px;pointer-events:none}
+.wdo3-grid{position:absolute;inset:0;opacity:.3;background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:75px 75px}
+.wdo3-paths{position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.55}
+.wdo3-paths path{fill:none;stroke:rgba(255,61,53,.24);stroke-width:1;stroke-dasharray:7 12;animation:wdo3Dash 16s linear infinite}
+.wdo3-paths path:nth-child(2){animation-delay:-5s}.wdo3-paths path:nth-child(3){animation-delay:-9s}.wdo3-paths path:nth-child(4){animation-delay:-12s}
 
-.do2-center{position:absolute;left:50%;top:50%;width:min(470px,42vw);height:440px;transform:translate(-50%,-50%);border:1px solid rgba(255,255,255,.1);background:rgba(11,4,5,.72);backdrop-filter:blur(4px);z-index:4;transition:.5s ease}
-.do2-center:before{content:"";position:absolute;inset:10px;border:1px solid rgba(255,61,53,.12);pointer-events:none}
-.do2-center-top,.do2-center-bottom{position:absolute;left:22px;right:22px;display:flex;justify-content:space-between;font:8px 'DM Mono',monospace;letter-spacing:.13em;color:#735d57}
-.do2-center-top{top:19px}.do2-center-bottom{bottom:18px}
-.do2-live i{display:inline-block;width:5px;height:5px;border-radius:50%;background:#ff3d35;margin-right:6px;box-shadow:0 0 10px #ff3d35}
-.do2-center-art{position:absolute;inset:65px 45px}
-.do2-frame{position:absolute;inset:20px 35px;border:1px solid rgba(234,216,207,.1);transform:rotate(-7deg);transition:.6s cubic-bezier(.2,.8,.2,1)}
-.frame-b{transform:rotate(7deg) scale(.92);border-color:rgba(255,61,53,.13)}
-.frame-c{transform:rotate(0) scale(.84);border-style:dashed;opacity:.45}
-.do2-art-ring{position:absolute;width:180px;height:180px;left:50%;top:50%;transform:translate(-50%,-50%);border:1px solid rgba(255,61,53,.38);border-radius:50%;animation:do2Spin 15s linear infinite}
-.do2-art-ring:before{content:"";position:absolute;inset:20px;border:1px dashed rgba(255,255,255,.12);border-radius:50%}
-.do2-art-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center}
-.do2-art-core span{display:block;color:#806860;font:9px 'DM Mono',monospace;letter-spacing:.25em}
-.do2-art-core strong{display:block;margin-top:7px;color:#ff3d35;font:italic 78px Georgia,serif;line-height:.8}
-.do2-art-lines{position:absolute;left:50%;top:50%;width:260px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,61,53,.5),transparent);transform:translate(-50%,-50%) rotate(32deg)}
+.wdo3-label{position:absolute;z-index:8;display:flex;flex-direction:column;gap:5px}
+.wdo3-label span{color:#ff3d35;font:9px 'DM Mono',monospace}
+.wdo3-label b{color:#ead8cf;font-size:17px;letter-spacing:-.02em}
+.wdo3-label small{color:#806860;font:7px 'DM Mono',monospace;letter-spacing:.1em}
+.label-ai{left:5%;top:7%}.label-ps{right:5%;top:7%}.label-video{left:5%;bottom:7%}.label-motion{right:5%;bottom:7%}
 
-.do2-object{position:absolute;z-index:3;transition:transform .35s ease,opacity .35s ease;pointer-events:none}
-.do2-mini-label{display:block;margin-bottom:7px;color:#806860;font:8px 'DM Mono',monospace;letter-spacing:.16em}
-.obj-ai{left:10%;top:20%;transform:rotate(-8deg);animation:do2Float 6s ease-in-out infinite}
-.obj-ai strong{display:grid;place-items:center;width:88px;height:88px;border:1px solid rgba(255,61,53,.4);border-radius:50%;color:#ff3d35;font:italic 38px Georgia,serif;background:rgba(255,61,53,.04)}
-.obj-ai small{position:absolute;right:-8px;top:25px;color:#ff3d35}
-.obj-ps{right:11%;top:16%;transform:rotate(7deg);animation:do2Float 7s ease-in-out infinite -2s}
-.obj-ps strong{display:grid;place-items:center;width:70px;height:70px;border:1px solid rgba(70,110,255,.25);background:rgba(70,110,255,.07);color:#b8c6ff;font:italic 37px Georgia,serif}
-.obj-reel{left:10%;bottom:18%;transform:rotate(5deg);animation:do2Float 6.5s ease-in-out infinite -1s}
-.do2-reel-frame{width:125px;height:72px;border:1px solid rgba(234,216,207,.15);display:grid;place-items:center;background:linear-gradient(135deg,rgba(255,61,53,.12),transparent)}
-.do2-reel-frame span{color:#ff3d35;border:1px solid rgba(255,61,53,.4);width:27px;height:27px;border-radius:50%;display:grid;place-items:center;font-size:9px}
-.obj-ad{right:10%;bottom:19%;transform:rotate(-7deg);animation:do2Float 6s ease-in-out infinite -3s}
-.do2-ad-card{width:112px;height:78px;border:1px solid rgba(234,216,207,.14);padding:10px;display:flex;align-items:flex-end;justify-content:space-between;background:linear-gradient(145deg,rgba(255,61,53,.14),transparent)}
-.do2-ad-card b{color:#ead8cf;font-size:18px}.do2-ad-card i{color:#ff3d35;font:9px 'DM Mono',monospace}
-.obj-motion{right:37%;bottom:8%;transform:rotate(2deg);opacity:.65}
-.do2-keyframes{display:flex;align-items:center;gap:0;width:150px;height:30px}
-.do2-keyframes:before{content:"";height:1px;width:100%;background:rgba(255,61,53,.35)}
-.do2-keyframes i{position:absolute;width:7px;height:7px;border:1px solid #ff3d35;background:#080304;transform:rotate(45deg)}
-.do2-keyframes i:nth-child(1){margin-left:25px}.do2-keyframes i:nth-child(2){margin-left:75px}.do2-keyframes i:nth-child(3){margin-left:125px}
-.do2-keyframes span{position:absolute;height:28px;width:1px;background:rgba(255,61,53,.35);margin-left:75px;animation:do2Scan 2.5s ease-in-out infinite}
+.wdo3-tile{position:absolute;z-index:4;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .4s ease}
+.tile-meta{position:absolute;left:0;top:-18px;color:#705953;font:7px 'DM Mono',monospace;letter-spacing:.14em}
+.tile-ai{left:8%;top:18%;width:180px;height:180px}.tile-ps{right:9%;top:17%;width:205px;height:150px}.tile-reel{left:8%;bottom:18%;width:210px;height:145px}.tile-ad{right:9%;bottom:17%;width:180px;height:150px}.tile-motion{left:42%;bottom:7%;width:150px;height:65px}
 
-.do2-cap{position:absolute;z-index:6;display:block;text-align:left;padding:17px 20px;background:rgba(8,3,4,.82);border:1px solid rgba(255,255,255,.1);color:inherit;cursor:pointer;transition:.4s cubic-bezier(.2,.8,.2,1)}
-.do2-cap:hover,.do2-cap.active{border-color:rgba(255,61,53,.48);background:rgba(20,6,7,.9);transform:translateY(-4px)}
-.do2-cap-no{display:block;color:#ff3d35;font:9px 'DM Mono',monospace;margin-bottom:8px}
-.do2-cap-name{display:block;color:#ead8cf;font-size:20px;font-weight:700;letter-spacing:-.03em}
-.do2-cap-desc{display:block;margin-top:6px;color:#806860;font:8px 'DM Mono',monospace;letter-spacing:.08em}
-.do2-cap-arrow{position:absolute;right:15px;top:16px;color:#ff3d35;font-size:17px}
-.cap-ai{left:4%;top:7%;width:235px}.cap-graphic{right:4%;top:7%;width:255px}.cap-video{left:4%;bottom:7%;width:230px}.cap-motion{right:4%;bottom:7%;width:245px}
+.ai-symbol{position:absolute;inset:25px;border:1px solid rgba(255,61,53,.45);border-radius:50%;display:grid;place-items:center;color:#ff3d35;font:italic 58px Georgia,serif;background:radial-gradient(circle,rgba(255,61,53,.12),transparent 60%);box-shadow:0 0 70px rgba(255,61,53,.07)}
+.ai-orbit{position:absolute;inset:7px;border:1px dashed rgba(255,61,53,.2);border-radius:50%;animation:wdo3Spin 14s linear infinite}
+.ai-spark{position:absolute;color:#ff3d35;font-size:13px}.s1{right:7px;top:38px}.s2{left:18px;bottom:23px}
 
-.do2-focus-note{position:absolute;left:50%;bottom:6.5%;transform:translateX(-50%);z-index:7;width:270px;text-align:center;pointer-events:none;opacity:.9}
-.do2-focus-number{color:#ff3d35;font:8px 'DM Mono',monospace;letter-spacing:.2em}
-.do2-focus-note strong{display:block;margin-top:5px;color:#ead8cf;font-size:12px;letter-spacing:.08em}
-.do2-focus-note p{margin:6px 0 0;color:#806860;font:9px/1.5 'DM Mono',monospace}
+.ps-window,.reel-window{width:100%;height:100%;border:1px solid rgba(234,216,207,.13);background:rgba(15,7,8,.85);box-shadow:0 20px 45px rgba(0,0,0,.2)}
+.ps-bar{height:23px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:4px;padding:0 8px}.ps-bar i{width:4px;height:4px;border-radius:50%;background:#ff3d35}.ps-bar span{margin-left:auto;color:#705953;font:6px 'DM Mono',monospace}
+.ps-art{position:relative;height:calc(100% - 23px);overflow:hidden;background:linear-gradient(135deg,rgba(255,61,53,.08),transparent 60%)}
+.ps-art strong{position:absolute;right:22px;top:20px;color:#9eafef;font:italic 62px Georgia,serif}.ps-art span{position:absolute;left:18px;bottom:15px;color:#806860;font:7px/1.5 'DM Mono',monospace;letter-spacing:.12em}
 
-.do2-stage[data-focus="ai"] .do2-object:not(.obj-ai){opacity:.22}
-.do2-stage[data-focus="graphic"] .do2-object:not(.obj-ps):not(.obj-ad){opacity:.22}
-.do2-stage[data-focus="video"] .do2-object:not(.obj-reel){opacity:.22}
-.do2-stage[data-focus="motion"] .do2-object:not(.obj-motion){opacity:.22}
-.do2-stage[data-focus="ai"] .obj-ai,.do2-stage[data-focus="graphic"] .obj-ps,.do2-stage[data-focus="graphic"] .obj-ad,.do2-stage[data-focus="video"] .obj-reel,.do2-stage[data-focus="motion"] .obj-motion{opacity:1;transform:scale(1.08)}
+.reel-top{height:20px;display:flex;justify-content:space-between;padding:0 8px;align-items:center;color:#705953;font:6px 'DM Mono',monospace}
+.reel-image{height:85px;margin:0 8px;background:linear-gradient(135deg,rgba(255,61,53,.18),rgba(255,255,255,.02));display:grid;place-items:center;position:relative;overflow:hidden}
+.reel-image span{width:29px;height:29px;border:1px solid rgba(255,61,53,.6);border-radius:50%;display:grid;place-items:center;color:#ff3d35;font-size:9px}
+.reel-image i{position:absolute;left:-10%;right:-10%;height:1px;background:rgba(255,61,53,.45);animation:wdo3Scan 2.8s ease-in-out infinite}
+.reel-timeline{display:flex;gap:3px;height:17px;align-items:center;padding:0 8px}.reel-timeline b{height:5px;flex:1;background:rgba(255,61,53,.25)}.reel-timeline b:nth-child(2){flex:1.5}.reel-timeline b:nth-child(4){flex:1.8}
 
-.do2-ticker{margin-top:34px;overflow:hidden;white-space:nowrap;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);padding:18px 0;color:#503a35;font-size:clamp(24px,3vw,46px)}
-.do2-ticker>div{display:inline-block;width:max-content;animation:do2Ticker 24s linear infinite}
-.do2-ticker b{color:#ff3d35;font-size:.4em;vertical-align:.25em;margin:0 .45em}
+.ad-window{position:relative;width:100%;height:100%;border:1px solid rgba(255,61,53,.24);padding:15px;background:linear-gradient(145deg,rgba(255,61,53,.14),transparent 60%);transform:rotate(-5deg)}
+.ad-window small{color:#806860;font:7px 'DM Mono',monospace}.ad-window strong{display:block;margin-top:12px;color:#ead8cf;font-size:25px;line-height:.82;letter-spacing:-.04em}.ad-window i{position:absolute;right:13px;bottom:11px;color:#ff3d35;font-style:normal}
 
-@keyframes do2Spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
-@keyframes do2Orbit{to{transform:translate(-50%,-50%) rotate(378deg)}}
-@keyframes do2Float{50%{translate:0 -10px}}
-@keyframes do2Scan{0%,100%{transform:translateX(-70px);opacity:.1}50%{transform:translateX(70px);opacity:1}}
-@keyframes do2Ticker{to{transform:translateX(-50%)}}
+.motion-art{position:relative;width:100%;height:100%}.motion-art:before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:linear-gradient(90deg,transparent,#ff3d35,transparent)}
+.motion-art span{position:absolute;width:7px;height:7px;border:1px solid #ff3d35;transform:rotate(45deg);top:calc(50% - 3px);animation:wdo3Key 3s ease-in-out infinite}.motion-art span:nth-child(1){left:15%}.motion-art span:nth-child(2){left:48%;animation-delay:-1s}.motion-art span:nth-child(3){right:15%;animation-delay:-2s}.motion-art i{position:absolute;top:calc(50% - 12px);width:1px;height:25px;background:rgba(255,61,53,.35)}.motion-art i:nth-of-type(1){left:48%}.motion-art i:nth-of-type(2){right:15%}
 
-@media(max-width:950px){
-  .do2-head{grid-template-columns:1fr;gap:22px}
-  .do2-stage{min-height:800px}
-  .do2-center{width:55vw;height:430px}
+.wdo3-center{position:absolute;z-index:5;left:50%;top:50%;width:440px;height:340px;transform:translate(-50%,-50%);border:1px solid rgba(234,216,207,.14);background:rgba(9,4,5,.88);box-shadow:0 25px 70px rgba(0,0,0,.4);transition:transform .45s ease}
+.wdo3-center:before{content:"";position:absolute;inset:9px;border:1px solid rgba(255,61,53,.14)}
+.center-top,.center-bottom{position:absolute;left:17px;right:17px;display:flex;justify-content:space-between;color:#705953;font:7px 'DM Mono',monospace;letter-spacing:.1em}.center-top{top:14px}.center-bottom{bottom:13px}
+.center-main{position:absolute;left:38px;top:88px}.center-main p{margin:0 0 4px;color:#806860;font:8px 'DM Mono',monospace;letter-spacing:.22em}.center-main h3{margin:0;color:#ead8cf;font-size:63px;line-height:.8;letter-spacing:-.065em}.center-main h3 em{color:#ff3d35;font-style:normal}.center-mark{position:absolute;right:-65px;top:18px;color:#ff3d35;font-size:28px;animation:wdo3Pulse 2.5s ease-in-out infinite}
+.center-bottom span:last-child i{display:inline-block;width:5px;height:5px;border-radius:50%;background:#ff3d35;margin-right:5px;box-shadow:0 0 10px #ff3d35}
+
+.wdo3-strip{position:absolute;z-index:9;display:grid;grid-template-columns:110px 1fr 25px;align-items:center;gap:10px;width:300px;padding:11px 12px;border:1px solid rgba(255,255,255,.1);background:rgba(8,3,4,.9);color:inherit;text-align:left;cursor:pointer;transition:.35s ease}
+.wdo3-strip:hover,.wdo3-strip.active{border-color:rgba(255,61,53,.5);transform:translateY(-4px);background:rgba(18,6,7,.94)}
+.wdo3-strip span{color:#ead8cf;font-size:9px;font-weight:700}.wdo3-strip b{color:#705953;font:6px 'DM Mono',monospace;font-weight:400;letter-spacing:.08em}.wdo3-strip i{color:#ff3d35;font-style:normal;font-size:15px}
+.strip-ai{left:24%;top:6%}.strip-ps{right:23%;top:6%}.strip-video{left:24%;bottom:5%}.strip-motion{right:23%;bottom:5%}
+
+.wdo3-corner{position:absolute;z-index:8;color:#5f4944;font:7px 'DM Mono',monospace;letter-spacing:.14em}.corner-a{left:18px;top:50%;transform:rotate(-90deg) translateX(-50%);transform-origin:left top}.corner-b{right:18px;bottom:20px}
+.wdo3-ticker{margin-top:30px;overflow:hidden;white-space:nowrap;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);padding:17px 0;color:#523c37;font-size:clamp(24px,3vw,46px)}.wdo3-ticker>div{display:inline-block;width:max-content;animation:wdo3Ticker 25s linear infinite}.wdo3-ticker b{color:#ff3d35;font-size:.4em;vertical-align:.25em;margin:0 .45em}
+
+@keyframes wdo3Spin{to{transform:rotate(360deg)}}@keyframes wdo3Dash{to{stroke-dashoffset:-190}}@keyframes wdo3Scan{0%,100%{transform:translateY(-35px);opacity:.1}50%{transform:translateY(35px);opacity:.8}}@keyframes wdo3Key{50%{transform:translate(12px,-8px) rotate(45deg)}}@keyframes wdo3Pulse{50%{transform:scale(1.2);opacity:.65}}@keyframes wdo3Ticker{to{transform:translateX(-50%)}}
+
+@media(max-width:900px){
+  .wdo3-head{grid-template-columns:1fr;gap:20px}.wdo3-board{height:760px}
+  .wdo3-center{width:390px}.wdo3-label{display:none}
+  .tile-ai{left:5%}.tile-ps{right:5%}.tile-reel{left:5%}.tile-ad{right:5%}
+  .strip-ai{left:17%;top:4%}.strip-ps{right:17%;top:4%}.strip-video{left:17%;bottom:4%}.strip-motion{right:17%;bottom:4%}
 }
-@media(max-width:700px){
-  .do2{padding-top:75px!important;padding-bottom:70px!important}
-  .do2-head h2{font-size:clamp(44px,14vw,78px)}
-  .do2-stage{min-height:auto;padding:20px;display:flex;flex-direction:column;gap:12px;background:#070304}
-  .do2-grid-lines,.do2-orbit,.do2-object,.do2-cross,.do2-dot,.do2-focus-note{display:none}
-  .do2-center{position:relative;left:auto;top:auto;transform:none;width:100%;height:300px;order:0}
-  .do2-cap{position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;top:auto!important;width:100%!important;order:1}
-  .do2-cap-desc{padding-right:20px}
+@media(max-width:650px){
+  .wdo3{padding-top:75px!important;padding-bottom:70px!important}.wdo3-head h2{font-size:clamp(45px,14vw,80px)}
+  .wdo3-board{height:auto;min-height:900px;padding:18px}.wdo3-grid,.wdo3-paths,.wdo3-corner{display:none}
+  .wdo3-center{position:relative;left:auto;top:auto;transform:none;width:100%;height:300px;margin:95px 0 18px}
+  .wdo3-tile{opacity:.8}.tile-ai{left:5%;top:8%;transform:scale(.72)}.tile-ps{right:4%;top:10%;transform:scale(.72)}.tile-reel{left:4%;bottom:14%;transform:scale(.72)}.tile-ad{right:4%;bottom:13%;transform:scale(.72)}.tile-motion{left:34%;bottom:4%;transform:scale(.75)}
+  .wdo3-strip{position:relative;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:100%;margin-top:10px}.wdo3-label{display:none}
 }
 </style>
 
 <script>
 (function(){
-  const stage=document.getElementById('creativeStage');
-  if(!stage) return;
+  const board=document.getElementById('wdo3Board');
+  if(!board) return;
 
-  const title=document.getElementById('do2FocusTitle');
-  const text=document.getElementById('do2FocusText');
-  const number=document.querySelector('.do2-focus-number');
-  const cards=stage.querySelectorAll('.do2-cap');
+  const center=board.querySelector('.wdo3-center');
+  const tiles=board.querySelectorAll('.wdo3-tile');
+  const strips=board.querySelectorAll('.wdo3-strip');
 
-  const data={
-    ai:{
-      number:'01',
-      title:'AI DESIGN',
-      text:'Generative visuals, creative concepts, image manipulation and AI-powered experiments.'
-    },
-    graphic:{
-      number:'02',
-      title:'GRAPHIC DESIGN',
-      text:'Photoshop-based social creatives, campaigns, posters, thumbnails and polished visual communication.'
-    },
-    video:{
-      number:'03',
-      title:'VIDEO EDITING',
-      text:'Reels, advertisements, promos and short-form edits built around rhythm, pacing and storytelling.'
-    },
-    motion:{
-      number:'04',
-      title:'MOTION GRAPHICS',
-      text:'Logo animation, animated social content and motion graphics that add movement to the idea.'
-    }
+  const copy={
+    ai:'AI DESIGN',
+    ps:'PHOTOSHOP',
+    video:'VIDEO EDITING',
+    motion:'MOTION GRAPHICS'
   };
 
-  cards.forEach(card=>{
-    card.addEventListener('mouseenter',()=>{
-      const key=card.dataset.focus;
-      const d=data[key];
-      stage.dataset.focus=key;
-      cards.forEach(c=>c.classList.toggle('active',c===card));
-      number.textContent=d.number;
-      title.textContent=d.title;
-      text.textContent=d.text;
+  strips.forEach(strip=>{
+    strip.addEventListener('mouseenter',()=>{
+      strips.forEach(s=>s.classList.remove('active'));
+      strip.classList.add('active');
+      board.dataset.focus=strip.dataset.focus;
     });
-    card.addEventListener('focus',()=>card.dispatchEvent(new Event('mouseenter')));
   });
 
-  stage.addEventListener('mouseleave',()=>{
-    stage.removeAttribute('data-focus');
-    cards.forEach(c=>c.classList.remove('active'));
-  });
-
-  stage.addEventListener('mousemove',e=>{
-    if(window.matchMedia('(max-width:700px)').matches) return;
-    const r=stage.getBoundingClientRect();
+  board.addEventListener('mousemove',e=>{
+    if(window.matchMedia('(max-width:650px)').matches) return;
+    const r=board.getBoundingClientRect();
     const x=(e.clientX-r.left)/r.width-.5;
     const y=(e.clientY-r.top)/r.height-.5;
-    const center=stage.querySelector('.do2-center');
-    center.style.transform=`translate(calc(-50% + ${x*10}px),calc(-50% + ${y*8}px))`;
-    stage.querySelectorAll('.do2-object').forEach(obj=>{
-      const d=Number(obj.dataset.depth||1);
-      obj.style.translate=`${x*d*10}px ${y*d*8}px`;
+    center.style.transform=`translate(calc(-50% + ${x*8}px),calc(-50% + ${y*6}px))`;
+
+    tiles.forEach(tile=>{
+      const depth=Number(tile.dataset.depth||1);
+      tile.style.translate=`${x*depth*12}px ${y*depth*9}px`;
     });
   });
 
-  stage.addEventListener('mouseleave',()=>{
-    const center=stage.querySelector('.do2-center');
-    if(center) center.style.transform='translate(-50%,-50%)';
-    stage.querySelectorAll('.do2-object').forEach(obj=>obj.style.translate='0 0');
+  board.addEventListener('mouseleave',()=>{
+    center.style.transform='translate(-50%,-50%)';
+    tiles.forEach(tile=>tile.style.translate='0 0');
+    strips.forEach(s=>s.classList.remove('active'));
+    board.removeAttribute('data-focus');
   });
 })();
-</script>  
+</script>
 
 <section id="work" class="crafted section">
 
