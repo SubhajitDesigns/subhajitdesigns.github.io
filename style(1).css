@@ -3113,119 +3113,31 @@ body.cursor-active .cursor-glow {
   .creating-slide{transition:none}
   .creating-progress span.is-running{animation:none;width:100%}
 }
-
-
 /* =========================================================
-   CURRENTLY CREATING — FINAL IMAGE / TEXT / CIRCLE ALIGNMENT
-   ---------------------------------------------------------
-   • Artwork stays flush to the right edge of the stage
-   • Circle's RIGHT EDGE matches the artwork's RIGHT EDGE
-   • Small gap between artwork and caption
-   • Caption text stays clear of the circle
+   EDGE-TO-EDGE FIX — keep section content full width
    ========================================================= */
-
-.creating-stage{
-  width:min(100%,650px);
-  margin-left:auto;
-  margin-right:0;
+.statement,
+.section,
+.big-type,
+.contact {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
-.creating-slide{
-  justify-content:flex-end !important;
+/* Keep the new About section aligned cleanly while allowing its
+   full-width visual elements to reach the viewport edges. */
+.aboutx {
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
-.creating-slide img{
-  margin-left:auto;
-  margin-right:0;
-}
-
-.creating-caption{
-  position:relative;
-  width:min(100%,650px);
-  margin:18px 0 0 auto !important;
-  padding-right:62px;
-  box-sizing:border-box;
-  min-height:58px;
-}
-
-.creating-caption > div{
-  width:100%;
-  margin:0;
-  text-align:right;
-}
-
-.creating-caption p{
-  margin:0 0 7px;
-  text-align:right;
-}
-
-.creating-caption h3{
-  margin:0;
-  text-align:right;
-  padding:0;
-}
-
-/* The circle stays on the artwork's exact right edge.
-   Its RIGHT EDGE = artwork RIGHT EDGE. */
-.creating-next{
-  right:0 !important;
-  top:50%;
-  transform:translateY(-50%);
-  z-index:5;
-}
-
-.creating-next:hover{
-  transform:translateY(-50%) translateY(-3px) rotate(6deg);
-}
-
-/* Keep the text comfortably separated from the circle */
-.creating-caption > div{
-  padding-right:8px;
-  box-sizing:border-box;
-}
-
-/* Tablet / mobile */
-@media(max-width:1000px){
-  .creating-stage{
-    width:100%;
-    margin-left:0;
-    margin-right:0;
-  }
-
-  .creating-slide{
-    justify-content:center !important;
-  }
-
-  .creating-slide img{
-    margin-left:auto;
-    margin-right:auto;
-  }
-
-  .creating-caption{
-    width:100%;
-    margin-left:0 !important;
-    margin-right:0 !important;
-    padding-right:58px;
-  }
-
-  .creating-next{
-    right:0 !important;
-  }
-}
-
-@media(max-width:700px){
-  .creating-caption{
-    padding-right:52px;
-    margin-top:15px !important;
-  }
-
-  .creating-caption h3{
-    font-size:18px;
-  }
-
-  .creating-next{
-    width:42px;
-    height:42px;
-    flex-basis:42px;
+@media (max-width: 800px) {
+  .statement,
+  .section,
+  .big-type,
+  .contact {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 }
