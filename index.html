@@ -132,48 +132,147 @@
     </div>
   </div>
 </section>
-<section id="about" class="about section">
-
-  <div class="about-title">
-    <p class="eyebrow">CREATIVE PORTFOLIO — PRESENTATION</p>
-
-    <h2>Meet The Designer</h2>
-
-    <h3>Designing with Purpose, Passion &amp; Experience</h3>
+<section id="about" class="aboutx section" aria-label="About Subhajit">
+  <div class="aboutx-topline">
+    <span>01 — ABOUT THE DESIGNER</span>
+    <span class="aboutx-live"><i></i> ALWAYS CREATING</span>
   </div>
 
-  <div class="about-copy">
+  <div class="aboutx-grid">
+    <div class="aboutx-left">
+      <p class="aboutx-kicker">MEET SUBHAJIT.</p>
+      <h2>I MAKE <span class="aboutx-typing" id="aboutxTyping">VISUALS.</span></h2>
+      <p class="aboutx-lead">Graphic designer, motion designer &amp; visual storyteller turning ideas into work people remember.</p>
 
-    <p>
-      Hey myself Subhajit Das, I’m a 26-year-old dedicated graphic designer
-      with over 6 years of professional experience. After completing my
-      schooling in 2017, financial limitations prevented me from finishing
-      college—but they never limited my ambition.
-    </p>
+      <div class="aboutx-type-line">
+        <span>MY CURRENT ROLE</span>
+        <strong id="aboutxRole">GRAPHIC DESIGNER</strong>
+      </div>
 
-    <p>
-      Since then, I’ve built my career through self-learning, continuous
-      practice, and real client projects. I’ve collaborated with 50+ brands,
-      helping them strengthen their visual identity and stand out in
-      competitive markets.
-    </p>
-
-    <p>
-      My work blends creativity with clarity. I focus on clean, effective
-      design that captures attention, communicates ideas, and drives
-      engagement. I’m always learning, evolving, and pushing my skills to
-      deliver better results every day.
-    </p>
-
-    <div class="about-badge">
-      <span>🤝</span>
-      <span>Worked with</span>
-      <strong>50+ Brands</strong>
+      <div class="aboutx-stats">
+        <div><strong>07+</strong><span>YEARS CREATING</span></div>
+        <div><strong>100+</strong><span>BRANDS</span></div>
+        <div><strong>6000+</strong><span>DESIGNS</span></div>
+        <div><strong>1000+</strong><span>VIDEOS</span></div>
+      </div>
     </div>
 
+    <div class="aboutx-right">
+      <div class="aboutx-copy">
+        <p class="aboutx-label">A LITTLE ABOUT ME</p>
+        <p>Hey, I’m Subhajit Das — a graphic designer and motion designer with 6+ years of professional experience. I started building my career through self-learning, practice and real-world projects.</p>
+        <p>I’ve worked with 50+ brands, creating visual identities, campaigns, social content, motion graphics and digital experiences. My approach is simple: make the idea clear, then make it impossible to ignore.</p>
+        <p>I’m constantly experimenting, learning and pushing my visual language forward.</p>
+      </div>
+
+      <div class="aboutx-credentials">
+        <div class="aboutx-credentials-head">
+          <div><p class="aboutx-label">CREDENTIALS</p><h3>Proof of the craft.</h3></div>
+          <span>02 CERTIFICATES</span>
+        </div>
+
+        <div class="aboutx-cert-grid">
+          <button class="aboutx-cert" type="button" data-cert="certificate-photoshop-2020.jpg" data-title="Ultimate Photoshop Training" data-year="2020">
+            <span class="aboutx-cert-number">01</span>
+            <div class="aboutx-cert-image"><img src="certificate-photoshop-2020.jpg" alt="Subhajit Das Photoshop training certificate" loading="lazy"></div>
+            <div class="aboutx-cert-info"><span>PHOTOSHOP TRAINING</span><strong>Beginners → Pro</strong><small>2020 ↗</small></div>
+          </button>
+
+          <button class="aboutx-cert" type="button" data-cert="certificate-retouching-2021.jpg" data-title="Adobe Photoshop CC Retouching Masterclass" data-year="2021">
+            <span class="aboutx-cert-number">02</span>
+            <div class="aboutx-cert-image"><img src="certificate-retouching-2021.jpg" alt="Subhajit Das Adobe Photoshop retouching certificate" loading="lazy"></div>
+            <div class="aboutx-cert-info"><span>ADOBE PHOTOSHOP CC</span><strong>Retouching Masterclass</strong><small>2021 ↗</small></div>
+          </button>
+        </div>
+        <p class="aboutx-hint">CLICK A CERTIFICATE TO VIEW FULL SIZE</p>
+      </div>
+    </div>
   </div>
 
+  <div class="aboutx-marquee" aria-hidden="true"><div>DESIGN <b>✦</b> MOTION <b>✦</b> VISUAL STORYTELLING <b>✦</b> DESIGN <b>✦</b> MOTION <b>✦</b> VISUAL STORYTELLING <b>✦</b></div></div>
 </section>
+
+<div class="aboutx-modal" id="aboutxModal" aria-hidden="true">
+  <div class="aboutx-modal-backdrop" data-aboutx-close></div>
+  <div class="aboutx-modal-card" role="dialog" aria-modal="true" aria-labelledby="aboutxModalTitle">
+    <button class="aboutx-modal-close" type="button" aria-label="Close certificate" data-aboutx-close>×</button>
+    <p class="aboutx-label">CERTIFICATE <span id="aboutxModalYear"></span></p>
+    <h3 id="aboutxModalTitle">Certificate</h3>
+    <div class="aboutx-modal-image"><img id="aboutxModalImage" src="" alt=""></div>
+  </div>
+</div>
+
+<style>
+.aboutx{position:relative;overflow:hidden;border-top:1px solid var(--line,rgba(255,255,255,.12));padding-top:30px!important;padding-bottom:0!important}
+.aboutx-topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:70px;font:10px 'DM Mono',monospace;letter-spacing:.12em;color:#8f7770}
+.aboutx-live{display:flex;gap:8px;align-items:center}.aboutx-live i{width:7px;height:7px;border-radius:50%;background:var(--red,#ff3d35);box-shadow:0 0 14px rgba(255,61,53,.65);animation:aboutxPulse 1.8s infinite}
+@keyframes aboutxPulse{0%,100%{opacity:.45;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+.aboutx-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:8vw;align-items:start}.aboutx-kicker,.aboutx-label{margin:0 0 18px;font:10px 'DM Mono',monospace;letter-spacing:.16em;color:#8f7770}
+.aboutx-left h2{margin:0;font-size:clamp(64px,8.8vw,142px);line-height:.78;letter-spacing:-.075em}.aboutx-typing{display:block;color:var(--red,#ff3d35);min-height:1em;white-space:nowrap}.aboutx-typing:after{content:"";display:inline-block;width:3px;height:.72em;margin-left:8px;background:var(--red,#ff3d35);animation:aboutxCaret .8s steps(1) infinite}@keyframes aboutxCaret{50%{opacity:0}}
+.aboutx-lead{max-width:510px;margin:42px 0 0;color:#b79f97;font-size:18px;line-height:1.55}.aboutx-type-line{display:flex;gap:18px;align-items:center;max-width:510px;margin-top:55px;padding-top:18px;border-top:1px solid var(--line,rgba(255,255,255,.12))}.aboutx-type-line span{font:9px 'DM Mono',monospace;letter-spacing:.13em;color:#806860}.aboutx-type-line strong{font-size:12px;color:#ead8cf}
+.aboutx-stats{display:grid;grid-template-columns:repeat(4,1fr);max-width:620px;margin-top:45px;border-top:1px solid var(--line,rgba(255,255,255,.12));border-bottom:1px solid var(--line,rgba(255,255,255,.12))}.aboutx-stats div{padding:20px 12px 18px 0;border-right:1px solid var(--line,rgba(255,255,255,.12))}.aboutx-stats div:not(:first-child){padding-left:15px}.aboutx-stats div:last-child{border:0}.aboutx-stats strong{display:block;font-size:25px;color:#ead8cf}.aboutx-stats span{display:block;margin-top:5px;font:8px 'DM Mono',monospace;letter-spacing:.09em;color:#806860}
+.aboutx-copy p:not(.aboutx-label){margin:0 0 22px;color:#a99289;line-height:1.7;font-size:15px}.aboutx-copy p:last-child{color:#ead8cf}.aboutx-credentials{margin-top:55px;padding-top:24px;border-top:1px solid var(--line,rgba(255,255,255,.12))}.aboutx-credentials-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:22px}.aboutx-credentials-head h3{margin:0;font-size:26px}.aboutx-credentials-head>span{font:9px 'DM Mono',monospace;letter-spacing:.12em;color:#806860}
+.aboutx-cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.aboutx-cert{position:relative;width:100%;padding:0;border:1px solid rgba(255,255,255,.11);border-radius:4px;overflow:hidden;background:#110606;color:inherit;text-align:left;cursor:pointer;transition:.45s}.aboutx-cert:hover{transform:translateY(-8px) rotate(-1deg);border-color:rgba(255,61,53,.55);box-shadow:0 20px 45px rgba(0,0,0,.3)}.aboutx-cert:nth-child(2):hover{transform:translateY(-8px) rotate(1deg)}.aboutx-cert-number{position:absolute;top:12px;right:12px;z-index:2;font:9px 'DM Mono',monospace;color:#fff;background:rgba(0,0,0,.7);padding:5px 7px}.aboutx-cert-image{height:155px;overflow:hidden;background:#f4f1ec}.aboutx-cert-image img{display:block;width:100%;height:100%;object-fit:cover;transition:.7s}.aboutx-cert:hover img{transform:scale(1.055)}.aboutx-cert-info{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:13px 14px 15px}.aboutx-cert-info span{grid-column:1/-1;font:8px 'DM Mono',monospace;letter-spacing:.1em;color:#806860}.aboutx-cert-info strong{font-size:12px;color:#ead8cf}.aboutx-cert-info small{font:9px 'DM Mono',monospace;color:var(--red,#ff3d35);align-self:end}.aboutx-hint{margin:15px 0 0;text-align:right;font:8px 'DM Mono',monospace;letter-spacing:.1em;color:#6f5953}
+.aboutx-marquee{margin-top:75px;overflow:hidden;white-space:nowrap;border-top:1px solid var(--line,rgba(255,255,255,.12));padding:19px 0 18px;color:#4e3732;font-size:clamp(32px,4.7vw,72px);line-height:.9}.aboutx-marquee>div{display:inline-block;animation:aboutxMarquee 22s linear infinite}.aboutx-marquee b{color:var(--red,#ff3d35);font-size:.42em;vertical-align:.22em;margin:0 .15em}@keyframes aboutxMarquee{to{transform:translateX(-50%)}}
+.aboutx-modal{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:25px;opacity:0;visibility:hidden;pointer-events:none;transition:.3s}.aboutx-modal.is-open{opacity:1;visibility:visible;pointer-events:auto}.aboutx-modal-backdrop{position:absolute;inset:0;background:rgba(5,2,2,.88);backdrop-filter:blur(12px)}.aboutx-modal-card{position:relative;z-index:2;width:min(1050px,94vw);max-height:92vh;padding:22px;background:#110606;border:1px solid rgba(255,255,255,.15);overflow:auto}.aboutx-modal-card h3{margin:0 0 18px;font-size:clamp(24px,3vw,42px)}.aboutx-modal-image{background:#f5f2ed;display:flex;justify-content:center}.aboutx-modal-image img{display:block;max-width:100%;max-height:72vh;width:auto;height:auto}.aboutx-modal-close{position:absolute;right:16px;top:14px;width:40px;height:40px;border:1px solid rgba(255,255,255,.25);border-radius:50%;background:rgba(0,0,0,.35);color:#fff;font-size:25px;cursor:pointer;z-index:4}.aboutx-modal-close:hover{color:var(--red,#ff3d35);border-color:var(--red,#ff3d35)}body.aboutx-lock{overflow:hidden}
+@media(max-width:1000px){.aboutx-grid{grid-template-columns:1fr;gap:65px}.aboutx-left h2{font-size:clamp(62px,12vw,105px)}}@media(max-width:650px){.aboutx-topline{margin-bottom:48px;font-size:8px}.aboutx-left h2{font-size:18vw}.aboutx-lead{font-size:16px;margin-top:32px}.aboutx-type-line{display:block;margin-top:38px}.aboutx-type-line strong{display:block;margin-top:8px}.aboutx-stats{grid-template-columns:1fr 1fr}.aboutx-stats div:nth-child(2){border-right:0}.aboutx-stats div:nth-child(3),.aboutx-stats div:nth-child(4){border-top:1px solid var(--line,rgba(255,255,255,.12))}.aboutx-cert-grid{grid-template-columns:1fr}.aboutx-cert-image{height:190px}.aboutx-credentials-head{display:block}.aboutx-credentials-head>span{display:block;margin-top:10px}.aboutx-marquee{margin-top:55px}.aboutx-modal{padding:10px}.aboutx-modal-card{padding:14px}}
+</style>
+
+<script>
+(function(){
+  const typing=document.getElementById('aboutxTyping');
+  const role=document.getElementById('aboutxRole');
+  const modal=document.getElementById('aboutxModal');
+  const modalImage=document.getElementById('aboutxModalImage');
+  const modalTitle=document.getElementById('aboutxModalTitle');
+  const modalYear=document.getElementById('aboutxModalYear');
+
+  if(typing){
+    const words=['VISUALS.','MOTION.','CAMPAIGNS.','IDEAS.'];
+    let wi=0, ci=words[0].length, deleting=true;
+    function loop(){
+      const word=words[wi];
+      if(deleting){
+        ci--; typing.textContent=word.slice(0,Math.max(0,ci));
+        if(ci<=0){deleting=false;wi=(wi+1)%words.length;setTimeout(loop,500);return}
+        setTimeout(loop,55);
+      }else{
+        const next=words[wi];ci++;typing.textContent=next.slice(0,ci);
+        if(ci>=next.length){deleting=true;setTimeout(loop,1500);return}
+        setTimeout(loop,90);
+      }
+    }
+    setTimeout(loop,1400);
+  }
+
+  if(role){
+    const roles=['GRAPHIC DESIGNER','MOTION DESIGNER','AI DESIGNER'];let i=0;
+    setInterval(()=>{i=(i+1)%roles.length;role.style.opacity='0';role.style.transform='translateY(5px)';setTimeout(()=>{role.textContent=roles[i];role.style.opacity='1';role.style.transform='translateY(0)'},180)},2600);
+    role.style.transition='opacity .25s ease,transform .25s ease';
+  }
+
+  document.querySelectorAll('.aboutx-cert').forEach(card=>{
+    card.addEventListener('click',()=>{
+      modalImage.src=card.dataset.cert;
+      modalImage.alt=card.dataset.title||'Certificate';
+      modalTitle.textContent=card.dataset.title||'Certificate';
+      modalYear.textContent=card.dataset.year?'— '+card.dataset.year:'';
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden','false');
+      document.body.classList.add('aboutx-lock');
+    });
+  });
+
+  function closeModal(){
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('aboutx-lock');
+    setTimeout(()=>modalImage.src='',250);
+  }
+  document.querySelectorAll('[data-aboutx-close]').forEach(el=>el.addEventListener('click',closeModal));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('is-open'))closeModal()});
+})();
+</script>
 
 
    
