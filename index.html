@@ -389,25 +389,13 @@
 .wdo4-wall{position:relative;height:790px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:#080304;isolation:isolate}
 .wdo4-grid{position:absolute;inset:0;opacity:.32;background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:80px 80px}
 .wdo4-wall:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,61,53,.09),transparent 38%),radial-gradient(circle at 15% 20%,rgba(255,61,53,.07),transparent 22%);pointer-events:none}
-.wdo4-copy{position:absolute;z-index:12;left:50%;top:50%;width:330px;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+.wdo4-copy{position:absolute;z-index:20;left:50%;top:42px;width:min(760px,calc(100% - 40px));transform:translate(-50%,-50%);text-align:center;pointer-events:none}
 .wdo4-copy span{color:#806860;font:8px 'DM Mono',monospace;letter-spacing:.2em}
 .wdo4-copy strong{display:block;margin-top:13px;color:#ead8cf;font-size:42px;line-height:.86;letter-spacing:-.05em}
 .wdo4-copy strong em{color:#ff3d35;font-style:normal}
 .wdo4-copy small{display:block;margin-top:18px;color:#604b46;font:8px 'DM Mono',monospace;letter-spacing:.1em}
-.wdo4-copy:before{
-  content:"";
-  position:absolute;
-  z-index:-1;
-  left:50%;
-  top:50%;
-  width:390px;
-  height:235px;
-  transform:translate(-50%,-50%);
-  background:radial-gradient(circle,rgba(8,3,4,.92) 0%,rgba(8,3,4,.72) 58%,rgba(8,3,4,0) 100%);
-  pointer-events:none;
-}
 
-.wdo4-piece{position:absolute;z-index:5;padding:0;border:0;background:none;color:inherit;text-align:left;cursor:pointer;--px:0px;--py:0px;transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .45s ease,filter .45s ease;transform-origin:center}
+.wdo4-piece{position:absolute;background:transparent!important;border:0!important;box-shadow:none!important;z-index:5;padding:0;border:0;background:none;color:inherit;text-align:left;cursor:pointer;--px:0px;--py:0px;transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .45s ease,filter .45s ease;transform-origin:center}
 .wdo4-piece:after{content:"";position:absolute;inset:24px -8px -8px;background:rgba(255,61,53,.07);filter:blur(24px);z-index:-1;opacity:0;transition:.4s}
 .wdo4-piece:hover{z-index:20;transform:translate(calc(var(--px) + 0px),calc(var(--py) - 10px)) rotate(0deg) scale(1.06)!important}
 .wdo4-piece:hover:after{opacity:1}
@@ -437,7 +425,7 @@
 .piece-motion:hover .wdo4-play{transform:translate(-50%,-50%) scale(1.2);background:#ff3d35;color:#080304}
 .piece-motion video{object-position:center}
 
-.wdo4-controls{position:absolute;z-index:30;left:50%;top:28px;transform:translateX(-50%);display:flex;gap:5px;flex-wrap:wrap;justify-content:center;width:360px;padding:8px;background:rgba(8,3,4,.75);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(8px)}
+.wdo4-controls{position:absolute;z-index:30;left:50%;top:150px;transform:translateX(-50%);width:max-content;display:flex;flex-wrap:nowrap;white-space:nowrap;display:flex;gap:5px;flex-wrap:wrap;justify-content:center;width:360px;padding:8px;background:rgba(8,3,4,.75);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(8px)}
 .wdo4-controls button{border:1px solid rgba(255,255,255,.11);background:transparent;color:#806860;padding:10px 12px;font:9px 'DM Mono',monospace;letter-spacing:.08em;cursor:pointer;transition:.3s}
 .wdo4-controls button:hover,.wdo4-controls button.active{color:#ead8cf;border-color:rgba(255,61,53,.55);background:rgba(255,61,53,.09)}
 .wdo4-side-note{position:absolute;left:16px;top:50%;transform:rotate(-90deg) translateX(-50%);transform-origin:left top;color:#5c4742;font:7px 'DM Mono',monospace;letter-spacing:.15em}
