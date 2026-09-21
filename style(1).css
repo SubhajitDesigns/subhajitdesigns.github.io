@@ -3112,3 +3112,62 @@ body.cursor-active .cursor-glow {
   .creating-slide{transition:none}
   .creating-progress span.is-running{animation:none;width:100%}
 }
+
+/* =========================================================
+   CURRENTLY CREATING — IMAGE + TEXT ALIGNMENT FIX
+   ========================================================= */
+
+.creating-visual{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+}
+
+.creating-stage{
+  width:min(100%,650px);
+  margin-left:auto;
+  margin-right:0;
+}
+
+.creating-caption{
+  width:min(100%,650px);
+  margin:14px 0 0 auto;
+  text-align:right;
+}
+
+.creating-caption > div{
+  width:100%;
+  text-align:right;
+}
+
+.creating-caption p,
+.creating-caption h3{
+  text-align:right;
+}
+
+/* Keep the arrow aligned with the actual image edge */
+.creating-next{
+  right:0;
+}
+
+/* Smaller screens */
+@media(max-width:1000px){
+  .creating-visual{
+    align-items:stretch;
+  }
+
+  .creating-stage,
+  .creating-caption{
+    width:100%;
+    margin-left:0;
+    margin-right:0;
+  }
+
+  .creating-caption{
+    text-align:right;
+  }
+
+  .creating-next{
+    right:0;
+  }
+}
