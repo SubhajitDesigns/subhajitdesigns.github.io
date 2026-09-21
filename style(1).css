@@ -3114,14 +3114,8 @@ body.cursor-active .cursor-glow {
 }
 
 /* =========================================================
-   CURRENTLY CREATING — IMAGE + TEXT ALIGNMENT FIX
+   CURRENTLY CREATING — FINAL ARTWORK/CAPTION ALIGNMENT
    ========================================================= */
-
-.creating-visual{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-}
 
 .creating-stage{
   width:min(100%,650px);
@@ -3129,9 +3123,24 @@ body.cursor-active .cursor-glow {
   margin-right:0;
 }
 
+/* IMPORTANT:
+   Push each artwork to the right edge of the stage.
+   This makes the artwork's right edge = caption's right edge.
+*/
+.creating-slide{
+  justify-content:flex-end !important;
+}
+
+.creating-slide img{
+  margin-left:auto;
+  margin-right:0;
+}
+
+/* Caption uses the exact same right edge */
 .creating-caption{
   width:min(100%,650px);
-  margin:14px 0 0 auto;
+  margin-left:auto !important;
+  margin-right:0 !important;
   text-align:right;
 }
 
@@ -3145,29 +3154,28 @@ body.cursor-active .cursor-glow {
   text-align:right;
 }
 
-/* Keep the arrow aligned with the actual image edge */
+/* Arrow stays at the artwork/stage edge */
 .creating-next{
   right:0;
 }
 
-/* Smaller screens */
 @media(max-width:1000px){
-  .creating-visual{
-    align-items:stretch;
+  .creating-stage{
+    width:100%;
   }
 
-  .creating-stage,
+  .creating-slide{
+    justify-content:center !important;
+  }
+
+  .creating-slide img{
+    margin-left:auto;
+    margin-right:auto;
+  }
+
   .creating-caption{
     width:100%;
-    margin-left:0;
-    margin-right:0;
-  }
-
-  .creating-caption{
-    text-align:right;
-  }
-
-  .creating-next{
-    right:0;
+    margin-left:0 !important;
+    margin-right:0 !important;
   }
 }
