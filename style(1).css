@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap');
 :root{--bg:#070101;--red:#ff3426;--red2:#ff604b;--cream:#f5e9e2;--muted:#b69a91;--line:rgba(245,228,217,.15);--max:1440px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--cream);font-family:'DM Sans',Arial,sans-serif;overflow-x:hidden}a{color:inherit;text-decoration:none}button{font:inherit}
@@ -3113,8 +3114,14 @@ body.cursor-active .cursor-glow {
   .creating-progress span.is-running{animation:none;width:100%}
 }
 
+
 /* =========================================================
-   CURRENTLY CREATING — FINAL ARTWORK/CAPTION ALIGNMENT
+   CURRENTLY CREATING — FINAL IMAGE / TEXT / CIRCLE ALIGNMENT
+   ---------------------------------------------------------
+   • Artwork stays flush to the right edge of the stage
+   • Circle's RIGHT EDGE matches the artwork's RIGHT EDGE
+   • Small gap between artwork and caption
+   • Caption text stays clear of the circle
    ========================================================= */
 
 .creating-stage{
@@ -3123,10 +3130,6 @@ body.cursor-active .cursor-glow {
   margin-right:0;
 }
 
-/* IMPORTANT:
-   Push each artwork to the right edge of the stage.
-   This makes the artwork's right edge = caption's right edge.
-*/
 .creating-slide{
   justify-content:flex-end !important;
 }
@@ -3136,32 +3139,57 @@ body.cursor-active .cursor-glow {
   margin-right:0;
 }
 
-/* Caption uses the exact same right edge */
 .creating-caption{
+  position:relative;
   width:min(100%,650px);
-  margin-left:auto !important;
-  margin-right:0 !important;
-  text-align:right;
+  margin:18px 0 0 auto !important;
+  padding-right:62px;
+  box-sizing:border-box;
+  min-height:58px;
 }
 
 .creating-caption > div{
   width:100%;
+  margin:0;
   text-align:right;
 }
 
-.creating-caption p,
+.creating-caption p{
+  margin:0 0 7px;
+  text-align:right;
+}
+
 .creating-caption h3{
+  margin:0;
   text-align:right;
+  padding:0;
 }
 
-/* Arrow stays at the artwork/stage edge */
+/* The circle stays on the artwork's exact right edge.
+   Its RIGHT EDGE = artwork RIGHT EDGE. */
 .creating-next{
-  right:0;
+  right:0 !important;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:5;
 }
 
+.creating-next:hover{
+  transform:translateY(-50%) translateY(-3px) rotate(6deg);
+}
+
+/* Keep the text comfortably separated from the circle */
+.creating-caption > div{
+  padding-right:8px;
+  box-sizing:border-box;
+}
+
+/* Tablet / mobile */
 @media(max-width:1000px){
   .creating-stage{
     width:100%;
+    margin-left:0;
+    margin-right:0;
   }
 
   .creating-slide{
@@ -3177,5 +3205,27 @@ body.cursor-active .cursor-glow {
     width:100%;
     margin-left:0 !important;
     margin-right:0 !important;
+    padding-right:58px;
+  }
+
+  .creating-next{
+    right:0 !important;
+  }
+}
+
+@media(max-width:700px){
+  .creating-caption{
+    padding-right:52px;
+    margin-top:15px !important;
+  }
+
+  .creating-caption h3{
+    font-size:18px;
+  }
+
+  .creating-next{
+    width:42px;
+    height:42px;
+    flex-basis:42px;
   }
 }
