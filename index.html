@@ -18,54 +18,253 @@
   <div class="cursor-dot" aria-hidden="true"></div>
 
   <main id="top">
-    <section class="hero-scroll-scene" id="home">
-      <div class="scene-sticky">
-        <div class="scene-sky" aria-hidden="true"></div>
+    
+<!-- =========================================================
+     SUBHAJIT — NEW LANDING / HERO
+     ========================================================= -->
 
-        <div class="scene-cloud cloud-one" aria-hidden="true"><img src="floating-cloud-1.webp" alt=""></div>
-        <div class="scene-cloud cloud-two" aria-hidden="true"><img src="floating-cloud-1.webp" alt=""></div>
+<section id="home" class="hero page">
 
-        <div class="scene-mountain" aria-hidden="true">
-          <img src="mounten-cutout.png" alt="">
-        </div>
+  <div class="scene">
 
-        <div class="scene-subhajit">
-          <img src="cutout-photo.png" alt="Subhajit and creative collaborators">
-        </div>
+    <!-- SKY -->
+    <div
+      class="sky"
+      id="sky"
+      data-depth="0.08"
+      style="
+        background-image:url('assets-home/Sky(1).png');
+        background-position:center;
+        background-size:cover;
+        background-repeat:no-repeat;
+      ">
+    </div>
 
-        <div class="scene-copy">
-          <p class="scene-kicker">GRAPHIC DESIGNER / MOTION DESIGNER</p>
-          <h1>SUBHAJIT'S<br><span>DESIGN.</span></h1>
-          <p class="scene-intro">Visuals with a point of view — from scroll-stopping campaigns to motion-led brand stories.</p>
-          <div class="scene-actions">
-            <a class="scene-pill" href="#work">Explore work <span>↗</span></a>
-            <a class="scene-secondary" href="#about">Discover more</a>
-          </div>
-        </div>
 
-        <header class="scene-nav">
-          <a class="scene-brand" href="#top">SUBHAJIT<span>•</span></a>
-          <nav>
-            <a href="#about">About</a>
-            <a href="#what-i-do">What I Do</a>
-            <a href="resume.html">Resume</a>
-            <a href="#work">Work</a>
-          </nav>
-          <a class="scene-contact" href="#contact">Let's talk <span>↗</span></a>
-        </header>
+    <!-- LOWER DARK GRADIENT -->
+    <div
+      class="s1"
+      aria-hidden="true"
+      style="
+        position:absolute;
+        inset:40% 0 0;
+        z-index:2;
+        pointer-events:none;
+        background:linear-gradient(
+          to bottom,
+          rgba(9,5,20,0) 0%,
+          rgba(9,5,20,.55) 72%,
+          rgba(6,3,14,.9) 100%
+        );
+      ">
+    </div>
 
-        <div class="scene-meta">
-          <span>BASED IN KOLKATA, INDIA</span>
-          <span class="scene-scroll-hint"><i></i> SCROLL TO EXPLORE</span>
-          <span>© 2026</span>
-        </div>
-        <div class="scene-flash" aria-hidden="true"></div>
+
+    <!-- BOTTOM FADE -->
+    <div
+      class="s1"
+      aria-hidden="true"
+      style="
+        position:absolute;
+        left:0;
+        right:0;
+        bottom:0;
+        height:16vh;
+        z-index:3;
+        pointer-events:none;
+        background:linear-gradient(
+          to top,
+          #07040e 0%,
+          rgba(7,4,14,.5) 45%,
+          transparent 100%
+        );
+      ">
+    </div>
+
+
+    <!-- CLOUDS -->
+    <div
+      class="clouds"
+      id="clouds"
+      aria-hidden="true">
+    </div>
+
+
+    <!-- WORLD -->
+    <div
+      class="world"
+      id="world">
+
+
+      <!-- MAIN FOREGROUND -->
+      <div
+        class="char"
+        id="char">
+
+        <img
+          src="assets-home/characters.webp"
+          alt="Subhajit and Aratrika"
+          decoding="async"
+          fetchpriority="high">
+
       </div>
-    </section>
 
 
+      <!-- SECOND / CUTOUT STATE -->
+      <div
+        class="char-nf"
+        id="charNF">
+
+        <img
+          src="assets-home/characters-nofeet.webp"
+          alt=""
+          decoding="async"
+          fetchpriority="low">
+
+      </div>
 
 
+      <!-- MOUNTAIN -->
+      <img
+        class="mountain"
+        id="mountain"
+        src="assets-home/mountain-hd-2x.webp"
+        alt="Mountain"
+        decoding="async"
+        fetchpriority="high">
+
+
+      <!-- REFERENCE PATH -->
+      <svg
+        class="path"
+        id="path"
+        viewBox="0 0 1687 932"
+        preserveAspectRatio="xMidYMid meet"
+        aria-hidden="true">
+
+        <defs>
+
+          <linearGradient
+            id="trailGrad"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1">
+
+            <stop
+              offset="0"
+              stop-color="#f2e6bd"
+              stop-opacity=".78"/>
+
+            <stop
+              offset=".48"
+              stop-color="#f2e6bd"
+              stop-opacity=".92"/>
+
+            <stop
+              offset=".65"
+              stop-color="#fff6da"
+              stop-opacity="1"/>
+
+            <stop
+              offset=".76"
+              stop-color="#fff6da"
+              stop-opacity=".82"/>
+
+            <stop
+              offset=".85"
+              stop-color="#fff6da"
+              stop-opacity=".42"/>
+
+            <stop
+              offset=".91"
+              stop-color="#fff6da"
+              stop-opacity=".12"/>
+
+            <stop
+              offset=".94"
+              stop-color="#fff6da"
+              stop-opacity="0"/>
+
+            <stop
+              offset="1"
+              stop-color="#fff6da"
+              stop-opacity="0"/>
+
+          </linearGradient>
+
+        </defs>
+
+      </svg>
+
+    </div>
+
+
+    <!-- SCROLL HINT -->
+    <div
+      class="s1 scroll-hint">
+
+      <span>Scroll</span>
+
+      <svg
+        width="12"
+        height="33"
+        viewBox="0 0 12 33"
+        fill="none"
+        aria-hidden="true"
+        class="scroll-arrow">
+
+        <path
+          d="M10.253 1.00197C10.2299 1.01703 8.83254 1.92629 6.62535 3.53158C3.53406 5.77989 3.67475 12.2654 3.50878 14.7456C3.29257 17.9764 4.61011 23.1179 5.70428 27.0564C6.42866 29.6638 6.91881 30.7313 6.99251 31.1428C7.23744 32.5106 4.13683 28.891 2.73772 27.918C2.09628 27.4718 1.52378 26.9794 1.1977 26.8079C0.211774 26.2891 3.20374 28.4024 4.37538 29.3931C5.65501 30.475 6.64767 31.0344 7.20473 31.1654C8.62458 31.4993 7.98434 28.0665 8.50303 26.4562C8.85171 25.7215 9.24552 25.0269 9.65798 24.3651C9.86629 24.0408 10.0726 23.7403 10.2301 23.4048"
+          stroke="#EB4400"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+      </svg>
+
+    </div>
+
+
+    <!-- SECOND SCENE TEXT -->
+    <div
+      id="heroCopy"
+      class="s2">
+
+      <div class="hero-copy-text">
+
+        <h1>
+          I take design seriously.
+          <br>
+          The play even more so.
+        </h1>
+
+        <div class="hero-sub">
+          Graphic &amp; Motion Designer · Kolkata, India
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- WORK CARD -->
+    <div
+      id="pointCard"
+      class="s2">
+
+      <span>Work</span>
+
+      <span class="work-arrow">
+        ↗
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+    
 <section class="currently-creating" id="currently-creating" aria-label="Currently Creating">
   <div class="creating-shell">
     <div class="creating-copy">
