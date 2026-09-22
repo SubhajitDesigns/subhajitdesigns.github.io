@@ -1238,3 +1238,344 @@ if (clientTrack) {
   requestAnimationFrame(render);
 
 })();
+
+
+/* =========================================================
+   SUBHAJIT — CINEMATIC HERO ANIMATION
+   ========================================================= */
+
+(() => {
+  const hero = document.querySelector(".cinematic-hero");
+
+  if (!hero) return;
+
+  const scene = document.querySelector(".cinematic-scene");
+  const sky = document.querySelector(".cinematic-sky");
+  const clouds = document.querySelector(".cinematic-clouds");
+  const foreground = document.querySelector(".cinematic-foreground");
+  const cutout = document.querySelector(".cinematic-cutout");
+  const copy = document.querySelector(".cinematic-copy");
+  const intro = document.querySelector(".cinematic-intro");
+
+  if (!scene || !foreground) return;
+
+  /* -------------------------------------------------------
+     STATE
+     ------------------------------------------------------- */
+
+  const mouse = {
+    x: 0,
+    y: 0,
+    targetX: 0,
+    targetY: 0
+  };
+
+  const motion = {
+    scroll: 0,
+    smoothScroll: 0
+  };
+
+  /* -------------------------------------------------------
+     MOUSE POSITION
+     ------------------------------------------------------- */
+
+  window.addEventListener("mousemove", (event) => {
+
+    mouse.targetX =
+      (event.clientX / window.innerWidth - 0.5);
+
+    mouse.targetY =
+      (event.clientY / window.innerHeight - 0.5);
+
+  }, { passive: true });
+
+
+  /* -------------------------------------------------------
+     HELPERS
+     ------------------------------------------------------- */
+
+  const clamp = (value, min, max) => {
+    return Math.max(min, Math.min(max, value));
+  };
+
+  const lerp = (a, b, amount) => {
+    return a + (b - a) * amount;
+  };
+
+
+  /* -------------------------------------------------------
+     SCROLL PROGRESS
+     ------------------------------------------------------- */
+
+  function updateScroll() {
+
+    const rect = hero.getBoundingClientRect();
+
+    const scrollDistance =
+      hero.offsetHeight - window.innerHeight;
+
+    if (scrollDistance <= 0) {
+      motion.scroll = 0;
+      return;
+    }
+
+    motion.scroll =
+      clamp(
+        -rect.top / scrollDistance,
+        0,
+        1
+      );
+  }
+
+
+  window.addEventListener(
+    "scroll",
+    updateScroll,
+    { passive: true }
+  );
+
+  updateScroll();
+
+
+  /* -------------------------------------------------------
+     ANIMATION LOOP
+     ------------------------------------------------------- */
+
+  function animate() {
+
+    /* Smooth mouse */
+
+    mouse.x = lerp(
+      mouse.x,
+      mouse.targetX,
+      0.055
+    );
+
+    mouse.y = lerp(
+      mouse.y,
+      mouse.targetY,
+      0.055
+    );
+
+
+    /* Smooth scroll */
+
+    motion.smoothScroll = lerp(
+      motion.smoothScroll,
+      motion.scroll,
+      0.075
+    );
+
+    const s = motion.smoothScroll;
+
+
+    /* -----------------------------------------------------
+       MOUSE PARALLAX
+       ----------------------------------------------------- */
+
+    const skyX = mouse.x * 16;
+    const skyY = mouse.y * 10;
+
+    const cloudX = mouse.x * 34;
+    const cloudY = mouse.y * 18;
+
+    const foregroundX = mouse.x * 22;
+    const foregroundY = mouse.y * 14;
+
+
+    /* -----------------------------------------------------
+       SKY
+       ----------------------------------------------------- */
+
+    if (sky) {
+
+      const skyScale =
+        1.04 + (s * 0.10);
+
+      sky.style.transform =
+        `translate3d(${skyX}px, ${skyY}px, 0)
+         scale(${skyScale})`;
+    }
+
+
+    /* -----------------------------------------------------
+       CLOUDS
+       ----------------------------------------------------- */
+
+    if (clouds) {
+
+      const cloudScroll =
+        s * -70;
+
+      clouds.style.transform =
+        `translate3d(
+          ${cloudX + cloudScroll}px,
+          ${cloudY}px,
+          0
+        )`;
+    }
+
+
+    /* -----------------------------------------------------
+       MAIN CHARACTER IMAGE
+       ----------------------------------------------------- */
+
+    /*
+      At the beginning:
+      Large cinematic close-up.
+
+      While scrolling:
+      Camera slowly pulls away and
+      artwork moves slightly upward/right.
+    */
+
+    const foregroundScale =
+      lerp(1.0, 0.57, s);
+
+    const foregroundYScroll =
+      lerp(0, -12, s);
+
+    const foregroundXScroll =
+      lerp(0, 17, s);
+
+    const foregroundRotate =
+      lerp(0, -1.2, s);
+
+    foreground.style.transform =
+      `translate3d(
+        calc(-50% + ${foregroundX + foregroundXScroll}px),
+        calc(-50% + ${foregroundY + foregroundYScroll}px),
+        0
+      )
+      scale(${foregroundScale})
+      rotate(${foregroundRotate}deg)`;
+
+
+    /* -----------------------------------------------------
+       SECOND CUTOUT
+       ----------------------------------------------------- */
+
+    if (cutout) {
+
+      /*
+        It stays hidden during the opening.
+
+        Then slowly appears as the camera
+        moves deeper into the page.
+      */
+
+      const cutoutProgress =
+        clamp(
+          (s - 0.34) / 0.38,
+          0,
+          1
+        );
+
+      const cutoutOpacity =
+        cutoutProgress * 0.72;
+
+      const cutoutScale =
+        lerp(0.72, 0.94, cutoutProgress);
+
+      const cutoutY =
+        lerp(35, -5, cutoutProgress);
+
+      cutout.style.opacity =
+        cutoutOpacity;
+
+      cutout.style.transform =
+        `translate3d(
+          calc(-50% + ${mouse.x * 12}px),
+          calc(-50% + ${cutoutY + mouse.y * 8}px),
+          0
+        )
+        scale(${cutoutScale})`;
+    }
+
+
+    /* -----------------------------------------------------
+       INTRO INDICATOR
+       ----------------------------------------------------- */
+
+    if (intro) {
+
+      const introOpacity =
+        clamp(
+          1 - (s / 0.18),
+          0,
+          1
+        );
+
+      intro.style.opacity =
+        introOpacity;
+    }
+
+
+    /* -----------------------------------------------------
+       TYPOGRAPHY REVEAL
+       ----------------------------------------------------- */
+
+    if (copy) {
+
+      /*
+        Text begins entering around 45%
+        of the hero scroll.
+      */
+
+      const copyProgress =
+        clamp(
+          (s - 0.43) / 0.32,
+          0,
+          1
+        );
+
+      const copyX =
+        lerp(-90, 0, copyProgress);
+
+      const copyOpacity =
+        clamp(
+          copyProgress * 1.25,
+          0,
+          1
+        );
+
+      copy.style.opacity =
+        copyOpacity;
+
+      copy.style.transform =
+        `translate3d(
+          ${copyX}px,
+          -50%,
+          0
+        )`;
+    }
+
+
+    /* -----------------------------------------------------
+       FINAL CINEMATIC DEPTH
+       ----------------------------------------------------- */
+
+    const depth =
+      clamp(
+        (s - 0.65) / 0.35,
+        0,
+        1
+      );
+
+    scene.style.setProperty(
+      "--cinematic-depth",
+      depth.toFixed(3)
+    );
+
+
+    requestAnimationFrame(animate);
+  }
+
+
+  /* -------------------------------------------------------
+     START
+     ------------------------------------------------------- */
+
+  requestAnimationFrame(animate);
+
+})();
