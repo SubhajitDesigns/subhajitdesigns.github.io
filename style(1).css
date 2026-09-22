@@ -3353,39 +3353,10 @@ body.cursor-active .cursor-glow {
    MOUNTAIN
    --------------------------------------------------------- */
 
+/* Mountain is already baked into characters.webp */
 .cinematic-mountain {
-  position: absolute;
-
-  left: 50%;
-  bottom: -20%;
-
-  width: min(125vw, 1900px);
-
-  z-index: 3;
-
-  transform:
-    translate3d(-50%, 0, 0)
-    scale(0.78);
-
-  transform-origin: center bottom;
-
-  opacity: 0.96;
-
-  pointer-events: none;
-
-  will-change: transform, opacity;
+  display: none;
 }
-
-.cinematic-mountain img {
-  display: block;
-
-  width: 100%;
-  height: auto;
-
-  user-select: none;
-  pointer-events: none;
-}
-
 /* ---------------------------------------------------------
    MAIN FOREGROUND
    --------------------------------------------------------- */
