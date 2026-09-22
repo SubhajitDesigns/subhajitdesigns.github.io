@@ -3365,21 +3365,21 @@ body.cursor-active .cursor-glow {
   position: absolute;
 
   left: 50%;
-  top: 53%;
+  top: 10%;
 
   width: min(92vw, 1450px);
 
   z-index: 5;
 
   transform:
-    translate3d(-50%, -50%, 0)
-    scale(1);
+    translate3d(-50%, 0, 0)
+    scale(1.65);
 
-  transform-origin: center center;
+  transform-origin: 50% 8%;
 
   pointer-events: none;
 
-  will-change: transform, opacity, filter;
+  will-change: transform;
 
   filter:
     drop-shadow(0 35px 55px rgba(0, 0, 0, 0.22));
@@ -3394,7 +3394,6 @@ body.cursor-active .cursor-glow {
   user-select: none;
   pointer-events: none;
 }
-
 /* ---------------------------------------------------------
    SECOND CUTOUT
    --------------------------------------------------------- */
