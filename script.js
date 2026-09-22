@@ -653,80 +653,69 @@ if (clientTrack) {
   showSlide(0);
 })();
 
-
 /* =========================================================
-   SUBHAJIT — LANDING ONLY / SCROLL + MOUSE PARALLAX
+   SUBHAJIT — SCROLL CINEMATIC LANDING
+   Only controls #home.
    ========================================================= */
 (() => {
-  const scene = document.querySelector('.hero-scroll-scene');
-  if (!scene) return;
+  const scene=document.querySelector('.hero-scroll-scene');
+  if(!scene) return;
+  const sky=scene.querySelector('.scene-sky');
+  const mountain=scene.querySelector('.scene-mountain');
+  const subject=scene.querySelector('.scene-subhajit');
+  const cloud1=scene.querySelector('.cloud-one');
+  const cloud2=scene.querySelector('.cloud-two');
+  const copy=scene.querySelector('.scene-copy');
+  const flash=scene.querySelector('.scene-flash');
 
-  const sky = scene.querySelector('.scene-sky');
-  const mountain = scene.querySelector('.scene-mountain');
-  const subject = scene.querySelector('.scene-subhajit');
-  const cloud1 = scene.querySelector('.cloud-one');
-  const cloud2 = scene.querySelector('.cloud-two');
-  const copy = scene.querySelector('.scene-copy');
-  const flash = scene.querySelector('.scene-flash');
-
-  let targetX=0,targetY=0,currentX=0,currentY=0,progress=0;
+  let tx=0,ty=0,cx=0,cy=0,progress=0;
   const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
   const ease=t=>t*t*(3-2*t);
   const lerp=(a,b,t)=>a+(b-a)*t;
 
-  window.addEventListener('pointermove',e=>{
-    targetX=(e.clientX/window.innerWidth-.5)*2;
-    targetY=(e.clientY/window.innerHeight-.5)*2;
+  addEventListener('pointermove',e=>{
+    tx=(e.clientX/innerWidth-.5)*2;
+    ty=(e.clientY/innerHeight-.5)*2;
   },{passive:true});
 
-  function updateScroll(){
-    const rect=scene.getBoundingClientRect();
-    const travel=Math.max(1,rect.height-window.innerHeight);
-    progress=clamp(-rect.top/travel);
+  function measure(){
+    const r=scene.getBoundingClientRect();
+    progress=clamp(-r.top/Math.max(1,r.height-innerHeight));
   }
 
-  function render(){
-    currentX+=(targetX-currentX)*.055;
-    currentY+=(targetY-currentY)*.055;
-
+  function frame(){
+    cx+=(tx-cx)*.055; cy+=(ty-cy)*.055;
     const p=progress;
-    const reveal=ease(clamp((p-.48)/.42));
-    const zoomOut=ease(clamp(p/.78));
-    const parallax=lerp(1,.18,zoomOut);
+    const zoom=ease(clamp(p/.72));
+    const reveal=ease(clamp((p-.50)/.22));
+    const par=lerp(1,.16,zoom);
 
-    const flashIn=clamp((p-.35)/.055);
-    const flashOut=clamp((p-.43)/.09);
-    const flashOpacity=Math.max(0,flashIn-flashOut);
+    sky.style.transform=`translate3d(${cx*14*par}px,${cy*9*par}px,0) scale(${lerp(1.06,1.12,zoom)})`;
 
-    if(sky){
-      sky.style.transform=`translate3d(${currentX*18*parallax}px,${currentY*12*parallax}px,0) scale(${lerp(1.08,1.16,zoomOut)})`;
-    }
-    if(cloud1){
-      cloud1.style.transform=`translate3d(${currentX*34*parallax-p*190}px,${currentY*18*parallax-p*65}px,0) scale(${lerp(1,1.12,zoomOut)})`;
-      cloud1.style.opacity=String(lerp(.88,.58,p));
-    }
-    if(cloud2){
-      cloud2.style.transform=`translate3d(${currentX*-22*parallax+p*150}px,${currentY*14*parallax-p*45}px,0) scale(${lerp(.78,1,zoomOut)})`;
-      cloud2.style.opacity=String(lerp(.52,.25,p));
-    }
-    if(mountain){
-      mountain.style.transform=`translate3d(${currentX*12*parallax}px,${lerp(31,2,zoomOut)+currentY*7*parallax}%,0) scale(${lerp(1.34,1,zoomOut)})`;
-    }
-    if(subject){
-      subject.style.transform=`translate3d(${lerp(0,-1.5,zoomOut)+currentX*22*parallax}px,${lerp(27,-2,zoomOut)+currentY*12*parallax}%,0) scale(${lerp(1.72,.72,zoomOut)}) rotateX(${-currentY*1.3*parallax}deg) rotateY(${currentX*2.4*parallax}deg)`;
-    }
-    if(copy){
-      copy.style.opacity=String(reveal);
-      copy.style.transform=`translate3d(${lerp(-45,0,reveal)}px,${lerp(38,0,reveal)}px,0)`;
-      copy.style.pointerEvents=reveal>.92?'auto':'none';
-    }
-    if(flash) flash.style.opacity=String(flashOpacity);
+    cloud1.style.transform=`translate3d(${cx*28*par-p*150}px,${cy*15*par-p*38}px,0) scale(${lerp(1,.94,zoom)})`;
+    cloud1.style.opacity=String(lerp(.72,.35,p));
 
-    requestAnimationFrame(render);
+    cloud2.style.transform=`translate3d(${cx*-18*par+p*120}px,${cy*12*par-p*28}px,0) scale(${lerp(.72,.9,zoom)})`;
+    cloud2.style.opacity=String(lerp(.42,.18,p));
+
+    // Mountain starts as a large close-up and settles into the full scene.
+    mountain.style.transform=`translate3d(${cx*9*par}px,${lerp(26,0,zoom)+cy*5*par}%,0) scale(${lerp(1.48,1,zoom)})`;
+
+    // IMPORTANT: the subject stays centered. Previous version incorrectly started it at 50% without centering.
+    subject.style.transform=`translate3d(${cx*18*par}px,${lerp(17,-2,zoom)+cy*9*par}%,0) scale(${lerp(1.34,.74,zoom)}) rotateY(${cx*1.7*par}deg) rotateX(${-cy*.9*par}deg)`;
+
+    copy.style.opacity=String(reveal);
+    copy.style.transform=`translate3d(${lerp(-32,0,reveal)}px,${lerp(28,0,reveal)}px,0)`;
+    copy.style.pointerEvents=reveal>.9?'auto':'none';
+
+    // Short white flash around the middle of the pull-back.
+    const a=clamp((p-.40)/.035), b=clamp((p-.455)/.09);
+    flash.style.opacity=String(Math.max(0,a-b));
+
+    requestAnimationFrame(frame);
   }
-
-  window.addEventListener('scroll',updateScroll,{passive:true});
-  window.addEventListener('resize',updateScroll);
-  updateScroll();
-  requestAnimationFrame(render);
+  addEventListener('scroll',measure,{passive:true});
+  addEventListener('resize',measure);
+  measure();
+  requestAnimationFrame(frame);
 })();
