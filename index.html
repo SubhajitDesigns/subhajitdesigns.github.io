@@ -18,253 +18,74 @@
   <div class="cursor-dot" aria-hidden="true"></div>
 
   <main id="top">
-    
-<!-- =========================================================
-     SUBHAJIT — NEW LANDING / HERO
-     ========================================================= -->
+    <section class="hero hero-v2 interactive-hero" id="home">
+      <div class="hero-bg-grid" aria-hidden="true"></div>
+      <div class="hero-halftone" aria-hidden="true"></div>
+      <div class="hero-glow glow-a" aria-hidden="true"></div>
+      <div class="hero-glow glow-b" aria-hidden="true"></div>
 
-<section id="home" class="hero page">
+      <header class="hero-nav">
+        <a class="brand" href="#top">SUBHAJIT<span>•</span></a>
+        <nav>
+          <a href="#about">About</a>
+          <a href="#what-i-do">What I Do</a>
+          <a href="resume.html">Resume</a>
+          <a href="#work">Work</a>
+        </nav>
+        <a class="nav-cta" href="#contact">Let's talk <span>↗</span></a>
+      </header>
 
-  <div class="scene">
+      <div class="hero-v2-stage">
+        <div class="hero-v2-copy">
+          <p class="eyebrow hero-kicker">GRAPHIC DESIGNER <b>/</b> MOTION DESIGNER</p>
+          <h1 class="hero-display">
+            <span>SUBHAJIT'S</span>
+            <span class="outline-word">DESIGN</span>
+          </h1>
+          <p class="hero-v2-intro">Visuals with a point of view — from scroll-stopping campaigns to motion-led brand stories.</p>
+          <div class="hero-actions">
+            <a class="pill magnetic" href="#work">Explore work <span>↗</span></a>
+            <button class="reel-link" type="button" id="showReel"><i>▶</i> Show reel</button>
+          </div>
 
-    <!-- SKY -->
-    <div
-      class="sky"
-      id="sky"
-      data-depth="0.08"
-      style="
-        background-image:url('assets-home/Sky(1).png');
-        background-position:center;
-        background-size:cover;
-        background-repeat:no-repeat;
-      ">
-    </div>
+          <div class="hero-stats">
+            <div><strong>6+</strong><span>YEARS</span></div>
+            <div><strong>100+</strong><span>CLIENTS</span></div>
+            <div><strong>6000+</strong><span>DESIGNS</span></div>
+            <div><strong>1000+</strong><span>VIDEOS</span></div>
+          </div>
 
-
-    <!-- LOWER DARK GRADIENT -->
-    <div
-      class="s1"
-      aria-hidden="true"
-      style="
-        position:absolute;
-        inset:40% 0 0;
-        z-index:2;
-        pointer-events:none;
-        background:linear-gradient(
-          to bottom,
-          rgba(9,5,20,0) 0%,
-          rgba(9,5,20,.55) 72%,
-          rgba(6,3,14,.9) 100%
-        );
-      ">
-    </div>
-
-
-    <!-- BOTTOM FADE -->
-    <div
-      class="s1"
-      aria-hidden="true"
-      style="
-        position:absolute;
-        left:0;
-        right:0;
-        bottom:0;
-        height:16vh;
-        z-index:3;
-        pointer-events:none;
-        background:linear-gradient(
-          to top,
-          #07040e 0%,
-          rgba(7,4,14,.5) 45%,
-          transparent 100%
-        );
-      ">
-    </div>
-
-
-    <!-- CLOUDS -->
-    <div
-      class="clouds"
-      id="clouds"
-      aria-hidden="true">
-    </div>
-
-
-    <!-- WORLD -->
-    <div
-      class="world"
-      id="world">
-
-
-      <!-- MAIN FOREGROUND -->
-      <div
-        class="char"
-        id="char">
-
-        <img
-          src="assets-home/characters.webp"
-          alt="Subhajit and Aratrika"
-          decoding="async"
-          fetchpriority="high">
-
-      </div>
-
-
-      <!-- SECOND / CUTOUT STATE -->
-      <div
-        class="char-nf"
-        id="charNF">
-
-        <img
-          src="assets-home/characters-nofeet.webp"
-          alt=""
-          decoding="async"
-          fetchpriority="low">
-
-      </div>
-
-
-      <!-- MOUNTAIN -->
-      <img
-        class="mountain"
-        id="mountain"
-        src="assets-home/mountain-hd-2x.webp"
-        alt="Mountain"
-        decoding="async"
-        fetchpriority="high">
-
-
-      <!-- REFERENCE PATH -->
-      <svg
-        class="path"
-        id="path"
-        viewBox="0 0 1687 932"
-        preserveAspectRatio="xMidYMid meet"
-        aria-hidden="true">
-
-        <defs>
-
-          <linearGradient
-            id="trailGrad"
-            x1="0"
-            y1="0"
-            x2="0"
-            y2="1">
-
-            <stop
-              offset="0"
-              stop-color="#f2e6bd"
-              stop-opacity=".78"/>
-
-            <stop
-              offset=".48"
-              stop-color="#f2e6bd"
-              stop-opacity=".92"/>
-
-            <stop
-              offset=".65"
-              stop-color="#fff6da"
-              stop-opacity="1"/>
-
-            <stop
-              offset=".76"
-              stop-color="#fff6da"
-              stop-opacity=".82"/>
-
-            <stop
-              offset=".85"
-              stop-color="#fff6da"
-              stop-opacity=".42"/>
-
-            <stop
-              offset=".91"
-              stop-color="#fff6da"
-              stop-opacity=".12"/>
-
-            <stop
-              offset=".94"
-              stop-color="#fff6da"
-              stop-opacity="0"/>
-
-            <stop
-              offset="1"
-              stop-color="#fff6da"
-              stop-opacity="0"/>
-
-          </linearGradient>
-
-        </defs>
-
-      </svg>
-
-    </div>
-
-
-    <!-- SCROLL HINT -->
-    <div
-      class="s1 scroll-hint">
-
-      <span>Scroll</span>
-
-      <svg
-        width="12"
-        height="33"
-        viewBox="0 0 12 33"
-        fill="none"
-        aria-hidden="true"
-        class="scroll-arrow">
-
-        <path
-          d="M10.253 1.00197C10.2299 1.01703 8.83254 1.92629 6.62535 3.53158C3.53406 5.77989 3.67475 12.2654 3.50878 14.7456C3.29257 17.9764 4.61011 23.1179 5.70428 27.0564C6.42866 29.6638 6.91881 30.7313 6.99251 31.1428C7.23744 32.5106 4.13683 28.891 2.73772 27.918C2.09628 27.4718 1.52378 26.9794 1.1977 26.8079C0.211774 26.2891 3.20374 28.4024 4.37538 29.3931C5.65501 30.475 6.64767 31.0344 7.20473 31.1654C8.62458 31.4993 7.98434 28.0665 8.50303 26.4562C8.85171 25.7215 9.24552 25.0269 9.65798 24.3651C9.86629 24.0408 10.0726 23.7403 10.2301 23.4048"
-          stroke="#EB4400"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"/>
-
-      </svg>
-
-    </div>
-
-
-    <!-- SECOND SCENE TEXT -->
-    <div
-      id="heroCopy"
-      class="s2">
-
-      <div class="hero-copy-text">
-
-        <h1>
-          I take design seriously.
-          <br>
-          The play even more so.
-        </h1>
-
-        <div class="hero-sub">
-          Graphic &amp; Motion Designer · Kolkata, India
+          <div class="hero-scroll"><span class="mouse-icon"></span><span>SCROLL TO EXPLORE</span></div>
         </div>
 
+        <div class="hero-art" aria-label="Interactive portrait of Subhajit">
+          <div id="iconLayer" class="app-icons" aria-hidden="true">
+            <div class="app-icon icon-ai" data-x="17" data-y="28" data-speed="1.00"><img src="icons/icon-ai.webp" alt=""></div>
+            <div class="app-icon icon-figma" data-x="9" data-y="49" data-speed="0.86"><img src="icons/icon-figma.png" alt=""></div>
+            <div class="app-icon icon-capcut" data-x="18" data-y="72" data-speed="1.12"><img src="icons/icon-capcut.png" alt=""></div>
+            <div class="app-icon icon-pr" data-x="77" data-y="20" data-speed="0.92"><img src="icons/icon-pr.png" alt=""></div>
+            <div class="app-icon icon-ps" data-x="88" data-y="43" data-speed="1.08"><img src="icons/icon-ps.png" alt=""></div>
+            <div class="app-icon icon-ae" data-x="82" data-y="69" data-speed="0.96"><img src="icons/icon-ae.png" alt=""></div>
+          </div>
+
+          <div id="portraitTarget" class="portrait-interactive" data-depth="0.45">
+            <img src="portrait.png" alt="Subhajit, graphic and motion designer">
+          </div>
+
+          <div class="location-mark"><i></i> BASED IN KOLKATA, INDIA</div>
+        </div>
       </div>
 
-    </div>
+      <div class="hero-bottomline">
+        <span>MOVE YOUR CURSOR</span>
+        <span>THE PORTRAIT RESPONDS</span>
+        <span>© 2026</span>
+      </div>
+    </section>
 
 
-    <!-- WORK CARD -->
-    <div
-      id="pointCard"
-      class="s2">
 
-      <span>Work</span>
 
-      <span class="work-arrow">
-        ↗
-      </span>
-
-    </div>
-
-  </div>
-
-</section>
-    
 <section class="currently-creating" id="currently-creating" aria-label="Currently Creating">
   <div class="creating-shell">
     <div class="creating-copy">
