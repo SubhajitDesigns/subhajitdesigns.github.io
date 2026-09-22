@@ -3357,32 +3357,37 @@ body.cursor-active .cursor-glow {
 .cinematic-mountain {
   display: none;
 }
-/* ---------------------------------------------------------
-   MAIN FOREGROUND
-   --------------------------------------------------------- */
+
+/* =========================================================
+   CINEMATIC FOREGROUND — CAMERA ZOOM
+   ========================================================= */
 
 .cinematic-foreground {
   position: absolute;
 
   left: 50%;
-  top: 10%;
+  top: 0;
 
   width: min(92vw, 1450px);
 
   z-index: 5;
 
+  /*
+    The artwork itself is the entire world.
+    We zoom into its upper section first.
+  */
   transform:
-    translate3d(-50%, 0, 0)
-    scale(1.65);
+    translate3d(-50%, 70px, 0)
+    scale(2.8);
 
-  transform-origin: 50% 8%;
+  transform-origin: 50% 7%;
 
   pointer-events: none;
 
   will-change: transform;
 
   filter:
-    drop-shadow(0 35px 55px rgba(0, 0, 0, 0.22));
+    drop-shadow(0 35px 55px rgba(0, 0, 0, 0.2));
 }
 
 .cinematic-foreground img {
@@ -3390,6 +3395,8 @@ body.cursor-active .cursor-glow {
 
   width: 100%;
   height: auto;
+
+  max-width: none;
 
   user-select: none;
   pointer-events: none;
