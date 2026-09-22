@@ -719,3 +719,294 @@ if (clientTrack) {
   measure();
   requestAnimationFrame(frame);
 })();
+
+
+/* =========================================================
+   SUBHAJIT — REFERENCE STYLE LANDING SCENE
+   Standalone adaptation of the reference landing architecture
+   ========================================================= */
+
+(() => {
+  const page = document.querySelector('.page');
+  const scene = document.querySelector('.scene');
+
+  if (!page || !scene) return;
+
+  const sky = document.querySelector('#sky');
+  const clouds = document.querySelector('#clouds');
+  const world = document.querySelector('#world');
+  const char = document.querySelector('#char');
+  const charNF = document.querySelector('#charNF');
+  const mountain = document.querySelector('#mountain');
+  const heroCopy = document.querySelector('#heroCopy');
+  const pointCard = document.querySelector('#pointCard');
+
+  if (!sky || !world || !char || !charNF || !mountain) {
+    console.warn('Landing scene: required elements are missing.');
+    return;
+  }
+
+  /* ---------------------------------------------------------
+     STATE
+     --------------------------------------------------------- */
+
+  let targetScroll = 0;
+  let currentScroll = 0;
+
+  let targetMouseX = 0;
+  let targetMouseY = 0;
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  let ticking = false;
+
+  /* ---------------------------------------------------------
+     HELPERS
+     --------------------------------------------------------- */
+
+  const clamp = (value, min, max) =>
+    Math.min(Math.max(value, min), max);
+
+  const ease = (t) =>
+    1 - Math.pow(1 - t, 3);
+
+  /* ---------------------------------------------------------
+     SCROLL PROGRESS
+     --------------------------------------------------------- */
+
+  function getScrollProgress() {
+    const rect = page.getBoundingClientRect();
+
+    const scrollable =
+      Math.max(page.offsetHeight - window.innerHeight, 1);
+
+    const travelled =
+      clamp(-rect.top, 0, scrollable);
+
+    return clamp(travelled / scrollable, 0, 1);
+  }
+
+  /* ---------------------------------------------------------
+     MOUSE PARALLAX
+     --------------------------------------------------------- */
+
+  window.addEventListener(
+    'pointermove',
+    (event) => {
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+
+      targetMouseX =
+        (event.clientX / window.innerWidth - 0.5);
+
+      targetMouseY =
+        (event.clientY / window.innerHeight - 0.5);
+    },
+    { passive: true }
+  );
+
+  /* ---------------------------------------------------------
+     RENDER
+     --------------------------------------------------------- */
+
+  function render() {
+    ticking = false;
+
+    const rawProgress = getScrollProgress();
+
+    /*
+      Smooth scroll interpolation
+    */
+    targetScroll = rawProgress;
+
+    currentScroll +=
+      (targetScroll - currentScroll) * 0.085;
+
+    /*
+      Smooth mouse interpolation
+    */
+    mouseX +=
+      (targetMouseX - mouseX) * 0.08;
+
+    mouseY +=
+      (targetMouseY - mouseY) * 0.08;
+
+    const p = ease(currentScroll);
+
+    /* -------------------------------------------------------
+       MOUSE PARALLAX
+       ------------------------------------------------------- */
+
+    const skyX = mouseX * -10;
+    const skyY = mouseY * -7;
+
+    const worldX = mouseX * -22;
+    const worldY = mouseY * -14;
+
+    const cloudX = mouseX * -16;
+    const cloudY = mouseY * -9;
+
+    sky.style.transform =
+      `translate3d(${skyX}px, ${skyY}px, 0) scale(${1.02 + p * 0.22})`;
+
+    if (clouds) {
+      clouds.style.transform =
+        `translate3d(${cloudX}px, ${cloudY}px, 0)`;
+    }
+
+    world.style.transform =
+      `translate3d(${worldX}px, ${worldY}px, 0)`;
+
+    /* -------------------------------------------------------
+       INITIAL CHARACTER / FOREGROUND
+       ------------------------------------------------------- */
+
+    const charScale =
+      1 + p * 1.65;
+
+    const charX =
+      mouseX * 10;
+
+    const charY =
+      mouseY * 8 - p * 8;
+
+    char.style.transform =
+      `translate3d(${charX}px, ${charY}px, 0) scale(${charScale})`;
+
+    /* -------------------------------------------------------
+       MOUNTAIN
+       ------------------------------------------------------- */
+
+    const mountainScale =
+      0.82 + p * 0.55;
+
+    const mountainX =
+      mouseX * 8;
+
+    const mountainY =
+      20 - p * 10;
+
+    mountain.style.transform =
+      `translate3d(calc(-50% + ${mountainX}px), ${mountainY}px, 0) scale(${mountainScale})`;
+
+    /* -------------------------------------------------------
+       SECOND CHARACTER STATE
+       ------------------------------------------------------- */
+
+    const nfProgress =
+      clamp((p - 0.42) / 0.38, 0, 1);
+
+    const nfEase = ease(nfProgress);
+
+    const nfX =
+      40 * nfEase + mouseX * 8;
+
+    const nfY =
+      -10 * nfEase + mouseY * 5;
+
+    const nfScale =
+      0.82 + nfEase * 0.18;
+
+    charNF.style.opacity =
+      nfEase.toFixed(3);
+
+    charNF.style.transform =
+      `translate3d(${nfX}px, ${nfY}px, 0) scale(${nfScale})`;
+
+    /* -------------------------------------------------------
+       FIRST CHARACTER FADE
+       ------------------------------------------------------- */
+
+    const charFade =
+      1 - clamp((p - 0.30) / 0.32, 0, 1);
+
+    char.style.opacity =
+      charFade.toFixed(3);
+
+    /* -------------------------------------------------------
+       HERO COPY
+       ------------------------------------------------------- */
+
+    const copyProgress =
+      clamp((p - 0.48) / 0.30, 0, 1);
+
+    const copyEase =
+      ease(copyProgress);
+
+    if (heroCopy) {
+      heroCopy.style.opacity =
+        copyEase.toFixed(3);
+
+      heroCopy.style.transform =
+        `translate3d(${-70 + 70 * copyEase}px, 0, 0)`;
+    }
+
+    /* -------------------------------------------------------
+       WORK CARD
+       ------------------------------------------------------- */
+
+    const cardProgress =
+      clamp((p - 0.58) / 0.25, 0, 1);
+
+    const cardEase =
+      ease(cardProgress);
+
+    if (pointCard) {
+      pointCard.style.transform =
+        `translate3d(${135 - 135 * cardEase}%, 0, 0)`;
+    }
+
+    /* -------------------------------------------------------
+       SCENE STATE
+       ------------------------------------------------------- */
+
+    if (p > 0.48) {
+      scene.classList.add('state-2');
+    } else {
+      scene.classList.remove('state-2');
+    }
+
+    /* -------------------------------------------------------
+       CONTINUE LOOP
+       ------------------------------------------------------- */
+
+    requestAnimationFrame(render);
+  }
+
+  /* ---------------------------------------------------------
+     SCROLL
+     --------------------------------------------------------- */
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(render);
+      }
+    },
+    { passive: true }
+  );
+
+  /* ---------------------------------------------------------
+     RESIZE
+     --------------------------------------------------------- */
+
+  window.addEventListener(
+    'resize',
+    () => {
+      targetScroll = getScrollProgress();
+    },
+    { passive: true }
+  );
+
+  /* ---------------------------------------------------------
+     START
+     --------------------------------------------------------- */
+
+  targetScroll = getScrollProgress();
+  currentScroll = targetScroll;
+
+  requestAnimationFrame(render);
+
+})();
