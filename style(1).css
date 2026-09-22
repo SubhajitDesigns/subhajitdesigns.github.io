@@ -3256,19 +3256,18 @@ body.cursor-active .cursor-glow {
   perspective:1400px;
   transform-style:preserve-3d;
 }
-.scene-sky,.scene-mountain,.scene-subhajit,.scene-cloud,.scene-copy,.scene-nav,.scene-meta,.scene-flash{
-  position:absolute;
+.scene-sky {
+  inset: -10%;
+  z-index: 0;
+  background: url("assets-home/Sky(1).png") center 46% / cover no-repeat;
+  will-change: transform;
 }
-.scene-sky{
-  inset:-10%;
-  z-index:0;
-  background:url("Sky.png") center 46%/cover no-repeat;
-  will-change:transform;
-}
-.scene-sky:after{
-  content:"";
-  position:absolute;inset:0;
-  background:linear-gradient(to bottom,rgba(3,10,24,.05),transparent 58%,rgba(0,0,0,.25));
+
+.scene-sky::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(3,10,24,.05), transparent 58%, rgba(0,0,0,.25));
 }
 .scene-mountain{
   left:0;right:0;bottom:-8%;
