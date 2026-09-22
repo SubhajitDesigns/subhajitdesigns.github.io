@@ -1430,16 +1430,16 @@ if (clientTrack) {
     */
 
     const foregroundScale =
-      lerp(1.0, 0.57, s);
+  lerp(1.65, 0.57, s);
 
-    const foregroundYScroll =
-      lerp(0, -12, s);
+   const foregroundYScroll =
+  lerp(0, 3, s);
 
     const foregroundXScroll =
-      lerp(0, 17, s);
+  lerp(0, 0, s);
 
     const foregroundRotate =
-      lerp(0, -1.2, s);
+  lerp(0, 0, s);
 
     foreground.style.transform =
       `translate3d(
