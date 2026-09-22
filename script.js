@@ -1,61 +1,289 @@
+/* =========================================================
+   SUBHAJIT — LANDING SCENE
+   ========================================================= */
+
 (() => {
-  const hero = document.querySelector('.interactive-hero');
-  const art = document.querySelector('.hero-art');
-  const portrait = document.querySelector('#portraitTarget');
-  const cursor = document.querySelector('.cursor-dot');
-  const magnetic = document.querySelector('.magnetic');
-  const navLinks = [...document.querySelectorAll('.hero-nav nav a, .hero-nav .nav-cta')];
-  let mx = innerWidth/2, my = innerHeight/2, sx = mx, sy = my;
+  const page = document.querySelector('#home');
+  const scene = document.querySelector('.scene');
 
-  addEventListener('mousemove', e => {
-    mx=e.clientX; my=e.clientY;
-    if(cursor){cursor.style.left=mx+'px';cursor.style.top=my+'px';}
-    if(hero){const r=hero.getBoundingClientRect(); hero.style.setProperty('--mx',((mx-r.left)/r.width*100)+'%'); hero.style.setProperty('--my',((my-r.top)/r.height*100)+'%');}
-  },{passive:true});
+  if (!page || !scene) return;
 
-  portrait?.addEventListener('mouseenter',()=>hero?.classList.add('icon-retreat'));
-  portrait?.addEventListener('mouseleave',()=>hero?.classList.remove('icon-retreat'));
+  const sky = document.querySelector('#sky');
+  const clouds = document.querySelector('#clouds');
+  const world = document.querySelector('#world');
+  const char = document.querySelector('#char');
+  const charNF = document.querySelector('#charNF');
+  const mountain = document.querySelector('#mountain');
+  const heroCopy = document.querySelector('#heroCopy');
+  const pointCard = document.querySelector('#pointCard');
 
-  // Keep the depth effect predictable: the portrait owns the hover, icons stay behind it.
-  portrait?.addEventListener('pointerenter',()=>hero?.classList.add('icon-retreat'));
-  portrait?.addEventListener('pointerleave',()=>hero?.classList.remove('icon-retreat'));
+  if (!sky || !world || !char || !mountain) return;
+
+  let targetMouseX = 0;
+  let targetMouseY = 0;
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  let currentScroll = 0;
+
+  const clamp = (v, min, max) =>
+    Math.min(Math.max(v, min), max);
+
+  const ease = (t) =>
+    1 - Math.pow(1 - t, 3);
+
+  function getScrollProgress() {
+    const rect = page.getBoundingClientRect();
+
+    const scrollable =
+      Math.max(page.offsetHeight - window.innerHeight, 1);
+
+    return clamp(
+      -rect.top / scrollable,
+      0,
+      1
+    );
+  }
+
+  /* ---------------------------------------------------------
+     MOUSE PARALLAX
+     --------------------------------------------------------- */
+
+  window.addEventListener(
+    'pointermove',
+    (event) => {
+
+      if (
+        window.matchMedia('(pointer: coarse)').matches
+      ) return;
+
+      targetMouseX =
+        event.clientX / window.innerWidth - 0.5;
+
+      targetMouseY =
+        event.clientY / window.innerHeight - 0.5;
+
+    },
+    { passive: true }
+  );
 
 
-  navLinks.forEach(link=>link.addEventListener('click',()=>{
-    navLinks.forEach(x=>x.classList.remove('nav-active'));
-    link.classList.add('nav-active');
-    setTimeout(()=>link.classList.remove('nav-active'),600);
-  }));
+  /* ---------------------------------------------------------
+     ANIMATION LOOP
+     --------------------------------------------------------- */
 
-  function frame(){
-    sx += (mx-sx)*.055; sy += (my-sy)*.055;
-    if(art && portrait && innerWidth>800){
-      const r=art.getBoundingClientRect();
-      const px=Math.max(-1,Math.min(1,(sx-(r.left+r.width/2))/(r.width/2)));
-      const py=Math.max(-1,Math.min(1,(sy-(r.top+r.height/2))/(r.height/2)));
-      const retreat=hero?.classList.contains('icon-retreat');
-      const move=retreat?2.2:10;
-      portrait.style.transform=`translate3d(${px*move}px,${py*move*.7}px,0) rotateX(${py*(retreat?1.2:3.2)}deg) rotateY(${px*(retreat?-2:4.5)}deg)`;
-      const grid=hero.querySelector('.hero-bg-grid');
-      if(grid)grid.style.transform=`translate3d(${px*4}px,${py*3}px,0)`;
+  function render() {
+
+    const scrollProgress =
+      getScrollProgress();
+
+    currentScroll +=
+      (scrollProgress - currentScroll) * 0.085;
+
+    mouseX +=
+      (targetMouseX - mouseX) * 0.08;
+
+    mouseY +=
+      (targetMouseY - mouseY) * 0.08;
+
+    const p = ease(currentScroll);
+
+
+    /* -------------------------------------------------------
+       SKY
+       ------------------------------------------------------- */
+
+    sky.style.transform =
+      `translate3d(
+        ${mouseX * -10}px,
+        ${mouseY * -7}px,
+        0
+      )
+      scale(${1.02 + p * 0.22})`;
+
+
+    /* -------------------------------------------------------
+       CLOUDS
+       ------------------------------------------------------- */
+
+    if (clouds) {
+
+      clouds.style.transform =
+        `translate3d(
+          ${mouseX * -16}px,
+          ${mouseY * -9}px,
+          0
+        )`;
+
     }
-    requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
 
-  const reelButton=document.querySelector('#showReel');
-  const reelModal=document.querySelector('#reelModal');
-  const reelClose=document.querySelector('#reelClose');
-  const closeReel=()=>{ if(reelModal){ reelModal.classList.remove('is-open'); reelModal.setAttribute('aria-hidden','true'); } };
-  reelButton?.addEventListener('click',()=>{ if(reelModal){ reelModal.classList.add('is-open'); reelModal.setAttribute('aria-hidden','false'); } });
-  reelClose?.addEventListener('click',closeReel);
-  reelModal?.addEventListener('click',e=>{ if(e.target===reelModal) closeReel(); });
-  addEventListener('keydown',e=>{ if(e.key==='Escape') closeReel(); });
 
-  if(magnetic){
-    magnetic.addEventListener('mousemove',e=>{const r=magnetic.getBoundingClientRect(); magnetic.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.1}px,${(e.clientY-r.top-r.height/2)*.1}px)`});
-    magnetic.addEventListener('mouseleave',()=>magnetic.style.transform='');
+    /* -------------------------------------------------------
+       WORLD
+       ------------------------------------------------------- */
+
+    world.style.transform =
+      `translate3d(
+        ${mouseX * -22}px,
+        ${mouseY * -14}px,
+        0
+      )`;
+
+
+    /* -------------------------------------------------------
+       MAIN FOREGROUND
+       ------------------------------------------------------- */
+
+    const charScale =
+      1 + p * 1.65;
+
+    const charFade =
+      1 -
+      clamp(
+        (p - 0.30) / 0.32,
+        0,
+        1
+      );
+
+    char.style.opacity =
+      charFade;
+
+    char.style.transform =
+      `translate3d(
+        ${mouseX * 10}px,
+        ${mouseY * 8 - p * 8}px,
+        0
+      )
+      scale(${charScale})`;
+
+
+    /* -------------------------------------------------------
+       MOUNTAIN
+       ------------------------------------------------------- */
+
+    const mountainProgress =
+      p;
+
+    const mountainScale =
+      0.82 +
+      mountainProgress * 0.55;
+
+    mountain.style.transform =
+      `translate3d(
+        calc(-50% + ${mouseX * 8}px),
+        ${20 - mountainProgress * 10}px,
+        0
+      )
+      scale(${mountainScale})`;
+
+
+    /* -------------------------------------------------------
+       SECOND CHARACTER
+       ------------------------------------------------------- */
+
+    if (charNF) {
+
+      const nfProgress =
+        clamp(
+          (p - 0.42) / 0.38,
+          0,
+          1
+        );
+
+      const nfEase =
+        ease(nfProgress);
+
+      charNF.style.opacity =
+        nfEase;
+
+      charNF.style.transform =
+        `translate3d(
+          ${40 * nfEase + mouseX * 8}px,
+          ${-10 * nfEase + mouseY * 5}px,
+          0
+        )
+        scale(${0.82 + nfEase * 0.18})`;
+
+    }
+
+
+    /* -------------------------------------------------------
+       HERO COPY
+       ------------------------------------------------------- */
+
+    if (heroCopy) {
+
+      const copyProgress =
+        clamp(
+          (p - 0.48) / 0.30,
+          0,
+          1
+        );
+
+      const copyEase =
+        ease(copyProgress);
+
+      heroCopy.style.opacity =
+        copyEase;
+
+      heroCopy.style.transform =
+        `translate3d(
+          ${-70 + 70 * copyEase}px,
+          0,
+          0
+        )`;
+
+    }
+
+
+    /* -------------------------------------------------------
+       WORK CARD
+       ------------------------------------------------------- */
+
+    if (pointCard) {
+
+      const cardProgress =
+        clamp(
+          (p - 0.58) / 0.25,
+          0,
+          1
+        );
+
+      const cardEase =
+        ease(cardProgress);
+
+      pointCard.style.transform =
+        `translate3d(
+          ${135 - 135 * cardEase}%,
+          0,
+          0
+        )`;
+
+    }
+
+
+    /* -------------------------------------------------------
+       STATE
+       ------------------------------------------------------- */
+
+    if (p > 0.48) {
+
+      scene.classList.add('state-2');
+
+    } else {
+
+      scene.classList.remove('state-2');
+
+    }
+
+
+    requestAnimationFrame(render);
+
   }
+
+  requestAnimationFrame(render);
+
 })();
 
 
