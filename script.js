@@ -1985,3 +1985,421 @@ if (clientTrack) {
   updateScene();
 
 })();
+
+/* =========================================================
+   SUBHAJIT — CINEMATIC HERO
+   SINGLE ARTWORK CAMERA PULL-BACK
+   ========================================================= */
+
+(() => {
+
+  const hero =
+    document.querySelector(".cinematic-hero");
+
+  const scene =
+    document.querySelector("#cinematicScene");
+
+  if (!hero || !scene) return;
+
+
+  const sky =
+    document.querySelector("#cinematicSky");
+
+  const clouds =
+    document.querySelector("#cinematicClouds");
+
+  const foreground =
+    document.querySelector("#cinematicForeground");
+
+  const copy =
+    document.querySelector("#cinematicCopy");
+
+  const intro =
+    document.querySelector("#cinematicIntro");
+
+  const location =
+    document.querySelector(".cinematic-location");
+
+
+  /* -------------------------------------------------------
+     MOUSE
+     ------------------------------------------------------- */
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  let smoothMouseX = 0;
+  let smoothMouseY = 0;
+
+
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+
+      mouseX =
+        (event.clientX / window.innerWidth - 0.5) * 2;
+
+      mouseY =
+        (event.clientY / window.innerHeight - 0.5) * 2;
+
+    },
+    { passive: true }
+  );
+
+
+  /* -------------------------------------------------------
+     HELPERS
+     ------------------------------------------------------- */
+
+  const clamp =
+    (value, min, max) =>
+      Math.min(
+        Math.max(value, min),
+        max
+      );
+
+
+  const ease =
+    (value) =>
+      value * value * (3 - 2 * value);
+
+
+  /* -------------------------------------------------------
+     SCROLL
+     ------------------------------------------------------- */
+
+  let scrollProgress = 0;
+
+
+  function updateScrollProgress() {
+
+    const rect =
+      hero.getBoundingClientRect();
+
+    const totalScroll =
+      hero.offsetHeight -
+      window.innerHeight;
+
+
+    if (totalScroll <= 0) {
+
+      scrollProgress = 0;
+
+      return;
+    }
+
+
+    scrollProgress =
+      clamp(
+        -rect.top / totalScroll,
+        0,
+        1
+      );
+  }
+
+
+  /* -------------------------------------------------------
+     MAIN ANIMATION
+     ------------------------------------------------------- */
+
+  function updateScene() {
+
+    updateScrollProgress();
+
+
+    const raw =
+      scrollProgress;
+
+
+    /*
+      CAMERA PULL-BACK
+
+      First ~60% of hero scroll
+      is dedicated to revealing
+      the complete artwork.
+    */
+
+    const cameraProgress =
+      clamp(
+        raw / 0.62,
+        0,
+        1
+      );
+
+
+    const camera =
+      ease(cameraProgress);
+
+
+    /* -----------------------------------------------------
+       SMOOTH MOUSE
+       ----------------------------------------------------- */
+
+    smoothMouseX +=
+      (mouseX - smoothMouseX) * 0.055;
+
+    smoothMouseY +=
+      (mouseY - smoothMouseY) * 0.055;
+
+
+    /* -----------------------------------------------------
+       SKY PARALLAX
+       ----------------------------------------------------- */
+
+    if (sky) {
+
+      const skyX =
+        smoothMouseX * -2;
+
+      const skyY =
+        smoothMouseY * -1.5;
+
+
+      const skyScale =
+        1.04 +
+        camera * 0.05;
+
+
+      sky.style.transform =
+        `translate3d(
+          ${skyX}px,
+          ${skyY}px,
+          0
+        )
+        scale(${skyScale})`;
+    }
+
+
+    /* -----------------------------------------------------
+       CLOUD PARALLAX
+       ----------------------------------------------------- */
+
+    if (clouds) {
+
+      const cloudX =
+        smoothMouseX * -16;
+
+      const cloudY =
+        smoothMouseY * -8;
+
+
+      const cloudScale =
+        1 +
+        camera * 0.06;
+
+
+      clouds.style.transform =
+        `translate3d(
+          ${cloudX}px,
+          ${cloudY}px,
+          0
+        )
+        scale(${cloudScale})`;
+    }
+
+
+    /* =====================================================
+       MAIN ARTWORK
+       =====================================================
+
+       INITIAL:
+
+       scale 1.38
+
+       This means the people and logos
+       are clearly visible, but the
+       complete mountain is still
+       partially outside the viewport.
+
+       ON SCROLL:
+
+       scale → 1
+
+       The camera appears to pull
+       backward and reveal the mountain.
+       ===================================================== */
+
+    if (foreground) {
+
+      const startScale =
+        1.38;
+
+      const endScale =
+        1.00;
+
+
+      const artworkScale =
+        startScale -
+        (startScale - endScale) *
+        camera;
+
+
+      /*
+        As the camera pulls backward,
+        move the artwork upward.
+
+        This makes the mountain feel
+        like it is rising into view.
+      */
+
+      const artworkY =
+        camera * -7;
+
+
+      /*
+        Subtle mouse parallax.
+      */
+
+      const artworkX =
+        smoothMouseX * 10;
+
+      const artworkMouseY =
+        smoothMouseY * 7;
+
+
+      const artworkRotate =
+        smoothMouseX * 0.22;
+
+
+      foreground.style.transform =
+        `translate3d(
+          calc(-50% + ${artworkX}px),
+          ${artworkY + artworkMouseY}px,
+          0
+        )
+        rotate(${artworkRotate}deg)
+        scale(${artworkScale})`;
+    }
+
+
+    /* -----------------------------------------------------
+       INTRO TEXT
+       ----------------------------------------------------- */
+
+    if (intro) {
+
+      const introOpacity =
+        clamp(
+          1 -
+          raw / 0.18,
+          0,
+          1
+        );
+
+
+      intro.style.opacity =
+        introOpacity.toFixed(3);
+
+
+      intro.style.transform =
+        `translate3d(
+          -50%,
+          ${raw * -35}px,
+          0
+        )`;
+    }
+
+
+    /* -----------------------------------------------------
+       LOCATION
+       ----------------------------------------------------- */
+
+    if (location) {
+
+      const locationOpacity =
+        clamp(
+          1 -
+          raw / 0.30,
+          0,
+          1
+        );
+
+
+      location.style.opacity =
+        locationOpacity.toFixed(3);
+    }
+
+
+    /* -----------------------------------------------------
+       TYPOGRAPHY
+       ----------------------------------------------------- */
+
+    if (copy) {
+
+      /*
+        Text waits until the mountain
+        has mostly revealed itself.
+      */
+
+      const copyProgress =
+        clamp(
+          (raw - 0.55) / 0.22,
+          0,
+          1
+        );
+
+
+      const copyEase =
+        ease(copyProgress);
+
+
+      const copyY =
+        70 -
+        copyEase * 70;
+
+
+      const copyScale =
+        0.92 +
+        copyEase * 0.08;
+
+
+      copy.style.opacity =
+        copyEase.toFixed(3);
+
+
+      copy.style.transform =
+        `translate3d(
+          0,
+          ${copyY}px,
+          0
+        )
+        scale(${copyScale})`;
+    }
+
+
+  }
+
+
+  /* -------------------------------------------------------
+     ANIMATION LOOP
+     ------------------------------------------------------- */
+
+  function animationLoop() {
+
+    updateScene();
+
+    requestAnimationFrame(
+      animationLoop
+    );
+  }
+
+
+  requestAnimationFrame(
+    animationLoop
+  );
+
+
+  /* -------------------------------------------------------
+     RESIZE
+     ------------------------------------------------------- */
+
+  window.addEventListener(
+    "resize",
+    updateScene,
+    { passive: true }
+  );
+
+
+  updateScene();
+
+})();
