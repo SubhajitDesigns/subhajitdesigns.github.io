@@ -1579,3 +1579,409 @@ if (clientTrack) {
   requestAnimationFrame(animate);
 
 })();
+
+
+/* =========================================================
+   SUBHAJIT — CINEMATIC MOUNTAIN HERO
+   Camera pull-back + mouse parallax
+   ========================================================= */
+
+(() => {
+  const hero = document.querySelector(".cinematic-hero");
+  const scene = document.querySelector("#cinematicScene");
+
+  if (!hero || !scene) return;
+
+  const sky = document.querySelector("#cinematicSky");
+  const clouds = document.querySelector("#cinematicClouds");
+  const mountain = document.querySelector("#cinematicMountain");
+  const foreground = document.querySelector("#cinematicForeground");
+  const cutout = document.querySelector("#cinematicCutout");
+  const copy = document.querySelector("#cinematicCopy");
+  const intro = document.querySelector("#cinematicIntro");
+
+  if (!foreground || !mountain) return;
+
+  /* -------------------------------------------------------
+     MOUSE STATE
+     ------------------------------------------------------- */
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  let smoothMouseX = 0;
+  let smoothMouseY = 0;
+
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+      mouseX = (event.clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (event.clientY / window.innerHeight - 0.5) * 2;
+    },
+    { passive: true }
+  );
+
+
+  /* -------------------------------------------------------
+     HELPERS
+     ------------------------------------------------------- */
+
+  const clamp = (value, min, max) =>
+    Math.min(Math.max(value, min), max);
+
+  const ease = (value) => {
+    return value * value * (3 - 2 * value);
+  };
+
+
+  /* -------------------------------------------------------
+     SCROLL PROGRESS
+     ------------------------------------------------------- */
+
+  let scrollProgress = 0;
+
+  function updateScrollProgress() {
+
+    const rect = hero.getBoundingClientRect();
+
+    const totalScroll =
+      hero.offsetHeight - window.innerHeight;
+
+    if (totalScroll <= 0) {
+      scrollProgress = 0;
+      return;
+    }
+
+    scrollProgress = clamp(
+      -rect.top / totalScroll,
+      0,
+      1
+    );
+  }
+
+
+  /* -------------------------------------------------------
+     CAMERA
+     
+     0.00 = opening
+     1.00 = fully pulled back
+     ------------------------------------------------------- */
+
+  function updateScene() {
+
+    updateScrollProgress();
+
+    const raw = scrollProgress;
+
+    /*
+      The camera stays close during the first part,
+      then begins pulling away.
+    */
+
+    const cameraProgress = clamp(
+      (raw - 0.04) / 0.78,
+      0,
+      1
+    );
+
+    const smoothCamera = ease(cameraProgress);
+
+
+    /* -----------------------------------------------------
+       MOUSE SMOOTHING
+       ----------------------------------------------------- */
+
+    smoothMouseX +=
+      (mouseX - smoothMouseX) * 0.055;
+
+    smoothMouseY +=
+      (mouseY - smoothMouseY) * 0.055;
+
+
+    /* -----------------------------------------------------
+       SKY
+       ----------------------------------------------------- */
+
+    if (sky) {
+
+      const skyX =
+        smoothMouseX * -1.8;
+
+      const skyY =
+        smoothMouseY * -1.2;
+
+      const skyScale =
+        1.04 + smoothCamera * 0.08;
+
+      sky.style.transform =
+        `translate3d(${skyX}px, ${skyY}px, 0)
+         scale(${skyScale})`;
+    }
+
+
+    /* -----------------------------------------------------
+       CLOUDS
+       ----------------------------------------------------- */
+
+    if (clouds) {
+
+      const cloudX =
+        smoothMouseX * -14;
+
+      const cloudY =
+        smoothMouseY * -7;
+
+      const cloudScale =
+        1.02 + smoothCamera * 0.12;
+
+      clouds.style.transform =
+        `translate3d(${cloudX}px, ${cloudY}px, 0)
+         scale(${cloudScale})`;
+    }
+
+
+    /* -----------------------------------------------------
+       MOUNTAIN
+       
+       IMPORTANT:
+       The mountain itself becomes smaller as the camera
+       moves backward.
+
+       It starts zoomed in so only the peak is visible.
+       ----------------------------------------------------- */
+
+    const mountainScale =
+      2.42 - smoothCamera * 1.80;
+
+    const mountainY =
+      18 - smoothCamera * 4;
+
+    const mountainX =
+      smoothMouseX * -8;
+
+    const mountainRotate =
+      smoothMouseX * 0.25;
+
+    mountain.style.transform =
+      `translate3d(
+        ${mountainX}px,
+        ${mountainY}px,
+        0
+      )
+      rotate(${mountainRotate}deg)
+      scale(${mountainScale})`;
+
+
+    /*
+      Mountain starts almost invisible and gradually
+      becomes part of the environment.
+    */
+
+    const mountainOpacity =
+      0.28 + smoothCamera * 0.72;
+
+    mountain.style.opacity =
+      mountainOpacity.toFixed(3);
+
+
+    /* -----------------------------------------------------
+       MAIN FOREGROUND
+       
+       This is your combined:
+       - Subhajit
+       - Aratrika
+       - Photoshop
+       - After Effects
+       - Premiere
+       
+       It stays the main foreground subject.
+       ----------------------------------------------------- */
+
+    const foregroundScale =
+      1.00 - smoothCamera * 0.38;
+
+    const foregroundX =
+      smoothMouseX * 10;
+
+    const foregroundY =
+      smoothMouseY * 7 -
+      smoothCamera * 5;
+
+    const foregroundRotate =
+      smoothMouseX * 0.35;
+
+    foreground.style.transform =
+      `translate3d(
+        ${foregroundX}px,
+        ${foregroundY}px,
+        0
+      )
+      rotate(${foregroundRotate}deg)
+      scale(${foregroundScale})`;
+
+
+    /* -----------------------------------------------------
+       SECOND CUTOUT
+       ----------------------------------------------------- */
+
+    if (cutout) {
+
+      const cutoutProgress =
+        clamp(
+          (raw - 0.34) / 0.34,
+          0,
+          1
+        );
+
+      const cutoutEase =
+        ease(cutoutProgress);
+
+      const cutoutX =
+        30 - cutoutEase * 30;
+
+      const cutoutY =
+        12 - cutoutEase * 12;
+
+      const cutoutScale =
+        0.96 + cutoutEase * 0.04;
+
+      cutout.style.opacity =
+        cutoutEase.toFixed(3);
+
+      cutout.style.transform =
+        `translate3d(
+          ${cutoutX + smoothMouseX * 5}px,
+          ${cutoutY + smoothMouseY * 4}px,
+          0
+        )
+        scale(${cutoutScale})`;
+    }
+
+
+    /* -----------------------------------------------------
+       INTRO INDICATOR
+       ----------------------------------------------------- */
+
+    if (intro) {
+
+      const introFade =
+        clamp(
+          1 - raw / 0.16,
+          0,
+          1
+        );
+
+      intro.style.opacity =
+        introFade.toFixed(3);
+
+      intro.style.transform =
+        `translate3d(
+          0,
+          ${raw * -30}px,
+          0
+        )`;
+    }
+
+
+    /* -----------------------------------------------------
+       HERO COPY
+       
+       Appears after the camera has pulled back.
+       ----------------------------------------------------- */
+
+    if (copy) {
+
+      const copyProgress =
+        clamp(
+          (raw - 0.48) / 0.28,
+          0,
+          1
+        );
+
+      const copyEase =
+        ease(copyProgress);
+
+      const copyY =
+        70 - copyEase * 70;
+
+      const copyScale =
+        0.92 + copyEase * 0.08;
+
+      copy.style.opacity =
+        copyEase.toFixed(3);
+
+      copy.style.transform =
+        `translate3d(
+          0,
+          ${copyY}px,
+          0
+        )
+        scale(${copyScale})`;
+    }
+
+
+    /* -----------------------------------------------------
+       LOCATION
+       ----------------------------------------------------- */
+
+    const location =
+      scene.querySelector(".cinematic-location");
+
+    if (location) {
+
+      const locationOpacity =
+        clamp(
+          1 - raw / 0.35,
+          0,
+          1
+        );
+
+      location.style.opacity =
+        locationOpacity.toFixed(3);
+    }
+
+
+    /* -----------------------------------------------------
+       FINAL STATE
+       ----------------------------------------------------- */
+
+    if (raw > 0.72) {
+      scene.classList.add("is-final");
+    } else {
+      scene.classList.remove("is-final");
+    }
+  }
+
+
+  /* -------------------------------------------------------
+     ANIMATION LOOP
+     ------------------------------------------------------- */
+
+  function animationLoop() {
+
+    updateScene();
+
+    requestAnimationFrame(animationLoop);
+  }
+
+  requestAnimationFrame(animationLoop);
+
+
+  /* -------------------------------------------------------
+     RESIZE
+     ------------------------------------------------------- */
+
+  window.addEventListener(
+    "resize",
+    updateScene,
+    { passive: true }
+  );
+
+
+  /* -------------------------------------------------------
+     INITIAL POSITION
+     ------------------------------------------------------- */
+
+  updateScene();
+
+})();
