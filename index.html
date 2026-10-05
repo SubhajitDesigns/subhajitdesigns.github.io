@@ -1,6 +1,7 @@
 
 
 
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -11,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style(1).css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="cursor-glow" aria-hidden="true"></div>
@@ -31,6 +32,7 @@
           <a href="#what-i-do">What I Do</a>
           <a href="resume.html">Resume</a>
           <a href="#work">Work</a>
+          <a href="#clients">Clients</a>
         </nav>
         <a class="nav-cta" href="#contact">Let's talk <span>↗</span></a>
       </header>
@@ -284,7 +286,7 @@
 
 
        
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>What I Do — Creative Toolkit</title></head><body style="margin:0;background:#080304;color:#ead8cf">
+
 <section id="what-i-do" class="toolkit section" aria-label="What I Do">
   <div class="toolkit-head"><div><p class="toolkit-eyebrow">02 / CREATIVE TOOLKIT</p><h2>I TURN <em>IDEAS</em><br>INTO VISUALS.</h2></div><p class="toolkit-intro">Select a discipline.<br>Watch the work come to life.</p></div>
   <div class="toolkit-stage">
@@ -306,9 +308,7 @@
 <script>
 (function(){const tools=document.querySelectorAll('#what-i-do .tool'),img=document.getElementById('toolkitPreviewImage'),video=document.getElementById('toolkitPreviewVideo'),type=document.getElementById('toolkitPreviewType'),count=document.getElementById('toolkitPreviewCount'),title=document.getElementById('toolkitPreviewTitle'),meta=document.getElementById('toolkitPreviewMeta'),play=document.getElementById('toolkitPlay');const data={ai:{type:'AI DESIGN / 01',count:'01 / 05',title:'WRONG FONT',meta:'GENERATIVE / COMPOSITE / VISUAL EXPERIMENT',src:'currently-creating-01-new.jpg'},photoshop:{type:'PHOTOSHOP / 02',count:'02 / 05',title:'BREAK, BLEND & BLISS',meta:'COMPOSITE / TYPOGRAPHY / ART DIRECTION',src:'kitkat shake copy.jpg'},video:{type:'VIDEO EDITING / 03',count:'03 / 05',title:'MEYO GRILLED SANDWICH',meta:'REELS / ADS / SHORT-FORM EDITING',video:'Meyo Grilld Sandwitch.mp4'},ads:{type:'ADS / 04',count:'04 / 05',title:'MAMAEARTH / DHARMI REALTY',meta:'PRODUCT / CAMPAIGN / SOCIAL ADS',src:'Protect your glow with the goodness of Vitamin C! 🍋Mamaearth Vitamin C Daily Glow Sunscreen shi(1).jpg'},motion:{type:'MOTION GRAPHICS / 05',count:'05 / 05',title:'MOTION / ANIMATION',meta:'LOGO ANIMATION / REVEAL / MOTION DESIGN',video:'Meyo Grilld Sandwitch.mp4'}};function setTool(k){const d=data[k];tools.forEach(t=>t.classList.toggle('active',t.dataset.tool===k));type.textContent=d.type;count.textContent=d.count;title.textContent=d.title;meta.textContent=d.meta;video.pause();video.removeAttribute('src');video.load();video.style.display='none';play.style.display='none';if(d.video){video.src=d.video;video.style.display='block';play.style.display='grid';img.style.display='none'}else{img.src=d.src;img.style.display='block'}}tools.forEach(t=>{t.addEventListener('mouseenter',()=>setTool(t.dataset.tool));t.addEventListener('focus',()=>setTool(t.dataset.tool));t.addEventListener('click',()=>setTool(t.dataset.tool))});play.addEventListener('click',()=>video.paused?video.play():video.pause());setTool('ai')})();
 </script>
-</body></html>
-    
-<section id="work" class="crafted section">
+<section id="work" class="crafted section crafted-stack-enabled">
 
   <div class="crafted-heading">
     <p>FEATURED WORK</p>
@@ -316,222 +316,386 @@
     <div>IDEAS • DESIGNS • IMPACT</div>
   </div>
 
-  <div class="crafted-viewport">
-  <div class="crafted-grid">
+  <!-- The first 3 projects become the smooth scroll-controlled stack. -->
+  <div class="crafted-stack-zone" id="craftedStackZone">
+    <div class="crafted-stack-stage">
 
-    <!-- 01 — SOCIAL MEDIA -->
-    <a href="social-media.html" class="crafted-folder">
-
-      <div class="folder-icon">
-        <span class="folder-back"></span>
-
-        <div class="folder-previews">
+      <!-- STACK CARD 01 -->
+      <a href="social-media.html" class="crafted-stack-card is-active">
+        <div class="crafted-stack-card-bg">
           <img src="jaisalmer.jpg" alt="">
           <img src="momo-street.jpg" alt="">
           <img src="bali.jpg" alt="">
           <img src="dharmi-realty.jpg" alt="">
         </div>
 
-        <span class="folder-front"></span>
-      </div>
+        <div class="crafted-stack-overlay"></div>
 
-      <h3>Social Media</h3>
-      <p>POSTS • REELS • STORIES</p>
+        <div class="crafted-stack-top">
+          <span>01 / 03</span>
+          <span>SOCIAL MEDIA</span>
+        </div>
 
-    </a>
+        <div class="crafted-stack-content">
+          <div>
+            <p>POSTS • REELS • STORIES</p>
+            <h3>Social Media</h3>
+          </div>
+          <span class="crafted-stack-arrow">↗</span>
+        </div>
+      </a>
 
-
-    <!-- 02 — GOOGLE ADS -->
-    <a href="google-ads.html" class="crafted-folder">
-
-      <div class="folder-icon">
-        <span class="folder-back"></span>
-
-        <div class="folder-previews">
+      <!-- STACK CARD 02 -->
+      <a href="google-ads.html" class="crafted-stack-card">
+        <div class="crafted-stack-card-bg">
           <img src="ac094c3fedd25880080e0f0e4d5b7467.jpg" alt="">
           <img src="followes.jpg" alt="">
           <img src="graphic.jpg" alt="">
           <img src="restaurant.jpg" alt="">
         </div>
 
-        <span class="folder-front"></span>
-      </div>
+        <div class="crafted-stack-overlay"></div>
 
-      <h3>Google Ads</h3>
-      <p>ADS • BANNERS • CAMPAIGNS</p>
+        <div class="crafted-stack-top">
+          <span>02 / 03</span>
+          <span>GOOGLE ADS</span>
+        </div>
 
-    </a>
+        <div class="crafted-stack-content">
+          <div>
+            <p>ADS • BANNERS • CAMPAIGNS</p>
+            <h3>Google Ads</h3>
+          </div>
+          <span class="crafted-stack-arrow">↗</span>
+        </div>
+      </a>
 
-
-    <!-- 03 — PRODUCT ADS -->
-    <a href="product-ads.html" class="crafted-folder">
-
-      <div class="folder-icon">
-        <span class="folder-back"></span>
-
-        <div class="folder-previews">
+      <!-- STACK CARD 03 -->
+      <a href="product-ads.html" class="crafted-stack-card">
+        <div class="crafted-stack-card-bg">
           <img src="honey.jpg" alt="">
           <img src="organic.jpg" alt="">
           <img src="port 7.jpg" alt="">
           <img src="Protect your glow with the goodness of Vitamin C! 🍋Mamaearth Vitamin C Daily Glow Sunscreen shi.jpg" alt="">
         </div>
 
-        <span class="folder-front"></span>
-      </div>
+        <div class="crafted-stack-overlay"></div>
 
-      <h3>Product Ads</h3>
-      <p>E-COMMERCE • PROMOTIONS</p>
-
-    </a>
-
-
-    <!-- 04 — BRANDING -->
-    <a href="branding.html" class="crafted-folder">
-
-      <div class="folder-icon">
-        <span class="folder-back"></span>
-
-        <div class="folder-previews">
-          <img src="chocolate-day.jpg" alt="">
-          <img src="gold-rate.jpg" alt="">
-          <img src="jewellery.jpg" alt="">
-          <img src="bridal-jewellery.jpg" alt="">
+        <div class="crafted-stack-top">
+          <span>03 / 03</span>
+          <span>PRODUCT ADS</span>
         </div>
 
-        <span class="folder-front"></span>
-      </div>
-
-      <h3>Branding</h3>
-      <p>LOGOS • IDENTITY • SYSTEMS</p>
-
-    </a>
-
-
-    <!-- 05 — OTHER DESIGNS -->
-    <a href="other-designs.html" class="crafted-folder">
-
-      <div class="folder-icon">
-        <span class="folder-back"></span>
-
-        <div class="folder-previews">
-          <img src="ad-2.jpg" alt="">
-          <img src="momo-street-2.jpg.jpg" alt="">
-          <img src="french-fries.jpg" alt="">
-          <img src="monk.jpg" alt="">
+        <div class="crafted-stack-content">
+          <div>
+            <p>E-COMMERCE • PROMOTIONS</p>
+            <h3>Product Ads</h3>
+          </div>
+          <span class="crafted-stack-arrow">↗</span>
         </div>
+      </a>
 
-        <span class="folder-front"></span>
+      <div class="crafted-stack-hint" id="craftedStackHint">
+        <span>SCROLL</span>
+        <i>↓</i>
+        <span>EXPLORE WORK</span>
       </div>
-
-      <h3>Other Designs</h3>
-      <p>PRINT • UI/UX • MISC</p>
-
-    </a>
-
-
-    <!-- 06 — MOTION GRAPHICS -->
-    <div class="crafted-folder motion-coming-soon">
-
-      <div class="folder-icon">
-        <span class="folder-back"></span>
-
-        <div class="coming-soon-text">COMING SOON</div>
-
-        <span class="folder-front"></span>
-      </div>
-
-      <h3>Motion Graphics</h3>
-      <p>ANIMATIONS • VIDEOS • EFFECTS</p>
 
     </div>
-<!-- 07 — FLYER DESIGNS -->
-<div class="crafted-folder motion-coming-soon">
-
-  <div class="folder-icon">
-    <span class="folder-back"></span>
-
-    <div class="coming-soon-text">COMING SOON</div>
-
-    <span class="folder-front"></span>
   </div>
 
-  <h3>Flyer Designs</h3>
-  <p>FLYERS • PROMOTIONS • EVENTS</p>
+  <!-- After the 3-card animation, normal scrolling continues here. -->
+  <div class="crafted-rest-wrap">
+    <div class="crafted-rest-head">
+      <span>MORE WORK</span>
+      <span>04 — 11</span>
+    </div>
 
-</div>
+    <div class="crafted-grid crafted-rest-grid">
 
+      <!-- 04 — BRANDING -->
+      <a href="branding.html" class="crafted-folder">
+        <div class="folder-icon">
+          <span class="folder-back"></span>
+          <div class="folder-previews">
+            <img src="chocolate-day.jpg" alt="">
+            <img src="gold-rate.jpg" alt="">
+            <img src="jewellery.jpg" alt="">
+            <img src="bridal-jewellery.jpg" alt="">
+          </div>
+          <span class="folder-front"></span>
+        </div>
+        <h3>Branding</h3>
+        <p>LOGOS • IDENTITY • SYSTEMS</p>
+      </a>
 
-<!-- 08 — BANNERS -->
-<div class="crafted-folder motion-coming-soon">
+      <!-- 05 — OTHER DESIGNS -->
+      <a href="other-designs.html" class="crafted-folder">
+        <div class="folder-icon">
+          <span class="folder-back"></span>
+          <div class="folder-previews">
+            <img src="ad-2.jpg" alt="">
+            <img src="momo-street-2.jpg.jpg" alt="">
+            <img src="french-fries.jpg" alt="">
+            <img src="monk.jpg" alt="">
+          </div>
+          <span class="folder-front"></span>
+        </div>
+        <h3>Other Designs</h3>
+        <p>PRINT • UI/UX • MISC</p>
+      </a>
 
-  <div class="folder-icon">
-    <span class="folder-back"></span>
+      <!-- 06 — MOTION GRAPHICS -->
+      <div class="crafted-folder motion-coming-soon">
+        <div class="folder-icon">
+          <span class="folder-back"></span>
+          <div class="coming-soon-text">COMING SOON</div>
+          <span class="folder-front"></span>
+        </div>
+        <h3>Motion Graphics</h3>
+        <p>ANIMATIONS • VIDEOS • EFFECTS</p>
+      </div>
 
-    <div class="coming-soon-text">COMING SOON</div>
+      <!-- 07 — FLYER DESIGNS -->
+      <div class="crafted-folder motion-coming-soon">
+        <div class="folder-icon">
+          <span class="folder-back"></span>
+          <div class="coming-soon-text">COMING SOON</div>
+          <span class="folder-front"></span>
+        </div>
+        <h3>Flyer Designs</h3>
+        <p>FLYERS • PROMOTIONS • EVENTS</p>
+      </div>
 
-    <span class="folder-front"></span>
+      <!-- 08 — BANNERS -->
+      <div class="crafted-folder motion-coming-soon">
+        <div class="folder-icon">
+          <span class="folder-back"></span>
+          <div class="coming-soon-text">COMING SOON</div>
+          <span class="folder-front"></span>
+        </div>
+        <h3>Banners</h3>
+        <p>WEB • STORE • DIGITAL</p>
+      </div>
+
+      <!-- 09 — LOGOS -->
+      <div class="crafted-folder motion-coming-soon">
+        <div class="folder-icon">
+          <span class="folder-back"></span>
+          <div class="coming-soon-text">COMING SOON</div>
+          <span class="folder-front"></span>
+        </div>
+        <h3>Logos</h3>
+        <p>LOGOS • MARKS • IDENTITY</p>
+      </div>
+
+      <!-- 10 — PRINTABLES -->
+      <div class="crafted-folder motion-coming-soon">
+        <div class="folder-icon">
+          <span class="folder-back"></span>
+          <div class="coming-soon-text">COMING SOON</div>
+          <span class="folder-front"></span>
+        </div>
+        <h3>Printables</h3>
+        <p>PRINT • BROCHURES • CARDS</p>
+      </div>
+
+      <!-- 11 — CREATIVES -->
+      <div class="crafted-folder motion-coming-soon">
+        <div class="folder-icon">
+          <span class="folder-back"></span>
+          <div class="coming-soon-text">COMING SOON</div>
+          <span class="folder-front"></span>
+        </div>
+        <h3>Creatives</h3>
+        <p>CAMPAIGNS • DIGITAL • MISC</p>
+      </div>
+
+    </div>
   </div>
-
-  <h3>Banners</h3>
-  <p>WEB • STORE • DIGITAL</p>
-
-</div>
-
-
-<!-- 09 — LOGOS -->
-<div class="crafted-folder motion-coming-soon">
-
-  <div class="folder-icon">
-    <span class="folder-back"></span>
-
-    <div class="coming-soon-text">COMING SOON</div>
-
-    <span class="folder-front"></span>
-  </div>
-
-  <h3>Logos</h3>
-  <p>LOGOS • MARKS • IDENTITY</p>
-
-</div>
-
-
-<!-- 10 — PRINTABLES -->
-<div class="crafted-folder motion-coming-soon">
-
-  <div class="folder-icon">
-    <span class="folder-back"></span>
-
-    <div class="coming-soon-text">COMING SOON</div>
-
-    <span class="folder-front"></span>
-  </div>
-
-  <h3>Printables</h3>
-  <p>PRINT • BROCHURES • CARDS</p>
-
-</div>
-
-
-<!-- 11 — CREATIVES -->
-<div class="crafted-folder motion-coming-soon">
-
-  <div class="folder-icon">
-    <span class="folder-back"></span>
-
-    <div class="coming-soon-text">COMING SOON</div>
-
-    <span class="folder-front"></span>
-  </div>
-
-  <h3>Creatives</h3>
-  <p>CAMPAIGNS • DIGITAL • MISC</p>
-
-</div>
-  </div>
-</div>
 </section>
 
-    <section class="big-type">
+
+
+<!-- CLIENTS / LOGO MARQUEE -->
+<section id="clients" class="client-logo-section" aria-label="Clients I have worked with">
+  <div class="client-logo-head">
+    <span>CLIENTS</span>
+    <span>BRANDS I'VE WORKED WITH</span>
+  </div>
+
+  <div class="client-logo-marquee">
+    <div class="client-logo-track">
+      <div class="client-logo-item"><img src="hotel-ma-grand.png" alt="Hotel Ma Grand"></div>
+      <div class="client-logo-item"><img src="ma-realty.png" alt="MA Realty"></div>
+      <div class="client-logo-item"><img src="yuven-motors.png" alt="Yuven Motors"></div>
+      <div class="client-logo-item"><img src="gb.png" alt="GB"></div>
+      <div class="client-logo-item"><img src="su.png" alt="SU"></div>
+      <div class="client-logo-item"><img src="acemath.png" alt="AceMath"></div>
+      <div class="client-logo-item"><img src="mamaearth.png" alt="Mamaearth"></div>
+      <div class="client-logo-item"><img src="dharmi-realty.png" alt="Dharmi Realty"></div>
+      <div class="client-logo-item"><img src="freehit.png" alt="FreeHit"></div>
+      <div class="client-logo-item"><img src="untouch-nature.png" alt="Untouch Nature"></div>
+      <div class="client-logo-item"><img src="heli-tours-travels.png" alt="Heli Tours & Travels"></div>
+      <div class="client-logo-item"><img src="jivantika-organic.png" alt="Jivantika Organic"></div>
+      <div class="client-logo-item"><img src="son-kapila.png" alt="Son Kapila"></div>
+      <div class="client-logo-item"><img src="mobiles-24.png" alt="Mobiles 24"></div>
+      <div class="client-logo-item"><img src="client-16.png" alt="Client 16"></div>
+      <div class="client-logo-item"><img src="vedainn.png" alt="Vedainn"></div>
+
+      <!-- Duplicate set for a seamless infinite loop -->
+      <div class="client-logo-item"><img src="hotel-ma-grand.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="ma-realty.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="yuven-motors.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="gb.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="su.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="acemath.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="mamaearth.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="dharmi-realty.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="freehit.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="untouch-nature.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="heli-tours-travels.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="jivantika-organic.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="son-kapila.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="mobiles-24.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="client-16.png" alt="" aria-hidden="true"></div>
+      <div class="client-logo-item"><img src="vedainn.png" alt="" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .client-logo-section{
+    position:relative;
+    overflow:hidden;
+    padding:38px 0 42px;
+    border-top:1px solid rgba(255,255,255,.1);
+    border-bottom:1px solid rgba(255,255,255,.1);
+    background:transparent;
+  }
+
+  .client-logo-head{
+    width:min(1120px,calc(100% - 56px));
+    margin:0 auto 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    color:#806860;
+    font:9px 'DM Mono',monospace;
+    letter-spacing:.15em;
+  }
+
+  .client-logo-marquee{
+    width:100vw;
+    margin-left:calc(50% - 50vw);
+    overflow:hidden;
+    position:relative;
+    -webkit-mask-image:linear-gradient(
+      to right,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent
+    );
+    mask-image:linear-gradient(
+      to right,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent
+    );
+  }
+
+  .client-logo-track{
+    display:flex;
+    align-items:center;
+    width:max-content;
+    gap:24px;
+    animation:clientLogoMove 32s linear infinite reverse;
+    will-change:transform;
+  }
+
+  .client-logo-item{
+    flex:0 0 170px;
+    height:78px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:15px 24px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.018);
+    border-radius:5px;
+    transition:
+      transform .35s ease,
+      border-color .35s ease,
+      background .35s ease;
+  }
+
+  .client-logo-item:hover{
+    transform:translateY(-5px);
+    border-color:rgba(255,61,53,.45);
+    background:rgba(255,61,53,.045);
+  }
+
+  .client-logo-item img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    filter:grayscale(1);
+    opacity:.58;
+    transition:
+      filter .35s ease,
+      opacity .35s ease,
+      transform .35s ease;
+  }
+
+  .client-logo-item:hover img{
+    filter:grayscale(0);
+    opacity:1;
+  }
+
+  @keyframes clientLogoMove{
+    from{
+      transform:translateX(0);
+    }
+    to{
+      transform:translateX(calc(-50% - 12px));
+    }
+  }
+
+  @media(max-width:700px){
+    .client-logo-section{
+      padding:30px 0 34px;
+    }
+
+    .client-logo-head{
+      width:calc(100% - 28px);
+      font-size:7px;
+    }
+
+    .client-logo-item{
+      flex-basis:135px;
+      height:64px;
+      padding:11px 18px;
+    }
+
+    .client-logo-track{
+      gap:16px;
+      animation-duration:26s;
+      animation-direction:reverse;
+    }
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    .client-logo-track{
+      animation:none;
+    }
+  }
+</style>
+
+<section class="big-type">
       <div>DESIGN IS MORE</div>
       <div><em>THAN PIXELS.</em></div>
       <div>IT'S PERSPECTIVE.</div>
