@@ -788,6 +788,7 @@ if (clientTrack) {
 
 
       if (locked) {
+        event.preventDefault();
         return;
       }
 
@@ -963,6 +964,12 @@ if (clientTrack) {
       title: 'IDEA OVERLOAD',
       category:
         'EDITORIAL / PHOTO MANIPULATION'
+    },
+
+    {
+      title: 'SCHNEIDER ELECTRIC',
+      category:
+        'CAMPAIGN / BRAND DESIGN'
     }
 
   ];
