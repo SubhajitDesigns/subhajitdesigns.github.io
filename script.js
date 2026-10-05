@@ -5,124 +5,426 @@
   const cursor = document.querySelector('.cursor-dot');
   const magnetic = document.querySelector('.magnetic');
   const navLinks = [...document.querySelectorAll('.hero-nav nav a, .hero-nav .nav-cta')];
-  let mx = innerWidth/2, my = innerHeight/2, sx = mx, sy = my;
+
+  let mx = innerWidth / 2;
+  let my = innerHeight / 2;
+  let sx = mx;
+  let sy = my;
+
+
+  /* =========================================================
+     HERO — MOUSE FOLLOW
+     ========================================================= */
 
   addEventListener('mousemove', e => {
-    mx=e.clientX; my=e.clientY;
-    if(cursor){cursor.style.left=mx+'px';cursor.style.top=my+'px';}
-    if(hero){const r=hero.getBoundingClientRect(); hero.style.setProperty('--mx',((mx-r.left)/r.width*100)+'%'); hero.style.setProperty('--my',((my-r.top)/r.height*100)+'%');}
-  },{passive:true});
+    mx = e.clientX;
+    my = e.clientY;
 
-  portrait?.addEventListener('mouseenter',()=>hero?.classList.add('icon-retreat'));
-  portrait?.addEventListener('mouseleave',()=>hero?.classList.remove('icon-retreat'));
-
-  // Keep the depth effect predictable: the portrait owns the hover, icons stay behind it.
-  portrait?.addEventListener('pointerenter',()=>hero?.classList.add('icon-retreat'));
-  portrait?.addEventListener('pointerleave',()=>hero?.classList.remove('icon-retreat'));
-
-
-  navLinks.forEach(link=>link.addEventListener('click',()=>{
-    navLinks.forEach(x=>x.classList.remove('nav-active'));
-    link.classList.add('nav-active');
-    setTimeout(()=>link.classList.remove('nav-active'),600);
-  }));
-
-  function frame(){
-    sx += (mx-sx)*.055; sy += (my-sy)*.055;
-    if(art && portrait && innerWidth>800){
-      const r=art.getBoundingClientRect();
-      const px=Math.max(-1,Math.min(1,(sx-(r.left+r.width/2))/(r.width/2)));
-      const py=Math.max(-1,Math.min(1,(sy-(r.top+r.height/2))/(r.height/2)));
-      const retreat=hero?.classList.contains('icon-retreat');
-      const move=retreat?2.2:10;
-      portrait.style.transform=`translate3d(${px*move}px,${py*move*.7}px,0) rotateX(${py*(retreat?1.2:3.2)}deg) rotateY(${px*(retreat?-2:4.5)}deg)`;
-      const grid=hero.querySelector('.hero-bg-grid');
-      if(grid)grid.style.transform=`translate3d(${px*4}px,${py*3}px,0)`;
+    if (cursor) {
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
     }
-    requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
 
-  const reelButton=document.querySelector('#showReel');
-  const reelModal=document.querySelector('#reelModal');
-  const reelClose=document.querySelector('#reelClose');
-  const closeReel=()=>{ if(reelModal){ reelModal.classList.remove('is-open'); reelModal.setAttribute('aria-hidden','true'); } };
-  reelButton?.addEventListener('click',()=>{ if(reelModal){ reelModal.classList.add('is-open'); reelModal.setAttribute('aria-hidden','false'); } });
-  reelClose?.addEventListener('click',closeReel);
-  reelModal?.addEventListener('click',e=>{ if(e.target===reelModal) closeReel(); });
-  addEventListener('keydown',e=>{ if(e.key==='Escape') closeReel(); });
+    if (hero) {
+      const r = hero.getBoundingClientRect();
 
-  if(magnetic){
-    magnetic.addEventListener('mousemove',e=>{const r=magnetic.getBoundingClientRect(); magnetic.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.1}px,${(e.clientY-r.top-r.height/2)*.1}px)`});
-    magnetic.addEventListener('mouseleave',()=>magnetic.style.transform='');
-  }
-})();
+      hero.style.setProperty(
+        '--mx',
+        ((mx - r.left) / r.width * 100) + '%'
+      );
 
-
-/* V29 FINAL: subtle red cursor-following atmosphere */
-(() => {
-  const glow = document.querySelector('.cursor-glow');
-  if (!glow || window.matchMedia('(pointer: coarse)').matches) return;
-
-  let tx = window.innerWidth / 2, ty = window.innerHeight / 2;
-  let x = tx, y = ty;
-  let active = false;
-
-  window.addEventListener('pointermove', (e) => {
-    tx = e.clientX;
-    ty = e.clientY;
-    if (!active) {
-      active = true;
-      document.body.classList.add('cursor-active');
+      hero.style.setProperty(
+        '--my',
+        ((my - r.top) / r.height * 100) + '%'
+      );
     }
-  }, { passive: true });
-
-  window.addEventListener('pointerleave', () => {
-    active = false;
-    document.body.classList.remove('cursor-active');
+  }, {
+    passive: true
   });
 
-  const tick = () => {
-    x += (tx - x) * 0.10;
-    y += (ty - y) * 0.10;
-    glow.style.transform = `translate3d(${x}px, ${y}px, 0) translate3d(-50%, -50%, 0)`;
-    requestAnimationFrame(tick);
+
+  /* =========================================================
+     HERO — PORTRAIT HOVER
+     ========================================================= */
+
+  portrait?.addEventListener(
+    'mouseenter',
+    () => hero?.classList.add('icon-retreat')
+  );
+
+  portrait?.addEventListener(
+    'mouseleave',
+    () => hero?.classList.remove('icon-retreat')
+  );
+
+  // Keep the depth effect predictable:
+  // the portrait owns the hover, icons stay behind it.
+
+  portrait?.addEventListener(
+    'pointerenter',
+    () => hero?.classList.add('icon-retreat')
+  );
+
+  portrait?.addEventListener(
+    'pointerleave',
+    () => hero?.classList.remove('icon-retreat')
+  );
+
+
+  /* =========================================================
+     NAVIGATION ACTIVE EFFECT
+     ========================================================= */
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+
+      navLinks.forEach(x =>
+        x.classList.remove('nav-active')
+      );
+
+      link.classList.add('nav-active');
+
+      setTimeout(() => {
+        link.classList.remove('nav-active');
+      }, 600);
+
+    });
+  });
+
+
+  /* =========================================================
+     HERO — PORTRAIT 3D MOVEMENT
+     ========================================================= */
+
+  function frame() {
+
+    sx += (mx - sx) * 0.055;
+    sy += (my - sy) * 0.055;
+
+    if (art && portrait && innerWidth > 800) {
+
+      const r = art.getBoundingClientRect();
+
+      const px = Math.max(
+        -1,
+        Math.min(
+          1,
+          (sx - (r.left + r.width / 2)) /
+          (r.width / 2)
+        )
+      );
+
+      const py = Math.max(
+        -1,
+        Math.min(
+          1,
+          (sy - (r.top + r.height / 2)) /
+          (r.height / 2)
+        )
+      );
+
+      const retreat =
+        hero?.classList.contains('icon-retreat');
+
+      const move = retreat ? 2.2 : 10;
+
+      portrait.style.transform =
+        `translate3d(
+          ${px * move}px,
+          ${py * move * 0.7}px,
+          0
+        )
+        rotateX(${py * (retreat ? 1.2 : 3.2)}deg)
+        rotateY(${px * (retreat ? -2 : 4.5)}deg)`;
+
+      const grid =
+        hero.querySelector('.hero-bg-grid');
+
+      if (grid) {
+        grid.style.transform =
+          `translate3d(
+            ${px * 4}px,
+            ${py * 3}px,
+            0
+          )`;
+      }
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
+
+
+  /* =========================================================
+     SHOW REEL MODAL
+     ========================================================= */
+
+  const reelButton =
+    document.querySelector('#showReel');
+
+  const reelModal =
+    document.querySelector('#reelModal');
+
+  const reelClose =
+    document.querySelector('#reelClose');
+
+
+  const closeReel = () => {
+
+    if (reelModal) {
+
+      reelModal.classList.remove('is-open');
+
+      reelModal.setAttribute(
+        'aria-hidden',
+        'true'
+      );
+
+    }
+
   };
-  requestAnimationFrame(tick);
+
+
+  reelButton?.addEventListener(
+    'click',
+    () => {
+
+      if (reelModal) {
+
+        reelModal.classList.add('is-open');
+
+        reelModal.setAttribute(
+          'aria-hidden',
+          'false'
+        );
+
+      }
+
+    }
+  );
+
+
+  reelClose?.addEventListener(
+    'click',
+    closeReel
+  );
+
+
+  reelModal?.addEventListener(
+    'click',
+    e => {
+
+      if (e.target === reelModal) {
+        closeReel();
+      }
+
+    }
+  );
+
+
+  addEventListener(
+    'keydown',
+    e => {
+
+      if (e.key === 'Escape') {
+        closeReel();
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     MAGNETIC BUTTON
+     ========================================================= */
+
+  if (magnetic) {
+
+    magnetic.addEventListener(
+      'mousemove',
+      e => {
+
+        const r =
+          magnetic.getBoundingClientRect();
+
+        magnetic.style.transform =
+          `translate(
+            ${(e.clientX - r.left - r.width / 2) * 0.1}px,
+            ${(e.clientY - r.top - r.height / 2) * 0.1}px
+          )`;
+
+      }
+    );
+
+
+    magnetic.addEventListener(
+      'mouseleave',
+      () => {
+        magnetic.style.transform = '';
+      }
+    );
+
+  }
+
 })();
 
 
-/* CLEAN CLIENT LOGO 3D EFFECT */
+/* =========================================================
+   V29 FINAL — SUBTLE RED CURSOR ATMOSPHERE
+   ========================================================= */
 
-const clientTrack = document.querySelector('.client-logo-track');
+(() => {
 
-if (clientTrack) {
-  function updateClientLogos() {
+  const glow =
+    document.querySelector('.cursor-glow');
 
-    const logos = clientTrack.querySelectorAll('.client-logo-item img');
-    const center = window.innerWidth / 2;
-
-    logos.forEach((logo) => {
-
-      const rect = logo.getBoundingClientRect();
-      const logoCenter = rect.left + rect.width / 2;
-
-      const distance = Math.abs(center - logoCenter);
-      const range = window.innerWidth * 0.50;
-
-      let amount = 1 - (distance / range);
-      amount = Math.max(0, Math.min(1, amount));
-
-      /* Very subtle size change */
-      const scale = 1 + (amount * 0.16);
-
-      logo.style.transform = `scale(${scale})`;
-    });
-
-    requestAnimationFrame(updateClientLogos);
+  if (
+    !glow ||
+    window.matchMedia('(pointer: coarse)').matches
+  ) {
+    return;
   }
 
+
+  let tx = window.innerWidth / 2;
+  let ty = window.innerHeight / 2;
+
+  let x = tx;
+  let y = ty;
+
+  let active = false;
+
+
+  window.addEventListener(
+    'pointermove',
+    e => {
+
+      tx = e.clientX;
+      ty = e.clientY;
+
+      if (!active) {
+
+        active = true;
+
+        document.body.classList.add(
+          'cursor-active'
+        );
+
+      }
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  window.addEventListener(
+    'pointerleave',
+    () => {
+
+      active = false;
+
+      document.body.classList.remove(
+        'cursor-active'
+      );
+
+    }
+  );
+
+
+  const tick = () => {
+
+    x += (tx - x) * 0.10;
+    y += (ty - y) * 0.10;
+
+    glow.style.transform =
+      `translate3d(
+        ${x}px,
+        ${y}px,
+        0
+      )
+      translate3d(-50%, -50%, 0)`;
+
+    requestAnimationFrame(tick);
+
+  };
+
+
+  requestAnimationFrame(tick);
+
+})();
+
+
+/* =========================================================
+   CLIENT LOGOS — CENTER FOCUS
+   ========================================================= */
+
+const clientTrack =
+  document.querySelector('.client-logo-track');
+
+
+if (clientTrack) {
+
+  function updateClientLogos() {
+
+    const logos =
+      clientTrack.querySelectorAll(
+        '.client-logo-item img'
+      );
+
+    const center =
+      window.innerWidth / 2;
+
+
+    logos.forEach(logo => {
+
+      const rect =
+        logo.getBoundingClientRect();
+
+      const logoCenter =
+        rect.left + rect.width / 2;
+
+      const distance =
+        Math.abs(center - logoCenter);
+
+      const range =
+        window.innerWidth * 0.50;
+
+
+      let amount =
+        1 - (distance / range);
+
+
+      amount =
+        Math.max(
+          0,
+          Math.min(1, amount)
+        );
+
+
+      /* Very subtle size change */
+
+      const scale =
+        1 + (amount * 0.16);
+
+
+      logo.style.transform =
+        `scale(${scale})`;
+
+    });
+
+
+    requestAnimationFrame(
+      updateClientLogos
+    );
+
+  }
+
+
   updateClientLogos();
+
 }
 
 
@@ -131,32 +433,51 @@ if (clientTrack) {
    No stretch • No vertical movement • No tilt
    ========================================================= */
 
-(function(){
+(function () {
 
-  const carousel = document.querySelector('.client-carousel');
-  const track = document.querySelector('.client-carousel-track');
+  const carousel =
+    document.querySelector(
+      '.client-carousel'
+    );
 
-  if(!carousel || !track) return;
-
-  const cards = Array.from(
-    track.querySelectorAll('.client-card')
-  );
-
-
-  function updateClientFocus(){
-
-    const centerX = window.innerWidth / 2;
+  const track =
+    document.querySelector(
+      '.client-carousel-track'
+    );
 
 
-    cards.forEach(function(card){
+  if (!carousel || !track) {
+    return;
+  }
 
-      const rect = card.getBoundingClientRect();
+
+  const cards =
+    Array.from(
+      track.querySelectorAll(
+        '.client-card'
+      )
+    );
+
+
+  function updateClientFocus() {
+
+    const centerX =
+      window.innerWidth / 2;
+
+
+    cards.forEach(card => {
+
+      const rect =
+        card.getBoundingClientRect();
 
       const cardCenter =
         rect.left + rect.width / 2;
 
+
       const distance =
-        Math.abs(cardCenter - centerX);
+        Math.abs(
+          cardCenter - centerX
+        );
 
 
       /*
@@ -164,19 +485,23 @@ if (clientTrack) {
        * This keeps several logos visible.
        */
 
-      const influence = Math.min(
-        distance / (window.innerWidth * 0.58),
-        1
-      );
+      const influence =
+        Math.min(
+          distance /
+          (window.innerWidth * 0.58),
+          1
+        );
 
 
       const focus =
-        Math.pow(1 - influence, 1.15);
+        Math.pow(
+          1 - influence,
+          1.15
+        );
 
 
       /*
        * UNIFORM SCALE ONLY.
-       *
        * No separate X/Y scaling.
        * No stretching.
        */
@@ -207,7 +532,9 @@ if (clientTrack) {
 
       card.style.setProperty(
         'transform',
-        'scale(' + scale.toFixed(3) + ')',
+        'scale(' +
+        scale.toFixed(3) +
+        ')',
         'important'
       );
 
@@ -217,7 +544,9 @@ if (clientTrack) {
 
 
       card.style.filter =
-        'blur(' + blur.toFixed(2) + 'px)';
+        'blur(' +
+        blur.toFixed(2) +
+        'px)';
 
 
       card.style.zIndex =
@@ -245,269 +574,299 @@ if (clientTrack) {
 
 
 /* =========================================================
-   SUBHAJIT — CRAFTED DESIGNS
-   AUTO MARQUEE + 2-WHEEL HORIZONTAL CONTROL
+   CRAFTED DESIGNS — 3-CARD SCROLL STACK
    ========================================================= */
 
-(() => {
+(function () {
 
-  const section = document.querySelector("#work");
-  const grid = section?.querySelector(".crafted-grid");
+  const section =
+    document.getElementById('work');
 
-  if (!section || !grid) return;
 
-  const originalFolders = Array.from(
-    grid.querySelectorAll(".crafted-folder")
-  );
-
-  if (!originalFolders.length) return;
-
-  /* ---------------------------------------------------------
-     INFINITE LOOP
-     --------------------------------------------------------- */
-
-  originalFolders.forEach(folder => {
-    grid.appendChild(folder.cloneNode(true));
-  });
-
-  let position = 0;
-  let loopWidth = 0;
-
-  let lastTime = performance.now();
-
-  /* Normal slow movement */
-  const AUTO_SPEED = 45;
-
-  /* Horizontal movement per wheel */
-  const WHEEL_STEP = 420;
-
-  /* Only allow 2 wheel movements */
-  const MAX_WHEEL_MOVES = 2;
-
-  let wheelMoves = 0;
-
-  let wheelAnimating = false;
-
-  let wheelTarget = 0;
-
-  let wasInsideCrafted = false;
-
-  /* ---------------------------------------------------------
-     LOOP WIDTH
-     --------------------------------------------------------- */
-
-  function calculateLoopWidth() {
-
-    const firstOriginal = grid.children[0];
-    const firstClone = grid.children[originalFolders.length];
-
-    if (!firstOriginal || !firstClone) return;
-
-    loopWidth =
-      firstClone.getBoundingClientRect().left -
-      firstOriginal.getBoundingClientRect().left;
-
+  if (!section) {
+    return;
   }
 
-  /* ---------------------------------------------------------
-     KEEP INFINITE LOOP
-     --------------------------------------------------------- */
 
-  function normalizePosition() {
+  const cards =
+    Array.from(
+      section.querySelectorAll(
+        '.crafted-stack-card'
+      )
+    );
 
-    if (loopWidth <= 0) return;
 
-    while (position >= loopWidth) {
-      position -= loopWidth;
-    }
+  const hint =
+    document.getElementById(
+      'craftedStackHint'
+    );
 
-    while (position < 0) {
-      position += loopWidth;
-    }
 
+  if (!cards.length) {
+    return;
   }
 
-  /* ---------------------------------------------------------
-     RENDER
-     --------------------------------------------------------- */
+
+  let activeIndex = 0;
+
+  let locked = false;
+
+  let pointerInside = false;
+
+  let stackDone = false;
+
+
+  /* =========================================================
+     RENDER STACK
+     ========================================================= */
 
   function render() {
 
-    grid.style.transform =
-      `translate3d(${-position}px, 0, 0)`;
+    cards.forEach(
+      (card, index) => {
 
-  }
+        card.classList.remove(
+          'is-active',
+          'is-next',
+          'is-next-2',
+          'is-passed'
+        );
 
-  /* ---------------------------------------------------------
-     AUTO MARQUEE
-     --------------------------------------------------------- */
 
-  function animate(time) {
+        if (index === activeIndex) {
 
-    const deltaTime =
-      Math.min((time - lastTime) / 1000, 0.05);
+          card.classList.add(
+            'is-active'
+          );
 
-    lastTime = time;
+        }
 
-    /*
-      Automatic movement continues normally,
-      except while a wheel movement is animating.
-    */
+        else if (
+          index === activeIndex + 1
+        ) {
 
-    if (!wheelAnimating) {
+          card.classList.add(
+            'is-next'
+          );
 
-      position += AUTO_SPEED * deltaTime;
+        }
 
-      normalizePosition();
+        else if (
+          index === activeIndex + 2
+        ) {
 
-      render();
+          card.classList.add(
+            'is-next-2'
+          );
+
+        }
+
+        else if (
+          index < activeIndex
+        ) {
+
+          card.classList.add(
+            'is-passed'
+          );
+
+        }
+
+        else {
+
+          card.classList.add(
+            'is-next-2'
+          );
+
+        }
+
+      }
+    );
+
+
+    stackDone =
+      activeIndex === cards.length - 1;
+
+
+    section.classList.toggle(
+      'is-stack-done',
+      stackDone
+    );
+
+
+    if (hint) {
+
+      hint.classList.toggle(
+        'is-hidden',
+        stackDone
+      );
 
     }
 
-    requestAnimationFrame(animate);
-
   }
 
-  /* ---------------------------------------------------------
-     CHECK WHETHER CRAFTED IS ACTIVE
-     --------------------------------------------------------- */
 
-  function isCraftedActive() {
+  /* =========================================================
+     CHECK IF CRAFTED IS VISIBLE
+     ========================================================= */
 
-    const rect =
+  function sectionIsInView() {
+
+    const r =
       section.getBoundingClientRect();
 
-    /*
-      Crafted must be substantially inside
-      the viewport before horizontal scrolling activates.
-    */
 
     return (
-      rect.top <= window.innerHeight * 0.25 &&
-      rect.bottom >= window.innerHeight * 0.75
+      r.top <
+      window.innerHeight * 0.78
+      &&
+      r.bottom >
+      window.innerHeight * 0.22
     );
 
   }
 
-  /* ---------------------------------------------------------
-     SMOOTH HORIZONTAL WHEEL MOVEMENT
-     --------------------------------------------------------- */
 
-  function animateWheelTo(target) {
+  /* =========================================================
+     MOUSE ENTER / LEAVE
+     ========================================================= */
 
-    wheelAnimating = true;
+  section.addEventListener(
+    'pointerenter',
+    () => {
 
-    const start = position;
-
-    let startTime = null;
-
-    const duration = 650;
-
-    function step(timestamp) {
-
-      if (!startTime) {
-        startTime = timestamp;
-      }
-
-      const progress =
-        Math.min(
-          (timestamp - startTime) / duration,
-          1
-        );
-
-      /*
-        Smooth ease-out
-      */
-
-      const eased =
-        1 - Math.pow(1 - progress, 3);
-
-      position =
-        start + (target - start) * eased;
-
-      normalizePosition();
-
-      render();
-
-      if (progress < 1) {
-
-        requestAnimationFrame(step);
-
-      } else {
-
-        position = target;
-
-        normalizePosition();
-
-        render();
-
-        wheelAnimating = false;
-
-      }
+      pointerInside = true;
 
     }
+  );
 
-    requestAnimationFrame(step);
 
-  }
+  section.addEventListener(
+    'pointerleave',
+    () => {
 
-  /* ---------------------------------------------------------
-     MOUSE WHEEL
-     --------------------------------------------------------- */
+      pointerInside = false;
+
+    }
+  );
+
+
+  /* =========================================================
+     WHEEL CONTROL
+     
+     Only the mouse wheel over Crafted is intercepted.
+
+     Scroll DOWN:
+     Card 1 → Card 2 → Card 3
+
+     After Card 3:
+     Normal page scrolling resumes.
+
+     Scroll UP:
+     Card 3 → Card 2 → Card 1
+
+     At Card 1:
+     Normal page scrolling resumes upward.
+     ========================================================= */
 
   window.addEventListener(
-    "wheel",
-    (event) => {
+    'wheel',
+    event => {
 
-      if (!isCraftedActive()) {
+      if (
+        !pointerInside ||
+        !sectionIsInView()
+      ) {
+        return;
+      }
 
-        /*
-          When we leave Crafted,
-          reset the special wheel counter.
-        */
 
-        wheelMoves = 0;
-        wasInsideCrafted = false;
+      const down =
+        event.deltaY > 0;
+
+      const up =
+        event.deltaY < 0;
+
+
+      if (locked) {
+        return;
+      }
+
+
+      /*
+       * At the end, allow normal
+       * page scrolling downward.
+       */
+
+      if (
+        stackDone &&
+        down
+      ) {
 
         return;
 
       }
 
-      wasInsideCrafted = true;
 
       /*
-        DOWN = later folders
-        UP = previous folders
-      */
+       * At the beginning, allow normal
+       * page scrolling upward.
+       */
 
-      const direction =
-        event.deltaY > 0 ? 1 : -1;
+      if (
+        activeIndex === 0 &&
+        up
+      ) {
 
-      /*
-        Only intercept the first two
-        wheel movements.
-      */
-
-      if (wheelMoves < MAX_WHEEL_MOVES) {
-
-        event.preventDefault();
-
-        wheelMoves++;
-
-        wheelTarget =
-          position +
-          direction * WHEEL_STEP;
-
-        animateWheelTo(wheelTarget);
+        return;
 
       }
 
+
       /*
-        After two wheel movements:
-        DO NOT preventDefault().
-        The website resumes normal
-        vertical scrolling.
-      */
+       * Stop the normal page scroll
+       * while changing cards.
+       */
+
+      event.preventDefault();
+
+      locked = true;
+
+
+      if (
+        down &&
+        activeIndex <
+        cards.length - 1
+      ) {
+
+        activeIndex++;
+
+        render();
+
+      }
+
+      else if (
+        up &&
+        activeIndex > 0
+      ) {
+
+        activeIndex--;
+
+        render();
+
+      }
+
+
+      /*
+       * Small lock prevents one physical
+       * wheel movement from skipping cards.
+       */
+
+      window.setTimeout(
+        () => {
+          locked = false;
+        },
+        900
+      );
 
     },
     {
@@ -515,140 +874,364 @@ if (clientTrack) {
     }
   );
 
-  /* ---------------------------------------------------------
-     RESET WHEN CRAFTED IS LEFT
-     --------------------------------------------------------- */
 
-  window.addEventListener(
-    "scroll",
+  /* =========================================================
+     INITIAL STATE
+     ========================================================= */
+
+  render();
+
+})();
+
+
+/* =========================================================
+   CURRENTLY CREATING
+   5 SECOND CREATIVE ROTATION
+   ========================================================= */
+
+(() => {
+
+  const section =
+    document.querySelector(
+      '.currently-creating'
+    );
+
+
+  if (!section) {
+    return;
+  }
+
+
+  const slides =
+    [
+      ...section.querySelectorAll(
+        '.creating-slide'
+      )
+    ];
+
+
+  const progress =
+    section.querySelector(
+      '#creatingProgress'
+    );
+
+
+  const title =
+    section.querySelector(
+      '#creatingTitle'
+    );
+
+
+  const category =
+    section.querySelector(
+      '#creatingCategory'
+    );
+
+
+  const next =
+    section.querySelector(
+      '#creatingNext'
+    );
+
+
+  if (!slides.length) {
+    return;
+  }
+
+
+  const details = [
+
+    {
+      title: 'FONT FAILS',
+      category:
+        'TYPOGRAPHY / ART DIRECTION'
+    },
+
+    {
+      title: 'GOOD DESIGN?',
+      category:
+        'EDITORIAL / CONCEPTUAL DESIGN'
+    },
+
+    {
+      title: 'CAPCUT',
+      category:
+        'VISUAL CAMPAIGN / CREATIVE DESIGN'
+    },
+
+    {
+      title: 'IDEA OVERLOAD',
+      category:
+        'EDITORIAL / PHOTO MANIPULATION'
+    }
+
+  ];
+
+
+  const visual =
+    section.querySelector(
+      '.creating-visual'
+    );
+
+
+  const stage =
+    section.querySelector(
+      '#creatingStage'
+    );
+
+
+  const caption =
+    section.querySelector(
+      '.creating-caption'
+    );
+
+
+  let index = 0;
+
+  let timer = null;
+
+  const DISPLAY_TIME = 5000;
+
+
+  /* =========================================================
+     SYNC CAPTION TO IMAGE
+     ========================================================= */
+
+  function syncCaptionToImage() {
+
+    if (
+      !visual ||
+      !stage ||
+      !caption
+    ) {
+      return;
+    }
+
+
+    const active =
+      slides[index];
+
+
+    const img =
+      active?.querySelector('img');
+
+
+    if (!img) {
+      return;
+    }
+
+
+    const rect =
+      img.getBoundingClientRect();
+
+
+    const stageRect =
+      stage.getBoundingClientRect();
+
+
+    const width =
+      Math.min(
+        rect.width,
+        stageRect.width
+      );
+
+
+    const left =
+      Math.max(
+        0,
+        rect.left -
+        stageRect.left
+      );
+
+
+    visual.style.setProperty(
+      '--creating-image-width',
+      width + 'px'
+    );
+
+
+    visual.style.setProperty(
+      '--creating-caption-left',
+      left + 'px'
+    );
+
+
+    /*
+     * Collapse the stage to the actual
+     * artwork height so there is no
+     * giant empty area.
+     */
+
+    if (rect.height > 0) {
+
+      stage.style.height =
+        rect.height + 'px';
+
+    }
+
+  }
+
+
+  /* =========================================================
+     PROGRESS BAR
+     ========================================================= */
+
+  function restartProgress() {
+
+    if (!progress) {
+      return;
+    }
+
+
+    progress.classList.remove(
+      'is-running'
+    );
+
+
+    void progress.offsetWidth;
+
+
+    progress.classList.add(
+      'is-running'
+    );
+
+  }
+
+
+  /* =========================================================
+     SHOW SLIDE
+     ========================================================= */
+
+  function showSlide(nextIndex) {
+
+    index =
+      (nextIndex + slides.length) %
+      slides.length;
+
+
+    slides.forEach(
+      (slide, i) => {
+
+        slide.classList.toggle(
+          'is-active',
+          i === index
+        );
+
+      }
+    );
+
+
+    if (title) {
+
+      title.textContent =
+        details[index].title;
+
+    }
+
+
+    if (category) {
+
+      category.textContent =
+        details[index].category;
+
+    }
+
+
+    restartProgress();
+
+
+    requestAnimationFrame(
+      syncCaptionToImage
+    );
+
+
+    clearTimeout(timer);
+
+
+    timer =
+      setTimeout(
+        () => showSlide(index + 1),
+        DISPLAY_TIME
+      );
+
+  }
+
+
+  /* =========================================================
+     NEXT BUTTON
+     ========================================================= */
+
+  next?.addEventListener(
+    'click',
     () => {
 
-      if (!isCraftedActive()) {
+      showSlide(index + 1);
 
-        if (wasInsideCrafted) {
+    }
+  );
 
-          wheelMoves = 0;
-          wasInsideCrafted = false;
 
-        }
+  /* =========================================================
+     PAGE VISIBILITY
+     ========================================================= */
+
+  document.addEventListener(
+    'visibilitychange',
+    () => {
+
+      clearTimeout(timer);
+
+
+      if (document.hidden) {
+
+        timer = null;
+
+        progress?.classList.remove(
+          'is-running'
+        );
+
+      }
+
+      else {
+
+        showSlide(index);
 
       }
 
     }
   );
 
-  /* ---------------------------------------------------------
-     RESIZE
-     --------------------------------------------------------- */
 
-  window.addEventListener(
-    "resize",
-    () => {
+  /* =========================================================
+     IMAGE LOAD
+     ========================================================= */
 
-      calculateLoopWidth();
+  slides.forEach(
+    slide => {
 
-      normalizePosition();
+      const img =
+        slide.querySelector('img');
 
-      render();
+
+      img?.addEventListener(
+        'load',
+        syncCaptionToImage
+      );
 
     }
   );
 
-  /* ---------------------------------------------------------
+
+  window.addEventListener(
+    'resize',
+    syncCaptionToImage
+  );
+
+
+  /* =========================================================
      START
-     --------------------------------------------------------- */
-
-  calculateLoopWidth();
-
-  render();
-
-  requestAnimationFrame(animate);
-
-})();
-
-
-/* =========================================================
-   CURRENTLY CREATING — 5 SECOND CREATIVE ROTATION
-   ========================================================= */
-(() => {
-  const section = document.querySelector('.currently-creating');
-  if (!section) return;
-
-  const slides = [...section.querySelectorAll('.creating-slide')];
-  const progress = section.querySelector('#creatingProgress');
-  const title = section.querySelector('#creatingTitle');
-  const category = section.querySelector('#creatingCategory');
-  const next = section.querySelector('#creatingNext');
-  if (!slides.length) return;
-
-  const details = [
-    { title: 'FONT FAILS', category: 'TYPOGRAPHY / ART DIRECTION' },
-    { title: 'GOOD DESIGN?', category: 'EDITORIAL / CONCEPTUAL DESIGN' },
-    { title: 'CAPCUT', category: 'VISUAL CAMPAIGN / CREATIVE DESIGN' },
-    { title: 'IDEA OVERLOAD', category: 'EDITORIAL / PHOTO MANIPULATION' }
-  ];
-
-  const visual = section.querySelector('.creating-visual');
-  const stage = section.querySelector('#creatingStage');
-  const caption = section.querySelector('.creating-caption');
-
-  function syncCaptionToImage() {
-    if (!visual || !stage || !caption) return;
-    const active = slides[index];
-    const img = active?.querySelector('img');
-    if (!img) return;
-    const rect = img.getBoundingClientRect();
-    const stageRect = stage.getBoundingClientRect();
-    const width = Math.min(rect.width, stageRect.width);
-    const left = Math.max(0, rect.left - stageRect.left);
-    visual.style.setProperty('--creating-image-width', width + 'px');
-    visual.style.setProperty('--creating-caption-left', left + 'px');
-    // Collapse the stage to the actual artwork height so there is no giant empty area.
-    if (rect.height > 0) stage.style.height = rect.height + 'px';
-  }
-
-
-  let index = 0;
-  let timer = null;
-  const DISPLAY_TIME = 5000;
-
-  function restartProgress() {
-    if (!progress) return;
-    progress.classList.remove('is-running');
-    void progress.offsetWidth;
-    progress.classList.add('is-running');
-  }
-
-  function showSlide(nextIndex) {
-    index = (nextIndex + slides.length) % slides.length;
-    slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index));
-    if (title) title.textContent = details[index].title;
-    if (category) category.textContent = details[index].category;
-    restartProgress();
-    requestAnimationFrame(syncCaptionToImage);
-    clearTimeout(timer);
-    timer = setTimeout(() => showSlide(index + 1), DISPLAY_TIME);
-  }
-
-  next?.addEventListener('click', () => showSlide(index + 1));
-
-  // Always rotate automatically every 5 seconds.
-  // Hovering no longer pauses the slideshow.
-  document.addEventListener('visibilitychange', () => {
-    clearTimeout(timer);
-    if (document.hidden) {
-      timer = null;
-      progress?.classList.remove('is-running');
-    } else {
-      showSlide(index);
-    }
-  });
-
-  slides.forEach(slide => {
-    const img = slide.querySelector('img');
-    img?.addEventListener('load', syncCaptionToImage);
-  });
-  window.addEventListener('resize', syncCaptionToImage);
+     ========================================================= */
 
   showSlide(0);
+
 })();
