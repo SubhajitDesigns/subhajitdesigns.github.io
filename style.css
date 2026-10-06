@@ -4428,8 +4428,10 @@ body.cursor-active .cursor-glow {
 }
 
 .crafted-gallery-center{
-  width:var(--frame-width,510px) !important;
-  height:var(--frame-height,420px) !important;
+  width:var(--frame-width) !important;
+  height:var(--frame-height) !important;
+  max-width:none !important;
+  max-height:none !important;
 }
 
 .crafted-gallery-card-image,
@@ -4449,7 +4451,7 @@ body.cursor-active .cursor-glow {
   inset:0 !important;
   width:100% !important;
   height:100% !important;
-  object-fit:contain !important;
+  object-fit:fill !important;
   object-position:center center !important;
   transform:none !important;
   border-radius:inherit !important;
