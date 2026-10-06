@@ -637,6 +637,26 @@ if (clientTrack) {
     window.addEventListener('resize', apply, { passive:true });
   }
 
+  function fitFrameToImage(img, frame, maxWidth, maxHeight) {
+    if (!img || !frame) return;
+
+    const apply = () => {
+      if (!img.naturalWidth || !img.naturalHeight) return;
+      const ratio = img.naturalWidth / img.naturalHeight;
+      if (!ratio) return;
+
+      // Preserve the exact artwork ratio while keeping the gallery compact.
+      const width = Math.min(maxWidth, maxHeight * ratio);
+      const height = width / ratio;
+
+      frame.style.setProperty('--frame-width', width.toFixed(1) + 'px');
+      frame.style.setProperty('--frame-height', height.toFixed(1) + 'px');
+    };
+
+    if (img.complete) apply();
+    else img.addEventListener('load', apply, { once:true });
+  }
+
   function makeCard(project, position, actualIndex) {
     const card = document.createElement('button');
     card.type = 'button';
@@ -655,6 +675,13 @@ if (clientTrack) {
       }
       select(target, target > index ? 1 : -1);
     });
+    fitFrameToImage(
+      card.querySelector('.crafted-gallery-card-image img'),
+      card,
+      window.innerWidth <= 760 ? 150 : (window.innerWidth <= 1000 ? 210 : 250),
+      window.innerWidth <= 760 ? 220 : (window.innerWidth <= 1000 ? 285 : 315)
+    );
+
     return card;
   }
 
@@ -677,6 +704,12 @@ if (clientTrack) {
 
     centerImage.src = p.image;
     centerImage.alt = p.title;
+    fitFrameToImage(
+      centerImage,
+      document.getElementById('craftedGalleryCenter'),
+      window.innerWidth <= 760 ? Math.min(390, window.innerWidth * .70) : Math.min(510, window.innerWidth * .42),
+      window.innerWidth <= 760 ? 350 : 430
+    );
     centerNumber.textContent = String(index + 1).padStart(2,'0') + ' / 11';
     centerType.textContent = p.type;
     centerKicker.textContent = p.kicker;
