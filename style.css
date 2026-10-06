@@ -4414,9 +4414,11 @@ body.cursor-active .cursor-glow {
 
 
 
+
 /* =========================================================
-   CRAFTED GALLERY — NATURAL-RATIO, ZERO-CROP ARTWORK
-   The frame follows the source artwork ratio.
+   CRAFTED GALLERY — EXACT SOURCE-ASPECT FRAMES
+   Every artwork keeps its original aspect ratio.
+   No stretch, no crop, no letterbox.
    ========================================================= */
 
 .crafted-gallery-card{
@@ -4426,13 +4428,16 @@ body.cursor-active .cursor-glow {
 }
 
 .crafted-gallery-center{
-  width:var(--frame-width,min(510px,42vw)) !important;
+  width:var(--frame-width,510px) !important;
   height:var(--frame-height,420px) !important;
 }
 
 .crafted-gallery-card-image,
 .crafted-gallery-center-image{
+  position:absolute !important;
   inset:0 !important;
+  width:100% !important;
+  height:100% !important;
   overflow:hidden !important;
   border-radius:inherit !important;
   background:transparent !important;
@@ -4440,51 +4445,49 @@ body.cursor-active .cursor-glow {
 
 .crafted-gallery-card-image img,
 .crafted-gallery-center-image img{
+  position:absolute !important;
+  inset:0 !important;
   width:100% !important;
   height:100% !important;
-  object-fit:fill !important;
+  object-fit:contain !important;
   object-position:center center !important;
   transform:none !important;
   border-radius:inherit !important;
   background:transparent !important;
 }
 
-/* Remove all artwork overlays that can make edges look like gaps. */
+/* Because frame ratio == source ratio, contain has no unused space. */
 .crafted-gallery-card-image:after{
   display:none !important;
 }
 
-/* Keep the center readability shade, but never crop the artwork. */
+/* Center readability treatment does not alter the artwork geometry. */
 .crafted-gallery-center-shade{
   pointer-events:none !important;
 }
 
-/* Never zoom artwork on hover. */
+/* Never zoom or distort artwork on hover. */
 .crafted-gallery-card:hover .crafted-gallery-card-image img,
 .crafted-gallery-center-card:hover .crafted-gallery-center-image img{
   transform:none !important;
 }
 
-/* Preserve the working right-side stack positions. */
+/* Keep the working 3D side geometry and stack order. */
 @media (min-width:1001px){
   .crafted-gallery-card.position-right-1{left:66% !important;}
   .crafted-gallery-card.position-right-2{left:79% !important;}
   .crafted-gallery-card.position-right-3{left:91% !important;}
 }
-
 @media (min-width:761px) and (max-width:1000px){
   .crafted-gallery-card.position-right-1{left:67% !important;}
   .crafted-gallery-card.position-right-2{left:80% !important;}
   .crafted-gallery-card.position-right-3{left:93% !important;}
 }
-
 @media (max-width:760px){
   .crafted-gallery-card.position-right-1{left:70% !important;}
   .crafted-gallery-card.position-right-2{left:86% !important;}
   .crafted-gallery-card.position-right-3{left:101% !important;}
 }
-
-/* Keep the proven 3D stack order. */
 .crafted-gallery-card.position-left-3,
 .crafted-gallery-card.position-right-3{z-index:3 !important;}
 .crafted-gallery-card.position-left-2,
