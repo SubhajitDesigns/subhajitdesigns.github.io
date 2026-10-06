@@ -4416,6 +4416,29 @@ body.cursor-active .cursor-glow {
 
 
 /* =========================================================
+   CRAFTED GALLERY — CENTER STAGE ALIGNMENT
+   The hero uses the gallery stage's exact center coordinates.
+   ========================================================= */
+
+.crafted-gallery-center{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  right:auto !important;
+  bottom:auto !important;
+  margin:0 !important;
+  transform:translate3d(-50%,-50%,0) !important;
+  transform-origin:center center !important;
+}
+
+.crafted-gallery-center-card{
+  left:0 !important;
+  top:0 !important;
+  right:auto !important;
+  bottom:auto !important;
+}
+
+/* =========================================================
    CRAFTED GALLERY — CENTER POSITION LOCK
    Keep the hero card centered while the surrounding stage
    responds to mouse parallax.
