@@ -4431,15 +4431,15 @@ body.cursor-active .cursor-glow {
 
 /* Desktop: give the right-hand cards their own lanes. */
 @media (min-width:1001px){
-  /* True geometric mirror of the left stack around the center card. */
+  /* Match the proven left-side visual spacing. */
   .crafted-gallery-card.position-right-1{
-    left:60% !important;
+    left:66% !important;
   }
   .crafted-gallery-card.position-right-2{
-    left:72% !important;
+    left:79% !important;
   }
   .crafted-gallery-card.position-right-3{
-    left:83% !important;
+    left:91% !important;
   }
 }
 
@@ -4453,10 +4453,9 @@ body.cursor-active .cursor-glow {
     width:min(470px,48vw) !important;
     height:390px !important;
   }
-  /* True mirror of the tablet left stack. */
-  .crafted-gallery-card.position-right-1{left:63% !important;}
-  .crafted-gallery-card.position-right-2{left:76% !important;}
-  .crafted-gallery-card.position-right-3{left:88% !important;}
+  .crafted-gallery-card.position-right-1{left:67% !important;}
+  .crafted-gallery-card.position-right-2{left:80% !important;}
+  .crafted-gallery-card.position-right-3{left:93% !important;}
 }
 
 /* Mobile: keep the right stack clearly separated from the hero. */
@@ -4469,10 +4468,9 @@ body.cursor-active .cursor-glow {
     width:min(390px,70vw) !important;
     height:350px !important;
   }
-  /* True mirror of the mobile left stack. */
-  .crafted-gallery-card.position-right-1{left:63% !important;}
-  .crafted-gallery-card.position-right-2{left:79% !important;}
-  .crafted-gallery-card.position-right-3{left:95% !important;}
+  .crafted-gallery-card.position-right-1{left:70% !important;}
+  .crafted-gallery-card.position-right-2{left:86% !important;}
+  .crafted-gallery-card.position-right-3{left:101% !important;}
 }
 
 /* Smart-fit: crop only when the crop remains reasonable.
