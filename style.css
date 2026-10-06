@@ -3862,3 +3862,59 @@ body.cursor-active .cursor-glow {
 .client-logo-item img{
   transform-origin:center center !important;
 }
+
+
+/* =========================================================
+   CRAFTED ARCHIVE — LARGER 11-PROJECT ARCHIVE
+   ========================================================= */
+
+.crafted.crafted-archive-enabled .crafted-folder{
+  width:min(1020px,82vw) !important;
+  aspect-ratio:1.42 !important;
+}
+
+.crafted.crafted-archive-enabled .crafted-folder-title h3{
+  font-size:clamp(52px,7vw,98px) !important;
+}
+
+.crafted.crafted-archive-enabled .crafted-archive-dots{
+  max-width:min(520px,48vw);
+  overflow:hidden;
+}
+
+.crafted.crafted-archive-enabled .crafted-archive-dots button{
+  width:22px;
+  flex:0 0 22px;
+}
+
+.crafted.crafted-archive-enabled .crafted-archive-dots button.is-active{
+  width:38px;
+  flex-basis:38px;
+}
+
+.crafted.crafted-archive-enabled .crafted-folder-open.is-disabled{
+  cursor:default;
+  opacity:.7;
+  pointer-events:none;
+}
+
+.crafted.crafted-archive-enabled .crafted-folder-open.is-disabled span{
+  display:none;
+}
+
+.crafted.crafted-archive-enabled .crafted-folder.archive-coming-soon .crafted-folder-front{
+  background:linear-gradient(145deg,rgba(38,13,14,.98),rgba(10,4,5,.99));
+}
+
+.crafted.crafted-archive-enabled .crafted-folder.archive-coming-soon .crafted-folder-title h3{
+  color:#d9cbc5;
+}
+
+@media(max-width:760px){
+  .crafted.crafted-archive-enabled .crafted-folder{
+    width:96vw !important;
+  }
+  .crafted.crafted-archive-enabled .crafted-archive-dots{
+    max-width:48vw;
+  }
+}
