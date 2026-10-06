@@ -683,13 +683,6 @@ if (clientTrack) {
     folder.style.setProperty('--my', (y * 8).toFixed(1) + 'px');
   });
 
-  archive.addEventListener('wheel', event => {
-    if (!inside) return;
-    if (Math.abs(event.deltaY) < 12) return;
-    event.preventDefault();
-    change(event.deltaY > 0 ? 1 : -1);
-  }, { passive: false });
-
   archive.addEventListener('pointerdown', event => {
     if (event.pointerType === 'mouse') return;
     dragStart = event.clientX;
