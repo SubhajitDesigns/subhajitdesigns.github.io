@@ -4346,3 +4346,47 @@ body.cursor-active .cursor-glow {
     font-size:clamp(28px,8vw,42px) !important;
   }
 }
+
+
+/* =========================================================
+   CRAFTED GALLERY — NEVER CROP ARTWORK
+   Full original image + subtle rounded frame only.
+   ========================================================= */
+
+.crafted-gallery-card-image,
+.crafted-gallery-center-image{
+  background:transparent !important;
+  border-radius:12px !important;
+  overflow:hidden !important;
+}
+
+.crafted-gallery-card-image img,
+.crafted-gallery-center-image img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  transform:none !important;
+  border-radius:12px !important;
+  background:transparent !important;
+}
+
+/* Do not zoom artwork on hover. */
+.crafted-gallery-card:hover .crafted-gallery-card-image img,
+.crafted-gallery-center-card:hover .crafted-gallery-center-image img{
+  transform:none !important;
+}
+
+/* The artwork itself is never masked by the image overlay. */
+.crafted-gallery-card-image:after{
+  display:none !important;
+}
+
+/* Keep the center text readable without covering/cropping the artwork. */
+.crafted-gallery-center-shade{
+  background:linear-gradient(
+    180deg,
+    rgba(8,2,3,0) 52%,
+    rgba(8,2,3,.68) 100%
+  ) !important;
+}
