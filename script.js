@@ -688,16 +688,23 @@ if (clientTrack) {
       cardsWrap.appendChild(makeCard(projects[target], offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset, target));
     });
 
-    centerImage.src = p.image;
     centerImage.alt = p.title;
-    fitNaturalFrame(
+
+    /* Recalculate the center frame AFTER the new artwork loads.
+       Otherwise the previous project's ratio can remain on the frame. */
+    const centerFrame = document.getElementById('craftedGalleryCenter');
+    const fitCenter = () => fitNaturalFrame(
       centerImage,
-      document.getElementById('craftedGalleryCenter'),
+      centerFrame,
       window.innerWidth <= 760 ? Math.min(390, window.innerWidth * .70) : Math.min(510, window.innerWidth * .42),
       window.innerWidth <= 760 ? 350 : 420,
       180,
       220
     );
+
+    centerImage.onload = fitCenter;
+    centerImage.src = p.image;
+    if (centerImage.complete && centerImage.naturalWidth) fitCenter();
     centerNumber.textContent = String(index + 1).padStart(2,'0') + ' / 11';
     centerType.textContent = p.type;
     centerKicker.textContent = p.kicker;
