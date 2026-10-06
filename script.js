@@ -610,6 +610,33 @@ if (clientTrack) {
   let index = 0;
   let locked = false;
 
+  function smartFit(img) {
+    const container = img.parentElement;
+    if (!container) return;
+
+    const apply = () => {
+      if (!img.naturalWidth || !img.naturalHeight) return;
+      const imageRatio = img.naturalWidth / img.naturalHeight;
+      const boxRatio = container.clientWidth / container.clientHeight;
+      if (!imageRatio || !boxRatio) return;
+
+      /*
+       * With cover, this is the fraction of the source image that remains
+       * visible. Keep cover when at least ~82% survives; otherwise show
+       * the complete artwork instead of destroying important content.
+       */
+      const visibleFraction = Math.min(imageRatio / boxRatio, boxRatio / imageRatio);
+      const useCover = visibleFraction >= 0.82;
+
+      img.classList.toggle('smart-cover', useCover);
+      img.classList.toggle('smart-contain', !useCover);
+    };
+
+    if (img.complete) apply();
+    else img.addEventListener('load', apply, { once:true });
+    window.addEventListener('resize', apply, { passive:true });
+  }
+
   function makeCard(project, position, actualIndex) {
     const card = document.createElement('button');
     card.type = 'button';
@@ -650,6 +677,7 @@ if (clientTrack) {
 
     centerImage.src = p.image;
     centerImage.alt = p.title;
+    smartFit(centerImage);
     centerNumber.textContent = String(index + 1).padStart(2,'0') + ' / 11';
     centerType.textContent = p.type;
     centerKicker.textContent = p.kicker;
@@ -1079,4 +1107,5 @@ if (clientTrack) {
 
   showSlide(0);
 
-})();
+})();    smartFit(card.querySelector('.crafted-gallery-card-image img'));
+
