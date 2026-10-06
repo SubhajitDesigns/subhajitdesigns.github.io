@@ -4416,6 +4416,22 @@ body.cursor-active .cursor-glow {
 
 
 /* =========================================================
+   CRAFTED GALLERY — CENTER POSITION LOCK
+   Keep the hero card centered while the surrounding stage
+   responds to mouse parallax.
+   ========================================================= */
+
+.crafted-gallery-center{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  margin:0 !important;
+  translate:0 0 !important;
+  transform:translate3d(-50%,-50%,0) !important;
+  transform-origin:center center !important;
+}
+
+/* =========================================================
    CRAFTED GALLERY — CENTER ANCHOR FIX
    Natural-ratio frame stays centered regardless of height.
    ========================================================= */
