@@ -4431,14 +4431,15 @@ body.cursor-active .cursor-glow {
 
 /* Desktop: give the right-hand cards their own lanes. */
 @media (min-width:1001px){
+  /* Mirror the left stack exactly around the center. */
   .crafted-gallery-card.position-right-1{
-    left:70% !important;
+    left:77% !important;
   }
   .crafted-gallery-card.position-right-2{
     left:89% !important;
   }
   .crafted-gallery-card.position-right-3{
-    left:106% !important;
+    left:100% !important;
   }
 }
 
@@ -4452,14 +4453,15 @@ body.cursor-active .cursor-glow {
     width:min(470px,48vw) !important;
     height:390px !important;
   }
+  /* Mirror the left stack: 20 / 6 / -8 becomes 80 / 94 / 108. */
   .crafted-gallery-card.position-right-1{
-    left:72% !important;
+    left:80% !important;
   }
   .crafted-gallery-card.position-right-2{
     left:94% !important;
   }
   .crafted-gallery-card.position-right-3{
-    left:116% !important;
+    left:108% !important;
   }
 }
 
@@ -4473,14 +4475,15 @@ body.cursor-active .cursor-glow {
     width:min(390px,70vw) !important;
     height:350px !important;
   }
+  /* Exact horizontal mirror of the left stack: 17 / 1 / -15 -> 83 / 99 / 115. */
   .crafted-gallery-card.position-right-1{
-    left:80% !important;
+    left:83% !important;
   }
   .crafted-gallery-card.position-right-2{
-    left:105% !important;
+    left:99% !important;
   }
   .crafted-gallery-card.position-right-3{
-    left:130% !important;
+    left:115% !important;
   }
 }
 
