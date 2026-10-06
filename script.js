@@ -645,6 +645,15 @@ if (clientTrack) {
       frame.style.setProperty('--frame-width', width + 'px');
       frame.style.setProperty('--frame-height', height + 'px');
 
+      // The center wrapper also needs the exact same dimensions.
+      // Otherwise left:50% places its LEFT EDGE at the gallery center.
+      if (frame.id === 'craftedGalleryCenter') {
+        frame.parentElement.style.width = width + 'px';
+        frame.parentElement.style.height = height + 'px';
+        frame.parentElement.style.setProperty('--frame-width', width + 'px');
+        frame.parentElement.style.setProperty('--frame-height', height + 'px');
+      }
+
       if (frame.id === 'craftedGalleryCenter') {
         frame.style.left = 'calc(50% - ' + (width / 2) + 'px)';
         frame.style.top = 'calc(50% - ' + (height / 2) + 'px)';
