@@ -407,7 +407,7 @@ if (clientTrack) {
       /* Very subtle size change */
 
       const scale =
-        1 + (amount * 0.16);
+        1 + (amount * 0.08);
 
 
       logo.style.transform =
