@@ -574,180 +574,155 @@ if (clientTrack) {
 
 
 /* =========================================================
-   CRAFTED DESIGNS — 3D CREATIVE ARCHIVE
+   CRAFTED DESIGNS — 3D FLOATING CONTACT SHEET
    ========================================================= */
 
 (function () {
-  const archive = document.getElementById('craftedArchive');
-  const folder = document.getElementById('craftedFolder');
-  if (!archive || !folder) return;
+  const gallery = document.getElementById('craftedGallery');
+  const cardsWrap = document.getElementById('craftedGalleryCards');
+  if (!gallery || !cardsWrap) return;
 
-  const title = document.getElementById('craftedArchiveTitle');
-  const kicker = document.getElementById('craftedArchiveKicker');
-  const number = document.getElementById('craftedArchiveNumber');
-  const type = document.getElementById('craftedArchiveType');
-  const category = document.getElementById('craftedArchiveCategory');
-  const count = document.getElementById('craftedArchiveCount');
-  const link = document.getElementById('craftedArchiveLink');
-  const dots = document.getElementById('craftedArchiveDots');
-  const prev = document.getElementById('craftedPrev');
-  const next = document.getElementById('craftedNext');
+  const centerImage = document.getElementById('craftedCenterImage');
+  const centerNumber = document.getElementById('craftedCenterNumber');
+  const centerType = document.getElementById('craftedCenterType');
+  const centerKicker = document.getElementById('craftedCenterKicker');
+  const centerTitle = document.getElementById('craftedCenterTitle');
+  const centerLink = document.getElementById('craftedCenterLink');
+  const counter = document.getElementById('craftedGalleryCounter');
+  const dotsWrap = document.getElementById('craftedGalleryDots');
+  const prev = document.getElementById('craftedGalleryPrev');
+  const next = document.getElementById('craftedGalleryNext');
 
   const projects = [
-    {
-      title: 'SOCIAL MEDIA',
-      kicker: 'POSTS • REELS • STORIES',
-      type: 'SOCIAL MEDIA',
-      category: 'CAMPAIGNS / DIGITAL',
-      url: 'social-media.html',
-      live: true,
-      previews: ['jaisalmer.jpg','momo-street.jpg','bali.jpg','dharmi-realty.jpg']
-    },
-    {
-      title: 'GOOGLE ADS',
-      kicker: 'ADS • BANNERS • CAMPAIGNS',
-      type: 'GOOGLE ADS',
-      category: 'PAID MEDIA / CAMPAIGNS',
-      url: 'google-ads.html',
-      live: true,
-      previews: ['ac094c3fedd25880080e0f0e4d5b7467.jpg','followes.jpg','graphic.jpg','restaurant.jpg']
-    },
-    {
-      title: 'PRODUCT ADS',
-      kicker: 'E-COMMERCE • PROMOTIONS',
-      type: 'PRODUCT ADS',
-      category: 'PRODUCT / COMMERCIAL',
-      url: 'product-ads.html',
-      live: true,
-      previews: ['honey.jpg','organic.jpg','port 7.jpg','Protect your glow with the goodness of Vitamin C! 🍋Mamaearth Vitamin C Daily Glow Sunscreen shi.jpg']
-    },
-    { title:'BRANDING', kicker:'IDENTITY • SYSTEMS • VISUALS', type:'COMING SOON', category:'BRAND / IDENTITY', live:false, previews:['jaisalmer.jpg','momo-street.jpg','bali.jpg','dharmi-realty.jpg'] },
-    { title:'OTHER DESIGNS', kicker:'EXPERIMENTS • CONCEPTS • VISUALS', type:'COMING SOON', category:'EXPERIMENTAL / SELECTED', live:false, previews:['port 7.jpg','organic.jpg','honey.jpg','jaisalmer.jpg'] },
-    { title:'MOTION GRAPHICS', kicker:'ANIMATION • REVEALS • MOTION', type:'COMING SOON', category:'MOTION / VIDEO', live:false, previews:['followes.jpg','graphic.jpg','restaurant.jpg','ac094c3fedd25880080e0f0e4d5b7467.jpg'] },
-    { title:'FLYERS', kicker:'PRINT • PROMOTION • CAMPAIGNS', type:'COMING SOON', category:'PRINT / PROMO', live:false, previews:['momo-street.jpg','bali.jpg','dharmi-realty.jpg','jaisalmer.jpg'] },
-    { title:'BANNERS', kicker:'DISPLAY • DIGITAL • CAMPAIGNS', type:'COMING SOON', category:'DISPLAY / DIGITAL', live:false, previews:['honey.jpg','organic.jpg','port 7.jpg','jaisalmer.jpg'] },
-    { title:'LOGOS', kicker:'MARKS • SYMBOLS • IDENTITY', type:'COMING SOON', category:'LOGO / IDENTITY', live:false, previews:['graphic.jpg','followes.jpg','restaurant.jpg','bali.jpg'] },
-    { title:'PRINTABLES', kicker:'BROCHURES • MENUS • COLLATERAL', type:'COMING SOON', category:'PRINT / COLLATERAL', live:false, previews:['dharmi-realty.jpg','momo-street.jpg','jaisalmer.jpg','port 7.jpg'] },
-    { title:'CREATIVES', kicker:'CONCEPTS • CAMPAIGNS • ART DIRECTION', type:'COMING SOON', category:'CREATIVE / ART DIRECTION', live:false, previews:['organic.jpg','honey.jpg','bali.jpg','graphic.jpg'] }
+    {title:'SOCIAL MEDIA', kicker:'POSTS • REELS • STORIES', type:'SOCIAL MEDIA', url:'social-media.html', live:true, image:'jaisalmer.jpg'},
+    {title:'GOOGLE ADS', kicker:'ADS • BANNERS • CAMPAIGNS', type:'GOOGLE ADS', url:'google-ads.html', live:true, image:'ac094c3fedd25880080e0f0e4d5b7467.jpg'},
+    {title:'PRODUCT ADS', kicker:'E-COMMERCE • PROMOTIONS', type:'PRODUCT ADS', url:'product-ads.html', live:true, image:'honey.jpg'},
+    {title:'BRANDING', kicker:'IDENTITY • SYSTEMS • VISUALS', type:'COMING SOON', live:false, image:'dharmi-realty.jpg'},
+    {title:'OTHER DESIGNS', kicker:'EXPERIMENTS • CONCEPTS • VISUALS', type:'COMING SOON', live:false, image:'port 7.jpg'},
+    {title:'MOTION GRAPHICS', kicker:'ANIMATION • REVEALS • MOTION', type:'COMING SOON', live:false, image:'followes.jpg'},
+    {title:'FLYERS', kicker:'PRINT • PROMOTION • CAMPAIGNS', type:'COMING SOON', live:false, image:'momo-street.jpg'},
+    {title:'BANNERS', kicker:'DISPLAY • DIGITAL • CAMPAIGNS', type:'COMING SOON', live:false, image:'organic.jpg'},
+    {title:'LOGOS', kicker:'MARKS • SYMBOLS • IDENTITY', type:'COMING SOON', live:false, image:'graphic.jpg'},
+    {title:'PRINTABLES', kicker:'BROCHURES • MENUS • COLLATERAL', type:'COMING SOON', live:false, image:'bali.jpg'},
+    {title:'CREATIVES', kicker:'CONCEPTS • CAMPAIGNS • ART DIRECTION', type:'COMING SOON', live:false, image:'restaurant.jpg'}
   ];
 
   let index = 0;
   let locked = false;
-  let inside = false;
-  let dragStart = null;
 
-  function render(nextIndex, direction) {
-    index = (nextIndex + projects.length) % projects.length;
+  function makeCard(project, position, actualIndex) {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'crafted-gallery-card position-' + position;
+    card.dataset.index = actualIndex;
+    card.innerHTML =
+      '<div class="crafted-gallery-card-image"><img src="' + project.image + '" alt="" loading="lazy"><span>' +
+      (project.live ? 'OPEN' : 'SOON') + '</span></div>' +
+      '<div class="crafted-gallery-card-label"><small>' +
+      String(actualIndex + 1).padStart(2,'0') + '</small><b>' + project.title + '</b></div>';
+    card.addEventListener('click', () => {
+      const target = Number(card.dataset.index);
+      if (target === index) {
+        if (project.live) window.location.href = project.url;
+        return;
+      }
+      select(target, target > index ? 1 : -1);
+    });
+    return card;
+  }
+
+  function relativePosition(i) {
+    let d = i - index;
+    if (d > projects.length / 2) d -= projects.length;
+    if (d < -projects.length / 2) d += projects.length;
+    return d;
+  }
+
+  function render(direction = 0) {
     const p = projects[index];
+    cardsWrap.innerHTML = '';
 
-    folder.classList.remove('archive-next', 'archive-prev', 'archive-coming-soon');
-    void folder.offsetWidth;
-    if (direction > 0) folder.classList.add('archive-next');
-    if (direction < 0) folder.classList.add('archive-prev');
-    if (!p.live) folder.classList.add('archive-coming-soon');
-
-    title.textContent = p.title;
-    kicker.textContent = p.kicker;
-    number.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(projects.length).padStart(2, '0');
-    type.textContent = p.type;
-    category.textContent = p.category;
-    count.textContent = String(index + 1).padStart(2, '0') + '—' + String(projects.length).padStart(2, '0');
-
-    const sheetImages = [...folder.querySelectorAll('.crafted-sheet-grid img')];
-    p.previews.forEach((src, i) => {
-      if (sheetImages[i]) sheetImages[i].src = src;
+    /* Always show a dense wall of surrounding work. */
+    [-3,-2,-1,1,2,3].forEach(offset => {
+      let target = (index + offset + projects.length) % projects.length;
+      cardsWrap.appendChild(makeCard(projects[target], offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset, target));
     });
 
+    centerImage.src = p.image;
+    centerImage.alt = p.title;
+    centerNumber.textContent = String(index + 1).padStart(2,'0') + ' / 11';
+    centerType.textContent = p.type;
+    centerKicker.textContent = p.kicker;
+    centerTitle.textContent = p.title;
+    counter.textContent = String(index + 1).padStart(2,'0');
+
+    centerLink.classList.toggle('is-disabled', !p.live);
+    centerLink.removeAttribute('href');
+    centerLink.textContent = p.live ? 'OPEN ' : 'COMING SOON';
     if (p.live) {
-      link.href = p.url;
-      link.textContent = 'OPEN ';
-      link.classList.remove('is-disabled');
-      link.setAttribute('aria-label', 'Open ' + p.title + ' projects');
+      centerLink.href = p.url;
       const arrow = document.createElement('span');
       arrow.textContent = '↗';
-      link.appendChild(arrow);
-    } else {
-      link.removeAttribute('href');
-      link.textContent = 'COMING SOON';
-      link.classList.add('is-disabled');
-      link.setAttribute('aria-label', p.title + ' coming soon');
+      centerLink.appendChild(arrow);
     }
 
-    dots.innerHTML = '';
+    dotsWrap.innerHTML = '';
     projects.forEach((project, i) => {
       const dot = document.createElement('button');
       dot.type = 'button';
-      dot.dataset.archiveIndex = String(i);
-      dot.setAttribute('aria-label', project.title);
       dot.title = project.title;
-      dot.classList.toggle('is-active', i === index);
-      dots.appendChild(dot);
+      dot.setAttribute('aria-label', project.title);
+      dot.className = i === index ? 'is-active' : '';
+      dot.addEventListener('click', () => select(i, i > index ? 1 : -1));
+      dotsWrap.appendChild(dot);
     });
 
-    dots.querySelectorAll('[data-archive-index]').forEach(dot => {
-      dot.addEventListener('click', () => {
-        const target = Number(dot.dataset.archiveIndex);
-        if (target === index || locked) return;
-        const forward = (target - index + projects.length) % projects.length;
-        const backward = (index - target + projects.length) % projects.length;
-        change(forward <= backward ? 1 : -1);
-        if (Math.min(forward, backward) > 1) {
-          window.setTimeout(() => render(target, forward <= backward ? 1 : -1), 730);
-        }
-      });
-    });
+    gallery.classList.remove('gallery-next','gallery-prev');
+    if (direction > 0) gallery.classList.add('gallery-next');
+    if (direction < 0) gallery.classList.add('gallery-prev');
   }
 
-  function change(step) {
-    if (locked) return;
+  function select(target, direction) {
+    if (locked || target === index) return;
     locked = true;
-    render(index + step, step);
-    window.setTimeout(() => { locked = false; }, 720);
+    index = (target + projects.length) % projects.length;
+    render(direction);
+    window.setTimeout(() => { locked = false; }, 500);
   }
 
-  prev?.addEventListener('click', () => change(-1));
-  next?.addEventListener('click', () => change(1));
+  prev?.addEventListener('click', () => select(index - 1, -1));
+  next?.addEventListener('click', () => select(index + 1, 1));
 
-  archive.addEventListener('pointerenter', () => { inside = true; });
-  archive.addEventListener('pointerleave', () => {
-    inside = false;
-    folder.style.setProperty('--rx', '0deg');
-    folder.style.setProperty('--ry', '0deg');
-    folder.style.setProperty('--mx', '0px');
-    folder.style.setProperty('--my', '0px');
+  centerLink?.addEventListener('click', event => {
+    const p = projects[index];
+    if (!p.live) event.preventDefault();
   });
 
-  archive.addEventListener('pointermove', event => {
+  gallery.addEventListener('pointermove', event => {
     if (event.pointerType === 'touch') return;
-    const r = archive.getBoundingClientRect();
+    const r = gallery.getBoundingClientRect();
     const x = ((event.clientX - r.left) / r.width) * 2 - 1;
     const y = ((event.clientY - r.top) / r.height) * 2 - 1;
-    folder.style.setProperty('--ry', (x * 7).toFixed(2) + 'deg');
-    folder.style.setProperty('--rx', (y * -5).toFixed(2) + 'deg');
-    folder.style.setProperty('--mx', (x * 10).toFixed(1) + 'px');
-    folder.style.setProperty('--my', (y * 8).toFixed(1) + 'px');
+    gallery.style.setProperty('--gx', (x * 1.8).toFixed(2) + 'deg');
+    gallery.style.setProperty('--gy', (y * -1.3).toFixed(2) + 'deg');
+    gallery.style.setProperty('--px', (x * 10).toFixed(1) + 'px');
+    gallery.style.setProperty('--py', (y * 7).toFixed(1) + 'px');
   });
 
-  archive.addEventListener('pointerdown', event => {
-    if (event.pointerType === 'mouse') return;
-    dragStart = event.clientX;
+  gallery.addEventListener('pointerleave', () => {
+    gallery.style.setProperty('--gx','0deg');
+    gallery.style.setProperty('--gy','0deg');
+    gallery.style.setProperty('--px','0px');
+    gallery.style.setProperty('--py','0px');
   });
 
-  archive.addEventListener('pointerup', event => {
-    if (dragStart === null) return;
-    const delta = event.clientX - dragStart;
-    dragStart = null;
-    if (Math.abs(delta) > 35) change(delta < 0 ? 1 : -1);
+  gallery.addEventListener('keydown', event => {
+    if (event.key === 'ArrowRight') select(index + 1, 1);
+    if (event.key === 'ArrowLeft') select(index - 1, -1);
   });
 
-  archive.addEventListener('keydown', event => {
-    if (event.key === 'ArrowRight') change(1);
-    if (event.key === 'ArrowLeft') change(-1);
-  });
-
-  render(0, 0);
+  render();
 })();
- 
 /* =========================================================
    CURRENTLY CREATING
    5 SECOND CREATIVE ROTATION
