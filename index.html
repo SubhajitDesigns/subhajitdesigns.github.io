@@ -308,107 +308,92 @@
 <script>
 (function(){const tools=document.querySelectorAll('#what-i-do .tool'),img=document.getElementById('toolkitPreviewImage'),video=document.getElementById('toolkitPreviewVideo'),type=document.getElementById('toolkitPreviewType'),count=document.getElementById('toolkitPreviewCount'),title=document.getElementById('toolkitPreviewTitle'),meta=document.getElementById('toolkitPreviewMeta'),play=document.getElementById('toolkitPlay');const data={ai:{type:'AI DESIGN / 01',count:'01 / 05',title:'WRONG FONT',meta:'GENERATIVE / COMPOSITE / VISUAL EXPERIMENT',src:'currently-creating-01-new.jpg'},photoshop:{type:'PHOTOSHOP / 02',count:'02 / 05',title:'BREAK, BLEND & BLISS',meta:'COMPOSITE / TYPOGRAPHY / ART DIRECTION',src:'kitkat shake copy.jpg'},video:{type:'VIDEO EDITING / 03',count:'03 / 05',title:'MEYO GRILLED SANDWICH',meta:'REELS / ADS / SHORT-FORM EDITING',video:'Meyo Grilld Sandwitch.mp4'},ads:{type:'ADS / 04',count:'04 / 05',title:'MAMAEARTH / DHARMI REALTY',meta:'PRODUCT / CAMPAIGN / SOCIAL ADS',src:'Protect your glow with the goodness of Vitamin C! 🍋Mamaearth Vitamin C Daily Glow Sunscreen shi(1).jpg'},motion:{type:'MOTION GRAPHICS / 05',count:'05 / 05',title:'MOTION / ANIMATION',meta:'LOGO ANIMATION / REVEAL / MOTION DESIGN',video:'Meyo Grilld Sandwitch.mp4'}};function setTool(k){const d=data[k];tools.forEach(t=>t.classList.toggle('active',t.dataset.tool===k));type.textContent=d.type;count.textContent=d.count;title.textContent=d.title;meta.textContent=d.meta;video.pause();video.removeAttribute('src');video.load();video.style.display='none';play.style.display='none';if(d.video){video.src=d.video;video.style.display='block';play.style.display='grid';img.style.display='none'}else{img.src=d.src;img.style.display='block'}}tools.forEach(t=>{t.addEventListener('mouseenter',()=>setTool(t.dataset.tool));t.addEventListener('focus',()=>setTool(t.dataset.tool));t.addEventListener('click',()=>setTool(t.dataset.tool))});play.addEventListener('click',()=>video.paused?video.play():video.pause());setTool('ai')})();
 </script>
-<section id="work" class="crafted section crafted-stack-enabled">
-
+<section id="work" class="crafted section crafted-archive-enabled" aria-label="Crafted Designs">
   <div class="crafted-heading">
     <p>FEATURED WORK</p>
     <h2>CRAFTED <span>DESIGNS</span></h2>
     <div>IDEAS • DESIGNS • IMPACT</div>
   </div>
 
-  <!-- The first 3 projects become the smooth scroll-controlled stack. -->
-  <div class="crafted-stack-zone" id="craftedStackZone">
-    <div class="crafted-stack-stage">
+  <div class="crafted-archive" id="craftedArchive">
+    <div class="crafted-archive-stage">
+      <div class="crafted-archive-floor" aria-hidden="true"></div>
 
-      <!-- STACK CARD 01 -->
-      <a href="social-media.html" class="crafted-stack-card is-active">
-        <div class="crafted-stack-card-bg">
-          <img src="jaisalmer.jpg" alt="">
-          <img src="momo-street.jpg" alt="">
-          <img src="bali.jpg" alt="">
-          <img src="dharmi-realty.jpg" alt="">
-        </div>
+      <div class="crafted-folder" id="craftedFolder">
+        <div class="crafted-folder-tab">SUBHAJIT / ARCHIVE</div>
+        <div class="crafted-folder-back"></div>
 
-        <div class="crafted-stack-overlay"></div>
-
-        <div class="crafted-stack-top">
-          <span>01 / 03</span>
-          <span>SOCIAL MEDIA</span>
-        </div>
-
-        <div class="crafted-stack-content">
-          <div>
-            <p>POSTS • REELS • STORIES</p>
-            <h3>Social Media</h3>
+        <div class="crafted-folder-sheet crafted-sheet-3">
+          <div class="crafted-sheet-grid">
+            <img src="port 7.jpg" alt="">
+            <img src="organic.jpg" alt="">
+            <img src="honey.jpg" alt="">
+            <img src="jaisalmer.jpg" alt="">
           </div>
-          <span class="crafted-stack-arrow">↗</span>
-        </div>
-      </a>
-
-      <!-- STACK CARD 02 -->
-      <a href="google-ads.html" class="crafted-stack-card">
-        <div class="crafted-stack-card-bg">
-          <img src="ac094c3fedd25880080e0f0e4d5b7467.jpg" alt="">
-          <img src="followes.jpg" alt="">
-          <img src="graphic.jpg" alt="">
-          <img src="restaurant.jpg" alt="">
         </div>
 
-        <div class="crafted-stack-overlay"></div>
-
-        <div class="crafted-stack-top">
-          <span>02 / 03</span>
-          <span>GOOGLE ADS</span>
-        </div>
-
-        <div class="crafted-stack-content">
-          <div>
-            <p>ADS • BANNERS • CAMPAIGNS</p>
-            <h3>Google Ads</h3>
+        <div class="crafted-folder-sheet crafted-sheet-2">
+          <div class="crafted-sheet-grid">
+            <img src="followes.jpg" alt="">
+            <img src="graphic.jpg" alt="">
+            <img src="restaurant.jpg" alt="">
+            <img src="ac094c3fedd25880080e0f0e4d5b7467.jpg" alt="">
           </div>
-          <span class="crafted-stack-arrow">↗</span>
-        </div>
-      </a>
-
-      <!-- STACK CARD 03 -->
-      <a href="product-ads.html" class="crafted-stack-card">
-        <div class="crafted-stack-card-bg">
-          <img src="honey.jpg" alt="">
-          <img src="organic.jpg" alt="">
-          <img src="port 7.jpg" alt="">
-          <img src="Protect your glow with the goodness of Vitamin C! 🍋Mamaearth Vitamin C Daily Glow Sunscreen shi.jpg" alt="">
         </div>
 
-        <div class="crafted-stack-overlay"></div>
-
-        <div class="crafted-stack-top">
-          <span>03 / 03</span>
-          <span>PRODUCT ADS</span>
-        </div>
-
-        <div class="crafted-stack-content">
-          <div>
-            <p>E-COMMERCE • PROMOTIONS</p>
-            <h3>Product Ads</h3>
+        <div class="crafted-folder-sheet crafted-sheet-1">
+          <div class="crafted-sheet-grid">
+            <img src="jaisalmer.jpg" alt="">
+            <img src="momo-street.jpg" alt="">
+            <img src="bali.jpg" alt="">
+            <img src="dharmi-realty.jpg" alt="">
           </div>
-          <span class="crafted-stack-arrow">↗</span>
         </div>
-      </a>
 
-      <div class="crafted-stack-hint" id="craftedStackHint">
-        <span>SCROLL</span>
-        <i>↓</i>
-        <span>EXPLORE WORK</span>
+        <div class="crafted-folder-front">
+          <div class="crafted-folder-rim"></div>
+          <div class="crafted-folder-content">
+            <div class="crafted-folder-meta">
+              <span id="craftedArchiveNumber">01 / 03</span>
+              <span id="craftedArchiveType">SOCIAL MEDIA</span>
+            </div>
+            <div class="crafted-folder-title">
+              <p id="craftedArchiveKicker">POSTS • REELS • STORIES</p>
+              <h3 id="craftedArchiveTitle">SOCIAL MEDIA</h3>
+            </div>
+            <a id="craftedArchiveLink" href="social-media.html" class="crafted-folder-open" aria-label="Open Social Media projects">OPEN <span>↗</span></a>
+          </div>
+        </div>
       </div>
 
+      <div class="crafted-archive-side crafted-side-left" aria-hidden="true">
+        <span>SELECTED WORK</span>
+        <i></i>
+        <span>2026</span>
+      </div>
+
+      <div class="crafted-archive-side crafted-side-right">
+        <span id="craftedArchiveCategory">CAMPAIGNS / DIGITAL</span>
+        <strong id="craftedArchiveCount">01—03</strong>
+      </div>
+
+      <div class="crafted-archive-controls" aria-label="Crafted designs controls">
+        <button type="button" id="craftedPrev" aria-label="Previous project">←</button>
+        <div class="crafted-archive-dots" id="craftedArchiveDots">
+          <button type="button" aria-label="Social Media" class="is-active" data-archive-index="0"></button>
+          <button type="button" aria-label="Google Ads" data-archive-index="1"></button>
+          <button type="button" aria-label="Product Ads" data-archive-index="2"></button>
+        </div>
+        <button type="button" id="craftedNext" aria-label="Next project">→</button>
+      </div>
+
+      <div class="crafted-archive-hint">
+        <span>MOVE</span><i>✦</i><span>SCROLL OR DRAG TO EXPLORE</span>
+      </div>
     </div>
   </div>
-
 </section>
 
-
-
-<!-- CLIENTS / LOGO MARQUEE -->
 <section id="clients" class="client-logo-section" aria-label="Clients I have worked with">
   <div class="client-logo-head">
     <span>CLIENTS</span>
