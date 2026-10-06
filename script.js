@@ -610,31 +610,37 @@ if (clientTrack) {
   let index = 0;
   let locked = false;
 
-  function smartFit(img) {
-    const container = img.parentElement;
-    if (!container) return;
 
+  function fitNaturalFrame(img, frame, maxWidth, maxHeight, minWidth=150, minHeight=190) {
+    if (!img || !frame) return;
     const apply = () => {
-      if (!img.naturalWidth || !img.naturalHeight) return;
-      const imageRatio = img.naturalWidth / img.naturalHeight;
-      const boxRatio = container.clientWidth / container.clientHeight;
-      if (!imageRatio || !boxRatio) return;
+      const nw = img.naturalWidth;
+      const nh = img.naturalHeight;
+      if (!nw || !nh) return;
 
-      /*
-       * With cover, this is the fraction of the source image that remains
-       * visible. Keep cover when at least ~82% survives; otherwise show
-       * the complete artwork instead of destroying important content.
-       */
-      const visibleFraction = Math.min(imageRatio / boxRatio, boxRatio / imageRatio);
-      const useCover = visibleFraction >= 0.82;
+      const ratio = nw / nh;
+      let width = maxWidth;
+      let height = width / ratio;
 
-      img.classList.toggle('smart-cover', useCover);
-      img.classList.toggle('smart-contain', !useCover);
+      if (height > maxHeight) {
+        height = maxHeight;
+        width = height * ratio;
+      }
+
+      width = Math.max(minWidth, width);
+      height = width / ratio;
+
+      if (height > maxHeight) {
+        height = maxHeight;
+        width = height * ratio;
+      }
+
+      frame.style.setProperty('--frame-width', width + 'px');
+      frame.style.setProperty('--frame-height', height + 'px');
     };
 
-    if (img.complete) apply();
-    else img.addEventListener('load', apply, { once:true });
-    window.addEventListener('resize', apply, { passive:true });
+    if (img.complete && img.naturalWidth) apply();
+    else img.addEventListener('load', apply, {once:true});
   }
 
   function makeCard(project, position, actualIndex) {
@@ -655,7 +661,12 @@ if (clientTrack) {
       }
       select(target, target > index ? 1 : -1);
     });
-    smartFit(card.querySelector('.crafted-gallery-card-image img'));
+    fitNaturalFrame(
+      card.querySelector('.crafted-gallery-card-image img'),
+      card,
+      window.innerWidth <= 760 ? 150 : (window.innerWidth <= 1000 ? 210 : 250),
+      window.innerWidth <= 760 ? 220 : (window.innerWidth <= 1000 ? 285 : 315)
+    );
 
     return card;
   }
@@ -679,7 +690,14 @@ if (clientTrack) {
 
     centerImage.src = p.image;
     centerImage.alt = p.title;
-    smartFit(centerImage);
+    fitNaturalFrame(
+      centerImage,
+      document.getElementById('craftedGalleryCenter'),
+      window.innerWidth <= 760 ? Math.min(390, window.innerWidth * .70) : Math.min(510, window.innerWidth * .42),
+      window.innerWidth <= 760 ? 350 : 420,
+      180,
+      220
+    );
     centerNumber.textContent = String(index + 1).padStart(2,'0') + ' / 11';
     centerType.textContent = p.type;
     centerKicker.textContent = p.kicker;
