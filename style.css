@@ -4416,6 +4416,20 @@ body.cursor-active .cursor-glow {
 
 
 /* =========================================================
+   CRAFTED GALLERY — CENTER ANCHOR FIX
+   Natural-ratio frame stays centered regardless of height.
+   ========================================================= */
+
+.crafted-gallery-center{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  margin:0 !important;
+  transform:translate(-50%,-50%) !important;
+  transform-origin:center center !important;
+}
+
+/* =========================================================
    CRAFTED GALLERY — EXACT SOURCE-ASPECT FRAMES
    Every artwork keeps its original aspect ratio.
    No stretch, no crop, no letterbox.
