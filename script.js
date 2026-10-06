@@ -644,6 +644,11 @@ if (clientTrack) {
       frame.style.height = height + 'px';
       frame.style.setProperty('--frame-width', width + 'px');
       frame.style.setProperty('--frame-height', height + 'px');
+
+      if (frame.id === 'craftedGalleryCenter') {
+        frame.style.left = 'calc(50% - ' + (width / 2) + 'px)';
+        frame.style.top = 'calc(50% - ' + (height / 2) + 'px)';
+      }
     };
 
     if (img.complete && img.naturalWidth) {
