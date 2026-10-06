@@ -4415,8 +4415,9 @@ body.cursor-active .cursor-glow {
 
 
 /* =========================================================
-   CRAFTED GALLERY — CENTER STAGE ALIGNMENT
-   The hero uses the gallery stage's exact center coordinates.
+   CRAFTED GALLERY — CENTER EXACT GEOMETRIC POSITION
+   The active artwork's actual frame dimensions determine its
+   top-left corner. This centers the frame itself, not its edge.
    ========================================================= */
 
 .crafted-gallery-center{
@@ -4425,8 +4426,12 @@ body.cursor-active .cursor-glow {
   top:50% !important;
   right:auto !important;
   bottom:auto !important;
-  margin:0 !important;
-  transform:translate3d(-50%,-50%,0) !important;
+  margin-left:calc(var(--frame-width) * -0.5) !important;
+  margin-top:calc(var(--frame-height) * -0.5) !important;
+  margin-right:0 !important;
+  margin-bottom:0 !important;
+  transform:none !important;
+  translate:none !important;
   transform-origin:center center !important;
   z-index:6 !important;
 }
@@ -4436,36 +4441,7 @@ body.cursor-active .cursor-glow {
   top:0 !important;
   right:auto !important;
   bottom:auto !important;
-}
-
-/* =========================================================
-   CRAFTED GALLERY — CENTER POSITION LOCK
-   Keep the hero card centered while the surrounding stage
-   responds to mouse parallax.
-   ========================================================= */
-
-.crafted-gallery-center{
-  position:absolute !important;
-  left:50% !important;
-  top:50% !important;
-  margin:0 !important;
-  translate:0 0 !important;
-  transform:translate3d(-50%,-50%,0) !important;
-  transform-origin:center center !important;
-}
-
-/* =========================================================
-   CRAFTED GALLERY — CENTER ANCHOR FIX
-   Natural-ratio frame stays centered regardless of height.
-   ========================================================= */
-
-.crafted-gallery-center{
-  position:absolute !important;
-  left:50% !important;
-  top:50% !important;
-  margin:0 !important;
-  transform:translate(-50%,-50%) !important;
-  transform-origin:center center !important;
+  transform:translateZ(70px) !important;
 }
 
 /* =========================================================
