@@ -677,7 +677,6 @@ if (clientTrack) {
 
     centerImage.src = p.image;
     centerImage.alt = p.title;
-    smartFit(centerImage);
     centerNumber.textContent = String(index + 1).padStart(2,'0') + ' / 11';
     centerType.textContent = p.type;
     centerKicker.textContent = p.kicker;
@@ -1107,5 +1106,4 @@ if (clientTrack) {
 
   showSlide(0);
 
-})();    smartFit(card.querySelector('.crafted-gallery-card-image img'));
-
+})();
