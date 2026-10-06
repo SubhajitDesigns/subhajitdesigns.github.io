@@ -3959,15 +3959,14 @@ body.cursor-active .cursor-glow {
   position:absolute;
   inset:0;
   transform-style:preserve-3d;
-  transform:rotateX(var(--gy)) rotateY(var(--gx));
-  transition:transform .25s ease-out;
 }
 
 .crafted-gallery-cards{
   position:absolute;
   inset:0;
   z-index:3;
-  transform:translate3d(var(--px),var(--py),0);
+  transform:translate3d(var(--px),var(--py),0) rotateX(var(--gy)) rotateY(var(--gx));
+  transform-style:preserve-3d;
   transition:transform .25s ease-out;
 }
 
@@ -4235,7 +4234,7 @@ body.cursor-active .cursor-glow {
   .crafted-gallery-nav{bottom:16px}
 }
 @media(prefers-reduced-motion:reduce){
-  .crafted-gallery-stage,.crafted-gallery-card,.crafted-gallery-center-image img{transition:none!important}
+  .crafted-gallery-cards,.crafted-gallery-card,.crafted-gallery-center-image img{transition:none!important}
 }
 
 
@@ -4429,6 +4428,7 @@ body.cursor-active .cursor-glow {
   margin:0 !important;
   transform:translate3d(-50%,-50%,0) !important;
   transform-origin:center center !important;
+  z-index:6 !important;
 }
 
 .crafted-gallery-center-card{
