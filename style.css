@@ -3751,3 +3751,83 @@ body.cursor-active .cursor-glow {
   .crafted-folder,.crafted-folder-front,.crafted-folder-sheet{transition:none!important}
   .crafted-folder.archive-next .crafted-folder-front,.crafted-folder.archive-prev .crafted-folder-front{animation:none!important}
 }
+
+
+/* =========================================================
+   CRAFTED ARCHIVE — COMPACT / LARGE / NO SCROLL NAVIGATION
+   ========================================================= */
+
+.crafted.crafted-archive-enabled{
+  padding:58px 5vw 62px !important;
+  overflow:visible !important;
+}
+
+.crafted.crafted-archive-enabled .crafted-heading{
+  margin:0 auto 24px !important;
+  padding:0 20px !important;
+}
+
+.crafted.crafted-archive-enabled .crafted-archive{
+  min-height:590px !important;
+  height:590px !important;
+}
+
+.crafted.crafted-archive-enabled .crafted-archive-stage{
+  width:min(1180px,calc(100% - 36px)) !important;
+  min-height:590px !important;
+  height:590px !important;
+}
+
+.crafted.crafted-archive-enabled .crafted-folder{
+  width:min(900px,76vw) !important;
+  min-width:0 !important;
+  height:auto !important;
+  aspect-ratio:1.42 !important;
+}
+
+.crafted.crafted-archive-enabled .crafted-folder-front{
+  inset:15% 0 0 !important;
+}
+
+.crafted.crafted-archive-enabled .crafted-archive-floor{
+  bottom:58px !important;
+  width:min(820px,68vw) !important;
+  height:150px !important;
+}
+
+.crafted.crafted-archive-enabled .crafted-archive-controls{
+  bottom:28px !important;
+}
+
+.crafted.crafted-archive-enabled .crafted-archive-hint{
+  bottom:-2px !important;
+}
+
+.crafted.crafted-archive-enabled .crafted-archive-side{
+  top:47% !important;
+}
+
+@media(max-width:760px){
+  .crafted.crafted-archive-enabled{
+    padding:48px 4vw 52px !important;
+  }
+
+  .crafted.crafted-archive-enabled .crafted-heading{
+    margin-bottom:18px !important;
+  }
+
+  .crafted.crafted-archive-enabled .crafted-archive,
+  .crafted.crafted-archive-enabled .crafted-archive-stage{
+    min-height:510px !important;
+    height:510px !important;
+  }
+
+  .crafted.crafted-archive-enabled .crafted-folder{
+    width:92vw !important;
+    aspect-ratio:1.16 !important;
+  }
+
+  .crafted.crafted-archive-enabled .crafted-archive-controls{
+    bottom:28px !important;
+  }
+}
