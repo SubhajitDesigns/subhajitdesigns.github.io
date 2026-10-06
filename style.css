@@ -3520,3 +3520,234 @@ body.cursor-active .cursor-glow {
   .crafted-stack-card.is-passed,.crafted-stack-card.is-next,.crafted-stack-card.is-next-2,.crafted-stack-card.is-active{position:relative;transform:none!important;}
   .crafted-stack-hint{display:none;}
 }
+
+
+/* =========================================================
+   CRAFTED DESIGNS — 3D CREATIVE ARCHIVE
+   ========================================================= */
+
+.crafted-archive-enabled{overflow:visible!important}
+.crafted-archive{
+  position:relative;
+  width:100%;
+  min-height:720px;
+  perspective:1600px;
+  overflow:visible;
+}
+.crafted-archive-stage{
+  position:relative;
+  width:min(1180px,calc(100% - 48px));
+  min-height:720px;
+  margin:0 auto;
+  display:grid;
+  place-items:center;
+  isolation:isolate;
+}
+.crafted-archive-floor{
+  position:absolute;
+  left:50%;
+  bottom:82px;
+  width:min(720px,70vw);
+  height:220px;
+  transform:translateX(-50%) rotateX(68deg);
+  transform-origin:center;
+  background:radial-gradient(ellipse,rgba(255,61,53,.12),rgba(255,61,53,0) 68%);
+  filter:blur(12px);
+  pointer-events:none;
+}
+.crafted-folder{
+  --rx:0deg;--ry:0deg;--mx:0px;--my:0px;
+  position:relative;
+  width:min(760px,78vw);
+  aspect-ratio:1.38;
+  transform-style:preserve-3d;
+  transform:translate3d(var(--mx),var(--my),0) rotateX(var(--rx)) rotateY(var(--ry));
+  transition:transform .16s ease-out;
+  cursor:grab;
+  z-index:5;
+}
+.crafted-folder:active{cursor:grabbing}
+.crafted-folder-back{
+  position:absolute;
+  inset:7% 2% 3% 2%;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:18px 18px 12px 12px;
+  background:linear-gradient(145deg,#2a1111,#120607 65%);
+  transform:translateZ(-28px);
+  box-shadow:0 45px 70px rgba(0,0,0,.48);
+}
+.crafted-folder-tab{
+  position:absolute;
+  left:6%;
+  top:1%;
+  width:31%;
+  height:14%;
+  display:flex;
+  align-items:center;
+  padding-left:18px;
+  border:1px solid rgba(255,255,255,.13);
+  border-bottom:0;
+  border-radius:12px 12px 0 0;
+  background:#2a1111;
+  color:#a88980;
+  font:9px 'DM Mono',monospace;
+  letter-spacing:.14em;
+  transform:translateZ(-30px);
+}
+.crafted-folder-front{
+  position:absolute;
+  inset:15% 0 0;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:18px 18px 13px 13px;
+  background:linear-gradient(145deg,rgba(50,18,18,.98),rgba(13,5,6,.99));
+  box-shadow:0 32px 65px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);
+  transform:translateZ(32px);
+  transition:transform .7s cubic-bezier(.16,1,.3,1),filter .5s ease;
+}
+.crafted-folder:hover .crafted-folder-front{transform:translateZ(52px) rotateX(-2deg)}
+.crafted-folder-rim{
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.07),transparent 25%),
+    linear-gradient(0deg,rgba(255,61,53,.07),transparent 35%);
+}
+.crafted-folder-content{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:7% 7%;
+  transform:translateZ(12px);
+}
+.crafted-folder-meta{
+  display:flex;
+  justify-content:space-between;
+  color:#a99088;
+  font:9px 'DM Mono',monospace;
+  letter-spacing:.14em;
+}
+.crafted-folder-title p{
+  margin:0 0 12px;
+  color:#a99088;
+  font:9px 'DM Mono',monospace;
+  letter-spacing:.15em;
+}
+.crafted-folder-title h3{
+  margin:0;
+  color:#f4e9e3;
+  font:700 clamp(48px,7vw,94px)/.82 'DM Sans',sans-serif;
+  letter-spacing:-.07em;
+}
+.crafted-folder-open{
+  align-self:flex-start;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:10px 14px;
+  border:1px solid rgba(255,255,255,.18);
+  color:#ead8cf;
+  font:9px 'DM Mono',monospace;
+  letter-spacing:.12em;
+  text-decoration:none;
+  transition:background .25s ease,border-color .25s ease,transform .25s ease;
+}
+.crafted-folder-open span{font-size:16px}
+.crafted-folder-open:hover{background:#ff3d35;border-color:#ff3d35;color:#fff;transform:translateX(4px)}
+.crafted-folder-sheet{
+  position:absolute;
+  left:7%;
+  top:8%;
+  width:86%;
+  height:76%;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  background:#f1eeea;
+  box-shadow:0 22px 40px rgba(0,0,0,.35);
+  transform-origin:bottom center;
+  overflow:hidden;
+  transition:transform .75s cubic-bezier(.16,1,.3,1),opacity .5s ease;
+}
+.crafted-sheet-grid{
+  width:100%;height:100%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:5px;
+}
+.crafted-sheet-grid img{width:100%;height:100%;object-fit:cover;display:block}
+.crafted-sheet-3{transform:translateZ(-12px) translateY(4%) rotate(-3deg) scale(.91);opacity:.55}
+.crafted-sheet-2{transform:translateZ(-2px) translateY(2%) rotate(2deg) scale(.95);opacity:.75}
+.crafted-sheet-1{transform:translateZ(12px) translateY(0) rotate(-1deg) scale(.98);opacity:.92}
+.crafted-folder:hover .crafted-sheet-3{transform:translateZ(70px) translateY(-14%) rotate(-9deg) scale(.88);opacity:.9}
+.crafted-folder:hover .crafted-sheet-2{transform:translateZ(105px) translateY(-10%) rotate(6deg) scale(.93);opacity:.95}
+.crafted-folder:hover .crafted-sheet-1{transform:translateZ(135px) translateY(-7%) rotate(-2deg) scale(.97);opacity:1}
+.crafted-folder.archive-next .crafted-folder-front{animation:craftedArchiveFlipNext .72s cubic-bezier(.16,1,.3,1)}
+.crafted-folder.archive-prev .crafted-folder-front{animation:craftedArchiveFlipPrev .72s cubic-bezier(.16,1,.3,1)}
+@keyframes craftedArchiveFlipNext{
+  0%{transform:translateZ(52px) rotateY(0)}
+  45%{transform:translateZ(80px) rotateY(-7deg) rotateX(-2deg)}
+  100%{transform:translateZ(52px) rotateY(0)}
+}
+@keyframes craftedArchiveFlipPrev{
+  0%{transform:translateZ(52px) rotateY(0)}
+  45%{transform:translateZ(80px) rotateY(7deg) rotateX(-2deg)}
+  100%{transform:translateZ(52px) rotateY(0)}
+}
+.crafted-archive-side{
+  position:absolute;
+  top:50%;
+  color:#6f5953;
+  font:8px 'DM Mono',monospace;
+  letter-spacing:.15em;
+  writing-mode:vertical-rl;
+}
+.crafted-side-left{left:1%;transform:translateY(-50%) rotate(180deg);display:flex;gap:12px;align-items:center}
+.crafted-side-left i{width:1px;height:46px;background:#ff3d35;opacity:.65}
+.crafted-side-right{right:1%;transform:translateY(-50%);display:flex;gap:14px;align-items:center}
+.crafted-side-right strong{color:#a98c84;font-weight:500}
+.crafted-archive-controls{
+  position:absolute;
+  bottom:86px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  align-items:center;
+  gap:22px;
+  z-index:8;
+}
+.crafted-archive-controls>button{
+  width:42px;height:42px;border:1px solid rgba(255,255,255,.16);border-radius:50%;
+  background:rgba(14,5,6,.65);color:#ead8cf;cursor:pointer;font-size:17px;
+  transition:.25s;
+}
+.crafted-archive-controls>button:hover{background:#ff3d35;border-color:#ff3d35;color:#fff}
+.crafted-archive-dots{display:flex;gap:8px}
+.crafted-archive-dots button{width:28px;height:4px;border:0;border-radius:99px;background:#3c2926;cursor:pointer;transition:.3s}
+.crafted-archive-dots button.is-active{background:#ff3d35;width:48px}
+.crafted-archive-hint{
+  position:absolute;bottom:31px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:9px;white-space:nowrap;
+  color:#725b54;font:8px 'DM Mono',monospace;letter-spacing:.14em;
+}
+.crafted-archive-hint i{font-style:normal;color:#ff3d35}
+@media(max-width:760px){
+  .crafted-archive{min-height:620px}
+  .crafted-archive-stage{width:calc(100% - 26px);min-height:620px}
+  .crafted-folder{width:92vw;aspect-ratio:1.12}
+  .crafted-folder-tab{font-size:7px}
+  .crafted-folder-content{padding:8%}
+  .crafted-folder-title h3{font-size:clamp(40px,12vw,64px)}
+  .crafted-folder-sheet{left:5%;width:90%;height:69%}
+  .crafted-archive-side{display:none}
+  .crafted-archive-controls{bottom:73px}
+  .crafted-archive-hint{bottom:22px;font-size:7px}
+  .crafted-folder:hover .crafted-sheet-3{transform:translateZ(30px) translateY(-7%) rotate(-6deg) scale(.9)}
+  .crafted-folder:hover .crafted-sheet-2{transform:translateZ(48px) translateY(-5%) rotate(4deg) scale(.94)}
+  .crafted-folder:hover .crafted-sheet-1{transform:translateZ(65px) translateY(-3%) rotate(-1deg) scale(.98)}
+}
+@media(prefers-reduced-motion:reduce){
+  .crafted-folder,.crafted-folder-front,.crafted-folder-sheet{transition:none!important}
+  .crafted-folder.archive-next .crafted-folder-front,.crafted-folder.archive-prev .crafted-folder-front{animation:none!important}
+}
