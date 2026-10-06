@@ -613,12 +613,15 @@ if (clientTrack) {
 
   function fitNaturalFrame(img, frame, maxWidth, maxHeight, minWidth=150, minHeight=190) {
     if (!img || !frame) return;
+
     const apply = () => {
       const nw = img.naturalWidth;
       const nh = img.naturalHeight;
       if (!nw || !nh) return;
 
       const ratio = nw / nh;
+
+      // The artwork chooses the frame ratio. Only the overall size is bounded.
       let width = maxWidth;
       let height = width / ratio;
 
@@ -627,20 +630,27 @@ if (clientTrack) {
         width = height * ratio;
       }
 
-      width = Math.max(minWidth, width);
-      height = width / ratio;
+      if (width < minWidth) {
+        width = minWidth;
+        height = width / ratio;
+      }
 
-      if (height > maxHeight) {
-        height = maxHeight;
+      if (height < minHeight) {
+        height = minHeight;
         width = height * ratio;
       }
 
+      frame.style.width = width + 'px';
+      frame.style.height = height + 'px';
       frame.style.setProperty('--frame-width', width + 'px');
       frame.style.setProperty('--frame-height', height + 'px');
     };
 
-    if (img.complete && img.naturalWidth) apply();
-    else img.addEventListener('load', apply, {once:true});
+    if (img.complete && img.naturalWidth) {
+      apply();
+    } else {
+      img.addEventListener('load', apply, {once:true});
+    }
   }
 
   function makeCard(project, position, actualIndex) {
@@ -690,8 +700,6 @@ if (clientTrack) {
 
     centerImage.alt = p.title;
 
-    /* Recalculate the center frame AFTER the new artwork loads.
-       Otherwise the previous project's ratio can remain on the frame. */
     const centerFrame = document.getElementById('craftedGalleryCenter');
     const fitCenter = () => fitNaturalFrame(
       centerImage,
@@ -704,7 +712,10 @@ if (clientTrack) {
 
     centerImage.onload = fitCenter;
     centerImage.src = p.image;
-    if (centerImage.complete && centerImage.naturalWidth) fitCenter();
+
+    if (centerImage.complete && centerImage.naturalWidth) {
+      fitCenter();
+    }
     centerNumber.textContent = String(index + 1).padStart(2,'0') + ' / 11';
     centerType.textContent = p.type;
     centerKicker.textContent = p.kicker;
