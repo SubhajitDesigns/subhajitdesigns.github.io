@@ -4431,15 +4431,15 @@ body.cursor-active .cursor-glow {
 
 /* Desktop: give the right-hand cards their own lanes. */
 @media (min-width:1001px){
-  /* Mirror the left stack exactly around the center. */
+  /* True geometric mirror of the left stack around the center card. */
   .crafted-gallery-card.position-right-1{
-    left:77% !important;
+    left:60% !important;
   }
   .crafted-gallery-card.position-right-2{
-    left:89% !important;
+    left:72% !important;
   }
   .crafted-gallery-card.position-right-3{
-    left:100% !important;
+    left:83% !important;
   }
 }
 
@@ -4453,16 +4453,10 @@ body.cursor-active .cursor-glow {
     width:min(470px,48vw) !important;
     height:390px !important;
   }
-  /* Mirror the left stack: 20 / 6 / -8 becomes 80 / 94 / 108. */
-  .crafted-gallery-card.position-right-1{
-    left:80% !important;
-  }
-  .crafted-gallery-card.position-right-2{
-    left:94% !important;
-  }
-  .crafted-gallery-card.position-right-3{
-    left:108% !important;
-  }
+  /* True mirror of the tablet left stack. */
+  .crafted-gallery-card.position-right-1{left:63% !important;}
+  .crafted-gallery-card.position-right-2{left:76% !important;}
+  .crafted-gallery-card.position-right-3{left:88% !important;}
 }
 
 /* Mobile: keep the right stack clearly separated from the hero. */
@@ -4475,16 +4469,10 @@ body.cursor-active .cursor-glow {
     width:min(390px,70vw) !important;
     height:350px !important;
   }
-  /* Exact horizontal mirror of the left stack: 17 / 1 / -15 -> 83 / 99 / 115. */
-  .crafted-gallery-card.position-right-1{
-    left:83% !important;
-  }
-  .crafted-gallery-card.position-right-2{
-    left:99% !important;
-  }
-  .crafted-gallery-card.position-right-3{
-    left:115% !important;
-  }
+  /* True mirror of the mobile left stack. */
+  .crafted-gallery-card.position-right-1{left:63% !important;}
+  .crafted-gallery-card.position-right-2{left:79% !important;}
+  .crafted-gallery-card.position-right-3{left:95% !important;}
 }
 
 /* Smart-fit: crop only when the crop remains reasonable.
