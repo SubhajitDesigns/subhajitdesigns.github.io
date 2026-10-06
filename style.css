@@ -4237,3 +4237,47 @@ body.cursor-active .cursor-glow {
 @media(prefers-reduced-motion:reduce){
   .crafted-gallery-stage,.crafted-gallery-card,.crafted-gallery-center-image img{transition:none!important}
 }
+
+
+/* =========================================================
+   CRAFTED GALLERY — FULL ARTWORK VISIBILITY
+   Keep important products/text/logos inside the frame.
+   ========================================================= */
+
+.crafted-gallery-card-image{
+  background:#120607 !important;
+}
+
+.crafted-gallery-card-image img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  transform:scale(.94);
+}
+
+.crafted-gallery-card:hover .crafted-gallery-card-image img{
+  transform:scale(.98);
+}
+
+.crafted-gallery-card-image:after{
+  background:
+    linear-gradient(180deg,rgba(7,2,3,.04),rgba(7,2,3,.72)),
+    linear-gradient(90deg,rgba(7,2,3,.08),rgba(7,2,3,.08)) !important;
+}
+
+.crafted-gallery-center-image{
+  background:#120607 !important;
+}
+
+.crafted-gallery-center-image img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  transform:scale(.97);
+}
+
+.crafted-gallery-center-card:hover .crafted-gallery-center-image img{
+  transform:scale(1);
+}
