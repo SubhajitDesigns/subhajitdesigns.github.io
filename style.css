@@ -4415,9 +4415,8 @@ body.cursor-active .cursor-glow {
 
 
 /* =========================================================
-   CRAFTED GALLERY — CENTER EXACT GEOMETRIC POSITION
-   The active artwork's actual frame dimensions determine its
-   top-left corner. This centers the frame itself, not its edge.
+   CRAFTED GALLERY — CENTER POSITION
+   JS places the natural-ratio frame using its actual pixel size.
    ========================================================= */
 
 .crafted-gallery-center{
@@ -4426,10 +4425,7 @@ body.cursor-active .cursor-glow {
   top:50% !important;
   right:auto !important;
   bottom:auto !important;
-  margin-left:calc(var(--frame-width) * -0.5) !important;
-  margin-top:calc(var(--frame-height) * -0.5) !important;
-  margin-right:0 !important;
-  margin-bottom:0 !important;
+  margin:0 !important;
   transform:none !important;
   translate:none !important;
   transform-origin:center center !important;
