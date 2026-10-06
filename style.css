@@ -4521,3 +4521,15 @@ body.cursor-active .cursor-glow {
 .crafted-gallery-card.position-right-2{z-index:4 !important;}
 .crafted-gallery-card.position-left-1,
 .crafted-gallery-card.position-right-1{z-index:5 !important;}
+
+
+/* FINAL CENTER POSITION — center frame itself at gallery midpoint. */
+.crafted-gallery-center{
+  left:50% !important;
+  top:50% !important;
+  margin:0 !important;
+  transform:translate(-50%,-50%) !important;
+  translate:none !important;
+  right:auto !important;
+  bottom:auto !important;
+}
