@@ -574,317 +574,142 @@ if (clientTrack) {
 
 
 /* =========================================================
-   CRAFTED DESIGNS — 3-CARD SCROLL STACK
+   CRAFTED DESIGNS — 3D CREATIVE ARCHIVE
    ========================================================= */
 
 (function () {
-
-  const section =
-    document.getElementById('work');
-
-
-  if (!section) {
-    return;
-  }
-
-
-  const cards =
-    Array.from(
-      section.querySelectorAll(
-        '.crafted-stack-card'
-      )
-    );
-
-
-  const hint =
-    document.getElementById(
-      'craftedStackHint'
-    );
-
-
-  if (!cards.length) {
-    return;
-  }
-
-
-  let activeIndex = 0;
-
-  let locked = false;
-
-  let pointerInside = false;
-
-  let stackDone = false;
-
-
-  /* =========================================================
-     RENDER STACK
-     ========================================================= */
-
-  function render() {
-
-    cards.forEach(
-      (card, index) => {
-
-        card.classList.remove(
-          'is-active',
-          'is-next',
-          'is-next-2',
-          'is-passed'
-        );
-
-
-        if (index === activeIndex) {
-
-          card.classList.add(
-            'is-active'
-          );
-
-        }
-
-        else if (
-          index === activeIndex + 1
-        ) {
-
-          card.classList.add(
-            'is-next'
-          );
-
-        }
-
-        else if (
-          index === activeIndex + 2
-        ) {
-
-          card.classList.add(
-            'is-next-2'
-          );
-
-        }
-
-        else if (
-          index < activeIndex
-        ) {
-
-          card.classList.add(
-            'is-passed'
-          );
-
-        }
-
-        else {
-
-          card.classList.add(
-            'is-next-2'
-          );
-
-        }
-
-      }
-    );
-
-
-    stackDone =
-      activeIndex === cards.length - 1;
-
-
-    section.classList.toggle(
-      'is-stack-done',
-      stackDone
-    );
-
-
-    if (hint) {
-
-      hint.classList.toggle(
-        'is-hidden',
-        stackDone
-      );
-
-    }
-
-  }
-
-
-  /* =========================================================
-     CHECK IF CRAFTED IS VISIBLE
-     ========================================================= */
-
-  function sectionIsInView() {
-
-    const r =
-      section.getBoundingClientRect();
-
-
-    return (
-      r.top <
-      window.innerHeight * 0.78
-      &&
-      r.bottom >
-      window.innerHeight * 0.22
-    );
-
-  }
-
-
-  /* =========================================================
-     MOUSE ENTER / LEAVE
-     ========================================================= */
-
-  section.addEventListener(
-    'pointerenter',
-    () => {
-
-      pointerInside = true;
-
-    }
-  );
-
-
-  section.addEventListener(
-    'pointerleave',
-    () => {
-
-      pointerInside = false;
-
-    }
-  );
-
-
-  /* =========================================================
-     WHEEL CONTROL
-     
-     Only the mouse wheel over Crafted is intercepted.
-
-     Scroll DOWN:
-     Card 1 → Card 2 → Card 3
-
-     After Card 3:
-     Normal page scrolling resumes.
-
-     Scroll UP:
-     Card 3 → Card 2 → Card 1
-
-     At Card 1:
-     Normal page scrolling resumes upward.
-     ========================================================= */
-
-  window.addEventListener(
-    'wheel',
-    event => {
-
-      if (
-        !pointerInside ||
-        !sectionIsInView()
-      ) {
-        return;
-      }
-
-
-      const down =
-        event.deltaY > 0;
-
-      const up =
-        event.deltaY < 0;
-
-
-      if (locked) {
-        event.preventDefault();
-        return;
-      }
-
-
-      /*
-       * At the end, allow normal
-       * page scrolling downward.
-       */
-
-      if (
-        stackDone &&
-        down
-      ) {
-
-        return;
-
-      }
-
-
-      /*
-       * At the beginning, allow normal
-       * page scrolling upward.
-       */
-
-      if (
-        activeIndex === 0 &&
-        up
-      ) {
-
-        return;
-
-      }
-
-
-      /*
-       * Stop the normal page scroll
-       * while changing cards.
-       */
-
-      event.preventDefault();
-
-      locked = true;
-
-
-      if (
-        down &&
-        activeIndex <
-        cards.length - 1
-      ) {
-
-        activeIndex++;
-
-        render();
-
-      }
-
-      else if (
-        up &&
-        activeIndex > 0
-      ) {
-
-        activeIndex--;
-
-        render();
-
-      }
-
-
-      /*
-       * Small lock prevents one physical
-       * wheel movement from skipping cards.
-       */
-
-      window.setTimeout(
-        () => {
-          locked = false;
-        },
-        900
-      );
-
+  const archive = document.getElementById('craftedArchive');
+  const folder = document.getElementById('craftedFolder');
+  if (!archive || !folder) return;
+
+  const title = document.getElementById('craftedArchiveTitle');
+  const kicker = document.getElementById('craftedArchiveKicker');
+  const number = document.getElementById('craftedArchiveNumber');
+  const type = document.getElementById('craftedArchiveType');
+  const category = document.getElementById('craftedArchiveCategory');
+  const count = document.getElementById('craftedArchiveCount');
+  const link = document.getElementById('craftedArchiveLink');
+  const dots = [...document.querySelectorAll('[data-archive-index]')];
+  const prev = document.getElementById('craftedPrev');
+  const next = document.getElementById('craftedNext');
+
+  const projects = [
+    {
+      title: 'SOCIAL MEDIA',
+      kicker: 'POSTS • REELS • STORIES',
+      type: 'SOCIAL MEDIA',
+      category: 'CAMPAIGNS / DIGITAL',
+      url: 'social-media.html'
     },
     {
-      passive: false
+      title: 'GOOGLE ADS',
+      kicker: 'ADS • BANNERS • CAMPAIGNS',
+      type: 'GOOGLE ADS',
+      category: 'PAID MEDIA / CAMPAIGNS',
+      url: 'google-ads.html'
+    },
+    {
+      title: 'PRODUCT ADS',
+      kicker: 'E-COMMERCE • PROMOTIONS',
+      type: 'PRODUCT ADS',
+      category: 'PRODUCT / COMMERCIAL',
+      url: 'product-ads.html'
     }
-  );
+  ];
 
+  let index = 0;
+  let locked = false;
+  let inside = false;
+  let dragStart = null;
 
-  /* =========================================================
-     INITIAL STATE
-     ========================================================= */
+  function render(nextIndex, direction) {
+    index = (nextIndex + projects.length) % projects.length;
+    const p = projects[index];
 
-  render();
+    folder.classList.remove('archive-next', 'archive-prev', 'archive-open');
+    void folder.offsetWidth;
+    if (direction > 0) folder.classList.add('archive-next');
+    if (direction < 0) folder.classList.add('archive-prev');
 
+    title.textContent = p.title;
+    kicker.textContent = p.kicker;
+    number.textContent = String(index + 1).padStart(2, '0') + ' / 03';
+    type.textContent = p.type;
+    category.textContent = p.category;
+    count.textContent = String(index + 1).padStart(2, '0') + '—03';
+    link.href = p.url;
+
+    dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+  }
+
+  function change(step) {
+    if (locked) return;
+    locked = true;
+    render(index + step, step);
+    window.setTimeout(() => { locked = false; }, 720);
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const target = Number(dot.dataset.archiveIndex);
+      if (target === index || locked) return;
+      change(target > index ? 1 : -1);
+      if (Math.abs(target - index) > 1) {
+        window.setTimeout(() => render(target, target > index ? 1 : -1), 730);
+      }
+    });
+  });
+
+  prev?.addEventListener('click', () => change(-1));
+  next?.addEventListener('click', () => change(1));
+
+  archive.addEventListener('pointerenter', () => { inside = true; });
+  archive.addEventListener('pointerleave', () => {
+    inside = false;
+    folder.style.setProperty('--rx', '0deg');
+    folder.style.setProperty('--ry', '0deg');
+    folder.style.setProperty('--mx', '0px');
+    folder.style.setProperty('--my', '0px');
+  });
+
+  archive.addEventListener('pointermove', event => {
+    if (event.pointerType === 'touch') return;
+    const r = archive.getBoundingClientRect();
+    const x = ((event.clientX - r.left) / r.width) * 2 - 1;
+    const y = ((event.clientY - r.top) / r.height) * 2 - 1;
+    folder.style.setProperty('--ry', (x * 7).toFixed(2) + 'deg');
+    folder.style.setProperty('--rx', (y * -5).toFixed(2) + 'deg');
+    folder.style.setProperty('--mx', (x * 10).toFixed(1) + 'px');
+    folder.style.setProperty('--my', (y * 8).toFixed(1) + 'px');
+  });
+
+  archive.addEventListener('wheel', event => {
+    if (!inside) return;
+    if (Math.abs(event.deltaY) < 12) return;
+    event.preventDefault();
+    change(event.deltaY > 0 ? 1 : -1);
+  }, { passive: false });
+
+  archive.addEventListener('pointerdown', event => {
+    if (event.pointerType === 'mouse') return;
+    dragStart = event.clientX;
+  });
+
+  archive.addEventListener('pointerup', event => {
+    if (dragStart === null) return;
+    const delta = event.clientX - dragStart;
+    dragStart = null;
+    if (Math.abs(delta) > 35) change(delta < 0 ? 1 : -1);
+  });
+
+  archive.addEventListener('keydown', event => {
+    if (event.key === 'ArrowRight') change(1);
+    if (event.key === 'ArrowLeft') change(-1);
+  });
+
+  render(0, 0);
 })();
-
-
+ 
 /* =========================================================
    CURRENTLY CREATING
    5 SECOND CREATIVE ROTATION
