@@ -4489,6 +4489,26 @@ body.cursor-active .cursor-glow {
   transform:none !important;
 }
 
+/* =========================================================
+   CRAFTED GALLERY — TRUE 3D STACK ORDER
+   Inner cards must sit above outer cards on BOTH sides.
+   ========================================================= */
+
+.crafted-gallery-card.position-left-3,
+.crafted-gallery-card.position-right-3{
+  z-index:3 !important;
+}
+
+.crafted-gallery-card.position-left-2,
+.crafted-gallery-card.position-right-2{
+  z-index:4 !important;
+}
+
+.crafted-gallery-card.position-left-1,
+.crafted-gallery-card.position-right-1{
+  z-index:5 !important;
+}
+
 /* Keep hover from reintroducing zoom/cropping. */
 .crafted-gallery-card:hover .crafted-gallery-card-image img,
 .crafted-gallery-center-card:hover .crafted-gallery-center-image img{
