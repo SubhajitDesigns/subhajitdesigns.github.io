@@ -3831,3 +3831,34 @@ body.cursor-active .cursor-glow {
     bottom:28px !important;
   }
 }
+
+
+/* =========================================================
+   CLIENT LOGOS — HOVER SAFETY
+   Keep enlarged logos fully inside the visible marquee.
+   ========================================================= */
+
+.client-logo-section{
+  overflow:hidden !important;
+  padding-top:46px !important;
+  padding-bottom:46px !important;
+}
+
+.client-logo-marquee{
+  padding-top:10px !important;
+  padding-bottom:10px !important;
+  box-sizing:border-box;
+}
+
+.client-logo-item{
+  transform:none !important;
+  overflow:visible !important;
+}
+
+.client-logo-item:hover{
+  transform:none !important;
+}
+
+.client-logo-item img{
+  transform-origin:center center !important;
+}
