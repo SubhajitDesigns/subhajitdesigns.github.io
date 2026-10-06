@@ -599,22 +599,36 @@ if (clientTrack) {
       kicker: 'POSTS • REELS • STORIES',
       type: 'SOCIAL MEDIA',
       category: 'CAMPAIGNS / DIGITAL',
-      url: 'social-media.html'
+      url: 'social-media.html',
+      live: true,
+      previews: ['jaisalmer.jpg','momo-street.jpg','bali.jpg','dharmi-realty.jpg']
     },
     {
       title: 'GOOGLE ADS',
       kicker: 'ADS • BANNERS • CAMPAIGNS',
       type: 'GOOGLE ADS',
       category: 'PAID MEDIA / CAMPAIGNS',
-      url: 'google-ads.html'
+      url: 'google-ads.html',
+      live: true,
+      previews: ['ac094c3fedd25880080e0f0e4d5b7467.jpg','followes.jpg','graphic.jpg','restaurant.jpg']
     },
     {
       title: 'PRODUCT ADS',
       kicker: 'E-COMMERCE • PROMOTIONS',
       type: 'PRODUCT ADS',
       category: 'PRODUCT / COMMERCIAL',
-      url: 'product-ads.html'
-    }
+      url: 'product-ads.html',
+      live: true,
+      previews: ['honey.jpg','organic.jpg','port 7.jpg','Protect your glow with the goodness of Vitamin C! 🍋Mamaearth Vitamin C Daily Glow Sunscreen shi.jpg']
+    },
+    { title:'BRANDING', kicker:'IDENTITY • SYSTEMS • VISUALS', type:'COMING SOON', category:'BRAND / IDENTITY', live:false, previews:['jaisalmer.jpg','momo-street.jpg','bali.jpg','dharmi-realty.jpg'] },
+    { title:'OTHER DESIGNS', kicker:'EXPERIMENTS • CONCEPTS • VISUALS', type:'COMING SOON', category:'EXPERIMENTAL / SELECTED', live:false, previews:['port 7.jpg','organic.jpg','honey.jpg','jaisalmer.jpg'] },
+    { title:'MOTION GRAPHICS', kicker:'ANIMATION • REVEALS • MOTION', type:'COMING SOON', category:'MOTION / VIDEO', live:false, previews:['followes.jpg','graphic.jpg','restaurant.jpg','ac094c3fedd25880080e0f0e4d5b7467.jpg'] },
+    { title:'FLYERS', kicker:'PRINT • PROMOTION • CAMPAIGNS', type:'COMING SOON', category:'PRINT / PROMO', live:false, previews:['momo-street.jpg','bali.jpg','dharmi-realty.jpg','jaisalmer.jpg'] },
+    { title:'BANNERS', kicker:'DISPLAY • DIGITAL • CAMPAIGNS', type:'COMING SOON', category:'DISPLAY / DIGITAL', live:false, previews:['honey.jpg','organic.jpg','port 7.jpg','jaisalmer.jpg'] },
+    { title:'LOGOS', kicker:'MARKS • SYMBOLS • IDENTITY', type:'COMING SOON', category:'LOGO / IDENTITY', live:false, previews:['graphic.jpg','followes.jpg','restaurant.jpg','bali.jpg'] },
+    { title:'PRINTABLES', kicker:'BROCHURES • MENUS • COLLATERAL', type:'COMING SOON', category:'PRINT / COLLATERAL', live:false, previews:['dharmi-realty.jpg','momo-street.jpg','jaisalmer.jpg','port 7.jpg'] },
+    { title:'CREATIVES', kicker:'CONCEPTS • CAMPAIGNS • ART DIRECTION', type:'COMING SOON', category:'CREATIVE / ART DIRECTION', live:false, previews:['organic.jpg','honey.jpg','bali.jpg','graphic.jpg'] }
   ];
 
   let index = 0;
@@ -626,20 +640,49 @@ if (clientTrack) {
     index = (nextIndex + projects.length) % projects.length;
     const p = projects[index];
 
-    folder.classList.remove('archive-next', 'archive-prev', 'archive-open');
+    folder.classList.remove('archive-next', 'archive-prev', 'archive-coming-soon');
     void folder.offsetWidth;
     if (direction > 0) folder.classList.add('archive-next');
     if (direction < 0) folder.classList.add('archive-prev');
+    if (!p.live) folder.classList.add('archive-coming-soon');
 
     title.textContent = p.title;
     kicker.textContent = p.kicker;
-    number.textContent = String(index + 1).padStart(2, '0') + ' / 03';
+    number.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(projects.length).padStart(2, '0');
     type.textContent = p.type;
     category.textContent = p.category;
-    count.textContent = String(index + 1).padStart(2, '0') + '—03';
-    link.href = p.url;
+    count.textContent = String(index + 1).padStart(2, '0') + '—' + String(projects.length).padStart(2, '0');
 
-    dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+    const sheetImages = [...folder.querySelectorAll('.crafted-sheet-grid img')];
+    p.previews.forEach((src, i) => {
+      if (sheetImages[i]) sheetImages[i].src = src;
+    });
+
+    if (p.live) {
+      link.href = p.url;
+      link.textContent = 'OPEN ';
+      link.classList.remove('is-disabled');
+      link.setAttribute('aria-label', 'Open ' + p.title + ' projects');
+      const arrow = document.createElement('span');
+      arrow.textContent = '↗';
+      link.appendChild(arrow);
+    } else {
+      link.removeAttribute('href');
+      link.textContent = 'COMING SOON';
+      link.classList.add('is-disabled');
+      link.setAttribute('aria-label', p.title + ' coming soon');
+    }
+
+    dots.innerHTML = '';
+    projects.forEach((project, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.dataset.archiveIndex = String(i);
+      dot.setAttribute('aria-label', project.title);
+      dot.title = project.title;
+      dot.classList.toggle('is-active', i === index);
+      dots.appendChild(dot);
+    });
   }
 
   function change(step) {
@@ -653,9 +696,11 @@ if (clientTrack) {
     dot.addEventListener('click', () => {
       const target = Number(dot.dataset.archiveIndex);
       if (target === index || locked) return;
-      change(target > index ? 1 : -1);
-      if (Math.abs(target - index) > 1) {
-        window.setTimeout(() => render(target, target > index ? 1 : -1), 730);
+      const forward = (target - index + projects.length) % projects.length;
+      const backward = (index - target + projects.length) % projects.length;
+      change(forward <= backward ? 1 : -1);
+      if (Math.min(forward, backward) > 1) {
+        window.setTimeout(() => render(target, forward <= backward ? 1 : -1), 730);
       }
     });
   });
