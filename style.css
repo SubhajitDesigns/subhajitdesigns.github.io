@@ -4411,3 +4411,97 @@ body.cursor-active .cursor-glow {
 .crafted-gallery-center-image img{
   object-fit:contain !important;
 }
+
+
+/* =========================================================
+   CRAFTED GALLERY — FINAL V30 FIT + RIGHT-SIDE SPACING
+   Stable common frames prevent variable-width cards from
+   colliding. Smart-fit removes letterbox gaps when safe.
+   ========================================================= */
+
+.crafted-gallery-card{
+  width:250px !important;
+  height:315px !important;
+}
+
+.crafted-gallery-center{
+  width:min(510px,42vw) !important;
+  height:420px !important;
+}
+
+/* Desktop: give the right-hand cards their own lanes. */
+@media (min-width:1001px){
+  .crafted-gallery-card.position-right-1{
+    left:70% !important;
+  }
+  .crafted-gallery-card.position-right-2{
+    left:89% !important;
+  }
+  .crafted-gallery-card.position-right-3{
+    left:106% !important;
+  }
+}
+
+/* Tablet */
+@media (min-width:761px) and (max-width:1000px){
+  .crafted-gallery-card{
+    width:210px !important;
+    height:285px !important;
+  }
+  .crafted-gallery-center{
+    width:min(470px,48vw) !important;
+    height:390px !important;
+  }
+  .crafted-gallery-card.position-right-1{
+    left:72% !important;
+  }
+  .crafted-gallery-card.position-right-2{
+    left:94% !important;
+  }
+  .crafted-gallery-card.position-right-3{
+    left:116% !important;
+  }
+}
+
+/* Mobile: keep the right stack clearly separated from the hero. */
+@media (max-width:760px){
+  .crafted-gallery-card{
+    width:150px !important;
+    height:220px !important;
+  }
+  .crafted-gallery-center{
+    width:min(390px,70vw) !important;
+    height:350px !important;
+  }
+  .crafted-gallery-card.position-right-1{
+    left:80% !important;
+  }
+  .crafted-gallery-card.position-right-2{
+    left:105% !important;
+  }
+  .crafted-gallery-card.position-right-3{
+    left:130% !important;
+  }
+}
+
+/* Smart-fit: crop only when the crop remains reasonable.
+   Otherwise the entire artwork stays visible. */
+.crafted-gallery-card-image img.smart-cover,
+.crafted-gallery-center-image img.smart-cover{
+  object-fit:cover !important;
+  object-position:center center !important;
+  transform:none !important;
+}
+
+.crafted-gallery-card-image img.smart-contain,
+.crafted-gallery-center-image img.smart-contain{
+  object-fit:contain !important;
+  object-position:center center !important;
+  transform:none !important;
+}
+
+/* Keep hover from reintroducing zoom/cropping. */
+.crafted-gallery-card:hover .crafted-gallery-card-image img,
+.crafted-gallery-center-card:hover .crafted-gallery-center-image img{
+  transform:none !important;
+}
