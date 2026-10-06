@@ -589,7 +589,7 @@ if (clientTrack) {
   const category = document.getElementById('craftedArchiveCategory');
   const count = document.getElementById('craftedArchiveCount');
   const link = document.getElementById('craftedArchiveLink');
-  const dots = [...document.querySelectorAll('[data-archive-index]')];
+  const dots = document.getElementById('craftedArchiveDots');
   const prev = document.getElementById('craftedPrev');
   const next = document.getElementById('craftedNext');
 
@@ -683,6 +683,19 @@ if (clientTrack) {
       dot.classList.toggle('is-active', i === index);
       dots.appendChild(dot);
     });
+
+    dots.querySelectorAll('[data-archive-index]').forEach(dot => {
+      dot.addEventListener('click', () => {
+        const target = Number(dot.dataset.archiveIndex);
+        if (target === index || locked) return;
+        const forward = (target - index + projects.length) % projects.length;
+        const backward = (index - target + projects.length) % projects.length;
+        change(forward <= backward ? 1 : -1);
+        if (Math.min(forward, backward) > 1) {
+          window.setTimeout(() => render(target, forward <= backward ? 1 : -1), 730);
+        }
+      });
+    });
   }
 
   function change(step) {
@@ -691,19 +704,6 @@ if (clientTrack) {
     render(index + step, step);
     window.setTimeout(() => { locked = false; }, 720);
   }
-
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      const target = Number(dot.dataset.archiveIndex);
-      if (target === index || locked) return;
-      const forward = (target - index + projects.length) % projects.length;
-      const backward = (index - target + projects.length) % projects.length;
-      change(forward <= backward ? 1 : -1);
-      if (Math.min(forward, backward) > 1) {
-        window.setTimeout(() => render(target, forward <= backward ? 1 : -1), 730);
-      }
-    });
-  });
 
   prev?.addEventListener('click', () => change(-1));
   next?.addEventListener('click', () => change(1));
