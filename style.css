@@ -4390,3 +4390,24 @@ body.cursor-active .cursor-glow {
     rgba(8,2,3,.68) 100%
   ) !important;
 }
+
+
+/* =========================================================
+   CRAFTED GALLERY — NATURAL IMAGE RATIO FRAMES
+   No crop, no side bars: each frame follows its artwork.
+   ========================================================= */
+
+.crafted-gallery-card{
+  width:var(--frame-width,250px) !important;
+  height:var(--frame-height,315px) !important;
+}
+
+.crafted-gallery-center{
+  width:var(--frame-width,min(510px,42vw)) !important;
+  height:var(--frame-height,420px) !important;
+}
+
+.crafted-gallery-card-image img,
+.crafted-gallery-center-image img{
+  object-fit:contain !important;
+}
