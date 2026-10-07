@@ -4535,3 +4535,51 @@ body.cursor-active .cursor-glow {
   right:auto !important;
   bottom:auto !important;
 }
+
+
+/* =========================================================
+   CRAFTED GALLERY — EXTRA OUTER ARTWORK LAYERS
+   Keeps the full artwork visible while making the composition denser.
+   ========================================================= */
+.crafted-gallery-card.position-left-5{
+  left:-12%;
+  transform:translate(-4%,-50%) rotateY(30deg) rotateZ(-4deg) translateZ(-210px) scale(.58);
+  opacity:.24;
+  filter:brightness(.46);
+  z-index:2 !important;
+}
+.crafted-gallery-card.position-left-4{
+  left:-1%;
+  transform:translate(-5%,-50%) rotateY(27deg) rotateZ(-3.5deg) translateZ(-180px) scale(.66);
+  opacity:.34;
+  filter:brightness(.52);
+  z-index:2 !important;
+}
+.crafted-gallery-card.position-right-4{
+  left:98%;
+  transform:translate(5%,-50%) rotateY(-27deg) rotateZ(3.5deg) translateZ(-180px) scale(.66);
+  opacity:.34;
+  filter:brightness(.52);
+  z-index:2 !important;
+}
+.crafted-gallery-card.position-right-5{
+  left:109%;
+  transform:translate(4%,-50%) rotateY(-30deg) rotateZ(4deg) translateZ(-210px) scale(.58);
+  opacity:.24;
+  filter:brightness(.46);
+  z-index:2 !important;
+}
+
+@media(max-width:1000px){
+  .crafted-gallery-card.position-left-5{left:-17%;transform:translate(-4%,-50%) rotateY(27deg) scale(.52);opacity:.18}
+  .crafted-gallery-card.position-left-4{left:-7%;transform:translate(-5%,-50%) rotateY(24deg) scale(.58);opacity:.27}
+  .crafted-gallery-card.position-right-4{left:104%;transform:translate(5%,-50%) rotateY(-24deg) scale(.58);opacity:.27}
+  .crafted-gallery-card.position-right-5{left:114%;transform:translate(4%,-50%) rotateY(-27deg) scale(.52);opacity:.18}
+}
+
+@media(max-width:760px){
+  .crafted-gallery-card.position-left-5,
+  .crafted-gallery-card.position-right-5{display:none}
+  .crafted-gallery-card.position-left-4{left:-12%;transform:translate(-5%,-50%) rotateY(22deg) scale(.52);opacity:.22}
+  .crafted-gallery-card.position-right-4{left:106%;transform:translate(5%,-50%) rotateY(-22deg) scale(.52);opacity:.22}
+}
