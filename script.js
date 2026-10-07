@@ -744,30 +744,31 @@ if (clientTrack) {
       const positionName = offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset;
       const card = makeCard(projects[target], positionName, target);
 
-      /* SIMPLE 5 + CENTER + 5 layout — full-width, evenly stepped. */
+      /* FINAL 5 + CENTER + 5 — every side card remains visibly on-screen. */
       const depth = Math.abs(offset);
       const side = offset < 0 ? -1 : 1;
 
-      const leftPositions = {1:23, 2:11, 3:0, 4:-10, 5:-20};
-      const rightPositions = {1:66, 2:79, 3:91, 4:102, 5:113};
-      const leftPct = side < 0 ? leftPositions[depth] : rightPositions[depth];
+      /* Card centers: inner cards overlap the center, outer cards reach the edges. */
+      const positions = {
+        left:  {1:30, 2:21, 3:12, 4:3, 5:-6},
+        right: {1:70, 2:79, 3:88, 4:97, 5:106}
+      };
+      const leftPct = positions[side < 0 ? 'left' : 'right'][depth];
 
-      const angle = 8 + (depth * 3.5);
-      const rotY = side * angle;
-      const rotZ = side * (depth * 0.7);
-      const scale = Math.max(0.62, 0.94 - depth * 0.045);
-      const z = -(depth * 45);
-      const opacity = Math.max(0.30, 0.92 - depth * 0.10);
-      const brightness = Math.max(0.48, 0.86 - depth * 0.055);
+      const angles = {1:10, 2:16, 3:22, 4:28, 5:34};
+      const scales = {1:.94, 2:.84, 3:.76, 4:.68, 5:.60};
+      const depths = {1:-20, 2:-55, 3:-95, 4:-140, 5:-185};
+      const opacities = {1:.94, 2:.82, 3:.68, 4:.54, 5:.40};
+      const brightnesses = {1:.88, 2:.76, 3:.65, 4:.55, 5:.48};
 
       card.style.setProperty('left', leftPct + '%', 'important');
       card.style.setProperty(
         'transform',
-        'translate(-50%,-50%) rotateY(' + rotY + 'deg) rotateZ(' + rotZ + 'deg) translateZ(' + z + 'px) scale(' + scale + ')',
+        'translate(-50%,-50%) rotateY(' + (side * angles[depth]) + 'deg) rotateZ(' + (side * depth * .6) + 'deg) translateZ(' + depths[depth] + 'px) scale(' + scales[depth] + ')',
         'important'
       );
-      card.style.opacity = opacity;
-      card.style.filter = 'brightness(' + brightness + ')';
+      card.style.opacity = opacities[depth];
+      card.style.filter = 'brightness(' + brightnesses[depth] + ')';
       card.style.zIndex = String(30 - depth);
 
       if (depth >= 4) {
