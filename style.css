@@ -4569,3 +4569,91 @@ body.cursor-active .cursor-glow {
     z-index:1 !important;
   }
 }
+
+
+/* =========================================================
+   CRAFTED GALLERY — 3D CONVEYOR MOTION
+   Cards physically travel through the depth field.
+   ========================================================= */
+
+.crafted-gallery-cards,
+.crafted-gallery-center{
+  will-change:transform, opacity;
+}
+
+/* Current gallery travels out as one physical 3D wall. */
+.crafted-gallery.gallery-conveyor-next .crafted-gallery-cards{
+  animation:craftedConveyorCardsNext .30s cubic-bezier(.55,0,.85,.35) both;
+}
+.crafted-gallery.gallery-conveyor-prev .crafted-gallery-cards{
+  animation:craftedConveyorCardsPrev .30s cubic-bezier(.55,0,.85,.35) both;
+}
+
+/* The center artwork exits in the same direction with depth. */
+.crafted-gallery.gallery-conveyor-next .crafted-gallery-center{
+  animation:craftedConveyorCenterNext .30s cubic-bezier(.55,0,.85,.35) both;
+}
+.crafted-gallery.gallery-conveyor-prev .crafted-gallery-center{
+  animation:craftedConveyorCenterPrev .30s cubic-bezier(.55,0,.85,.35) both;
+}
+
+/* New wall enters from the opposite side, slightly deeper. */
+.crafted-gallery.gallery-conveyor-enter .crafted-gallery-cards{
+  animation:craftedConveyorEnter .46s cubic-bezier(.16,1,.3,1) both;
+}
+.crafted-gallery.gallery-conveyor-enter .crafted-gallery-center{
+  animation:craftedConveyorCenterEnter .46s cubic-bezier(.16,1,.3,1) both;
+}
+
+@keyframes craftedConveyorCardsNext{
+  0%{transform:translate3d(var(--px),var(--py),0) rotateX(var(--gy)) rotateY(var(--gx));opacity:1}
+  100%{transform:translate3d(calc(var(--px) - 150px),var(--py),-120px) rotateX(var(--gy)) rotateY(calc(var(--gx) + 7deg));opacity:.15}
+}
+@keyframes craftedConveyorCardsPrev{
+  0%{transform:translate3d(var(--px),var(--py),0) rotateX(var(--gy)) rotateY(var(--gx));opacity:1}
+  100%{transform:translate3d(calc(var(--px) + 150px),var(--py),-120px) rotateX(var(--gy)) rotateY(calc(var(--gx) - 7deg));opacity:.15}
+}
+@keyframes craftedConveyorCenterNext{
+  0%{transform:translate(-50%,-50%) translate3d(0,0,70px) rotateY(0deg);opacity:1}
+  100%{transform:translate(-50%,-50%) translate3d(-145px,0,-90px) rotateY(18deg);opacity:0}
+}
+@keyframes craftedConveyorCenterPrev{
+  0%{transform:translate(-50%,-50%) translate3d(0,0,70px) rotateY(0deg);opacity:1}
+  100%{transform:translate(-50%,-50%) translate3d(145px,0,-90px) rotateY(-18deg);opacity:0}
+}
+@keyframes craftedConveyorEnter{
+  0%{transform:translate3d(calc(var(--px) + 150px),var(--py),-120px) rotateX(var(--gy)) rotateY(calc(var(--gx) - 7deg));opacity:.12}
+  100%{transform:translate3d(var(--px),var(--py),0) rotateX(var(--gy)) rotateY(var(--gx));opacity:1}
+}
+@keyframes craftedConveyorCenterEnter{
+  0%{transform:translate(-50%,-50%) translate3d(145px,0,-90px) rotateY(-18deg);opacity:0}
+  100%{transform:translate(-50%,-50%) translate3d(0,0,70px) rotateY(0deg);opacity:1}
+}
+
+.crafted-gallery.gallery-conveyor-prev.gallery-conveyor-enter .crafted-gallery-cards{
+  animation-name:craftedConveyorEnterPrev;
+}
+.crafted-gallery.gallery-conveyor-prev.gallery-conveyor-enter .crafted-gallery-center{
+  animation-name:craftedConveyorCenterEnterPrev;
+}
+
+@keyframes craftedConveyorEnterPrev{
+  0%{transform:translate3d(calc(var(--px) - 150px),var(--py),-120px) rotateX(var(--gy)) rotateY(calc(var(--gx) + 7deg));opacity:.12}
+  100%{transform:translate3d(var(--px),var(--py),0) rotateX(var(--gy)) rotateY(var(--gx));opacity:1}
+}
+@keyframes craftedConveyorCenterEnterPrev{
+  0%{transform:translate(-50%,-50%) translate3d(-145px,0,-90px) rotateY(18deg);opacity:0}
+  100%{transform:translate(-50%,-50%) translate3d(0,0,70px) rotateY(0deg);opacity:1}
+}
+
+/* Keep reduced-motion accessibility. */
+@media(prefers-reduced-motion:reduce){
+  .crafted-gallery.gallery-conveyor-next .crafted-gallery-cards,
+  .crafted-gallery.gallery-conveyor-prev .crafted-gallery-cards,
+  .crafted-gallery.gallery-conveyor-enter .crafted-gallery-cards,
+  .crafted-gallery.gallery-conveyor-next .crafted-gallery-center,
+  .crafted-gallery.gallery-conveyor-prev .crafted-gallery-center,
+  .crafted-gallery.gallery-conveyor-enter .crafted-gallery-center{
+    animation:none !important;
+  }
+}
