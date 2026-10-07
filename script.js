@@ -802,9 +802,28 @@ if (clientTrack) {
   function select(target, direction) {
     if (locked || target === index) return;
     locked = true;
-    index = (target + projects.length) % projects.length;
-    render(direction);
-    window.setTimeout(() => { locked = false; }, 500);
+
+    const motionClass = direction > 0 ? 'gallery-conveyor-next' : 'gallery-conveyor-prev';
+    gallery.classList.remove('gallery-conveyor-next', 'gallery-conveyor-prev', 'gallery-conveyor-enter');
+    void gallery.offsetWidth;
+    gallery.classList.add(motionClass);
+
+    // Let the current cards physically travel out before the next set
+    // takes their place. The center artwork also travels in 3D.
+    window.setTimeout(() => {
+      index = (target + projects.length) % projects.length;
+      render(direction);
+      gallery.classList.remove(motionClass);
+      gallery.classList.add('gallery-conveyor-enter');
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          gallery.classList.remove('gallery-conveyor-enter');
+        });
+      });
+    }, 300);
+
+    window.setTimeout(() => { locked = false; }, 760);
   }
 
   prev?.addEventListener('click', () => select(index - 1, -1));
