@@ -667,6 +667,23 @@ if (clientTrack) {
     }
   }
 
+  function syncNearestRightCard() {
+    const centerFrame = document.getElementById('craftedGalleryCenter');
+    const rightCard = cardsWrap.querySelector('.crafted-gallery-card.position-right-1');
+    if (!centerFrame || !rightCard) return;
+
+    const centerRect = centerFrame.getBoundingClientRect();
+    const rightRect = rightCard.getBoundingClientRect();
+
+    // Move ONLY the nearest right card until its visible left edge
+    // meets the center artwork's visible right edge.
+    const delta = centerRect.right - rightRect.left;
+    if (Math.abs(delta) < 0.5) return;
+
+    const currentLeft = parseFloat(getComputedStyle(rightCard).left) || 0;
+    rightCard.style.left = (currentLeft + delta) + 'px';
+  }
+
   function makeCard(project, position, actualIndex) {
     const card = document.createElement('button');
     card.type = 'button';
@@ -685,8 +702,15 @@ if (clientTrack) {
       }
       select(target, target > index ? 1 : -1);
     });
+    const cardImage = card.querySelector('.crafted-gallery-card-image img');
+    if (position === 'right-1') {
+      cardImage.addEventListener('load', () => {
+        requestAnimationFrame(syncNearestRightCard);
+      }, {once:true});
+    }
+
     fitNaturalFrame(
-      card.querySelector('.crafted-gallery-card-image img'),
+      cardImage,
       card,
       window.innerWidth <= 760 ? 150 : (window.innerWidth <= 1000 ? 210 : 250),
       window.innerWidth <= 760 ? 220 : (window.innerWidth <= 1000 ? 285 : 315)
@@ -730,6 +754,11 @@ if (clientTrack) {
     if (centerImage.complete && centerImage.naturalWidth) {
       fitCenter();
     }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(syncNearestRightCard);
+    });
+
     centerNumber.textContent = String(index + 1).padStart(2,'0') + ' / 11';
     centerType.textContent = p.type;
     centerKicker.textContent = p.kicker;
