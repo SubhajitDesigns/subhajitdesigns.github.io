@@ -665,7 +665,7 @@ if (clientTrack) {
     centerType.textContent = p.type;
     centerKicker.textContent = p.kicker;
     centerTitle.textContent = p.title;
-    counter.textContent = String(i + 1).padStart(2,'0');
+    if (counter) counter.textContent = String(i + 1).padStart(2,'0');
 
     centerLink.classList.toggle('is-disabled', !p.live);
     centerLink.removeAttribute('href');
@@ -743,7 +743,7 @@ if (clientTrack) {
 
   const cards = Array.from(cardsWrap.children);
 
-  dotsWrap.innerHTML = '';
+  if (dotsWrap) dotsWrap.innerHTML = '';
   projects.forEach((project, i) => {
     const dot = document.createElement('button');
     dot.type = 'button';
@@ -754,7 +754,7 @@ if (clientTrack) {
       offset = 0;
       updateCenterInfo(i);
     });
-    dotsWrap.appendChild(dot);
+    if (dotsWrap) dotsWrap.appendChild(dot);
   });
 
   function shift(step) {
