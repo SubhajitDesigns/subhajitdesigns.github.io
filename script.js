@@ -834,7 +834,7 @@ if (clientTrack) {
       card.style.setProperty('top', '50%', 'important');
       card.style.setProperty('opacity', opacity.toFixed(3), 'important');
       card.style.setProperty('filter', 'brightness(' + brightness.toFixed(3) + ') saturate(' + (0.78 + depth * .22).toFixed(3) + ')', 'important');
-      card.style.setProperty('z-index', String(20 + Math.round(depth * 25)), 'important');
+      card.style.setProperty('z-index', String(10000 - Math.round(Math.abs(x) * 10)), 'important');
 
       const d = Math.abs(x);
       if (d < bestDistance) {
