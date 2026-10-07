@@ -755,9 +755,12 @@ if (clientTrack) {
       const opacity = Math.max(0.16, 0.94 - (depth * 0.085));
       const brightness = Math.max(0.38, 0.88 - (depth * 0.055));
 
-      card.style.left = leftPct + '%';
-      card.style.transform =
-        'translate(-50%,-50%) rotateY(' + rotY + 'deg) rotateZ(' + rotZ + 'deg) translateZ(' + z + 'px) scale(' + scale + ')';
+      card.style.setProperty('left', leftPct + '%', 'important');
+      card.style.setProperty(
+        'transform',
+        'translate(-50%,-50%) rotateY(' + rotY + 'deg) rotateZ(' + rotZ + 'deg) translateZ(' + z + 'px) scale(' + scale + ')',
+        'important'
+      );
       card.style.opacity = opacity;
       card.style.filter = 'brightness(' + brightness + ')';
       card.style.zIndex = String(30 - depth);
