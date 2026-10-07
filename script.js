@@ -744,17 +744,20 @@ if (clientTrack) {
       const positionName = offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset;
       const card = makeCard(projects[target], positionName, target);
 
-      /* Compact 11-card contact sheet: a few extra artworks, tightly grouped. */
+      /* 5 cards per side, using the full gallery width without huge side gaps. */
       const depth = Math.abs(offset);
       const side = offset < 0 ? -1 : 1;
 
-      const leftPct = 50 + (side * (depth * 7.2));
-      const scale = Math.max(0.52, 0.96 - (depth * 0.075));
-      const rotY = side * (11 + depth * 2.1);
-      const rotZ = side * (1 + depth * 0.5);
+      const leftPositions = {1:28, 2:19, 3:10, 4:0, 5:-12};
+      const rightPositions = {1:62, 2:71, 3:81, 4:90, 5:102};
+      const leftPct = side < 0 ? leftPositions[depth] : rightPositions[depth];
+
+      const scale = Math.max(0.50, 0.96 - (depth * 0.07));
+      const rotY = side * (11 + depth * 2);
+      const rotZ = side * (1 + depth * 0.45);
       const z = -depth * 42;
-      const opacity = Math.max(0.28, 0.94 - (depth * 0.10));
-      const brightness = Math.max(0.48, 0.88 - (depth * 0.06));
+      const opacity = Math.max(0.25, 0.94 - (depth * 0.10));
+      const brightness = Math.max(0.45, 0.88 - (depth * 0.055));
 
       card.style.setProperty('left', leftPct + '%', 'important');
       card.style.setProperty(
