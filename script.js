@@ -744,34 +744,32 @@ if (clientTrack) {
       const positionName = offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset;
       const card = makeCard(projects[target], positionName, target);
 
-      /* 5 + center + 5 — tight 3D carousel/stack geometry. */
+      /* SIMPLE 5 + CENTER + 5 layout — full-width, evenly stepped. */
       const depth = Math.abs(offset);
       const side = offset < 0 ? -1 : 1;
 
-      /* Each step moves a card farther around the center, not simply outward. */
-      const xSteps = {1:25, 2:18, 3:11, 4:4, 5:-3};
-      const x = side < 0 ? 50 - xSteps[depth] : 50 + xSteps[depth];
+      const leftPositions = {1:23, 2:11, 3:0, 4:-10, 5:-20};
+      const rightPositions = {1:66, 2:79, 3:91, 4:102, 5:113};
+      const leftPct = side < 0 ? leftPositions[depth] : rightPositions[depth];
 
-      /* Strong perspective: near cards stay broad, outer cards turn edge-on. */
-      const yRotation = {1:14, 2:25, 3:36, 4:47, 5:58}[depth];
-      const zRotation = {1:1, 2:2, 3:3, 4:4, 5:5}[depth];
-      const scale = {1:.94, 2:.84, 3:.73, 4:.62, 5:.52}[depth];
-      const z = {1:-25, 2:-80, 3:-145, 4:-215, 5:-285}[depth];
-      const y = {1:0, 2:2, 3:5, 4:8, 5:12}[depth];
-      const opacity = {1:.94, 2:.78, 3:.62, 4:.46, 5:.32}[depth];
-      const brightness = {1:.88, 2:.74, 3:.62, 4:.52, 5:.44}[depth];
+      const angle = 8 + (depth * 3.5);
+      const rotY = side * angle;
+      const rotZ = side * (depth * 0.7);
+      const scale = Math.max(0.62, 0.94 - depth * 0.045);
+      const z = -(depth * 45);
+      const opacity = Math.max(0.30, 0.92 - depth * 0.10);
+      const brightness = Math.max(0.48, 0.86 - depth * 0.055);
 
-      card.style.setProperty('left', x + '%', 'important');
+      card.style.setProperty('left', leftPct + '%', 'important');
       card.style.setProperty(
         'transform',
-        'translate(-50%,calc(-50% + ' + y + 'px)) rotateY(' + (side * yRotation) + 'deg) rotateZ(' + (side * zRotation) + 'deg) translateZ(' + z + 'px) scale(' + scale + ')',
+        'translate(-50%,-50%) rotateY(' + rotY + 'deg) rotateZ(' + rotZ + 'deg) translateZ(' + z + 'px) scale(' + scale + ')',
         'important'
       );
       card.style.opacity = opacity;
       card.style.filter = 'brightness(' + brightness + ')';
       card.style.zIndex = String(30 - depth);
 
-      /* Outer cards are intentionally mostly image-only slices. */
       if (depth >= 4) {
         const label = card.querySelector('.crafted-gallery-card-label');
         const badge = card.querySelector('.crafted-gallery-card-image span');
