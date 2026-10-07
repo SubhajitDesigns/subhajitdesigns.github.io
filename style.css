@@ -4535,3 +4535,37 @@ body.cursor-active .cursor-glow {
   right:auto !important;
   bottom:auto !important;
 }
+
+
+/* CRAFTED GALLERY — extend the ORIGINAL layout to 5 cards per side.
+   Existing positions 1–3 are untouched. */
+@media (min-width:1001px){
+  .crafted-gallery-card.position-left-4{
+    left:-10%;
+    transform:translate(-5%,-50%) rotateY(31deg) rotateZ(-4deg) translateZ(-205px) scale(.66);
+    opacity:.38;
+    filter:brightness(.52);
+    z-index:2 !important;
+  }
+  .crafted-gallery-card.position-left-5{
+    left:-18%;
+    transform:translate(-4%,-50%) rotateY(36deg) rotateZ(-5deg) translateZ(-255px) scale(.58);
+    opacity:.28;
+    filter:brightness(.46);
+    z-index:1 !important;
+  }
+  .crafted-gallery-card.position-right-4{
+    left:100%;
+    transform:translate(5%,-50%) rotateY(-31deg) rotateZ(4deg) translateZ(-205px) scale(.66);
+    opacity:.38;
+    filter:brightness(.52);
+    z-index:2 !important;
+  }
+  .crafted-gallery-card.position-right-5{
+    left:108%;
+    transform:translate(4%,-50%) rotateY(-36deg) rotateZ(5deg) translateZ(-255px) scale(.58);
+    opacity:.28;
+    filter:brightness(.46);
+    z-index:1 !important;
+  }
+}
