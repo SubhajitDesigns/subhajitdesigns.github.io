@@ -739,21 +739,22 @@ if (clientTrack) {
     cardsWrap.innerHTML = '';
 
     /* Always show a dense wall of surrounding work. */
-    [-9,-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8,9].forEach(offset => {
+    [-5,-4,-3,-2,-1,1,2,3,4,5].forEach(offset => {
       let target = (index + offset + projects.length) % projects.length;
       const positionName = offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset;
       const card = makeCard(projects[target], positionName, target);
 
-      /* Dense 19-card contact sheet: every project gets a visible slice. */
+      /* Compact 11-card contact sheet: a few extra artworks, tightly grouped. */
       const depth = Math.abs(offset);
       const side = offset < 0 ? -1 : 1;
-      const leftPct = 50 + (side * (depth * 6.5));
-      const scale = Math.max(0.38, 0.96 - (depth * 0.055));
-      const rotY = side * (12 + depth * 1.7);
-      const rotZ = side * (1 + depth * 0.45);
-      const z = -depth * 45;
-      const opacity = Math.max(0.16, 0.94 - (depth * 0.085));
-      const brightness = Math.max(0.38, 0.88 - (depth * 0.055));
+
+      const leftPct = 50 + (side * (depth * 7.2));
+      const scale = Math.max(0.52, 0.96 - (depth * 0.075));
+      const rotY = side * (11 + depth * 2.1);
+      const rotZ = side * (1 + depth * 0.5);
+      const z = -depth * 42;
+      const opacity = Math.max(0.28, 0.94 - (depth * 0.10));
+      const brightness = Math.max(0.48, 0.88 - (depth * 0.06));
 
       card.style.setProperty('left', leftPct + '%', 'important');
       card.style.setProperty(
@@ -765,7 +766,6 @@ if (clientTrack) {
       card.style.filter = 'brightness(' + brightness + ')';
       card.style.zIndex = String(30 - depth);
 
-      /* Outer cards become image-only slices so the composition stays clean. */
       if (depth >= 4) {
         const label = card.querySelector('.crafted-gallery-card-label');
         const badge = card.querySelector('.crafted-gallery-card-image span');
