@@ -4865,3 +4865,29 @@ body.cursor-active .cursor-glow {
   position:relative;
   z-index:3 !important;
 }
+
+
+/* =========================================================
+   CRAFTED CONVEYOR — TIGHTEN SECTION COMPOSITION
+   Keep the conveyor motion untouched; remove excess vertical
+   dead space and bring the artwork closer to its heading.
+   ========================================================= */
+.crafted.crafted-gallery-enabled{
+  padding-top:38px !important;
+  padding-bottom:8px !important;
+}
+.crafted.crafted-gallery-enabled .crafted-heading{
+  margin-bottom:0 !important;
+}
+.crafted.crafted-gallery-enabled .crafted-gallery{
+  height:455px !important;
+}
+@media(max-width:760px){
+  .crafted.crafted-gallery-enabled{
+    padding-top:30px !important;
+    padding-bottom:5px !important;
+  }
+  .crafted.crafted-gallery-enabled .crafted-gallery{
+    height:430px !important;
+  }
+}
