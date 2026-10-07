@@ -4831,3 +4831,37 @@ body.cursor-active .cursor-glow {
   background:#050303 !important;
   isolation:isolate !important;
 }
+
+
+/* =========================================================
+   CRAFTED CONVEYOR — TRUE CARD OCCLUSION
+   Rear artwork may sit behind the front card, but can never
+   show through its actual card rectangle.
+   ========================================================= */
+.crafted-gallery-card{
+  overflow:hidden !important;
+  background:#050303 !important;
+  isolation:isolate !important;
+  backface-visibility:hidden !important;
+}
+.crafted-gallery-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:#050303;
+  border-radius:inherit;
+  pointer-events:none;
+}
+.crafted-gallery-card-image{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:1 !important;
+  background:#050303 !important;
+  overflow:hidden !important;
+  border-radius:inherit !important;
+}
+.crafted-gallery-card-label{
+  position:relative;
+  z-index:3 !important;
+}
