@@ -626,7 +626,7 @@ if (clientTrack) {
   let resizeTimer = null;
 
   const SPEED = 34; // px/sec
-  const GAP = 0;
+  const GAP = -34;
 
   function frameFor(img, frame, maxWidth, maxHeight, minWidth=150, minHeight=190) {
     if (!img || !frame) return;
