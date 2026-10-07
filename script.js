@@ -573,214 +573,139 @@ if (clientTrack) {
 })();
 
 
-/* =========================================================
-   CRAFTED DESIGNS — 3D FLOATING CONTACT SHEET
-   ========================================================= */
 
+/* =========================================================
+   CRAFTED DESIGNS — 3D INFINITE FILMSTRIP
+   Continuous horizontal motion + hover focus.
+   ========================================================= */
 (function () {
   const gallery = document.getElementById('craftedGallery');
   const cardsWrap = document.getElementById('craftedGalleryCards');
   if (!gallery || !cardsWrap) return;
 
-  const centerImage = document.getElementById('craftedCenterImage');
-  const centerNumber = document.getElementById('craftedCenterNumber');
-  const centerType = document.getElementById('craftedCenterType');
-  const centerKicker = document.getElementById('craftedCenterKicker');
-  const centerTitle = document.getElementById('craftedCenterTitle');
-  const centerLink = document.getElementById('craftedCenterLink');
+  const center = {
+    image: document.getElementById('craftedCenterImage'),
+    number: document.getElementById('craftedCenterNumber'),
+    type: document.getElementById('craftedCenterType'),
+    kicker: document.getElementById('craftedCenterKicker'),
+    title: document.getElementById('craftedCenterTitle'),
+    link: document.getElementById('craftedCenterLink')
+  };
   const counter = document.getElementById('craftedGalleryCounter');
   const dotsWrap = document.getElementById('craftedGalleryDots');
   const prev = document.getElementById('craftedGalleryPrev');
   const next = document.getElementById('craftedGalleryNext');
 
   const projects = [
-    {title:'SOCIAL MEDIA', kicker:'POSTS • REELS • STORIES', type:'SOCIAL MEDIA', url:'social-media.html', live:true, image:'jaisalmer.jpg'},
-    {title:'GOOGLE ADS', kicker:'ADS • BANNERS • CAMPAIGNS', type:'GOOGLE ADS', url:'google-ads.html', live:true, image:'ac094c3fedd25880080e0f0e4d5b7467.jpg'},
-    {title:'PRODUCT ADS', kicker:'E-COMMERCE • PROMOTIONS', type:'PRODUCT ADS', url:'product-ads.html', live:true, image:'honey.jpg'},
-    {title:'BRANDING', kicker:'IDENTITY • SYSTEMS • VISUALS', type:'COMING SOON', live:false, image:'dharmi-realty.jpg'},
-    {title:'OTHER DESIGNS', kicker:'EXPERIMENTS • CONCEPTS • VISUALS', type:'COMING SOON', live:false, image:'port 7.jpg'},
-    {title:'MOTION GRAPHICS', kicker:'ANIMATION • REVEALS • MOTION', type:'COMING SOON', live:false, image:'followes.jpg'},
-    {title:'FLYERS', kicker:'PRINT • PROMOTION • CAMPAIGNS', type:'COMING SOON', live:false, image:'momo-street.jpg'},
-    {title:'BANNERS', kicker:'DISPLAY • DIGITAL • CAMPAIGNS', type:'COMING SOON', live:false, image:'organic.jpg'},
-    {title:'LOGOS', kicker:'MARKS • SYMBOLS • IDENTITY', type:'COMING SOON', live:false, image:'graphic.jpg'},
-    {title:'PRINTABLES', kicker:'BROCHURES • MENUS • COLLATERAL', type:'COMING SOON', live:false, image:'bali.jpg'},
-    {title:'CREATIVES', kicker:'CONCEPTS • CAMPAIGNS • ART DIRECTION', type:'COMING SOON', live:false, image:'restaurant.jpg'},
-    {title:'DIGITAL MARKETING', kicker:'CAMPAIGNS • PERFORMANCE • CREATIVE', type:'COMING SOON', live:false, image:'business.jpg'},
-    {title:'PET FOOD', kicker:'PRODUCT ADS • E-COMMERCE • PROMOTION', type:'COMING SOON', live:false, image:'food-ad.jpg'},
-    {title:'GOA', kicker:'TRAVEL • TOURISM • CAMPAIGN', type:'COMING SOON', live:false, image:'goa.jpg'},
-    {title:'FOOD & RESTAURANT', kicker:'FOOD • SOCIAL • PROMOTION', type:'COMING SOON', live:false, image:'idli.jpg'},
-    {title:'JEWELRY', kicker:'JEWELRY • PRODUCT • SOCIAL', type:'COMING SOON', live:false, image:'jwel.jpg'},
-    {title:'KASHMIR', kicker:'TRAVEL • TOURISM • CAMPAIGN', type:'COMING SOON', live:false, image:'kasfmir-tour.jpg'},
-    {title:'TOUR & TRAVEL', kicker:'TRAVEL • TRANSPORT • PROMOTION', type:'COMING SOON', live:false, image:'safe-tour.jpg'},
-    {title:'VIETNAM', kicker:'TRAVEL • TOURISM • CAMPAIGN', type:'COMING SOON', live:false, image:'vietnam.jpg'}
+    {title:'SOCIAL MEDIA',kicker:'POSTS • REELS • STORIES',type:'SOCIAL MEDIA',url:'social-media.html',live:true,image:'jaisalmer.jpg'},
+    {title:'GOOGLE ADS',kicker:'ADS • BANNERS • CAMPAIGNS',type:'GOOGLE ADS',url:'google-ads.html',live:true,image:'ac094c3fedd25880080e0f0e4d5b7467.jpg'},
+    {title:'PRODUCT ADS',kicker:'E-COMMERCE • PROMOTIONS',type:'PRODUCT ADS',url:'product-ads.html',live:true,image:'honey.jpg'},
+    {title:'BRANDING',kicker:'IDENTITY • SYSTEMS • VISUALS',type:'COMING SOON',live:false,image:'dharmi-realty.jpg'},
+    {title:'OTHER DESIGNS',kicker:'EXPERIMENTS • CONCEPTS • VISUALS',type:'COMING SOON',live:false,image:'port 7.jpg'},
+    {title:'MOTION GRAPHICS',kicker:'ANIMATION • REVEALS • MOTION',type:'COMING SOON',live:false,image:'followes.jpg'},
+    {title:'FLYERS',kicker:'PRINT • PROMOTION • CAMPAIGNS',type:'COMING SOON',live:false,image:'momo-street.jpg'},
+    {title:'BANNERS',kicker:'DISPLAY • DIGITAL • CAMPAIGNS',type:'COMING SOON',live:false,image:'organic.jpg'},
+    {title:'LOGOS',kicker:'MARKS • SYMBOLS • IDENTITY',type:'COMING SOON',live:false,image:'graphic.jpg'},
+    {title:'PRINTABLES',kicker:'BROCHURES • MENUS • COLLATERAL',type:'COMING SOON',live:false,image:'bali.jpg'},
+    {title:'CREATIVES',kicker:'CONCEPTS • CAMPAIGNS • ART DIRECTION',type:'COMING SOON',live:false,image:'restaurant.jpg'},
+    {title:'DIGITAL MARKETING',kicker:'CAMPAIGNS • PERFORMANCE • CREATIVE',type:'COMING SOON',live:false,image:'business.jpg'},
+    {title:'PET FOOD',kicker:'PRODUCT ADS • E-COMMERCE • PROMOTION',type:'COMING SOON',live:false,image:'food-ad.jpg'},
+    {title:'GOA',kicker:'TRAVEL • TOURISM • CAMPAIGN',type:'COMING SOON',live:false,image:'goa.jpg'},
+    {title:'FOOD & RESTAURANT',kicker:'FOOD • SOCIAL • PROMOTION',type:'COMING SOON',live:false,image:'idli.jpg'},
+    {title:'JEWELRY',kicker:'JEWELRY • PRODUCT • SOCIAL',type:'COMING SOON',live:false,image:'jwel.jpg'},
+    {title:'KASHMIR',kicker:'TRAVEL • TOURISM • CAMPAIGN',type:'COMING SOON',live:false,image:'kasfmir-tour.jpg'},
+    {title:'TOUR & TRAVEL',kicker:'TRAVEL • TRANSPORT • PROMOTION',type:'COMING SOON',live:false,image:'safe-tour.jpg'},
+    {title:'VIETNAM',kicker:'TRAVEL • TOURISM • CAMPAIGN',type:'COMING SOON',live:false,image:'vietnam.jpg'}
   ];
 
   let index = 0;
-  let locked = false;
+  let paused = false;
+  let dragX = null;
+  let dragMoved = false;
+  let wheelLock = false;
 
-
-  function fitNaturalFrame(img, frame, maxWidth, maxHeight, minWidth=150, minHeight=190) {
-    if (!img || !frame) return;
-
+  function fitFrame(img, frame, maxWidth, maxHeight, minWidth=150, minHeight=190) {
     const apply = () => {
-      const nw = img.naturalWidth;
-      const nh = img.naturalHeight;
-      if (!nw || !nh) return;
-
-      const ratio = nw / nh;
-
-      // The artwork chooses the frame ratio. Only the overall size is bounded.
-      let width = maxWidth;
-      let height = width / ratio;
-
-      if (height > maxHeight) {
-        height = maxHeight;
-        width = height * ratio;
-      }
-
-      if (width < minWidth) {
-        width = minWidth;
-        height = width / ratio;
-      }
-
-      if (height < minHeight) {
-        height = minHeight;
-        width = height * ratio;
-      }
-
-      frame.style.width = width + 'px';
-      frame.style.height = height + 'px';
-      frame.style.setProperty('--frame-width', width + 'px');
-      frame.style.setProperty('--frame-height', height + 'px');
-
-      // The center wrapper also needs the exact same dimensions.
-      // Otherwise left:50% places its LEFT EDGE at the gallery center.
-      if (frame.id === 'craftedGalleryCenter') {
-        frame.parentElement.style.width = width + 'px';
-        frame.parentElement.style.height = height + 'px';
-        frame.parentElement.style.setProperty('--frame-width', width + 'px');
-        frame.parentElement.style.setProperty('--frame-height', height + 'px');
-      }
-
-      if (frame.id === 'craftedGalleryCenter') {
-        frame.style.left = 'calc(50% - ' + (width / 2) + 'px)';
-        frame.style.top = 'calc(50% - ' + (height / 2) + 'px)';
-      }
+      if (!img.naturalWidth || !img.naturalHeight) return;
+      const ratio = img.naturalWidth / img.naturalHeight;
+      let w = maxWidth, h = w / ratio;
+      if (h > maxHeight) { h = maxHeight; w = h * ratio; }
+      if (w < minWidth) { w = minWidth; h = w / ratio; }
+      if (h < minHeight) { h = minHeight; w = h * ratio; }
+      frame.style.width = w + 'px';
+      frame.style.height = h + 'px';
+      frame.style.setProperty('--frame-width', w + 'px');
+      frame.style.setProperty('--frame-height', h + 'px');
     };
-
-    if (img.complete && img.naturalWidth) {
-      apply();
-    } else {
-      img.addEventListener('load', apply, {once:true});
-    }
+    if (img.complete && img.naturalWidth) apply();
+    else img.addEventListener('load', apply, {once:true});
   }
 
-  function syncNearestRightCard() {
-    const centerFrame = document.getElementById('craftedGalleryCenter');
-    const rightCard = cardsWrap.querySelector('.crafted-gallery-card.position-right-1');
-    if (!centerFrame || !rightCard) return;
-
-    const centerRect = centerFrame.getBoundingClientRect();
-    const rightRect = rightCard.getBoundingClientRect();
-
-    // Move ONLY the nearest right card until its visible left edge
-    // meets the center artwork's visible right edge.
-    const delta = centerRect.right - rightRect.left;
-    if (Math.abs(delta) < 0.5) return;
-
-    const currentLeft = parseFloat(getComputedStyle(rightCard).left) || 0;
-    rightCard.style.left = (currentLeft + delta) + 'px';
-  }
-
-  function makeCard(project, position, actualIndex) {
+  function makeCard(project, offset, actualIndex) {
     const card = document.createElement('button');
     card.type = 'button';
-    card.className = 'crafted-gallery-card position-' + position;
+    card.className = 'crafted-gallery-card film-card';
     card.dataset.index = actualIndex;
+    card.dataset.offset = offset;
     card.innerHTML =
-      '<div class="crafted-gallery-card-image"><img src="' + project.image + '" alt="" loading="lazy"><span>' +
+      '<div class="crafted-gallery-card-image"><img src="' + project.image + '" alt="' + project.title + '" loading="lazy"><span>' +
       (project.live ? 'OPEN' : 'SOON') + '</span></div>' +
       '<div class="crafted-gallery-card-label"><small>' +
       String(actualIndex + 1).padStart(2,'0') + '</small><b>' + project.title + '</b></div>';
+
+    const img = card.querySelector('img');
+    fitFrame(img, card,
+      window.innerWidth <= 760 ? 150 : (window.innerWidth <= 1000 ? 205 : 245),
+      window.innerWidth <= 760 ? 220 : (window.innerWidth <= 1000 ? 285 : 305)
+    );
+
+    card.addEventListener('mouseenter', () => {
+      paused = true;
+      gallery.classList.add('film-hovering');
+      card.classList.add('is-focused');
+    });
+    card.addEventListener('mouseleave', () => {
+      card.classList.remove('is-focused');
+      gallery.classList.remove('film-hovering');
+      paused = false;
+    });
+
     card.addEventListener('click', () => {
       const target = Number(card.dataset.index);
-      if (target === index) {
-        if (project.live) window.location.href = project.url;
-        return;
-      }
-      select(target, target > index ? 1 : -1);
+      if (dragMoved) return;
+      if (project.live) window.location.href = project.url;
+      else setCenter(target);
     });
-    const cardImage = card.querySelector('.crafted-gallery-card-image img');
-    if (position === 'right-1') {
-      cardImage.addEventListener('load', () => {
-        requestAnimationFrame(syncNearestRightCard);
-      }, {once:true});
-    }
-
-    fitNaturalFrame(
-      cardImage,
-      card,
-      window.innerWidth <= 760 ? 150 : (window.innerWidth <= 1000 ? 210 : 250),
-      window.innerWidth <= 760 ? 220 : (window.innerWidth <= 1000 ? 285 : 315)
-    );
 
     return card;
   }
 
-  function relativePosition(i) {
-    let d = i - index;
-    if (d > projects.length / 2) d -= projects.length;
-    if (d < -projects.length / 2) d += projects.length;
-    return d;
-  }
-
-  function render(direction = 0) {
+  function setCenter(target) {
+    index = (target + projects.length) % projects.length;
     const p = projects[index];
-    cardsWrap.innerHTML = '';
-
-    /* Always show a dense wall of surrounding work. */
-    [-5,-4,-3,-2,-1,1,2,3,4,5].forEach(offset => {
-      let target = (index + offset + projects.length) % projects.length;
-      cardsWrap.appendChild(makeCard(projects[target], offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset, target));
-    });
-
-    centerImage.alt = p.title;
-
-    const centerFrame = document.getElementById('craftedGalleryCenter');
-    const fitCenter = () => fitNaturalFrame(
-      centerImage,
-      centerFrame,
+    center.image.alt = p.title;
+    center.image.src = p.image;
+    center.image.onload = () => fitFrame(
+      center.image,
+      document.getElementById('craftedGalleryCenter'),
       window.innerWidth <= 760 ? Math.min(390, window.innerWidth * .70) : Math.min(510, window.innerWidth * .42),
       window.innerWidth <= 760 ? 350 : 420,
-      180,
-      220
+      180, 220
     );
-
-    centerImage.onload = fitCenter;
-    centerImage.src = p.image;
-
-    if (centerImage.complete && centerImage.naturalWidth) {
-      fitCenter();
-    }
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(syncNearestRightCard);
-    });
-
-    centerNumber.textContent = String(index + 1).padStart(2,'0') + ' / ' + projects.length;
-    centerType.textContent = p.type;
-    centerKicker.textContent = p.kicker;
-    centerTitle.textContent = p.title;
+    center.number.textContent = String(index + 1).padStart(2,'0') + ' / ' + projects.length;
+    center.type.textContent = p.type;
+    center.kicker.textContent = p.kicker;
+    center.title.textContent = p.title;
     counter.textContent = String(index + 1).padStart(2,'0');
 
-    centerLink.classList.toggle('is-disabled', !p.live);
-    centerLink.removeAttribute('href');
-    centerLink.textContent = p.live ? 'OPEN ' : 'COMING SOON';
+    center.link.classList.toggle('is-disabled', !p.live);
+    center.link.removeAttribute('href');
+    center.link.textContent = p.live ? 'OPEN ' : 'COMING SOON';
     if (p.live) {
-      centerLink.href = p.url;
+      center.link.href = p.url;
       const arrow = document.createElement('span');
       arrow.textContent = '↗';
-      centerLink.appendChild(arrow);
+      center.link.appendChild(arrow);
     }
 
     dotsWrap.innerHTML = '';
@@ -790,428 +715,86 @@ if (clientTrack) {
       dot.title = project.title;
       dot.setAttribute('aria-label', project.title);
       dot.className = i === index ? 'is-active' : '';
-      dot.addEventListener('click', () => select(i, i > index ? 1 : -1));
+      dot.addEventListener('click', () => setCenter(i));
       dotsWrap.appendChild(dot);
     });
-
-    gallery.classList.remove('gallery-next','gallery-prev');
-    if (direction > 0) gallery.classList.add('gallery-next');
-    if (direction < 0) gallery.classList.add('gallery-prev');
   }
 
-  function select(target, direction) {
-    if (locked || target === index) return;
-    locked = true;
-
-    const motionClass = direction > 0 ? 'gallery-conveyor-next' : 'gallery-conveyor-prev';
-    gallery.classList.remove('gallery-conveyor-next', 'gallery-conveyor-prev', 'gallery-conveyor-enter');
-    void gallery.offsetWidth;
-    gallery.classList.add(motionClass);
-
-    // Let the current cards physically travel out before the next set
-    // takes their place. The center artwork also travels in 3D.
-    window.setTimeout(() => {
-      index = (target + projects.length) % projects.length;
-      render(direction);
-      gallery.classList.add('gallery-conveyor-enter');
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          gallery.classList.remove(motionClass, 'gallery-conveyor-enter');
-        });
-      });
-    }, 300);
-
-    window.setTimeout(() => { locked = false; }, 760);
+  function build() {
+    cardsWrap.innerHTML = '';
+    // Enough cards on each side to make the strip feel continuous.
+    for (let offset = -8; offset <= 8; offset++) {
+      if (offset === 0) continue;
+      const actual = (index + offset + projects.length) % projects.length;
+      cardsWrap.appendChild(makeCard(projects[actual], offset, actual));
+    }
+    setCenter(index);
   }
 
-  prev?.addEventListener('click', () => select(index - 1, -1));
-  next?.addEventListener('click', () => select(index + 1, 1));
+  function shift(step) {
+    setCenter(index + step);
+  }
 
-  centerLink?.addEventListener('click', event => {
-    const p = projects[index];
-    if (!p.live) event.preventDefault();
+  // Smooth automatic drift. Cards are positioned from CSS using their offset.
+  let phase = 0;
+  let last = performance.now();
+  function tick(now) {
+    const dt = Math.min(40, now - last);
+    last = now;
+    if (!paused && !dragX && window.innerWidth > 760) {
+      phase += dt * 0.018;
+      cardsWrap.style.setProperty('--film-shift', phase.toFixed(2) + 'px');
+    }
+    requestAnimationFrame(tick);
+  }
+
+  gallery.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    dragX = e.clientX;
+    dragMoved = false;
+    gallery.setPointerCapture?.(e.pointerId);
+    paused = true;
   });
 
-  gallery.addEventListener('pointermove', event => {
-    if (event.pointerType === 'touch') return;
-    const r = gallery.getBoundingClientRect();
-    const x = ((event.clientX - r.left) / r.width) * 2 - 1;
-    const y = ((event.clientY - r.top) / r.height) * 2 - 1;
-    gallery.style.setProperty('--gx', (x * 1.8).toFixed(2) + 'deg');
-    gallery.style.setProperty('--gy', (y * -1.3).toFixed(2) + 'deg');
-    gallery.style.setProperty('--px', (x * 10).toFixed(1) + 'px');
-    gallery.style.setProperty('--py', (y * 7).toFixed(1) + 'px');
+  gallery.addEventListener('pointermove', e => {
+    if (dragX === null) return;
+    const dx = e.clientX - dragX;
+    if (Math.abs(dx) > 8) dragMoved = true;
+    cardsWrap.style.setProperty('--drag-shift', dx + 'px');
   });
 
-  gallery.addEventListener('pointerleave', () => {
-    gallery.style.setProperty('--gx','0deg');
-    gallery.style.setProperty('--gy','0deg');
-    gallery.style.setProperty('--px','0px');
-    gallery.style.setProperty('--py','0px');
+  gallery.addEventListener('pointerup', e => {
+    if (dragX === null) return;
+    const dx = e.clientX - dragX;
+    cardsWrap.style.removeProperty('--drag-shift');
+    dragX = null;
+    paused = false;
+    if (Math.abs(dx) > 65) shift(dx < 0 ? 1 : -1);
+    setTimeout(() => { dragMoved = false; }, 80);
   });
 
-  gallery.addEventListener('keydown', event => {
-    if (event.key === 'ArrowRight') select(index + 1, 1);
-    if (event.key === 'ArrowLeft') select(index - 1, -1);
+  gallery.addEventListener('pointercancel', () => {
+    dragX = null;
+    cardsWrap.style.removeProperty('--drag-shift');
+    paused = false;
   });
 
-  render();
-})();
-/* =========================================================
-   CURRENTLY CREATING
-   5 SECOND CREATIVE ROTATION
-   ========================================================= */
-
-(() => {
-
-  const section =
-    document.querySelector(
-      '.currently-creating'
-    );
-
-
-  if (!section) {
-    return;
-  }
-
-
-  const slides =
-    [
-      ...section.querySelectorAll(
-        '.creating-slide'
-      )
-    ];
-
-
-  const progress =
-    section.querySelector(
-      '#creatingProgress'
-    );
-
-
-  const title =
-    section.querySelector(
-      '#creatingTitle'
-    );
-
-
-  const category =
-    section.querySelector(
-      '#creatingCategory'
-    );
-
-
-  const next =
-    section.querySelector(
-      '#creatingNext'
-    );
-
-
-  if (!slides.length) {
-    return;
-  }
-
-
-  const details = [
-
-    {
-      title: 'FONT FAILS',
-      category:
-        'TYPOGRAPHY / ART DIRECTION'
-    },
-
-    {
-      title: 'GOOD DESIGN?',
-      category:
-        'EDITORIAL / CONCEPTUAL DESIGN'
-    },
-
-    {
-      title: 'CAPCUT',
-      category:
-        'VISUAL CAMPAIGN / CREATIVE DESIGN'
-    },
-
-    {
-      title: 'IDEA OVERLOAD',
-      category:
-        'EDITORIAL / PHOTO MANIPULATION'
-    },
-
-    {
-      title: 'SCHNEIDER ELECTRIC',
-      category:
-        'CAMPAIGN / BRAND DESIGN'
-    }
-
-  ];
-
-
-  const visual =
-    section.querySelector(
-      '.creating-visual'
-    );
-
-
-  const stage =
-    section.querySelector(
-      '#creatingStage'
-    );
-
-
-  const caption =
-    section.querySelector(
-      '.creating-caption'
-    );
-
-
-  let index = 0;
-
-  let timer = null;
-
-  const DISPLAY_TIME = 5000;
-
-
-  /* =========================================================
-     SYNC CAPTION TO IMAGE
-     ========================================================= */
-
-  function syncCaptionToImage() {
-
-    if (
-      !visual ||
-      !stage ||
-      !caption
-    ) {
-      return;
-    }
-
-
-    const active =
-      slides[index];
-
-
-    const img =
-      active?.querySelector('img');
-
-
-    if (!img) {
-      return;
-    }
-
-
-    const rect =
-      img.getBoundingClientRect();
-
-
-    const stageRect =
-      stage.getBoundingClientRect();
-
-
-    const width =
-      Math.min(
-        rect.width,
-        stageRect.width
-      );
-
-
-    const left =
-      Math.max(
-        0,
-        rect.left -
-        stageRect.left
-      );
-
-
-    visual.style.setProperty(
-      '--creating-image-width',
-      width + 'px'
-    );
-
-
-    visual.style.setProperty(
-      '--creating-caption-left',
-      left + 'px'
-    );
-
-
-    /*
-     * Collapse the stage to the actual
-     * artwork height so there is no
-     * giant empty area.
-     */
-
-    if (rect.height > 0) {
-
-      stage.style.height =
-        rect.height + 'px';
-
-    }
-
-  }
-
-
-  /* =========================================================
-     PROGRESS BAR
-     ========================================================= */
-
-  function restartProgress() {
-
-    if (!progress) {
-      return;
-    }
-
-
-    progress.classList.remove(
-      'is-running'
-    );
-
-
-    void progress.offsetWidth;
-
-
-    progress.classList.add(
-      'is-running'
-    );
-
-  }
-
-
-  /* =========================================================
-     SHOW SLIDE
-     ========================================================= */
-
-  function showSlide(nextIndex) {
-
-    index =
-      (nextIndex + slides.length) %
-      slides.length;
-
-
-    slides.forEach(
-      (slide, i) => {
-
-        slide.classList.toggle(
-          'is-active',
-          i === index
-        );
-
-      }
-    );
-
-
-    if (title) {
-
-      title.textContent =
-        details[index].title;
-
-    }
-
-
-    if (category) {
-
-      category.textContent =
-        details[index].category;
-
-    }
-
-
-    restartProgress();
-
-
-    requestAnimationFrame(
-      syncCaptionToImage
-    );
-
-
-    clearTimeout(timer);
-
-
-    timer =
-      setTimeout(
-        () => showSlide(index + 1),
-        DISPLAY_TIME
-      );
-
-  }
-
-
-  /* =========================================================
-     NEXT BUTTON
-     ========================================================= */
-
-  next?.addEventListener(
-    'click',
-    () => {
-
-      showSlide(index + 1);
-
-    }
-  );
-
-
-  /* =========================================================
-     PAGE VISIBILITY
-     ========================================================= */
-
-  document.addEventListener(
-    'visibilitychange',
-    () => {
-
-      clearTimeout(timer);
-
-
-      if (document.hidden) {
-
-        timer = null;
-
-        progress?.classList.remove(
-          'is-running'
-        );
-
-      }
-
-      else {
-
-        showSlide(index);
-
-      }
-
-    }
-  );
-
-
-  /* =========================================================
-     IMAGE LOAD
-     ========================================================= */
-
-  slides.forEach(
-    slide => {
-
-      const img =
-        slide.querySelector('img');
-
-
-      img?.addEventListener(
-        'load',
-        syncCaptionToImage
-      );
-
-    }
-  );
-
-
-  window.addEventListener(
-    'resize',
-    syncCaptionToImage
-  );
-
-
-  /* =========================================================
-     START
-     ========================================================= */
-
-  showSlide(0);
-
+  gallery.addEventListener('wheel', e => {
+    if (wheelLock) return;
+    if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+    wheelLock = true;
+    shift(e.deltaY > 0 ? 1 : -1);
+    setTimeout(() => { wheelLock = false; }, 180);
+  }, {passive:true});
+
+  prev?.addEventListener('click', () => shift(-1));
+  next?.addEventListener('click', () => shift(1));
+
+  center.link?.addEventListener('click', e => {
+    if (!projects[index].live) e.preventDefault();
+  });
+
+  setCenter(0);
+  build();
+  requestAnimationFrame(tick);
 })();
