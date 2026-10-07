@@ -4812,3 +4812,10 @@ body.cursor-active .cursor-glow {
 .crafted-gallery-nav{
   z-index:12 !important;
 }
+
+
+/* Crafted conveyor: no separate static centerpiece.
+   The moving artwork cards are the only artwork layer. */
+.crafted-gallery-center{
+  display:none !important;
+}
