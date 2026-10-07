@@ -739,7 +739,7 @@ if (clientTrack) {
     cardsWrap.innerHTML = '';
 
     /* Always show a dense wall of surrounding work. */
-    [-3,-2,-1,1,2,3].forEach(offset => {
+    [-5,-4,-3,-2,-1,1,2,3,4,5].forEach(offset => {
       let target = (index + offset + projects.length) % projects.length;
       cardsWrap.appendChild(makeCard(projects[target], offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset, target));
     });
