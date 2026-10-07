@@ -744,25 +744,28 @@ if (clientTrack) {
       const positionName = offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset;
       const card = makeCard(projects[target], positionName, target);
 
-      /* 5 cards per side, using the full gallery width without huge side gaps. */
+      /* 5 + center + 5 — curved 3D fan like the reference. */
       const depth = Math.abs(offset);
       const side = offset < 0 ? -1 : 1;
 
-      const leftPositions = {1:28, 2:19, 3:10, 4:0, 5:-12};
-      const rightPositions = {1:62, 2:71, 3:81, 4:90, 5:102};
+      const leftPositions = {1:28, 2:19, 3:10, 4:1, 5:-9};
+      const rightPositions = {1:62, 2:71, 3:81, 4:90, 5:100};
       const leftPct = side < 0 ? leftPositions[depth] : rightPositions[depth];
 
-      const scale = Math.max(0.50, 0.96 - (depth * 0.07));
-      const rotY = side * (11 + depth * 2);
-      const rotZ = side * (1 + depth * 0.45);
-      const z = -depth * 42;
-      const opacity = Math.max(0.25, 0.94 - (depth * 0.10));
-      const brightness = Math.max(0.45, 0.88 - (depth * 0.055));
+      /* Rotation increases progressively toward the outer edges. */
+      const angle = 10 + (depth * 7);
+      const rotY = side * angle;
+      const rotZ = side * (depth * 1.15);
+      const scale = 0.98 - (depth * 0.055);
+      const z = -(depth * 65);
+      const y = (depth * 2.5);
+      const opacity = Math.max(0.32, 0.96 - (depth * 0.105));
+      const brightness = Math.max(0.48, 0.90 - (depth * 0.06));
 
       card.style.setProperty('left', leftPct + '%', 'important');
       card.style.setProperty(
         'transform',
-        'translate(-50%,-50%) rotateY(' + rotY + 'deg) rotateZ(' + rotZ + 'deg) translateZ(' + z + 'px) scale(' + scale + ')',
+        'translate(-50%,calc(-50% + ' + y + 'px)) rotateY(' + rotY + 'deg) rotateZ(' + rotZ + 'deg) translateZ(' + z + 'px) scale(' + scale + ')',
         'important'
       );
       card.style.opacity = opacity;
