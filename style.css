@@ -4717,3 +4717,83 @@ body.cursor-active .cursor-glow {
     transition:none !important;
   }
 }
+
+
+/* =========================================================
+   CRAFTED DESIGNS — CONTINUOUS CONVEYOR OVERRIDES
+   Right → left, seamless loop, restrained 3D depth.
+   ========================================================= */
+.crafted.crafted-gallery-enabled .crafted-gallery{
+  overflow:hidden !important;
+  perspective:1800px !important;
+  --crafted-progress:0;
+}
+.crafted-gallery-stage{
+  overflow:visible !important;
+  perspective:1800px !important;
+  transform-style:preserve-3d !important;
+}
+.crafted-gallery-cards{
+  position:absolute !important;
+  inset:0 !important;
+  transform:none !important;
+  transition:none !important;
+  transform-style:preserve-3d !important;
+  pointer-events:none;
+}
+.crafted-gallery-card{
+  position:absolute !important;
+  width:var(--frame-width,250px) !important;
+  height:var(--frame-height,315px) !important;
+  margin:0 !important;
+  pointer-events:auto;
+  transition:opacity .18s ease, filter .18s ease, box-shadow .25s ease, border-color .25s ease !important;
+  will-change:transform,left,top,opacity,filter;
+  transform-origin:center center !important;
+}
+.crafted-gallery-card.is-conveyor-hover{
+  opacity:1 !important;
+  filter:brightness(1.05) saturate(1.06) !important;
+  box-shadow:0 28px 70px rgba(0,0,0,.62),0 0 30px rgba(255,61,53,.12) !important;
+  border-color:rgba(255,61,53,.55) !important;
+}
+.crafted-gallery.has-focus .crafted-gallery-card:not(.is-conveyor-hover){
+  opacity:.35 !important;
+}
+.crafted-gallery.has-focus .crafted-gallery-center{
+  opacity:.18 !important;
+  filter:brightness(.55) saturate(.75) !important;
+  transform:translate(-50%,-50%) scale(.86) !important;
+}
+.crafted-gallery-center{
+  transition:opacity .35s ease,filter .35s ease,transform .35s ease !important;
+}
+.crafted-gallery-card-image,
+.crafted-gallery-card-image img{
+  overflow:hidden !important;
+}
+.crafted-gallery-card-image img,
+.crafted-gallery-center-image img{
+  object-fit:fill !important;
+  object-position:center center !important;
+  transform:none !important;
+}
+.crafted-gallery-card:hover .crafted-gallery-card-image img,
+.crafted-gallery-center-card:hover .crafted-gallery-center-image img{
+  transform:none !important;
+}
+.crafted-gallery-card-label{
+  pointer-events:none;
+}
+.crafted-gallery-nav{
+  min-width:310px;
+  padding-top:15px;
+}
+@media(max-width:760px){
+  .crafted-gallery-cards{inset:0 -20vw !important;}
+  .crafted-gallery-card{width:var(--frame-width,150px) !important;height:var(--frame-height,220px) !important;}
+  .crafted-gallery.has-focus .crafted-gallery-center{transform:translate(-50%,-50%) scale(.9) !important;}
+}
+@media(prefers-reduced-motion:reduce){
+  .crafted-gallery-card{transition:none !important;}
+}
