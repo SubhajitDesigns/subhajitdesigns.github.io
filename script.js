@@ -604,7 +604,15 @@ if (clientTrack) {
     {title:'BANNERS', kicker:'DISPLAY • DIGITAL • CAMPAIGNS', type:'COMING SOON', live:false, image:'organic.jpg'},
     {title:'LOGOS', kicker:'MARKS • SYMBOLS • IDENTITY', type:'COMING SOON', live:false, image:'graphic.jpg'},
     {title:'PRINTABLES', kicker:'BROCHURES • MENUS • COLLATERAL', type:'COMING SOON', live:false, image:'bali.jpg'},
-    {title:'CREATIVES', kicker:'CONCEPTS • CAMPAIGNS • ART DIRECTION', type:'COMING SOON', live:false, image:'restaurant.jpg'}
+    {title:'CREATIVES', kicker:'CONCEPTS • CAMPAIGNS • ART DIRECTION', type:'COMING SOON', live:false, image:'restaurant.jpg'},
+    {title:'DIGITAL MARKETING', kicker:'CAMPAIGNS • PERFORMANCE • CREATIVE', type:'COMING SOON', live:false, image:'business.jpg'},
+    {title:'PET FOOD', kicker:'PRODUCT ADS • E-COMMERCE • PROMOTION', type:'COMING SOON', live:false, image:'food-ad.jpg'},
+    {title:'GOA', kicker:'TRAVEL • TOURISM • CAMPAIGN', type:'COMING SOON', live:false, image:'goa.jpg'},
+    {title:'FOOD & RESTAURANT', kicker:'FOOD • SOCIAL • PROMOTION', type:'COMING SOON', live:false, image:'idli.jpg'},
+    {title:'JEWELRY', kicker:'JEWELRY • PRODUCT • SOCIAL', type:'COMING SOON', live:false, image:'jwel.jpg'},
+    {title:'KASHMIR', kicker:'TRAVEL • TOURISM • CAMPAIGN', type:'COMING SOON', live:false, image:'kasfmir-tour.jpg'},
+    {title:'TOUR & TRAVEL', kicker:'TRAVEL • TRANSPORT • PROMOTION', type:'COMING SOON', live:false, image:'safe-tour.jpg'},
+    {title:'VIETNAM', kicker:'TRAVEL • TOURISM • CAMPAIGN', type:'COMING SOON', live:false, image:'vietnam.jpg'}
   ];
 
   let index = 0;
@@ -731,7 +739,7 @@ if (clientTrack) {
     cardsWrap.innerHTML = '';
 
     /* Always show a dense wall of surrounding work. */
-    [-3,-2,-1,1,2,3].forEach(offset => {
+    [-5,-4,-3,-2,-1,1,2,3,4,5].forEach(offset => {
       let target = (index + offset + projects.length) % projects.length;
       cardsWrap.appendChild(makeCard(projects[target], offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset, target));
     });
@@ -759,7 +767,7 @@ if (clientTrack) {
       requestAnimationFrame(syncNearestRightCard);
     });
 
-    centerNumber.textContent = String(index + 1).padStart(2,'0') + ' / 11';
+    centerNumber.textContent = String(index + 1).padStart(2,'0') + ' / ' + projects.length;
     centerType.textContent = p.type;
     centerKicker.textContent = p.kicker;
     centerTitle.textContent = p.title;
