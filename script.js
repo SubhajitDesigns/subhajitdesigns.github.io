@@ -695,9 +695,7 @@ if (clientTrack) {
     card.dataset.index = i;
     card.innerHTML =
       '<div class="crafted-gallery-card-image"><img src="' + project.image + '" alt="' + project.title + '" loading="lazy"><span>' +
-      (project.live ? 'OPEN' : 'SOON') + '</span></div>' +
-      '<div class="crafted-gallery-card-label"><small>' +
-      String(i + 1).padStart(2,'0') + '</small><b>' + project.title + '</b></div>';
+      (project.live ? 'OPEN' : 'SOON') + '</span></div>';
 
     const img = card.querySelector('img');
     frameFor(
