@@ -4891,3 +4891,17 @@ body.cursor-active .cursor-glow {
     height:430px !important;
   }
 }
+
+
+/* FINAL CARD OCCLUSION FIX:
+   artwork itself must be opaque so rear cards cannot bleed through. */
+.crafted-gallery-card-image img{
+  opacity:1 !important;
+}
+.crafted-gallery-card-image{
+  background:#050303 !important;
+  isolation:isolate !important;
+}
+.crafted-gallery-card{
+  isolation:isolate !important;
+}
