@@ -626,8 +626,9 @@ if (clientTrack) {
   let resizeTimer = null;
 
   const SPEED = 34; // px/sec
-  const GAP = 34;
-  const SIDE_LIMIT = 5;
+  const GAP = 18;
+  const CARD_W = 172;
+  const CARD_H = 255;
 
   function frameFor(img, frame, maxWidth, maxHeight, minWidth=150, minHeight=190) {
     if (!img || !frame) return;
@@ -701,12 +702,10 @@ if (clientTrack) {
       String(i + 1).padStart(2,'0') + '</small><b>' + project.title + '</b></div>';
 
     const img = card.querySelector('img');
-    frameFor(
-      img,
-      card,
-      window.innerWidth <= 760 ? 150 : (window.innerWidth <= 1000 ? 210 : 250),
-      window.innerWidth <= 760 ? 220 : (window.innerWidth <= 1000 ? 285 : 315)
-    );
+    card.style.width = (window.innerWidth <= 760 ? 145 : CARD_W) + 'px';
+    card.style.height = (window.innerWidth <= 760 ? 205 : CARD_H) + 'px';
+    card.style.setProperty('--frame-width', card.style.width);
+    card.style.setProperty('--frame-height', card.style.height);
 
     card.addEventListener('pointerenter', () => {
       if (coarse.matches) return;
@@ -797,7 +796,7 @@ if (clientTrack) {
     const stageRect = gallery.getBoundingClientRect();
     const centerX = stageRect.left + stageRect.width / 2;
     const centerY = stageRect.top + stageRect.height / 2;
-    const step = Math.max(190, isMobile ? 185 : 285);
+    const step = isMobile ? 160 : (CARD_W + GAP);
     const total = step * projects.length;
 
     let bestDistance = Infinity;
@@ -859,12 +858,10 @@ if (clientTrack) {
     resizeTimer = setTimeout(() => {
       cards.forEach(card => {
         const img = card.querySelector('img');
-        frameFor(
-          img,
-          card,
-          window.innerWidth <= 760 ? 150 : (window.innerWidth <= 1000 ? 210 : 250),
-          window.innerWidth <= 760 ? 220 : (window.innerWidth <= 1000 ? 285 : 315)
-        );
+        card.style.width = (window.innerWidth <= 760 ? 145 : CARD_W) + 'px';
+        card.style.height = (window.innerWidth <= 760 ? 205 : CARD_H) + 'px';
+        card.style.setProperty('--frame-width', card.style.width);
+        card.style.setProperty('--frame-height', card.style.height);
       });
     }, 120);
   });
