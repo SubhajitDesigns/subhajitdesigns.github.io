@@ -826,14 +826,14 @@ if (clientTrack) {
       const rotate = Math.max(-17, Math.min(17, -centerDistance / 34));
       const y = Math.sin(centerDistance / 260) * (isMobile ? 3 : 8);
 
-      card.style.transform =
+      card.style.setProperty('transform',
         'translate3d(calc(-50% + ' + x.toFixed(2) + 'px), calc(-50% + ' + y.toFixed(2) + 'px), ' +
-        z.toFixed(1) + 'px) rotateY(' + rotate.toFixed(2) + 'deg) scale(' + scale.toFixed(3) + ')';
-      card.style.left = '50%';
-      card.style.top = '50%';
-      card.style.opacity = opacity.toFixed(3);
-      card.style.filter = 'brightness(' + brightness.toFixed(3) + ') saturate(' + (0.78 + depth * .22).toFixed(3) + ')';
-      card.style.zIndex = String(1000 + Math.round(depth * 1000));
+        z.toFixed(1) + 'px) rotateY(' + rotate.toFixed(2) + 'deg) scale(' + scale.toFixed(3) + ')', 'important');
+      card.style.setProperty('left', '50%', 'important');
+      card.style.setProperty('top', '50%', 'important');
+      card.style.setProperty('opacity', opacity.toFixed(3), 'important');
+      card.style.setProperty('filter', 'brightness(' + brightness.toFixed(3) + ') saturate(' + (0.78 + depth * .22).toFixed(3) + ')', 'important');
+      card.style.setProperty('z-index', String(1000 + Math.round(depth * 1000)), 'important');
 
       const d = Math.abs(x);
       if (d < bestDistance) {
