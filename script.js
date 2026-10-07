@@ -626,9 +626,7 @@ if (clientTrack) {
   let resizeTimer = null;
 
   const SPEED = 34; // px/sec
-  const GAP = 18;
-  const CARD_W = 172;
-  const CARD_H = 255;
+  const GAP = 0;
 
   function frameFor(img, frame, maxWidth, maxHeight, minWidth=150, minHeight=190) {
     if (!img || !frame) return;
@@ -702,10 +700,12 @@ if (clientTrack) {
       String(i + 1).padStart(2,'0') + '</small><b>' + project.title + '</b></div>';
 
     const img = card.querySelector('img');
-    card.style.width = (window.innerWidth <= 760 ? 145 : CARD_W) + 'px';
-    card.style.height = (window.innerWidth <= 760 ? 205 : CARD_H) + 'px';
-    card.style.setProperty('--frame-width', card.style.width);
-    card.style.setProperty('--frame-height', card.style.height);
+    frameFor(
+      img,
+      card,
+      window.innerWidth <= 760 ? 150 : (window.innerWidth <= 1000 ? 210 : 250),
+      window.innerWidth <= 760 ? 220 : (window.innerWidth <= 1000 ? 285 : 315)
+    );
 
     card.addEventListener('pointerenter', () => {
       if (coarse.matches) return;
@@ -796,16 +796,18 @@ if (clientTrack) {
     const stageRect = gallery.getBoundingClientRect();
     const centerX = stageRect.left + stageRect.width / 2;
     const centerY = stageRect.top + stageRect.height / 2;
-    const step = isMobile ? 160 : (CARD_W + GAP);
-    const total = step * projects.length;
-
+    const widths = cards.map(card => Math.max(1, card.getBoundingClientRect().width));
+    const total = widths.reduce((sum, w) => sum + w + GAP, 0);
     let bestDistance = Infinity;
     let bestIndex = activeIndex;
 
+    let cursor = offset;
     cards.forEach((card, i) => {
-      let x = (i * step + offset) % total;
-      if (x < 0) x += total;
-      x -= total / 2;
+      const w = widths[i];
+      let x = cursor + w / 2;
+      while (x > total / 2 + w) x -= total;
+      while (x < -total / 2 - w) x += total;
+      cursor += w + GAP;
 
       let centerDistance = x;
       const abs = Math.abs(centerDistance);
@@ -858,10 +860,12 @@ if (clientTrack) {
     resizeTimer = setTimeout(() => {
       cards.forEach(card => {
         const img = card.querySelector('img');
-        card.style.width = (window.innerWidth <= 760 ? 145 : CARD_W) + 'px';
-        card.style.height = (window.innerWidth <= 760 ? 205 : CARD_H) + 'px';
-        card.style.setProperty('--frame-width', card.style.width);
-        card.style.setProperty('--frame-height', card.style.height);
+        frameFor(
+          img,
+          card,
+          window.innerWidth <= 760 ? 150 : (window.innerWidth <= 1000 ? 210 : 250),
+          window.innerWidth <= 760 ? 220 : (window.innerWidth <= 1000 ? 285 : 315)
+        );
       });
     }, 120);
   });
