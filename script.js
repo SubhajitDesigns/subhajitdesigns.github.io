@@ -396,7 +396,6 @@ if (clientTrack) {
       let amount =
         1 - (distance / range);
 
-
       amount =
         Math.max(
           0,
@@ -573,9 +572,10 @@ if (clientTrack) {
 })();
 
 
+
 /* =========================================================
-   CRAFTED DESIGNS — EDITORIAL ART WALL
-   Calm 3D archive with hover-to-focus interaction.
+   CRAFTED DESIGNS — CONTINUOUS RIGHT → LEFT ART WALL
+   Infinite conveyor • smooth 3D depth • no image crop.
    ========================================================= */
 (function () {
   const gallery = document.getElementById('craftedGallery');
@@ -615,11 +615,21 @@ if (clientTrack) {
     {title:'VIETNAM',kicker:'TRAVEL • TOURISM • CAMPAIGN',type:'COMING SOON',live:false,image:'vietnam.jpg'}
   ];
 
-  let index = 0;
-  let focusedCard = null;
-  let focusTimer = null;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const coarse = window.matchMedia('(pointer: coarse)');
+  let activeIndex = 0;
+  let offset = 0;
+  let lastTime = performance.now();
+  let paused = false;
+  let hoverCard = null;
+  let nearestIndex = -1;
+  let resizeTimer = null;
 
-  function fitNaturalFrame(img, frame, maxWidth, maxHeight, minWidth=150, minHeight=190) {
+  const SPEED = 34; // px/sec
+  const GAP = 34;
+  const SIDE_LIMIT = 5;
+
+  function frameFor(img, frame, maxWidth, maxHeight, minWidth=150, minHeight=190) {
     if (!img || !frame) return;
     const apply = () => {
       if (!img.naturalWidth || !img.naturalHeight) return;
@@ -642,40 +652,21 @@ if (clientTrack) {
       frame.style.height = height + 'px';
       frame.style.setProperty('--frame-width', width + 'px');
       frame.style.setProperty('--frame-height', height + 'px');
-
-      if (frame.id === 'craftedGalleryCenter') {
-        frame.parentElement.style.width = width + 'px';
-        frame.parentElement.style.height = height + 'px';
-        frame.parentElement.style.setProperty('--frame-width', width + 'px');
-        frame.parentElement.style.setProperty('--frame-height', height + 'px');
-      }
     };
     if (img.complete && img.naturalWidth) apply();
     else img.addEventListener('load', apply, {once:true});
   }
 
-  function updateCenter() {
-    const p = projects[index];
+  function updateCenterInfo(i) {
+    const p = projects[i];
+    activeIndex = i;
     centerImage.alt = p.title;
     centerImage.src = p.image;
-
-    const fitCenter = () => fitNaturalFrame(
-      centerImage,
-      document.getElementById('craftedGalleryCenter'),
-      window.innerWidth <= 760 ? Math.min(390, window.innerWidth * .70) : Math.min(510, window.innerWidth * .42),
-      window.innerWidth <= 760 ? 350 : 420,
-      180,
-      220
-    );
-    centerImage.onload = fitCenter;
-    if (centerImage.complete && centerImage.naturalWidth) fitCenter();
-
-    centerNumber.textContent = String(index + 1).padStart(2,'0') + ' / ' + projects.length;
+    centerNumber.textContent = String(i + 1).padStart(2,'0') + ' / ' + projects.length;
     centerType.textContent = p.type;
     centerKicker.textContent = p.kicker;
     centerTitle.textContent = p.title;
-    counter.textContent = String(index + 1).padStart(2,'0');
-    gallery.style.setProperty('--crafted-progress', (index / (projects.length - 1)).toFixed(4));
+    counter.textContent = String(i + 1).padStart(2,'0');
 
     centerLink.classList.toggle('is-disabled', !p.live);
     centerLink.removeAttribute('href');
@@ -686,21 +677,31 @@ if (clientTrack) {
       arrow.textContent = '↗';
       centerLink.appendChild(arrow);
     }
+
+    const fit = () => frameFor(
+      centerImage,
+      document.getElementById('craftedGalleryCenter'),
+      window.innerWidth <= 760 ? Math.min(390, window.innerWidth * .70) : Math.min(510, window.innerWidth * .42),
+      window.innerWidth <= 760 ? 350 : 420,
+      180, 220
+    );
+    centerImage.onload = fit;
+    if (centerImage.complete && centerImage.naturalWidth) fit();
   }
 
-  function makeCard(project, position, actualIndex) {
+  function cardFor(project, i) {
     const card = document.createElement('button');
     card.type = 'button';
-    card.className = 'crafted-gallery-card position-' + position;
-    card.dataset.index = actualIndex;
+    card.className = 'crafted-gallery-card';
+    card.dataset.index = i;
     card.innerHTML =
       '<div class="crafted-gallery-card-image"><img src="' + project.image + '" alt="' + project.title + '" loading="lazy"><span>' +
       (project.live ? 'OPEN' : 'SOON') + '</span></div>' +
       '<div class="crafted-gallery-card-label"><small>' +
-      String(actualIndex + 1).padStart(2,'0') + '</small><b>' + project.title + '</b></div>';
+      String(i + 1).padStart(2,'0') + '</small><b>' + project.title + '</b></div>';
 
     const img = card.querySelector('img');
-    fitNaturalFrame(
+    frameFor(
       img,
       card,
       window.innerWidth <= 760 ? 150 : (window.innerWidth <= 1000 ? 210 : 250),
@@ -708,76 +709,40 @@ if (clientTrack) {
     );
 
     card.addEventListener('pointerenter', () => {
-      if (window.matchMedia('(pointer: coarse)').matches) return;
-      clearTimeout(focusTimer);
-      focusedCard = card;
+      if (coarse.matches) return;
+      hoverCard = card;
+      paused = true;
       gallery.classList.add('has-focus');
-      card.classList.add('is-hover-focus');
+      card.classList.add('is-conveyor-hover');
     });
 
     card.addEventListener('pointerleave', () => {
-      if (window.matchMedia('(pointer: coarse)').matches) return;
-      clearTimeout(focusTimer);
-      focusTimer = setTimeout(() => {
-        if (focusedCard === card) {
-          card.classList.remove('is-hover-focus');
-          focusedCard = null;
-          gallery.classList.remove('has-focus');
-        }
-      }, 90);
+      if (coarse.matches) return;
+      if (hoverCard === card) hoverCard = null;
+      card.classList.remove('is-conveyor-hover');
+      if (!hoverCard) {
+        paused = false;
+        gallery.classList.remove('has-focus');
+      }
     });
 
     card.addEventListener('click', () => {
-      const target = Number(card.dataset.index);
-      if (card.classList.contains('is-hover-focus')) {
-        if (project.live) window.location.href = project.url;
-        else select(target);
-        return;
+      const p = projects[Number(card.dataset.index)];
+      if (card.classList.contains('is-conveyor-hover') && p.live) {
+        window.location.href = p.url;
+      } else {
+        activeIndex = Number(card.dataset.index);
+        offset = 0;
+        updateCenterInfo(activeIndex);
       }
-      select(target);
     });
 
     return card;
   }
 
-  function relativePosition(i) {
-    let d = i - index;
-    if (d > projects.length / 2) d -= projects.length;
-    if (d < -projects.length / 2) d += projects.length;
-    return d;
-  }
+  projects.forEach((project, i) => cardsWrap.appendChild(cardFor(project, i)));
 
-  function render() {
-    cardsWrap.innerHTML = '';
-
-    [-5,-4,-3,-2,-1,1,2,3,4,5].forEach(offset => {
-      const target = (index + offset + projects.length) % projects.length;
-      cardsWrap.appendChild(
-        makeCard(
-          projects[target],
-          offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset,
-          target
-        )
-      );
-    });
-
-    updateCenter();
-  }
-
-  function select(target) {
-    index = (target + projects.length) % projects.length;
-    if (focusedCard) focusedCard.classList.remove('is-hover-focus');
-    focusedCard = null;
-    gallery.classList.remove('has-focus');
-    render();
-  }
-
-  function shift(step) {
-    select(index + step);
-  }
-
-  prev?.addEventListener('click', () => shift(-1));
-  next?.addEventListener('click', () => shift(1));
+  const cards = Array.from(cardsWrap.children);
 
   dotsWrap.innerHTML = '';
   projects.forEach((project, i) => {
@@ -785,33 +750,126 @@ if (clientTrack) {
     dot.type = 'button';
     dot.title = project.title;
     dot.setAttribute('aria-label', project.title);
-    dot.addEventListener('click', () => select(i));
+    dot.addEventListener('click', () => {
+      activeIndex = i;
+      offset = 0;
+      updateCenterInfo(i);
+    });
     dotsWrap.appendChild(dot);
   });
 
-  centerLink?.addEventListener('click', e => {
-    if (!projects[index].live) e.preventDefault();
+  function shift(step) {
+    activeIndex = (activeIndex + step + projects.length) % projects.length;
+    offset = 0;
+    updateCenterInfo(activeIndex);
+  }
+
+  prev?.addEventListener('click', () => shift(-1));
+  next?.addEventListener('click', () => shift(1));
+
+  gallery.addEventListener('pointerenter', () => {
+    if (!coarse.matches) paused = true;
   });
-
-  gallery.addEventListener('pointermove', e => {
-    if (window.matchMedia('(pointer: coarse)').matches || focusedCard) return;
-    const rect = gallery.getBoundingClientRect();
-    const px = ((e.clientX - rect.left) / rect.width - .5) * 2;
-    const py = ((e.clientY - rect.top) / rect.height - .5) * 2;
-    gallery.style.setProperty('--gx', (px * 1.7).toFixed(2) + 'deg');
-    gallery.style.setProperty('--gy', (py * -1.1).toFixed(2) + 'deg');
-  }, {passive:true});
-
   gallery.addEventListener('pointerleave', () => {
-    gallery.style.setProperty('--gx', '0deg');
-    gallery.style.setProperty('--gy', '0deg');
+    if (!hoverCard && !coarse.matches) {
+      paused = false;
+      gallery.classList.remove('has-focus');
+    }
   });
 
   addEventListener('keydown', e => {
-    if (!gallery || !gallery.matches(':hover')) return;
+    if (!gallery.matches(':hover')) return;
     if (e.key === 'ArrowLeft') shift(-1);
     if (e.key === 'ArrowRight') shift(1);
   });
 
-  render();
+  function layout(now) {
+    const dt = Math.min(40, now - lastTime);
+    lastTime = now;
+
+    const isMobile = window.innerWidth <= 760;
+    const speed = isMobile ? 20 : SPEED;
+
+    if (!paused && !reduceMotion.matches) {
+      offset -= speed * dt / 1000;
+    }
+
+    const stageRect = gallery.getBoundingClientRect();
+    const centerX = stageRect.left + stageRect.width / 2;
+    const centerY = stageRect.top + stageRect.height / 2;
+    const step = Math.max(190, isMobile ? 185 : 285);
+    const total = step * projects.length;
+
+    let bestDistance = Infinity;
+    let bestIndex = activeIndex;
+
+    cards.forEach((card, i) => {
+      let x = (i * step + offset) % total;
+      if (x < 0) x += total;
+      x -= total / 2;
+
+      let centerDistance = x;
+      const abs = Math.abs(centerDistance);
+      const norm = Math.min(abs / (stageRect.width * .64), 1);
+
+      const depth = 1 - Math.min(abs / (stageRect.width * .58), 1);
+      const scale = isMobile
+        ? .67 + depth * .25
+        : .64 + depth * .40;
+      const opacity = isMobile
+        ? .30 + depth * .60
+        : .18 + depth * .82;
+      const brightness = isMobile
+        ? .55 + depth * .45
+        : .48 + depth * .52;
+      const z = -180 + depth * 330;
+      const rotate = Math.max(-17, Math.min(17, -centerDistance / 34));
+      const y = Math.sin(centerDistance / 260) * (isMobile ? 3 : 8);
+
+      card.style.transform =
+        'translate3d(calc(-50% + ' + x.toFixed(2) + 'px), calc(-50% + ' + y.toFixed(2) + 'px), ' +
+        z.toFixed(1) + 'px) rotateY(' + rotate.toFixed(2) + 'deg) scale(' + scale.toFixed(3) + ')';
+      card.style.left = '50%';
+      card.style.top = '50%';
+      card.style.opacity = opacity.toFixed(3);
+      card.style.filter = 'brightness(' + brightness.toFixed(3) + ') saturate(' + (0.78 + depth * .22).toFixed(3) + ')';
+      card.style.zIndex = String(1000 + Math.round(depth * 1000));
+
+      const d = Math.abs(x);
+      if (d < bestDistance) {
+        bestDistance = d;
+        bestIndex = i;
+      }
+    });
+
+    if (bestIndex !== nearestIndex) {
+      nearestIndex = bestIndex;
+      const logical = Number(cards[bestIndex].dataset.index);
+      if (logical !== activeIndex) updateCenterInfo(logical);
+    }
+
+    requestAnimationFrame(layout);
+  }
+
+  updateCenterInfo(0);
+  requestAnimationFrame(layout);
+
+  addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      cards.forEach(card => {
+        const img = card.querySelector('img');
+        frameFor(
+          img,
+          card,
+          window.innerWidth <= 760 ? 150 : (window.innerWidth <= 1000 ? 210 : 250),
+          window.innerWidth <= 760 ? 220 : (window.innerWidth <= 1000 ? 285 : 315)
+        );
+      });
+    }, 120);
+  });
+
+  if (reduceMotion.matches) {
+    gallery.classList.add('reduced-motion');
+  }
 })();
