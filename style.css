@@ -4503,9 +4503,7 @@ body.cursor-active .cursor-glow {
 @media (min-width:1001px){
   /* Keep the nearest right card touching the center artwork,
      even when the center artwork has a wider natural ratio. */
-  .crafted-gallery-card.position-right-1{
-    left:calc(50% + (var(--frame-width) / 2) - 20px) !important;
-  }
+  .crafted-gallery-card.position-right-1{left:66% !important;}
   .crafted-gallery-card.position-right-2{left:79% !important;}
   .crafted-gallery-card.position-right-3{left:91% !important;}
 }
