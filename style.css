@@ -4819,3 +4819,15 @@ body.cursor-active .cursor-glow {
 .crafted-gallery-center{
   display:none !important;
 }
+
+
+/* Prevent the card behind from showing through any transparent/rounded
+   portions of the front artwork. Preserve all conveyor motion and depth. */
+.crafted-gallery-card{
+  background:#050303 !important;
+  isolation:isolate !important;
+}
+.crafted-gallery-card-image{
+  background:#050303 !important;
+  isolation:isolate !important;
+}
