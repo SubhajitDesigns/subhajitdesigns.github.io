@@ -813,12 +813,11 @@ if (clientTrack) {
     window.setTimeout(() => {
       index = (target + projects.length) % projects.length;
       render(direction);
-      gallery.classList.remove(motionClass);
       gallery.classList.add('gallery-conveyor-enter');
 
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          gallery.classList.remove('gallery-conveyor-enter');
+          gallery.classList.remove(motionClass, 'gallery-conveyor-enter');
         });
       });
     }, 300);
