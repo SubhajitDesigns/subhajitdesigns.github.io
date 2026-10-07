@@ -4905,3 +4905,16 @@ body.cursor-active .cursor-glow {
 .crafted-gallery-card{
   isolation:isolate !important;
 }
+
+
+/* Crafted Designs — hide category/title text, keep OPEN action */
+.crafted-gallery-center-meta,
+.crafted-gallery-center-copy p,
+.crafted-gallery-center-copy h3{
+  display:none !important;
+}
+.crafted-gallery-center-copy{
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:flex-end !important;
+}
