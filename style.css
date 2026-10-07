@@ -4583,3 +4583,50 @@ body.cursor-active .cursor-glow {
   .crafted-gallery-card.position-left-4{left:-12%;transform:translate(-5%,-50%) rotateY(22deg) scale(.52);opacity:.22}
   .crafted-gallery-card.position-right-4{left:106%;transform:translate(5%,-50%) rotateY(-22deg) scale(.52);opacity:.22}
 }
+
+
+/* =========================================================
+   CRAFTED GALLERY — TIGHTER INNER STACK
+   Pull the nearest artwork cards toward the center artwork.
+   Artwork remains uncropped and natural-ratio.
+   ========================================================= */
+@media (min-width:1001px){
+  .crafted-gallery-card.position-left-1{
+    left:23% !important;
+    transform:translate(calc(-8% + 12px),-50%) rotateY(12deg) rotateZ(-1deg) translateZ(-20px) scale(.94) !important;
+  }
+  .crafted-gallery-card.position-left-2{
+    left:10% !important;
+    transform:translate(calc(-10% + 8px),-50%) rotateY(19deg) rotateZ(-2deg) translateZ(-80px) scale(.84) !important;
+  }
+  .crafted-gallery-card.position-right-1{
+    left:63% !important;
+    transform:translate(calc(8% - 18px),-50%) rotateY(-12deg) rotateZ(1deg) translateZ(-20px) scale(.94) !important;
+  }
+  .crafted-gallery-card.position-right-2{
+    left:76% !important;
+    transform:translate(calc(10% - 10px),-50%) rotateY(-19deg) rotateZ(2deg) translateZ(-80px) scale(.84) !important;
+  }
+}
+
+@media (min-width:761px) and (max-width:1000px){
+  .crafted-gallery-card.position-left-1{
+    left:19% !important;
+    transform:translate(calc(-8% + 8px),-50%) rotateY(11deg) scale(.82) !important;
+  }
+  .crafted-gallery-card.position-right-1{
+    left:65% !important;
+    transform:translate(calc(8% - 10px),-50%) rotateY(-11deg) scale(.82) !important;
+  }
+}
+
+@media (max-width:760px){
+  .crafted-gallery-card.position-left-1{
+    left:17% !important;
+    transform:translate(calc(-8% + 5px),-50%) rotateY(11deg) scale(.82) !important;
+  }
+  .crafted-gallery-card.position-right-1{
+    left:68% !important;
+    transform:translate(calc(8% - 7px),-50%) rotateY(-11deg) scale(.82) !important;
+  }
+}
