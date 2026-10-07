@@ -739,46 +739,9 @@ if (clientTrack) {
     cardsWrap.innerHTML = '';
 
     /* Always show a dense wall of surrounding work. */
-    [-5,-4,-3,-2,-1,1,2,3,4,5].forEach(offset => {
+    [-3,-2,-1,1,2,3].forEach(offset => {
       let target = (index + offset + projects.length) % projects.length;
-      const positionName = offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset;
-      const card = makeCard(projects[target], positionName, target);
-
-      /* FINAL 5 + CENTER + 5 — every side card remains visibly on-screen. */
-      const depth = Math.abs(offset);
-      const side = offset < 0 ? -1 : 1;
-
-      /* Card centers: inner cards overlap the center, outer cards reach the edges. */
-      const positions = {
-        left:  {1:30, 2:21, 3:12, 4:3, 5:-6},
-        right: {1:70, 2:79, 3:88, 4:97, 5:106}
-      };
-      const leftPct = positions[side < 0 ? 'left' : 'right'][depth];
-
-      const angles = {1:10, 2:16, 3:22, 4:28, 5:34};
-      const scales = {1:.94, 2:.84, 3:.76, 4:.68, 5:.60};
-      const depths = {1:-20, 2:-55, 3:-95, 4:-140, 5:-185};
-      const opacities = {1:.94, 2:.82, 3:.68, 4:.54, 5:.40};
-      const brightnesses = {1:.88, 2:.76, 3:.65, 4:.55, 5:.48};
-
-      card.style.setProperty('left', leftPct + '%', 'important');
-      card.style.setProperty(
-        'transform',
-        'translate(-50%,-50%) rotateY(' + (side * angles[depth]) + 'deg) rotateZ(' + (side * depth * .6) + 'deg) translateZ(' + depths[depth] + 'px) scale(' + scales[depth] + ')',
-        'important'
-      );
-      card.style.opacity = opacities[depth];
-      card.style.filter = 'brightness(' + brightnesses[depth] + ')';
-      card.style.zIndex = String(30 - depth);
-
-      if (depth >= 4) {
-        const label = card.querySelector('.crafted-gallery-card-label');
-        const badge = card.querySelector('.crafted-gallery-card-image span');
-        if (label) label.style.display = 'none';
-        if (badge) badge.style.opacity = '0';
-      }
-
-      cardsWrap.appendChild(card);
+      cardsWrap.appendChild(makeCard(projects[target], offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset, target));
     });
 
     centerImage.alt = p.title;
