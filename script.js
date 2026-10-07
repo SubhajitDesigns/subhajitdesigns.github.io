@@ -573,24 +573,21 @@ if (clientTrack) {
 })();
 
 
-
 /* =========================================================
-   CRAFTED DESIGNS — 3D INFINITE FILMSTRIP
-   Continuous horizontal motion + hover focus.
+   CRAFTED DESIGNS — EDITORIAL ART WALL
+   Calm 3D archive with hover-to-focus interaction.
    ========================================================= */
 (function () {
   const gallery = document.getElementById('craftedGallery');
   const cardsWrap = document.getElementById('craftedGalleryCards');
   if (!gallery || !cardsWrap) return;
 
-  const center = {
-    image: document.getElementById('craftedCenterImage'),
-    number: document.getElementById('craftedCenterNumber'),
-    type: document.getElementById('craftedCenterType'),
-    kicker: document.getElementById('craftedCenterKicker'),
-    title: document.getElementById('craftedCenterTitle'),
-    link: document.getElementById('craftedCenterLink')
-  };
+  const centerImage = document.getElementById('craftedCenterImage');
+  const centerNumber = document.getElementById('craftedCenterNumber');
+  const centerType = document.getElementById('craftedCenterType');
+  const centerKicker = document.getElementById('craftedCenterKicker');
+  const centerTitle = document.getElementById('craftedCenterTitle');
+  const centerLink = document.getElementById('craftedCenterLink');
   const counter = document.getElementById('craftedGalleryCounter');
   const dotsWrap = document.getElementById('craftedGalleryDots');
   const prev = document.getElementById('craftedGalleryPrev');
@@ -619,34 +616,83 @@ if (clientTrack) {
   ];
 
   let index = 0;
-  let paused = false;
-  let dragX = null;
-  let dragMoved = false;
-  let wheelLock = false;
+  let focusedCard = null;
+  let focusTimer = null;
 
-  function fitFrame(img, frame, maxWidth, maxHeight, minWidth=150, minHeight=190) {
+  function fitNaturalFrame(img, frame, maxWidth, maxHeight, minWidth=150, minHeight=190) {
+    if (!img || !frame) return;
     const apply = () => {
       if (!img.naturalWidth || !img.naturalHeight) return;
       const ratio = img.naturalWidth / img.naturalHeight;
-      let w = maxWidth, h = w / ratio;
-      if (h > maxHeight) { h = maxHeight; w = h * ratio; }
-      if (w < minWidth) { w = minWidth; h = w / ratio; }
-      if (h < minHeight) { h = minHeight; w = h * ratio; }
-      frame.style.width = w + 'px';
-      frame.style.height = h + 'px';
-      frame.style.setProperty('--frame-width', w + 'px');
-      frame.style.setProperty('--frame-height', h + 'px');
+      let width = maxWidth;
+      let height = width / ratio;
+      if (height > maxHeight) {
+        height = maxHeight;
+        width = height * ratio;
+      }
+      if (width < minWidth) {
+        width = minWidth;
+        height = width / ratio;
+      }
+      if (height < minHeight) {
+        height = minHeight;
+        width = height * ratio;
+      }
+      frame.style.width = width + 'px';
+      frame.style.height = height + 'px';
+      frame.style.setProperty('--frame-width', width + 'px');
+      frame.style.setProperty('--frame-height', height + 'px');
+
+      if (frame.id === 'craftedGalleryCenter') {
+        frame.parentElement.style.width = width + 'px';
+        frame.parentElement.style.height = height + 'px';
+        frame.parentElement.style.setProperty('--frame-width', width + 'px');
+        frame.parentElement.style.setProperty('--frame-height', height + 'px');
+      }
     };
     if (img.complete && img.naturalWidth) apply();
     else img.addEventListener('load', apply, {once:true});
   }
 
-  function makeCard(project, offset, actualIndex) {
+  function updateCenter() {
+    const p = projects[index];
+    centerImage.alt = p.title;
+    centerImage.src = p.image;
+
+    const fitCenter = () => fitNaturalFrame(
+      centerImage,
+      document.getElementById('craftedGalleryCenter'),
+      window.innerWidth <= 760 ? Math.min(390, window.innerWidth * .70) : Math.min(510, window.innerWidth * .42),
+      window.innerWidth <= 760 ? 350 : 420,
+      180,
+      220
+    );
+    centerImage.onload = fitCenter;
+    if (centerImage.complete && centerImage.naturalWidth) fitCenter();
+
+    centerNumber.textContent = String(index + 1).padStart(2,'0') + ' / ' + projects.length;
+    centerType.textContent = p.type;
+    centerKicker.textContent = p.kicker;
+    centerTitle.textContent = p.title;
+    counter.textContent = String(index + 1).padStart(2,'0');
+    gallery.style.setProperty('--crafted-progress', (index / (projects.length - 1)).toFixed(4));
+
+    centerLink.classList.toggle('is-disabled', !p.live);
+    centerLink.removeAttribute('href');
+    centerLink.textContent = p.live ? 'OPEN ' : 'COMING SOON';
+    if (p.live) {
+      centerLink.href = p.url;
+      const arrow = document.createElement('span');
+      arrow.textContent = '↗';
+      centerLink.appendChild(arrow);
+    }
+  }
+
+  function makeCard(project, position, actualIndex) {
     const card = document.createElement('button');
     card.type = 'button';
-    card.className = 'crafted-gallery-card film-card';
+    card.className = 'crafted-gallery-card position-' + position;
     card.dataset.index = actualIndex;
-    card.dataset.offset = offset;
     card.innerHTML =
       '<div class="crafted-gallery-card-image"><img src="' + project.image + '" alt="' + project.title + '" loading="lazy"><span>' +
       (project.live ? 'OPEN' : 'SOON') + '</span></div>' +
@@ -654,147 +700,118 @@ if (clientTrack) {
       String(actualIndex + 1).padStart(2,'0') + '</small><b>' + project.title + '</b></div>';
 
     const img = card.querySelector('img');
-    fitFrame(img, card,
-      window.innerWidth <= 760 ? 150 : (window.innerWidth <= 1000 ? 205 : 245),
-      window.innerWidth <= 760 ? 220 : (window.innerWidth <= 1000 ? 285 : 305)
+    fitNaturalFrame(
+      img,
+      card,
+      window.innerWidth <= 760 ? 150 : (window.innerWidth <= 1000 ? 210 : 250),
+      window.innerWidth <= 760 ? 220 : (window.innerWidth <= 1000 ? 285 : 315)
     );
 
-    card.addEventListener('mouseenter', () => {
-      paused = true;
-      gallery.classList.add('film-hovering');
-      card.classList.add('is-focused');
+    card.addEventListener('pointerenter', () => {
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+      clearTimeout(focusTimer);
+      focusedCard = card;
+      gallery.classList.add('has-focus');
+      card.classList.add('is-hover-focus');
     });
-    card.addEventListener('mouseleave', () => {
-      card.classList.remove('is-focused');
-      gallery.classList.remove('film-hovering');
-      paused = false;
+
+    card.addEventListener('pointerleave', () => {
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+      clearTimeout(focusTimer);
+      focusTimer = setTimeout(() => {
+        if (focusedCard === card) {
+          card.classList.remove('is-hover-focus');
+          focusedCard = null;
+          gallery.classList.remove('has-focus');
+        }
+      }, 90);
     });
 
     card.addEventListener('click', () => {
       const target = Number(card.dataset.index);
-      if (dragMoved) return;
-      if (project.live) window.location.href = project.url;
-      else setCenter(target);
+      if (card.classList.contains('is-hover-focus')) {
+        if (project.live) window.location.href = project.url;
+        else select(target);
+        return;
+      }
+      select(target);
     });
 
     return card;
   }
 
-  function setCenter(target) {
-    index = (target + projects.length) % projects.length;
-    const p = projects[index];
-    center.image.alt = p.title;
-    center.image.src = p.image;
-    center.image.onload = () => fitFrame(
-      center.image,
-      document.getElementById('craftedGalleryCenter'),
-      window.innerWidth <= 760 ? Math.min(390, window.innerWidth * .70) : Math.min(510, window.innerWidth * .42),
-      window.innerWidth <= 760 ? 350 : 420,
-      180, 220
-    );
-    center.number.textContent = String(index + 1).padStart(2,'0') + ' / ' + projects.length;
-    center.type.textContent = p.type;
-    center.kicker.textContent = p.kicker;
-    center.title.textContent = p.title;
-    counter.textContent = String(index + 1).padStart(2,'0');
-
-    center.link.classList.toggle('is-disabled', !p.live);
-    center.link.removeAttribute('href');
-    center.link.textContent = p.live ? 'OPEN ' : 'COMING SOON';
-    if (p.live) {
-      center.link.href = p.url;
-      const arrow = document.createElement('span');
-      arrow.textContent = '↗';
-      center.link.appendChild(arrow);
-    }
-
-    dotsWrap.innerHTML = '';
-    projects.forEach((project, i) => {
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.title = project.title;
-      dot.setAttribute('aria-label', project.title);
-      dot.className = i === index ? 'is-active' : '';
-      dot.addEventListener('click', () => setCenter(i));
-      dotsWrap.appendChild(dot);
-    });
+  function relativePosition(i) {
+    let d = i - index;
+    if (d > projects.length / 2) d -= projects.length;
+    if (d < -projects.length / 2) d += projects.length;
+    return d;
   }
 
-  function build() {
+  function render() {
     cardsWrap.innerHTML = '';
-    // Enough cards on each side to make the strip feel continuous.
-    for (let offset = -8; offset <= 8; offset++) {
-      if (offset === 0) continue;
-      const actual = (index + offset + projects.length) % projects.length;
-      cardsWrap.appendChild(makeCard(projects[actual], offset, actual));
-    }
-    setCenter(index);
+
+    [-5,-4,-3,-2,-1,1,2,3,4,5].forEach(offset => {
+      const target = (index + offset + projects.length) % projects.length;
+      cardsWrap.appendChild(
+        makeCard(
+          projects[target],
+          offset < 0 ? 'left-' + Math.abs(offset) : 'right-' + offset,
+          target
+        )
+      );
+    });
+
+    updateCenter();
+  }
+
+  function select(target) {
+    index = (target + projects.length) % projects.length;
+    if (focusedCard) focusedCard.classList.remove('is-hover-focus');
+    focusedCard = null;
+    gallery.classList.remove('has-focus');
+    render();
   }
 
   function shift(step) {
-    setCenter(index + step);
+    select(index + step);
   }
-
-  // Smooth automatic drift. Cards are positioned from CSS using their offset.
-  let phase = 0;
-  let last = performance.now();
-  function tick(now) {
-    const dt = Math.min(40, now - last);
-    last = now;
-    if (!paused && !dragX && window.innerWidth > 760) {
-      phase += dt * 0.018;
-      cardsWrap.style.setProperty('--film-shift', phase.toFixed(2) + 'px');
-    }
-    requestAnimationFrame(tick);
-  }
-
-  gallery.addEventListener('pointerdown', e => {
-    if (e.pointerType === 'mouse' && e.button !== 0) return;
-    dragX = e.clientX;
-    dragMoved = false;
-    gallery.setPointerCapture?.(e.pointerId);
-    paused = true;
-  });
-
-  gallery.addEventListener('pointermove', e => {
-    if (dragX === null) return;
-    const dx = e.clientX - dragX;
-    if (Math.abs(dx) > 8) dragMoved = true;
-    cardsWrap.style.setProperty('--drag-shift', dx + 'px');
-  });
-
-  gallery.addEventListener('pointerup', e => {
-    if (dragX === null) return;
-    const dx = e.clientX - dragX;
-    cardsWrap.style.removeProperty('--drag-shift');
-    dragX = null;
-    paused = false;
-    if (Math.abs(dx) > 65) shift(dx < 0 ? 1 : -1);
-    setTimeout(() => { dragMoved = false; }, 80);
-  });
-
-  gallery.addEventListener('pointercancel', () => {
-    dragX = null;
-    cardsWrap.style.removeProperty('--drag-shift');
-    paused = false;
-  });
-
-  gallery.addEventListener('wheel', e => {
-    if (wheelLock) return;
-    if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
-    wheelLock = true;
-    shift(e.deltaY > 0 ? 1 : -1);
-    setTimeout(() => { wheelLock = false; }, 180);
-  }, {passive:true});
 
   prev?.addEventListener('click', () => shift(-1));
   next?.addEventListener('click', () => shift(1));
 
-  center.link?.addEventListener('click', e => {
+  dotsWrap.innerHTML = '';
+  projects.forEach((project, i) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.title = project.title;
+    dot.setAttribute('aria-label', project.title);
+    dot.addEventListener('click', () => select(i));
+    dotsWrap.appendChild(dot);
+  });
+
+  centerLink?.addEventListener('click', e => {
     if (!projects[index].live) e.preventDefault();
   });
 
-  setCenter(0);
-  build();
-  requestAnimationFrame(tick);
+  gallery.addEventListener('pointermove', e => {
+    if (window.matchMedia('(pointer: coarse)').matches || focusedCard) return;
+    const rect = gallery.getBoundingClientRect();
+    const px = ((e.clientX - rect.left) / rect.width - .5) * 2;
+    const py = ((e.clientY - rect.top) / rect.height - .5) * 2;
+    gallery.style.setProperty('--gx', (px * 1.7).toFixed(2) + 'deg');
+    gallery.style.setProperty('--gy', (py * -1.1).toFixed(2) + 'deg');
+  }, {passive:true});
+
+  gallery.addEventListener('pointerleave', () => {
+    gallery.style.setProperty('--gx', '0deg');
+    gallery.style.setProperty('--gy', '0deg');
+  });
+
+  addEventListener('keydown', e => {
+    if (!gallery || !gallery.matches(':hover')) return;
+    if (e.key === 'ArrowLeft') shift(-1);
+    if (e.key === 'ArrowRight') shift(1);
+  });
+
+  render();
 })();
