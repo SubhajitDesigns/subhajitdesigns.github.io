@@ -876,31 +876,57 @@ if (clientTrack) {
 
 
 /* =========================================================
-   FULL-SCREEN SHOW REEL INTRO — LIGHTWEIGHT CANVAS DISSOLVE
+   FULL-SCREEN SHOW REEL INTRO — THANOS-STYLE PARTICLE DISSOLVE
    ========================================================= */
 (() => {
   const intro = document.getElementById('introReel');
   const video = document.getElementById('introReelVideo');
   const canvas = document.getElementById('introReelCanvas');
-
   if (!intro || !video || !canvas) return;
 
   document.body.classList.add('intro-lock');
 
   let finished = false;
-  let dissolveStarted = false;
+  let effectStarted = false;
   let dissolveTimer = null;
+  let playRetry = null;
 
   const cleanup = () => {
+    if (finished) return;
+    finished = true;
+    if (dissolveTimer) clearTimeout(dissolveTimer);
+    if (playRetry) clearTimeout(playRetry);
     video.pause();
+    video.style.visibility = '';
     intro.classList.add('is-done');
     document.body.classList.remove('intro-lock');
-    setTimeout(() => intro.remove(), 380);
+    setTimeout(() => intro.remove(), 180);
   };
 
-  const finishIntro = () => {
-    if (finished || dissolveStarted) return;
-    dissolveStarted = true;
+  // Muted autoplay is allowed by browsers, but explicitly calling play()
+  // makes startup reliable when autoplay is delayed by page loading.
+  const forcePlay = () => {
+    if (finished || effectStarted) return;
+    const promise = video.play();
+    if (promise && typeof promise.catch === 'function') {
+      promise.catch(() => {
+        clearTimeout(playRetry);
+        playRetry = setTimeout(forcePlay, 250);
+      });
+    }
+  };
+
+  video.addEventListener('loadeddata', forcePlay);
+  video.addEventListener('canplay', forcePlay);
+
+  /*
+   * The video runs normally until ~3.5s. Then the current frame is sampled
+   * into a lightweight canvas particle field. The particles fly outward with
+   * slight random spread and fade — a smooth Thanos/Blip-style disintegration.
+   */
+  const startParticleDissolve = () => {
+    if (finished || effectStarted) return;
+    effectStarted = true;
 
     const w = Math.max(1, window.innerWidth);
     const h = Math.max(1, window.innerHeight);
@@ -908,100 +934,149 @@ if (clientTrack) {
     canvas.width = w;
     canvas.height = h;
 
-    const ctx = canvas.getContext('2d', { alpha: true });
+    const ctx = canvas.getContext('2d', { alpha:true });
     if (!ctx) {
-      finished = true;
       cleanup();
       return;
     }
 
-    // Freeze the final video frame on the canvas. The video itself is
-    // paused underneath, so there is no expensive DOM pixel generation.
-    ctx.clearRect(0, 0, w, h);
-    ctx.drawImage(video, 0, 0, w, h);
-    video.pause();
+    const sampleCanvas = document.createElement('canvas');
+    const sampleW = Math.min(720, Math.max(360, Math.round(w * 0.62)));
+    const sampleH = Math.max(1, Math.round(sampleW * h / w));
+    sampleCanvas.width = sampleW;
+    sampleCanvas.height = sampleH;
 
-    // Small pixels, but rendered efficiently with one canvas.
-    const tile = Math.max(8, Math.min(12, Math.round(Math.min(w, h) / 80)));
-    const cols = Math.ceil(w / tile);
-    const rows = Math.ceil(h / tile);
-    const centerX = w / 2;
-    const centerY = h / 2;
-    const maxDistance = Math.hypot(centerX, centerY);
+    const sctx = sampleCanvas.getContext('2d', { willReadFrequently:true });
+    if (!sctx) {
+      cleanup();
+      return;
+    }
 
-    const cells = [];
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < cols; col++) {
-        const x = col * tile;
-        const y = row * tile;
-        const cw = Math.min(tile, w - x);
-        const ch = Math.min(tile, h - y);
-        const d = Math.hypot(x + cw / 2 - centerX, y + ch / 2 - centerY);
-        // Tiny deterministic variation prevents a perfectly mechanical ring.
-        const jitter = (((col * 17 + row * 31) % 23) / 23 - 0.5) * 0.035;
-        cells.push({ x, y, cw, ch, p: Math.min(1, d / maxDistance) + jitter });
+    // Capture the exact frame at the moment the dissolve begins.
+    sctx.drawImage(video, 0, 0, sampleW, sampleH);
+    const image = sctx.getImageData(0, 0, sampleW, sampleH);
+    const data = image.data;
+
+    // ~80 columns keeps the effect detailed but avoids the DOM freeze
+    // caused by thousands of independent HTML elements.
+    const step = Math.max(7, Math.round(sampleW / 82));
+    const scaleX = w / sampleW;
+    const scaleY = h / sampleH;
+    const particles = [];
+
+    let seed = 918273;
+    const rand = () => {
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      return seed / 4294967296;
+    };
+
+    const centerX = w * 0.5;
+    const centerY = h * 0.5;
+    const maxRadius = Math.hypot(centerX, centerY);
+
+    for (let y = 0; y < sampleH; y += step) {
+      for (let x = 0; x < sampleW; x += step) {
+        const sx = Math.min(sampleW - 1, x + Math.floor(step * 0.5));
+        const sy = Math.min(sampleH - 1, y + Math.floor(step * 0.5));
+        const p = (sy * sampleW + sx) * 4;
+        const a = data[p + 3];
+        if (a < 12) continue;
+
+        const px = x * scaleX;
+        const py = y * scaleY;
+        const dx = px - centerX;
+        const dy = py - centerY;
+        const radius = Math.hypot(dx, dy);
+        const nx = dx / (radius || 1);
+        const ny = dy / (radius || 1);
+
+        // Mostly outward, with a random sideways component.
+        const spread = (rand() - 0.5) * 1.05;
+        const cos = Math.cos(spread);
+        const sin = Math.sin(spread);
+        const dirX = nx * cos - ny * sin;
+        const dirY = nx * sin + ny * cos;
+
+        // Center starts first; outer areas follow with a soft stagger.
+        const radialStart = 0.04 + (radius / maxRadius) * 0.50;
+        const stagger = (rand() - 0.5) * 0.16;
+        const start = Math.max(0, Math.min(0.62, radialStart + stagger));
+
+        particles.push({
+          ox:px, oy:py,
+          vx:dirX * (24 + rand() * 70),
+          vy:dirY * (24 + rand() * 70) - rand() * 16,
+          size:1.5 + rand() * 3.5,
+          start,
+          r:data[p], g:data[p + 1], b:data[p + 2], a:a / 255
+        });
       }
     }
 
+    // The particle snapshot takes over while the original video is hidden.
+    video.style.visibility = 'hidden';
+
     const startTime = performance.now();
-    const duration = 1000;
+    const duration = 1500;
 
     const animate = now => {
       if (finished) return;
 
       const progress = Math.min(1, (now - startTime) / duration);
-      // Smooth center -> outward progression.
-      const eased = 1 - Math.pow(1 - progress, 2.2);
-      const threshold = eased * 1.04;
+      ctx.clearRect(0, 0, w, h);
 
-      ctx.save();
-      ctx.globalCompositeOperation = 'destination-out';
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        const local = (progress - p.start) / (1 - p.start);
+        if (local <= 0) continue;
 
-      for (let i = 0; i < cells.length; i++) {
-        const c = cells[i];
-        if (c.p <= threshold) {
-          ctx.clearRect(c.x, c.y, c.cw + 0.5, c.ch + 0.5);
-        }
+        const t = Math.min(1, local);
+        const eased = 1 - Math.pow(1 - t, 2.15);
+        const boost = 1 + eased * 1.9;
+        const px = p.ox + p.vx * eased * boost;
+        const py = p.oy + p.vy * eased * boost;
+
+        const fade = t < 0.48 ? 1 : Math.pow((1 - t) / 0.52, 1.35);
+        const alpha = p.a * fade;
+        if (alpha <= 0.01) continue;
+
+        const size = p.size * (1 - eased * 0.22);
+        ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',' + alpha.toFixed(3) + ')';
+        ctx.fillRect(px, py, size, size);
       }
 
-      ctx.restore();
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        finished = true;
-        cleanup();
-      }
+      if (progress < 1) requestAnimationFrame(animate);
+      else cleanup();
     };
 
     requestAnimationFrame(animate);
   };
 
-  const startDissolve = () => {
-    if (finished || dissolveStarted) return;
-    finishIntro();
-  };
-
-  // Start the dissolve around 4 seconds, rather than waiting for the
-  // whole clip to finish.
   const scheduleDissolve = () => {
+    if (finished || effectStarted) return;
     clearTimeout(dissolveTimer);
+
     const duration = Number.isFinite(video.duration) && video.duration > 0
-      ? video.duration
-      : 5.1;
-    const startAt = Math.min(4.0, Math.max(0.5, duration - 1.0));
+      ? video.duration : 5.06;
+
+    // For the ~5s clip: 3.5s normal video + 1.5s particle dissolve.
+    const startAt = Math.min(3.5, Math.max(0.8, duration - 1.5));
     const remaining = Math.max(0, (startAt - video.currentTime) * 1000);
-    dissolveTimer = setTimeout(startDissolve, remaining);
+    dissolveTimer = setTimeout(startParticleDissolve, remaining);
   };
 
-  video.addEventListener('loadedmetadata', scheduleDissolve, { once: true });
-  video.addEventListener('ended', startDissolve, { once: true });
-  video.addEventListener('error', () => setTimeout(startDissolve, 250), { once: true });
+  video.addEventListener('loadedmetadata', scheduleDissolve, {once:true});
+  video.addEventListener('ended', startParticleDissolve, {once:true});
+  video.addEventListener('error', () => setTimeout(startParticleDissolve, 250), {once:true});
 
   if (video.readyState >= 1) scheduleDissolve();
 
-  // Hard safety fallback — never leave the intro blocking the page.
+  forcePlay();
+  setTimeout(forcePlay, 100);
+  setTimeout(forcePlay, 500);
+
+  // Safety fallback: never leave the intro as a permanent black overlay.
   setTimeout(() => {
-    if (!finished && !dissolveStarted) startDissolve();
+    if (!finished && !effectStarted) startParticleDissolve();
   }, 6200);
 })();
