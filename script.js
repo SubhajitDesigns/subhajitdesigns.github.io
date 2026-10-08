@@ -875,22 +875,32 @@ if (clientTrack) {
 })();
 
 
+
+
 /* =========================================================
-   SUBHAJIT THEME TOGGLE
+   SUBHAJIT THEME TOGGLE — UIverse switch
    ========================================================= */
 (() => {
   const toggle = document.getElementById('themeToggle');
   if (!toggle) return;
   const root = document.documentElement;
-  const stored = (() => { try { return localStorage.getItem('subhajit-theme'); } catch(e) { return null; } })();
+  const stored = (() => {
+    try { return localStorage.getItem('subhajit-theme'); } catch(e) { return null; }
+  })();
+
   const setTheme = (theme, persist = true) => {
     const light = theme === 'light';
     document.body.classList.toggle('light-mode', light);
     root.classList.toggle('light-mode-preload', light);
-    toggle.setAttribute('aria-pressed', light ? 'true' : 'false');
+    toggle.checked = light;
     toggle.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
-    if (persist) { try { localStorage.setItem('subhajit-theme', light ? 'light' : 'dark'); } catch(e) {} }
+    if (persist) {
+      try { localStorage.setItem('subhajit-theme', light ? 'light' : 'dark'); } catch(e) {}
+    }
   };
+
   setTheme(stored === 'light' ? 'light' : 'dark', false);
-  toggle.addEventListener('click', () => setTheme(document.body.classList.contains('light-mode') ? 'dark' : 'light', true));
+  toggle.addEventListener('change', () => {
+    setTheme(toggle.checked ? 'light' : 'dark', true);
+  });
 })();
