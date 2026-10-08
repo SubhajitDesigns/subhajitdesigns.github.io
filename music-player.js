@@ -17,5 +17,5 @@
  volume.addEventListener('input',()=>audio.volume=Number(volume.value));audio.volume=Number(volume.value);
  $('musicMute').addEventListener('click',()=>{audio.muted=!audio.muted;$('musicMute').textContent=audio.muted?'🔇':'🔊';$('musicMute').setAttribute('aria-label',audio.muted?'Unmute audio':'Mute audio');$('musicMute').setAttribute('aria-pressed',String(audio.muted))});
  $('musicCollapse').addEventListener('click',()=>{const collapsed=player.classList.toggle('is-collapsed');$('musicCollapse').textContent=collapsed?'+':'−';$('musicCollapse').setAttribute('aria-label',collapsed?'Expand music player':'Minimize music player')});
- load(0,false);
+ load(0,true);
 })();
