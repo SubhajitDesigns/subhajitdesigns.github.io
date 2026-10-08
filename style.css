@@ -4975,6 +4975,96 @@ body.cursor-active .cursor-glow {
   letter-spacing:.14em;
 }
 
+.crafted-hover-layout{
+  width:min(1360px,calc(100% - 56px));
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(0,1.45fr) minmax(260px,.8fr);
+  align-items:center;
+  gap:34px;
+}
+.crafted-hover-layout .crafted-hover-gallery{
+  min-width:0;
+  padding:0;
+}
+.crafted-hover-layout .crafted-hover-track{
+  width:100%;
+  transform:translateX(-34px);
+}
+.crafted-skiper-gallery{
+  width:100%;
+  height:390px;
+  overflow:hidden;
+}
+.crafted-skiper-track{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:center;
+  gap:6px;
+  height:100%;
+}
+.crafted-skiper-item{
+  position:relative;
+  flex:0 0 2.5rem;
+  width:100%;
+  min-height:0;
+  border-radius:18px;
+  overflow:hidden;
+  cursor:pointer;
+  background:#130708;
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 12px 30px rgba(0,0,0,.28);
+  transition:flex-basis .4s cubic-bezier(.22,1,.36,1),border-color .25s ease,box-shadow .25s ease;
+}
+.crafted-skiper-item img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center 45%;
+  opacity:.8;
+  transition:opacity .3s ease,transform .4s ease;
+}
+.crafted-skiper-item:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,rgba(8,3,4,.76),rgba(8,3,4,.08) 80%);
+  pointer-events:none;
+}
+.crafted-skiper-item span{
+  position:absolute;
+  left:16px;
+  bottom:12px;
+  z-index:1;
+  font:8px 'DM Mono',monospace;
+  letter-spacing:.14em;
+  color:#fff;
+  opacity:.82;
+}
+.crafted-skiper-item:hover{
+  flex-basis:12rem;
+  border-color:rgba(255,61,53,.65);
+  box-shadow:0 18px 40px rgba(0,0,0,.45),0 0 22px rgba(255,61,53,.08);
+}
+.crafted-skiper-item:hover img{opacity:1;transform:scale(1.02)}
+@media(max-width:900px){
+  .crafted-hover-layout{grid-template-columns:minmax(0,1fr) minmax(220px,.72fr);gap:20px}
+  .crafted-hover-layout .crafted-hover-track{transform:translateX(-16px)}
+  .crafted-skiper-gallery{height:300px}
+  .crafted-skiper-item:hover{flex-basis:9rem}
+}
+@media(max-width:650px){
+  .crafted-hover-layout{width:calc(100% - 24px);grid-template-columns:1fr;gap:22px}
+  .crafted-hover-layout .crafted-hover-gallery{overflow-x:auto;padding:0 0 8px}
+  .crafted-hover-layout .crafted-hover-track{width:max-content;transform:none}
+  .crafted-skiper-gallery{height:230px}
+  .crafted-skiper-item{flex-basis:1.9rem;border-radius:14px}
+  .crafted-skiper-item:hover{flex-basis:7rem}
+}
 .crafted-hover-gallery{
   width:100%;
   overflow:hidden;
