@@ -4945,3 +4945,5 @@ body.cursor-active .cursor-glow {
 .intro-reel-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;}
 .intro-reel-fallback{position:absolute;inset:0;background:#000;z-index:-1;}
 body.intro-lock{overflow:hidden;}
+
+.intro-pixel{position:absolute;display:block;margin:0;padding:0;background-repeat:no-repeat;will-change:transform,opacity;transform-origin:center;}
