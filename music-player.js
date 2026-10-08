@@ -14,6 +14,7 @@
   const progress = $('musicProgress');
   const volume = $('musicVolume');
   let autoplayBlocked = false;
+  let userMuted = false;
 
   const timeLabel = seconds => !Number.isFinite(seconds) || seconds < 0
     ? '0:00'
@@ -39,9 +40,11 @@
     });
   }
 
+  // Muted autoplay is allowed by most browsers; sound is enabled on the first visitor gesture.
   audio.src = track.src;
   audio.preload = 'auto';
   audio.volume = Number(volume.value || 0.55);
+  audio.muted = true;
   $('musicTrackName').textContent = track.title;
   $('musicTrackArtist').textContent = track.artist;
   $('musicTrackNumber').textContent = '01 / 01';
@@ -51,17 +54,26 @@
   audio.setAttribute('autoplay', '');
 
   playBtn.addEventListener('click', () => {
-    if (audio.paused) play();
-    else audio.pause();
+    if (audio.paused) {
+      userMuted = false;
+      audio.muted = false;
+      play();
+    } else {
+      audio.pause();
+    }
   });
 
   // One song is currently configured: previous/next restart this same track.
   $('musicPrev').addEventListener('click', () => {
     audio.currentTime = 0;
+    userMuted = false;
+    audio.muted = false;
     play();
   });
   $('musicNext').addEventListener('click', () => {
     audio.currentTime = 0;
+    userMuted = false;
+    audio.muted = false;
     play();
   });
 
@@ -88,11 +100,15 @@
   });
   volume.addEventListener('input', () => {
     audio.volume = Number(volume.value);
-    if (audio.volume > 0) audio.muted = false;
+    if (audio.volume > 0) {
+      userMuted = false;
+      audio.muted = false;
+    }
     sync();
   });
   $('musicMute').addEventListener('click', () => {
-    audio.muted = !audio.muted;
+    userMuted = !audio.muted;
+    audio.muted = userMuted;
     sync();
   });
   $('musicCollapse').addEventListener('click', () => {
@@ -101,14 +117,20 @@
     $('musicCollapse').setAttribute('aria-label', collapsed ? 'Expand music player' : 'Minimize music player');
   });
 
-  // Browsers may block audible autoplay; retry on the visitor's first real interaction.
-  const retryOnInteraction = () => {
-    if (audio.paused && autoplayBlocked) play();
-    window.removeEventListener('pointerdown', retryOnInteraction);
-    window.removeEventListener('keydown', retryOnInteraction);
+  const enableSoundOnFirstGesture = () => {
+    if (audio.paused && autoplayBlocked) {
+      userMuted = false;
+      audio.muted = false;
+      play();
+    } else if (!userMuted) {
+      audio.muted = false;
+      sync();
+    }
+    window.removeEventListener('pointerdown', enableSoundOnFirstGesture);
+    window.removeEventListener('keydown', enableSoundOnFirstGesture);
   };
-  window.addEventListener('pointerdown', retryOnInteraction, { once: true });
-  window.addEventListener('keydown', retryOnInteraction, { once: true });
+  window.addEventListener('pointerdown', enableSoundOnFirstGesture, { once: true });
+  window.addEventListener('keydown', enableSoundOnFirstGesture, { once: true });
 
   sync();
   play();
