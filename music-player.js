@@ -40,11 +40,11 @@
     });
   }
 
-  // Muted autoplay is allowed by most browsers; sound is enabled on the first visitor gesture.
+  // Attempt audible autoplay first; the browser may still require visitor interaction.
   audio.src = track.src;
   audio.preload = 'auto';
   audio.volume = Number(volume.value || 0.55);
-  audio.muted = true;
+  audio.muted = false;
   $('musicTrackName').textContent = track.title;
   $('musicTrackArtist').textContent = track.artist;
   $('musicTrackNumber').textContent = '01 / 01';
