@@ -7,3 +7,51 @@
 .site-music-progress-row,.site-music-volume-row{display:flex;align-items:center;gap:8px;color:#947b73;font:9px 'DM Mono',monospace}.site-music-progress-row input,.site-music-volume-row input{min-width:0;flex:1;accent-color:#ff4a39;cursor:pointer;height:3px}.site-music-volume-row{margin-top:9px;font-size:8px;letter-spacing:.08em}.site-music-volume-row input{max-width:95px}#musicTrackNumber{margin-left:auto}.site-music.is-playing .site-music-art{animation:musicArtPulse 3s ease-in-out infinite}@keyframes musicArtPulse{0%,100%{box-shadow:0 0 0 rgba(255,55,38,0),inset 0 0 0 1px rgba(255,255,255,.12)}50%{box-shadow:0 0 22px rgba(255,55,38,.22),inset 0 0 0 1px rgba(255,255,255,.2)}}
 .site-music.is-collapsed{width:176px;padding-bottom:12px}.site-music.is-collapsed .site-music-main,.site-music.is-collapsed .site-music-controls,.site-music.is-collapsed .site-music-progress-row,.site-music.is-collapsed .site-music-volume-row{display:none}.site-music.is-collapsed .site-music-top{margin-bottom:0}
 @media(max-width:600px){.site-music{top:10px;left:10px;width:218px;padding:11px 12px 10px}.site-music.is-collapsed{width:154px}.site-music-art{width:42px;height:42px;flex-basis:42px}.site-music-info p{font-size:11px}.site-music-controls{margin:9px 0 7px}}@media(prefers-reduced-motion:reduce){.site-music,.site-music-controls button{transition:none}.site-music.is-playing .site-music-art{animation:none}}
+
+
+/* Compact inline navigation player: sits immediately before About */
+.hero-nav nav .site-music{
+  position:relative;
+  inset:auto;
+  z-index:auto;
+  width:126px;
+  flex:0 0 126px;
+  margin:0 -18px 0 0;
+  padding:5px 7px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  border:1px solid rgba(255,228,218,.16);
+  border-radius:999px;
+  background:rgba(16,7,7,.52);
+  box-shadow:none;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  overflow:visible;
+  transition:background .2s ease,border-color .2s ease;
+}
+.hero-nav nav .site-music:before{display:none}
+.hero-nav nav .site-music-top,
+.hero-nav nav .site-music-progress-row,
+.hero-nav nav .site-music-volume-row{display:none}
+.hero-nav nav .site-music-main{gap:6px;flex:1;min-width:0}
+.hero-nav nav .site-music-art{width:23px;height:23px;flex-basis:23px;border-radius:50%;font-size:13px}
+.hero-nav nav .site-music-info p{font-size:9px;margin:0;max-width:54px}
+.hero-nav nav .site-music-info span{display:none}
+.hero-nav nav .site-music-controls{margin:0;gap:1px;justify-content:flex-end}
+.hero-nav nav .site-music-controls button{width:21px;height:23px;font-size:10px;padding:0}
+.hero-nav nav .site-music-controls #musicPrev,
+.hero-nav nav .site-music-controls #musicMute{display:none}
+.hero-nav nav .site-music-controls .site-music-play{width:23px;height:23px;font-size:9px}
+.hero-nav nav .site-music.is-collapsed{width:126px;padding:5px 7px}
+.hero-nav nav .site-music.is-collapsed .site-music-main,
+.hero-nav nav .site-music.is-collapsed .site-music-controls{display:flex}
+.hero-nav nav .site-music.is-collapsed .site-music-top{display:none}
+@media(max-width:1100px){
+  .hero-nav nav{gap:20px!important}
+  .hero-nav nav .site-music{width:112px;flex-basis:112px;margin-right:-10px}
+  .hero-nav nav .site-music.is-collapsed{width:112px}
+}
+@media(max-width:800px){
+  .hero-nav nav .site-music{display:none}
+}
