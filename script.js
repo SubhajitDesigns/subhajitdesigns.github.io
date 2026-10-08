@@ -1083,9 +1083,7 @@ if (clientTrack) {
   setTimeout(forcePlay, 300);
   setTimeout(forcePlay, 900);
 
-  // Safety: if playback is genuinely unavailable, reveal the site instead
-  // of trapping the visitor behind a black overlay.
-  setTimeout(() => {
-    if (!finished && !effectStarted && video.readyState < 2) cleanup();
-  }, 5000);
+  // Keep the intro active until the video can actually play.
+  // The lightweight first-frame poster in CSS prevents any black flash while
+  // the browser is fetching/decoding the MP4.
 })();
