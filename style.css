@@ -4937,3 +4937,156 @@ body.cursor-active .cursor-glow {
   filter:inherit !important;
   transform:inherit !important;
 }
+
+/* =========================================================
+   SECOND CRAFTED SECTION — SKIPER-STYLE HOVER EXPAND
+   Independent from the original Crafted gallery.
+   ========================================================= */
+.crafted-hover-section{
+  position:relative;
+  padding:110px 0 120px;
+  background:#090304;
+  color:#eee4df;
+  overflow:hidden;
+}
+.crafted-hover-heading{
+  width:min(1120px,calc(100% - 56px));
+  margin:0 auto 38px;
+}
+.crafted-hover-heading p{
+  margin:0 0 10px;
+  color:#806860;
+  font:9px 'DM Mono',monospace;
+  letter-spacing:.16em;
+}
+.crafted-hover-heading h2{
+  margin:0;
+  font-size:clamp(48px,7vw,100px);
+  line-height:.86;
+  letter-spacing:-.06em;
+}
+.crafted-hover-heading h2 span{
+  color:#ff3d35;
+}
+.crafted-hover-heading div{
+  margin-top:18px;
+  color:#604b46;
+  font:9px 'DM Mono',monospace;
+  letter-spacing:.14em;
+}
+
+.crafted-hover-gallery{
+  width:100%;
+  overflow:hidden;
+  padding:0 20px;
+  box-sizing:border-box;
+}
+.crafted-hover-track{
+  width:min(1180px,100%);
+  min-height:390px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+.crafted-hover-item{
+  position:relative;
+  flex:0 1 5rem;
+  width:5rem;
+  height:24rem;
+  min-width:2.5rem;
+  border-radius:24px;
+  overflow:hidden;
+  cursor:pointer;
+  background:#130708;
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:0 20px 55px rgba(0,0,0,.42);
+  transition:
+    flex-basis .45s cubic-bezier(.22,1,.36,1),
+    width .45s cubic-bezier(.22,1,.36,1),
+    border-color .3s ease,
+    box-shadow .3s ease;
+  will-change:flex-basis,width;
+}
+.crafted-hover-item img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:contain;
+  background:#0d0506;
+  transition:transform .45s cubic-bezier(.22,1,.36,1),filter .35s ease;
+}
+.crafted-hover-item:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.52));
+}
+.crafted-hover-item span{
+  position:absolute;
+  right:14px;
+  bottom:12px;
+  z-index:2;
+  color:rgba(255,255,255,.58);
+  font:8px 'DM Mono',monospace;
+  letter-spacing:.12em;
+  opacity:0;
+  transition:opacity .25s ease;
+}
+.crafted-hover-item:hover{
+  flex-basis:24rem;
+  width:24rem;
+  border-color:rgba(255,61,53,.55);
+  box-shadow:0 30px 80px rgba(0,0,0,.62),0 0 35px rgba(255,61,53,.10);
+}
+.crafted-hover-item:hover img{
+  transform:scale(1.015);
+  filter:saturate(1.04);
+}
+.crafted-hover-item:hover span{
+  opacity:1;
+}
+
+@media(max-width:900px){
+  .crafted-hover-section{padding:85px 0 90px;}
+  .crafted-hover-track{
+    min-height:300px;
+    height:300px;
+  }
+  .crafted-hover-item{
+    height:18rem;
+  }
+  .crafted-hover-item:hover{
+    flex-basis:18rem;
+    width:18rem;
+  }
+}
+@media(max-width:650px){
+  .crafted-hover-heading{
+    width:calc(100% - 32px);
+  }
+  .crafted-hover-gallery{
+    padding:0 12px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .crafted-hover-gallery::-webkit-scrollbar{display:none;}
+  .crafted-hover-track{
+    width:max-content;
+    min-height:230px;
+    height:230px;
+    justify-content:flex-start;
+  }
+  .crafted-hover-item{
+    flex:0 0 3.25rem;
+    width:3.25rem;
+    height:14rem;
+    border-radius:18px;
+  }
+  .crafted-hover-item:hover{
+    flex-basis:14rem;
+    width:14rem;
+  }
+}
