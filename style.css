@@ -5006,7 +5006,7 @@ body.cursor-active .cursor-glow {
 }
 .crafted-skiper-item{
   position:relative;
-  flex:0 0 2.5rem;
+  flex:0 0 60px;
   width:100%;
   min-height:0;
   border-radius:18px;
@@ -5055,6 +5055,7 @@ body.cursor-active .cursor-glow {
   .crafted-hover-layout{grid-template-columns:minmax(0,1fr) minmax(220px,.72fr);gap:20px}
   .crafted-hover-layout .crafted-hover-track{transform:translateX(-16px)}
   .crafted-skiper-gallery{height:300px}
+  .crafted-skiper-item{flex-basis:45px}
   .crafted-skiper-item:hover{flex-basis:9rem}
 }
 @media(max-width:650px){
@@ -5062,7 +5063,7 @@ body.cursor-active .cursor-glow {
   .crafted-hover-layout .crafted-hover-gallery{overflow-x:auto;padding:0 0 8px}
   .crafted-hover-layout .crafted-hover-track{width:max-content;transform:none}
   .crafted-skiper-gallery{height:230px}
-  .crafted-skiper-item{flex-basis:1.9rem;border-radius:14px}
+  .crafted-skiper-item{flex-basis:34px;border-radius:14px}
   .crafted-skiper-item:hover{flex-basis:7rem}
 }
 .crafted-hover-gallery{
