@@ -1,9 +1,9 @@
-/* CINEMATIC IMAGE INTRO — layered parallax + moving cloud */
+/* CINEMATIC IMAGE INTRO — corrected 16:9 parallax */
 (function(){
   const intro=document.getElementById('imageIntro');
   if(!intro) return;
 
-  const base=intro.querySelector('.image-intro-base');
+  const scene=intro.querySelector('.image-intro-scene');
   const sky=intro.querySelector('.image-intro-sky');
   const chars=intro.querySelector('.image-intro-characters');
   const cloud=intro.querySelector('.image-intro-cloud');
@@ -31,18 +31,21 @@
     y+=(targetY-y)*.055;
 
     const t=elapsed/1000;
-    const driftX=Math.sin(t*.23)*2.5;
-    const driftY=Math.cos(t*.19)*1.8;
+    const driftX=Math.sin(t*.23)*1.6;
+    const driftY=Math.cos(t*.19)*1.2;
 
     if(!reduce){
-      base.style.transform=`translate3d(${x*3+driftX}px,${y*2+driftY}px,0) scale(1.045)`;
-      sky.style.transform=`translate3d(${x*5+driftX*.6}px,${y*3+driftY*.5}px,0) scale(1.055)`;
-      chars.style.transform=`translate3d(${x*12+driftX*1.2}px,${y*8+driftY}px,0) scale(1.085)`;
+      sky.style.transform=`translate3d(${x*4+driftX}px,${y*2.5+driftY}px,0) scale(1.025)`;
+      chars.style.transform=`translate3d(${x*10+driftX*1.5}px,${y*6+driftY}px,0) scale(1.035)`;
 
-      const cloudTravel=window.innerWidth+cloud.getBoundingClientRect().width+80;
-      const cloudStart=-cloud.getBoundingClientRect().width-40;
-      const cloudCycle=((elapsed*.028)% (cloudTravel-cloudStart))+cloudStart;
-      cloud.style.transform=`translate3d(${cloudCycle}px, ${Math.sin(t*.55)*10+y*4}px,0)`;
+      // Slow, continuous right-to-left cloud travel.
+      const sceneW=scene.clientWidth;
+      const cloudW=cloud.getBoundingClientRect().width;
+      const travel=sceneW+cloudW+40;
+      const progress=(elapsed%22000)/22000;
+      const cloudX=sceneW+20-(progress*travel);
+      const cloudY=Math.sin(t*.42)*7+y*3;
+      cloud.style.transform=`translate3d(${cloudX}px,${cloudY}px,0)`;
     }
 
     if(!leaving && elapsed>=introDuration) leave();
@@ -74,6 +77,7 @@
     loaded++;
     if(loaded===imgs.length) revealWhenReady();
   };
+
   imgs.forEach(img=>{
     if(img.complete && img.naturalWidth) done();
     else{
@@ -82,7 +86,6 @@
     }
   });
 
-  // Never trap the visitor if an asset fails to load.
   setTimeout(()=>{
     if(!leaving) leave();
   },6500);
