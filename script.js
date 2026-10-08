@@ -594,7 +594,6 @@ if (clientTrack) {
   const next = document.getElementById('craftedGalleryNext');
 
   const projects = [
-    {title:'SOCIAL MEDIA',kicker:'POSTS • REELS • STORIES',type:'SOCIAL MEDIA',url:'social-media.html',live:true,image:'jaisalmer.jpg'},
     {title:'GOOGLE ADS',kicker:'ADS • BANNERS • CAMPAIGNS',type:'GOOGLE ADS',url:'google-ads.html',live:true,image:'ac094c3fedd25880080e0f0e4d5b7467.jpg'},
     {title:'PRODUCT ADS',kicker:'E-COMMERCE • PROMOTIONS',type:'PRODUCT ADS',url:'product-ads.html',live:true,image:'honey.jpg'},
     {title:'BRANDING',kicker:'IDENTITY • SYSTEMS • VISUALS',type:'COMING SOON',live:false,image:'dharmi-realty.jpg'},
@@ -624,6 +623,9 @@ if (clientTrack) {
   let hoverCard = null;
   let nearestIndex = -1;
   let resizeTimer = null;
+  let stageWidth = 0;
+  let stageHeight = 0;
+  let cachedWidths = [];
 
   const SPEED = 34; // px/sec
   const GAP = -34;
@@ -741,6 +743,15 @@ if (clientTrack) {
 
   const cards = Array.from(cardsWrap.children);
 
+  function refreshLayoutMetrics() {
+    const rect = gallery.getBoundingClientRect();
+    stageWidth = rect.width;
+    stageHeight = rect.height;
+    cachedWidths = cards.map(card => Math.max(1, card.offsetWidth));
+  }
+
+  refreshLayoutMetrics();
+
   if (dotsWrap) dotsWrap.innerHTML = '';
   projects.forEach((project, i) => {
     const dot = document.createElement('button');
@@ -781,7 +792,7 @@ if (clientTrack) {
   });
 
   function layout(now) {
-    const dt = Math.min(40, now - lastTime);
+    const dt = Math.min(32, now - lastTime);
     lastTime = now;
 
     const isMobile = window.innerWidth <= 760;
@@ -791,27 +802,26 @@ if (clientTrack) {
       offset -= speed * dt / 1000;
     }
 
-    const stageRect = gallery.getBoundingClientRect();
-    const centerX = stageRect.left + stageRect.width / 2;
-    const centerY = stageRect.top + stageRect.height / 2;
-    const widths = cards.map(card => Math.max(1, card.getBoundingClientRect().width));
+    const centerX = stageWidth / 2;
+    const centerY = stageHeight / 2;
+    const widths = cachedWidths;
     const total = widths.reduce((sum, w) => sum + w + GAP, 0);
     let bestDistance = Infinity;
     let bestIndex = activeIndex;
 
     let cursor = offset;
+
     cards.forEach((card, i) => {
-      const w = widths[i];
+      const w = widths[i] || 1;
       let x = cursor + w / 2;
+
       while (x > total / 2 + w) x -= total;
       while (x < -total / 2 - w) x += total;
+
       cursor += w + GAP;
 
-      let centerDistance = x;
-      const abs = Math.abs(centerDistance);
-      const norm = Math.min(abs / (stageRect.width * .64), 1);
-
-      const depth = 1 - Math.min(abs / (stageRect.width * .58), 1);
+      const abs = Math.abs(x);
+      const depth = 1 - Math.min(abs / (stageWidth * .58), 1);
       const scale = isMobile
         ? .67 + depth * .25
         : .64 + depth * .40;
@@ -822,17 +832,21 @@ if (clientTrack) {
         ? .55 + depth * .45
         : .48 + depth * .52;
       const z = -180 + depth * 330;
-      const rotate = Math.max(-17, Math.min(17, -centerDistance / 34));
-      const y = Math.sin(centerDistance / 260) * (isMobile ? 3 : 8);
+      const rotate = Math.max(-17, Math.min(17, -x / 34));
+      const y = Math.sin(x / 260) * (isMobile ? 3 : 8);
 
-      card.style.setProperty('transform',
-        'translate3d(calc(-50% + ' + x.toFixed(2) + 'px), calc(-50% + ' + y.toFixed(2) + 'px), ' +
-        z.toFixed(1) + 'px) rotateY(' + rotate.toFixed(2) + 'deg) scale(' + scale.toFixed(3) + ')', 'important');
-      card.style.setProperty('left', '50%', 'important');
-      card.style.setProperty('top', '50%', 'important');
-      card.style.setProperty('opacity', opacity.toFixed(3), 'important');
-      card.style.setProperty('filter', 'brightness(' + brightness.toFixed(3) + ') saturate(' + (0.78 + depth * .22).toFixed(3) + ')', 'important');
-      card.style.setProperty('z-index', String(10000 - Math.round(Math.abs(x) * 10)), 'important');
+      card.style.transform =
+        'translate3d(calc(-50% + ' + x.toFixed(2) + 'px), calc(-50% + ' +
+        y.toFixed(2) + 'px), ' + z.toFixed(1) + 'px) rotateY(' +
+        rotate.toFixed(2) + 'deg) scale(' + scale.toFixed(3) + ')';
+
+      card.style.left = '50%';
+      card.style.top = '50%';
+      card.style.opacity = opacity.toFixed(3);
+      card.style.filter =
+        'brightness(' + brightness.toFixed(3) + ') saturate(' +
+        (0.78 + depth * .22).toFixed(3) + ')';
+      card.style.zIndex = String(10000 - Math.round(Math.abs(x) * 10));
 
       const d = Math.abs(x);
       if (d < bestDistance) {
@@ -849,7 +863,6 @@ if (clientTrack) {
 
     requestAnimationFrame(layout);
   }
-
   updateCenterInfo(0);
   requestAnimationFrame(layout);
 
@@ -865,6 +878,7 @@ if (clientTrack) {
           window.innerWidth <= 760 ? 220 : (window.innerWidth <= 1000 ? 285 : 315)
         );
       });
+      refreshLayoutMetrics();
     }, 120);
   });
 
