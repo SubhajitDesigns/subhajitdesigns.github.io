@@ -904,30 +904,3 @@ if (clientTrack) {
     setTheme(toggle.checked ? 'light' : 'dark', true);
   });
 })();
-
-
-/* CRAFTED ARCHIVE LIGHTBOX — click a card to open full-size artwork */
-(() => {
-  const gallery = document.getElementById('craftedHoverGallery');
-  const lightbox = document.getElementById('craftedArchiveLightbox');
-  const preview = document.getElementById('craftedArchiveLightboxImage');
-  const caption = document.getElementById('craftedArchiveLightboxCaption');
-  if (!gallery || !lightbox || !preview || !caption) return;
-  const closeButton = lightbox.querySelector('.crafted-archive-lightbox-close');
-  const close = () => { lightbox.classList.remove('is-open'); lightbox.setAttribute('aria-hidden','true'); document.body.style.overflow=''; preview.src=''; };
-  gallery.addEventListener('click', event => {
-    const card = event.target.closest('.crafted-hover-item');
-    if (!card) return;
-    const img = card.querySelector('img');
-    if (!img) return;
-    preview.src = img.currentSrc || img.src;
-    preview.alt = img.alt || 'Crafted design';
-    caption.textContent = img.alt || 'CRAFTED DESIGN';
-    lightbox.classList.add('is-open');
-    lightbox.setAttribute('aria-hidden','false');
-    document.body.style.overflow='hidden';
-  });
-  closeButton?.addEventListener('click', close);
-  lightbox.addEventListener('click', event => { if (event.target === lightbox) close(); });
-  document.addEventListener('keydown', event => { if (event.key === 'Escape' && lightbox.classList.contains('is-open')) close(); });
-})();
