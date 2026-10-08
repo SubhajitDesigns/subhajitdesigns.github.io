@@ -904,34 +904,3 @@ if (clientTrack) {
     setTheme(toggle.checked ? 'light' : 'dark', true);
   });
 })();
-
-
-/* COMPACT DESIGNER FAVORITES CARD */
-(() => {
- const card=document.getElementById('designer-favorites'),title=document.getElementById('favoritesNowPlaying'),artist=document.getElementById('favoritesArtist'),next=document.getElementById('favoritesNext');
- if(!card||!title||!artist||!next)return;
- const tracks=[
- {title:'Vaani Batra',artist:'Tanishk Bagchi • Faheem Abdullah',url:'https://open.spotify.com/track/19wLZ5ALaThCyl2mYnc5oc'},
- {title:'blue',artist:'yung kai',url:'https://open.spotify.com/track/6W614n8yLUeS3zsZSeBwyq'},
- {title:'Those Eyes',artist:'New West',url:'https://open.spotify.com/track/2psRActEWsTlYYd7EDoyVR'},
- {title:'Give Me Your Forever',artist:'Zack Tabudlo',url:'https://open.spotify.com/track/4mzP5mHkRvGxdhdGdAH7EJ'},
- {title:'I Think They Call This Love - Cover',artist:'Matthew Ifield',url:'https://open.spotify.com/track/14mT8BCOXiUUcGlb7KujkT'},
- {title:'Die With A Smile',artist:'Lady Gaga • Bruno Mars',url:'https://open.spotify.com/track/2plbrEY59IikOBgBGLjaoe'},
- {title:'Ordinary',artist:'Alex Warren',url:'https://open.spotify.com/track/6qqrTXSdwiJaq8SO0X2lSe'},
- {title:'The Night We Met',artist:'Lord Huron',url:'https://open.spotify.com/track/3hRV0jL3vUpRrcy398teAU'},
- {title:"Say You Won't Let Go",artist:'James Arthur',url:'https://open.spotify.com/track/5uCax9HTNlzGybIStD3vDh'},
- {title:'golden hour',artist:'JVKE',url:'https://open.spotify.com/track/4yNk9iz9WVJikRFle3XEvn'},
- {title:'Here With Me',artist:'d4vd',url:'https://open.spotify.com/track/5LrN7yUQAzvthd4QujgPFr'},
- {title:"Car's Outside",artist:'James Arthur',url:'https://open.spotify.com/track/0otRX6Z89qKkHkQ9OqJpKt'},
- {title:'Die For You',artist:'Joji',url:'https://open.spotify.com/track/00WLowvlN5cjkYpQV6pjo4'},
- {title:'Perfect',artist:'Ed Sheeran',url:'https://open.spotify.com/track/0tgVpDi06FyKpA1z0VMD4v'},
- {title:'Barsaat',artist:'Banjaare • Roni',url:'https://open.spotify.com/track/0DpUQ3mpAGy3bYsEKVy6t5'}
- ];
- let index=0;
- function update(){title.textContent=tracks[index].title;artist.textContent=tracks[index].artist;}
- next.addEventListener('click',e=>{e.stopPropagation();index=(index+1)%tracks.length;update();});
- function openTrack(){window.open(tracks[index].url,'_blank','noopener');}
- card.addEventListener('click',e=>{if(!e.target.closest('#favoritesNext'))openTrack();});
- card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrack();}});
- update();
-})();
