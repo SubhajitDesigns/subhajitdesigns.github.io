@@ -710,7 +710,6 @@ if (clientTrack) {
     card.addEventListener('pointerenter', () => {
       if (coarse.matches) return;
       hoverCard = card;
-      paused = true;
       gallery.classList.add('has-focus');
       card.classList.add('is-conveyor-hover');
     });
@@ -720,7 +719,6 @@ if (clientTrack) {
       if (hoverCard === card) hoverCard = null;
       card.classList.remove('is-conveyor-hover');
       if (!hoverCard) {
-        paused = false;
         gallery.classList.remove('has-focus');
       }
     });
@@ -775,12 +773,14 @@ if (clientTrack) {
   prev?.addEventListener('click', () => shift(-1));
   next?.addEventListener('click', () => shift(1));
 
+  // Continuous conveyor: hovering the gallery never pauses the motion.
   gallery.addEventListener('pointerenter', () => {
-    if (!coarse.matches) paused = true;
+    if (!coarse.matches) {
+      gallery.classList.add('has-focus');
+    }
   });
   gallery.addEventListener('pointerleave', () => {
-    if (!hoverCard && !coarse.matches) {
-      paused = false;
+    if (!coarse.matches && !hoverCard) {
       gallery.classList.remove('has-focus');
     }
   });
