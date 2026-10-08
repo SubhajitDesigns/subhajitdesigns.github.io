@@ -5013,7 +5013,8 @@ body.cursor-active .cursor-glow {
   width:100%;
   height:100%;
   display:block;
-  object-fit:contain;
+  object-fit:cover;
+  object-position:center center;
   background:#0d0506;
   transition:transform .45s cubic-bezier(.22,1,.36,1),filter .35s ease;
 }
