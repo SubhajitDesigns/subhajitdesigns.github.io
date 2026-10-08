@@ -876,7 +876,7 @@ if (clientTrack) {
 
 
 /* =========================================================
-   FULL-SCREEN SHOW REEL INTRO — PIXEL DISSOLVE
+   FULL-SCREEN SHOW REEL INTRO — CENTER PIXEL DISSOLVE
    ========================================================= */
 (() => {
   const intro = document.getElementById('introReel');
@@ -895,7 +895,9 @@ if (clientTrack) {
 
     const w = window.innerWidth;
     const h = window.innerHeight;
-    const tile = Math.max(22, Math.min(34, Math.round(Math.min(w, h) / 32)));
+
+    // Much smaller pixels for a true pixel-dissolve look.
+    const tile = Math.max(7, Math.min(11, Math.round(Math.min(w, h) / 85)));
     const cols = Math.ceil(w / tile);
     const rows = Math.ceil(h / tile);
 
@@ -910,73 +912,96 @@ if (clientTrack) {
     }
 
     ctx.drawImage(video, 0, 0, w, h);
-    const frame = canvas.toDataURL('image/jpeg', 0.82);
+    const frame = canvas.toDataURL('image/jpeg', 0.9);
     canvas.style.opacity = '0';
 
     const pixels = document.createDocumentFragment();
     const cells = [];
 
+    const centerX = w / 2;
+    const centerY = h / 2;
+    const maxDistance = Math.hypot(centerX, centerY);
+
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         const cell = document.createElement('span');
         cell.className = 'intro-pixel';
-        cell.style.width = Math.min(tile, w - col * tile) + 'px';
-        cell.style.height = Math.min(tile, h - row * tile) + 'px';
-        cell.style.left = (col * tile) + 'px';
-        cell.style.top = (row * tile) + 'px';
+
+        const x = col * tile;
+        const y = row * tile;
+        const cellW = Math.min(tile, w - x);
+        const cellH = Math.min(tile, h - y);
+        const distance = Math.hypot(x + cellW / 2 - centerX, y + cellH / 2 - centerY);
+        const normalized = Math.min(1, distance / maxDistance);
+
+        cell.style.width = cellW + 'px';
+        cell.style.height = cellH + 'px';
+        cell.style.left = x + 'px';
+        cell.style.top = y + 'px';
         cell.style.backgroundImage = 'url("' + frame + '")';
         cell.style.backgroundSize = w + 'px ' + h + 'px';
-        cell.style.backgroundPosition = (-col * tile) + 'px ' + (-row * tile) + 'px';
+        cell.style.backgroundPosition = (-x) + 'px ' + (-y) + 'px';
+
         pixels.appendChild(cell);
-        cells.push(cell);
+        cells.push({ cell, normalized, random: Math.random() });
       }
     }
 
     intro.appendChild(pixels);
 
-    // Random order creates the scattered, tiny-pixel disappearance.
-    for (let i = cells.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [cells[i], cells[j]] = [cells[j], cells[i]];
-    }
+    // Center first, then progressively outward, with a tiny random variation.
+    cells.sort((a, b) =>
+      (a.normalized - b.normalized) + (a.random - b.random) * 0.055
+    );
 
-    const duration = 950;
-    const stagger = Math.min(520, duration * 0.55);
+    const total = 1000;
+    const maxDelay = 520;
 
-    cells.forEach((cell, index) => {
-      const delay = Math.random() * stagger + (index / cells.length) * 180;
-      cell.animate(
+    cells.forEach((item, index) => {
+      const delay = item.normalized * maxDelay + (Math.random() * 55) - 27 + (index / cells.length) * 35;
+
+      item.cell.animate(
         [
           { opacity: 1, transform: 'scale(1)' },
-          { opacity: 0, transform: 'scale(.15)' }
+          { opacity: 0, transform: 'scale(0.05)' }
         ],
         {
-          duration: duration * 0.65 + Math.random() * 260,
-          delay,
-          easing: 'cubic-bezier(.4,0,.8,1)',
+          duration: 560 + Math.random() * 180,
+          delay: Math.max(0, delay),
+          easing: 'cubic-bezier(.35,0,.75,1)',
           fill: 'forwards'
         }
       );
     });
 
+    // The entire transition is intentionally about one second.
     setTimeout(() => {
       video.pause();
       intro.classList.add('is-done');
       document.body.classList.remove('intro-lock');
-      setTimeout(() => intro.remove(), 450);
-    }, duration + stagger + 420);
+      setTimeout(() => intro.remove(), 350);
+    }, total);
   };
 
-  video.addEventListener('ended', finishIntro, { once: true });
+  // Start the dissolve at about 4 seconds instead of waiting for the
+  // full 5-second clip to finish. This keeps the intro short and punchy.
+  const startDissolve = () => {
+    if (finished) return;
+    finishIntro();
+  };
+
+  video.addEventListener('timeupdate', () => {
+    if (video.currentTime >= 4.0) startDissolve();
+  });
+
+  video.addEventListener('ended', startDissolve, { once: true });
+
   video.addEventListener('error', () => {
-    setTimeout(finishIntro, 1200);
+    setTimeout(startDissolve, 300);
   }, { once: true });
 
-  // Safety fallback in case the browser delays the ended event.
+  // Safety fallback: never leave the screen stuck on the intro.
   setTimeout(() => {
-    if (!finished) {
-      try { video.currentTime = Math.min(video.duration || 0, 4.9); } catch (_) {}
-      finishIntro();
-    }
-  }, 7600);
+    if (!finished) startDissolve();
+  }, 6500);
 })();
