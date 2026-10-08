@@ -876,7 +876,7 @@ if (clientTrack) {
 
 
 /* =========================================================
-   FULL-SCREEN SHOW REEL INTRO — CENTER PIXEL DISSOLVE
+   FULL-SCREEN SHOW REEL INTRO — LIGHTWEIGHT CANVAS DISSOLVE
    ========================================================= */
 (() => {
   const intro = document.getElementById('introReel');
@@ -888,120 +888,120 @@ if (clientTrack) {
   document.body.classList.add('intro-lock');
 
   let finished = false;
+  let dissolveStarted = false;
+  let dissolveTimer = null;
+
+  const cleanup = () => {
+    video.pause();
+    intro.classList.add('is-done');
+    document.body.classList.remove('intro-lock');
+    setTimeout(() => intro.remove(), 380);
+  };
 
   const finishIntro = () => {
-    if (finished) return;
-    finished = true;
+    if (finished || dissolveStarted) return;
+    dissolveStarted = true;
 
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-
-    // Much smaller pixels for a true pixel-dissolve look.
-    const tile = Math.max(7, Math.min(11, Math.round(Math.min(w, h) / 85)));
-    const cols = Math.ceil(w / tile);
-    const rows = Math.ceil(h / tile);
+    const w = Math.max(1, window.innerWidth);
+    const h = Math.max(1, window.innerHeight);
 
     canvas.width = w;
     canvas.height = h;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) {
-      intro.classList.add('is-done');
-      document.body.classList.remove('intro-lock');
+      finished = true;
+      cleanup();
       return;
     }
 
+    // Freeze the final video frame on the canvas. The video itself is
+    // paused underneath, so there is no expensive DOM pixel generation.
+    ctx.clearRect(0, 0, w, h);
     ctx.drawImage(video, 0, 0, w, h);
-    const frame = canvas.toDataURL('image/jpeg', 0.9);
-    canvas.style.opacity = '0';
+    video.pause();
 
-    const pixels = document.createDocumentFragment();
-    const cells = [];
-
+    // Small pixels, but rendered efficiently with one canvas.
+    const tile = Math.max(8, Math.min(12, Math.round(Math.min(w, h) / 80)));
+    const cols = Math.ceil(w / tile);
+    const rows = Math.ceil(h / tile);
     const centerX = w / 2;
     const centerY = h / 2;
     const maxDistance = Math.hypot(centerX, centerY);
 
+    const cells = [];
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
-        const cell = document.createElement('span');
-        cell.className = 'intro-pixel';
-
         const x = col * tile;
         const y = row * tile;
-        const cellW = Math.min(tile, w - x);
-        const cellH = Math.min(tile, h - y);
-        const distance = Math.hypot(x + cellW / 2 - centerX, y + cellH / 2 - centerY);
-        const normalized = Math.min(1, distance / maxDistance);
-
-        cell.style.width = cellW + 'px';
-        cell.style.height = cellH + 'px';
-        cell.style.left = x + 'px';
-        cell.style.top = y + 'px';
-        cell.style.backgroundImage = 'url("' + frame + '")';
-        cell.style.backgroundSize = w + 'px ' + h + 'px';
-        cell.style.backgroundPosition = (-x) + 'px ' + (-y) + 'px';
-
-        pixels.appendChild(cell);
-        cells.push({ cell, normalized, random: Math.random() });
+        const cw = Math.min(tile, w - x);
+        const ch = Math.min(tile, h - y);
+        const d = Math.hypot(x + cw / 2 - centerX, y + ch / 2 - centerY);
+        // Tiny deterministic variation prevents a perfectly mechanical ring.
+        const jitter = (((col * 17 + row * 31) % 23) / 23 - 0.5) * 0.035;
+        cells.push({ x, y, cw, ch, p: Math.min(1, d / maxDistance) + jitter });
       }
     }
 
-    intro.appendChild(pixels);
+    const startTime = performance.now();
+    const duration = 1000;
 
-    // Center first, then progressively outward, with a tiny random variation.
-    cells.sort((a, b) =>
-      (a.normalized - b.normalized) + (a.random - b.random) * 0.055
-    );
+    const animate = now => {
+      if (finished) return;
 
-    const total = 1000;
-    const maxDelay = 520;
+      const progress = Math.min(1, (now - startTime) / duration);
+      // Smooth center -> outward progression.
+      const eased = 1 - Math.pow(1 - progress, 2.2);
+      const threshold = eased * 1.04;
 
-    cells.forEach((item, index) => {
-      const delay = item.normalized * maxDelay + (Math.random() * 55) - 27 + (index / cells.length) * 35;
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-out';
 
-      item.cell.animate(
-        [
-          { opacity: 1, transform: 'scale(1)' },
-          { opacity: 0, transform: 'scale(0.05)' }
-        ],
-        {
-          duration: 560 + Math.random() * 180,
-          delay: Math.max(0, delay),
-          easing: 'cubic-bezier(.35,0,.75,1)',
-          fill: 'forwards'
+      for (let i = 0; i < cells.length; i++) {
+        const c = cells[i];
+        if (c.p <= threshold) {
+          ctx.clearRect(c.x, c.y, c.cw + 0.5, c.ch + 0.5);
         }
-      );
-    });
+      }
 
-    // The entire transition is intentionally about one second.
-    setTimeout(() => {
-      video.pause();
-      intro.classList.add('is-done');
-      document.body.classList.remove('intro-lock');
-      setTimeout(() => intro.remove(), 350);
-    }, total);
+      ctx.restore();
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        finished = true;
+        cleanup();
+      }
+    };
+
+    requestAnimationFrame(animate);
   };
 
-  // Start the dissolve at about 4 seconds instead of waiting for the
-  // full 5-second clip to finish. This keeps the intro short and punchy.
   const startDissolve = () => {
-    if (finished) return;
+    if (finished || dissolveStarted) return;
     finishIntro();
   };
 
-  video.addEventListener('timeupdate', () => {
-    if (video.currentTime >= 4.0) startDissolve();
-  });
+  // Start the dissolve around 4 seconds, rather than waiting for the
+  // whole clip to finish.
+  const scheduleDissolve = () => {
+    clearTimeout(dissolveTimer);
+    const duration = Number.isFinite(video.duration) && video.duration > 0
+      ? video.duration
+      : 5.1;
+    const startAt = Math.min(4.0, Math.max(0.5, duration - 1.0));
+    const remaining = Math.max(0, (startAt - video.currentTime) * 1000);
+    dissolveTimer = setTimeout(startDissolve, remaining);
+  };
 
+  video.addEventListener('loadedmetadata', scheduleDissolve, { once: true });
   video.addEventListener('ended', startDissolve, { once: true });
+  video.addEventListener('error', () => setTimeout(startDissolve, 250), { once: true });
 
-  video.addEventListener('error', () => {
-    setTimeout(startDissolve, 300);
-  }, { once: true });
+  if (video.readyState >= 1) scheduleDissolve();
 
-  // Safety fallback: never leave the screen stuck on the intro.
+  // Hard safety fallback — never leave the intro blocking the page.
   setTimeout(() => {
-    if (!finished) startDissolve();
-  }, 6500);
+    if (!finished && !dissolveStarted) startDissolve();
+  }, 6200);
 })();
