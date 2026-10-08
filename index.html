@@ -544,10 +544,17 @@
   <div class="reel-modal" id="reelModal" aria-hidden="true">
     <div class="reel-card" role="dialog" aria-modal="true" aria-label="Subhajit show reel preview">
       <button class="reel-close" id="reelClose" type="button" aria-label="Close reel">×</button>
-      <div class="reel-orb" aria-hidden="true"></div>
-      <div class="reel-center"><div class="reel-play-ring"><span>▶</span></div></div>
-      <div class="reel-word">DESIGN <em>IN MOTION.</em></div>
-      <div class="reel-progress"><i></i></div>
+      <video
+        class="reel-video"
+        id="reelVideo"
+        src="show-reel.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        aria-label="Subhajit show reel"
+      ></video>
     </div>
   </div>
 
