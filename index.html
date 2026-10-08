@@ -22,10 +22,22 @@
     })();
   </script>
   <link rel="stylesheet" href="style.css?v=20261009-2">
+  <link rel="stylesheet" href="music-player.css?v=1">
+
 </head>
 <body>
   <div class="cursor-glow" aria-hidden="true"></div>
   <div class="cursor-dot" aria-hidden="true"></div>
+
+  <aside class="site-music" id="siteMusicPlayer" aria-label="Website music player">
+    <div class="site-music-top"><span class="site-music-label"><span class="site-music-live"></span> SOUNDTRACK</span><button class="site-music-collapse" id="musicCollapse" type="button" aria-label="Minimize music player">−</button></div>
+    <div class="site-music-main"><div class="site-music-art" aria-hidden="true"><span>♫</span></div><div class="site-music-info"><p id="musicTrackName">Midnight Drive</p><span id="musicTrackArtist">Portfolio radio · 01</span></div></div>
+    <div class="site-music-controls"><button id="musicPrev" type="button" aria-label="Previous track">⏮</button><button class="site-music-play" id="musicPlay" type="button" aria-label="Play music">▶</button><button id="musicNext" type="button" aria-label="Next track">⏭</button><button id="musicMute" type="button" aria-label="Mute audio">⌁</button></div>
+    <div class="site-music-progress-row"><span id="musicCurrentTime">0:00</span><input id="musicProgress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Track progress"><span id="musicDuration">0:00</span></div>
+    <div class="site-music-volume-row"><span>VOL</span><input id="musicVolume" type="range" min="0" max="1" value="0.55" step="0.01" aria-label="Volume"><span id="musicTrackNumber">01 / 03</span></div>
+    <audio id="siteMusicAudio" preload="none"></audio>
+  </aside>
+
 
   <main id="top">
     <section class="hero hero-v2 interactive-hero" id="home">
@@ -582,5 +594,6 @@
   </footer>
 
   <script src="script.js?v=20261009-2"></script>
+  <script src="music-player.js?v=1"></script>
 </body>
 </html>
