@@ -4926,3 +4926,22 @@ body.cursor-active .cursor-glow {
   backface-visibility:hidden;
   -webkit-backface-visibility:hidden;
 }
+
+
+/* Crafted conveyor — hover must not change the moving artwork */
+.crafted-gallery-card:hover,
+.crafted-gallery-card.is-conveyor-hover{
+  border-color:rgba(255,255,255,.13) !important;
+  box-shadow:0 28px 60px rgba(0,0,0,.5) !important;
+}
+.crafted-gallery-card:hover img,
+.crafted-gallery-card.is-conveyor-hover img{
+  transform:none !important;
+  filter:none !important;
+}
+.crafted-gallery.has-focus .crafted-gallery-card:not(.is-conveyor-hover),
+.crafted-gallery.has-focus .crafted-gallery-center{
+  opacity:inherit !important;
+  filter:inherit !important;
+  transform:inherit !important;
+}
