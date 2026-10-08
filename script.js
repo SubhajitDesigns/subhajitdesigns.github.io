@@ -873,3 +873,110 @@ if (clientTrack) {
     gallery.classList.add('reduced-motion');
   }
 })();
+
+
+/* =========================================================
+   FULL-SCREEN SHOW REEL INTRO — PIXEL DISSOLVE
+   ========================================================= */
+(() => {
+  const intro = document.getElementById('introReel');
+  const video = document.getElementById('introReelVideo');
+  const canvas = document.getElementById('introReelCanvas');
+
+  if (!intro || !video || !canvas) return;
+
+  document.body.classList.add('intro-lock');
+
+  let finished = false;
+
+  const finishIntro = () => {
+    if (finished) return;
+    finished = true;
+
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const tile = Math.max(22, Math.min(34, Math.round(Math.min(w, h) / 32)));
+    const cols = Math.ceil(w / tile);
+    const rows = Math.ceil(h / tile);
+
+    canvas.width = w;
+    canvas.height = h;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      intro.classList.add('is-done');
+      document.body.classList.remove('intro-lock');
+      return;
+    }
+
+    ctx.drawImage(video, 0, 0, w, h);
+    const frame = canvas.toDataURL('image/jpeg', 0.82);
+    canvas.style.opacity = '0';
+
+    const pixels = document.createDocumentFragment();
+    const cells = [];
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const cell = document.createElement('span');
+        cell.className = 'intro-pixel';
+        cell.style.width = Math.min(tile, w - col * tile) + 'px';
+        cell.style.height = Math.min(tile, h - row * tile) + 'px';
+        cell.style.left = (col * tile) + 'px';
+        cell.style.top = (row * tile) + 'px';
+        cell.style.backgroundImage = 'url("' + frame + '")';
+        cell.style.backgroundSize = w + 'px ' + h + 'px';
+        cell.style.backgroundPosition = (-col * tile) + 'px ' + (-row * tile) + 'px';
+        pixels.appendChild(cell);
+        cells.push(cell);
+      }
+    }
+
+    intro.appendChild(pixels);
+
+    // Random order creates the scattered, tiny-pixel disappearance.
+    for (let i = cells.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cells[i], cells[j]] = [cells[j], cells[i]];
+    }
+
+    const duration = 950;
+    const stagger = Math.min(520, duration * 0.55);
+
+    cells.forEach((cell, index) => {
+      const delay = Math.random() * stagger + (index / cells.length) * 180;
+      cell.animate(
+        [
+          { opacity: 1, transform: 'scale(1)' },
+          { opacity: 0, transform: 'scale(.15)' }
+        ],
+        {
+          duration: duration * 0.65 + Math.random() * 260,
+          delay,
+          easing: 'cubic-bezier(.4,0,.8,1)',
+          fill: 'forwards'
+        }
+      );
+    });
+
+    setTimeout(() => {
+      video.pause();
+      intro.classList.add('is-done');
+      document.body.classList.remove('intro-lock');
+      setTimeout(() => intro.remove(), 450);
+    }, duration + stagger + 420);
+  };
+
+  video.addEventListener('ended', finishIntro, { once: true });
+  video.addEventListener('error', () => {
+    setTimeout(finishIntro, 1200);
+  }, { once: true });
+
+  // Safety fallback in case the browser delays the ended event.
+  setTimeout(() => {
+    if (!finished) {
+      try { video.currentTime = Math.min(video.duration || 0, 4.9); } catch (_) {}
+      finishIntro();
+    }
+  }, 7600);
+})();
