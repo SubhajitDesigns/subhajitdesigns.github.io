@@ -4976,6 +4976,84 @@ body.cursor-active .cursor-glow {
 }
 
 .crafted-hover-gallery-wide{
+  width:min(1400px,calc(100% - 88px));
+  margin:0 auto;
+  padding:0;
+  overflow:hidden;
+}
+.crafted-hover-gallery-wide .crafted-hover-track{
+  width:100%;
+  max-width:none;
+  min-height:360px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  transform:none;
+}
+.crafted-hover-gallery-wide .crafted-hover-item{
+  flex:1 1 0;
+  width:auto;
+  min-width:0;
+  height:22rem;
+  cursor:zoom-in;
+}
+.crafted-hover-gallery-wide .crafted-hover-item:hover{
+  flex:0 0 min(21rem,28vw);
+  width:auto;
+}
+.crafted-archive-lightbox{
+  position:fixed;
+  inset:0;
+  z-index:999999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:12px;
+  padding:54px 28px 28px;
+  background:rgba(5,3,4,.94);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .2s ease,visibility .2s ease;
+}
+.crafted-archive-lightbox.is-open{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+.crafted-archive-lightbox img{
+  display:block;
+  max-width:min(92vw,1400px);
+  max-height:82vh;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  border-radius:8px;
+  box-shadow:0 24px 80px rgba(0,0,0,.5);
+}
+.crafted-archive-lightbox p{
+  margin:0;
+  color:#eee4df;
+  font:10px 'DM Mono',monospace;
+  letter-spacing:.14em;
+}
+.crafted-archive-lightbox-close{
+  position:absolute;
+  top:18px;
+  right:24px;
+  width:42px;
+  height:42px;
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:50%;
+  color:#fff;
+  background:rgba(255,255,255,.08);
+  font-size:28px;
+  cursor:pointer;
+}
+
   width:min(1480px,calc(100% - 48px));
   margin:0 auto;
   padding:0;
@@ -5100,11 +5178,13 @@ body.cursor-active .cursor-glow {
   }
 }
 @media(max-width:650px){
-  .crafted-hover-gallery-wide{width:calc(100% - 24px);overflow-x:auto;scrollbar-width:none}
+  .crafted-hover-gallery-wide{width:calc(100% - 36px);overflow-x:auto;scrollbar-width:none}
   .crafted-hover-gallery-wide::-webkit-scrollbar{display:none}
   .crafted-hover-gallery-wide .crafted-hover-track{width:max-content;min-height:230px;height:230px;justify-content:flex-start;transform:none}
   .crafted-hover-gallery-wide .crafted-hover-item{flex:0 0 3.25rem;width:3.25rem;height:14rem}
   .crafted-hover-gallery-wide .crafted-hover-item:hover{flex-basis:14rem;width:14rem}
+  .crafted-archive-lightbox{padding:54px 14px 20px}
+  .crafted-archive-lightbox img{max-width:94vw;max-height:78vh}
   .crafted-hover-heading{
     width:calc(100% - 32px);
   }
