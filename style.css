@@ -4918,3 +4918,11 @@ body.cursor-active .cursor-glow {
   justify-content:flex-end !important;
   align-items:flex-end !important;
 }
+
+
+/* Crafted conveyor — GPU-friendly rendering for smoother motion */
+.crafted-gallery-card{
+  will-change:transform,opacity,filter;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+}
