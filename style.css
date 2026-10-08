@@ -5093,22 +5093,74 @@ body.cursor-active .cursor-glow {
 }
 
 
+
 /* =========================================================
-   SUBHAJIT THEME TOGGLE — LIGHT / DARK
+   SUBHAJIT THEME TOGGLE — UIverse switch
    ========================================================= */
+.switch{
+  font-size:17px;
+  position:relative;
+  display:inline-block;
+  width:3.5em;
+  height:2em;
+  flex:0 0 3.5em;
+  margin-left:14px;
+}
+.switch input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+.switch .slider{
+  --background:#28096b;
+  position:absolute;
+  cursor:pointer;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background-color:var(--background);
+  transition:.5s;
+  border-radius:30px;
+}
+.switch .slider:before{
+  position:absolute;
+  content:"";
+  height:1.4em;
+  width:1.4em;
+  border-radius:50%;
+  left:10%;
+  bottom:15%;
+  box-shadow:inset 8px -4px 0 0 #fff000;
+  background:var(--background);
+  transition:.5s;
+}
+.switch input:checked + .slider{background-color:#522ba7}
+.switch input:checked + .slider:before{
+  transform:translateX(100%);
+  box-shadow:inset 15px -4px 0 15px #fff000;
+}
+body.light-mode .switch .slider{
+  --background:#28096b;
+}
+body.light-mode .switch input:checked + .slider{
+  background-color:#522ba7;
+}
+@media(max-width:800px){
+  .switch{margin-left:auto;margin-right:10px;font-size:15px}
+}
+
+/* Keep the full-site light theme behavior */
 html.light-mode-preload body{background:#f7f7f5;color:#111}
 body{transition:background-color .45s ease,color .45s ease}
-.theme-toggle{position:relative;width:42px;height:42px;flex:0 0 42px;margin-left:14px;padding:0;border:1px solid rgba(245,228,217,.32);border-radius:50%;background:rgba(255,255,255,.04);color:var(--cream);display:grid;place-items:center;cursor:pointer;overflow:hidden;transition:background .35s ease,border-color .35s ease,color .35s ease,transform .25s ease;z-index:50}
-.theme-toggle:hover{transform:translateY(-2px) rotate(6deg);border-color:var(--red);color:var(--red)}
-.theme-icon{position:absolute;font-size:18px;line-height:1;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .25s ease}
-.theme-sun{opacity:0;transform:translateY(18px) rotate(80deg)}.theme-moon{opacity:1;transform:translateY(0) rotate(0)}
-body.light-mode .theme-toggle{border-color:rgba(17,17,17,.18);background:rgba(17,17,17,.045);color:#111}
-body.light-mode .theme-moon{opacity:0;transform:translateY(-18px) rotate(-80deg)}
-body.light-mode .theme-sun{opacity:1;transform:translateY(0) rotate(0)}
-body.light-mode{--bg:#f7f7f5;--cream:#111;--muted:#5d5d5d;--line:rgba(17,17,17,.13);background:#f7f7f5!important;color:#111!important}
+body.light-mode{
+  --bg:#f7f7f5;--cream:#111;--muted:#5d5d5d;--line:rgba(17,17,17,.13);
+  background:#f7f7f5!important;color:#111!important
+}
 body.light-mode .cursor-dot{mix-blend-mode:multiply}
 body.light-mode .hero-nav{background:rgba(255,255,255,.78)!important;border-bottom-color:rgba(17,17,17,.10)!important;box-shadow:0 8px 25px rgba(0,0,0,.08),0 3px 12px rgba(255,52,38,.05)!important;color:#111!important}
-body.light-mode .hero-nav nav a{color:#222!important}body.light-mode .hero-nav nav a::after{background:#ff3b32!important}
+body.light-mode .hero-nav nav a{color:#222!important}
+body.light-mode .hero-nav nav a::after{background:#ff3b32!important}
 body.light-mode .hero-nav .nav-cta{color:#111!important;border-color:rgba(17,17,17,.18)!important}
 body.light-mode .interactive-hero{background:radial-gradient(circle at 70% 30%,rgba(255,77,57,.14),transparent 27%),radial-gradient(circle at 30% 80%,rgba(255,170,150,.16),transparent 35%),linear-gradient(135deg,#fff 0%,#f7f7f5 58%,#f0ece9 100%)!important}
 body.light-mode .interactive-hero:before{background:radial-gradient(circle at 70% 25%,rgba(255,52,38,.09),transparent 26%),radial-gradient(circle at 37% 80%,rgba(255,52,38,.05),transparent 36%),linear-gradient(90deg,rgba(0,0,0,.035),transparent 62%)!important}
@@ -5116,12 +5168,15 @@ body.light-mode .hero-bg-grid{background-image:linear-gradient(rgba(0,0,0,.055) 
 body.light-mode .hero-display span:first-child{background:linear-gradient(180deg,#111 0%,#333 55%,#777 100%)!important;-webkit-background-clip:text!important;background-clip:text!important}
 body.light-mode .hero-display .outline-word{background:linear-gradient(180deg,#ff6b57 0%,#ff3426 55%,#c61e15 100%)!important;-webkit-background-clip:text!important;background-clip:text!important}
 body.light-mode .hero-v2-intro,body.light-mode .hero-scroll,body.light-mode .hero-bottomline,body.light-mode .location-mark,body.light-mode .eyebrow{color:#666!important}
-body.light-mode .reel-link{color:#222!important}body.light-mode .reel-link i{color:#222!important;border-color:rgba(17,17,17,.35)!important}
+body.light-mode .reel-link{color:#222!important}
+body.light-mode .reel-link i{color:#222!important;border-color:rgba(17,17,17,.35)!important}
 body.light-mode .hero-bottomline{border-top-color:rgba(17,17,17,.10)!important}
 body.light-mode .currently-creating{background:radial-gradient(circle at 78% 50%,rgba(255,52,38,.08),transparent 34%),#f7f7f5!important;color:#111!important}
 body.light-mode .creating-copy,body.light-mode .creating-copy h2,body.light-mode .creating-caption h3,body.light-mode .creating-caption p{color:#111!important}
-body.light-mode .creating-intro{color:#666!important}body.light-mode .creating-status{background:rgba(0,0,0,.035)!important;border-color:rgba(0,0,0,.10)!important}
-body.light-mode .creating-status span{color:#666!important}body.light-mode .creating-progress{background:rgba(0,0,0,.10)!important}
+body.light-mode .creating-intro{color:#666!important}
+body.light-mode .creating-status{background:rgba(0,0,0,.035)!important;border-color:rgba(0,0,0,.10)!important}
+body.light-mode .creating-status span{color:#666!important}
+body.light-mode .creating-progress{background:rgba(0,0,0,.10)!important}
 body.light-mode .creating-next{color:#111!important;border-color:rgba(0,0,0,.18)!important}
 body.light-mode .aboutx,body.light-mode .toolkit,body.light-mode .statement,body.light-mode .section,body.light-mode .big-type,body.light-mode .contact{background:#f7f7f5!important;color:#111!important}
 body.light-mode .aboutx-copy p:not(.aboutx-label),body.light-mode .aboutx-lead,body.light-mode .statement-copy{color:#666!important}
@@ -5129,7 +5184,8 @@ body.light-mode .aboutx-left h2,body.light-mode .aboutx-credentials-head h3,body
 body.light-mode .aboutx-type-line strong,body.light-mode .aboutx-stats strong{color:#222!important}
 body.light-mode .aboutx-stats,body.light-mode .aboutx-type-line,body.light-mode .aboutx-credentials,body.light-mode .section-head{border-color:rgba(17,17,17,.12)!important}
 body.light-mode .aboutx-cert{background:#fff!important;border-color:rgba(17,17,17,.12)!important;color:#111!important}
-body.light-mode .aboutx-cert-info strong{color:#222!important}body.light-mode .aboutx-marquee{color:#d2d0cc!important;border-color:rgba(17,17,17,.10)!important}
+body.light-mode .aboutx-cert-info strong{color:#222!important}
+body.light-mode .aboutx-marquee{color:#d2d0cc!important;border-color:rgba(17,17,17,.10)!important}
 body.light-mode .aboutx-modal-card{background:#fff!important;color:#111!important;border-color:rgba(17,17,17,.12)!important}
 body.light-mode .aboutx-modal-close{background:rgba(255,255,255,.8)!important;color:#111!important;border-color:rgba(17,17,17,.18)!important}
 body.light-mode .projects .project-meta,body.light-mode .projects .project-meta *,body.light-mode .interaction-note,body.light-mode .count{color:#666!important}
@@ -5154,4 +5210,3 @@ body.light-mode footer a{color:#444!important}
 body.light-mode .reel-modal{background:rgba(255,255,255,.88)!important}
 body.light-mode .reel-card{background:#fff!important;color:#111!important;border-color:rgba(17,17,17,.12)!important}
 body.light-mode .reel-close{background:rgba(0,0,0,.06)!important;color:#111!important}
-@media(max-width:800px){.theme-toggle{margin-left:auto;margin-right:10px;width:38px;height:38px;flex-basis:38px}}
