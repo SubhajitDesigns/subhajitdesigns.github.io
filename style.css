@@ -4989,6 +4989,7 @@ body.cursor-active .cursor-glow {
   align-items:center;
   justify-content:center;
   gap:4px;
+  transform:translateX(clamp(-120px,-8vw,-55px));
 }
 .crafted-hover-item{
   position:relative;
