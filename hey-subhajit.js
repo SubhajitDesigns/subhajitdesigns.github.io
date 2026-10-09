@@ -100,7 +100,7 @@
   };
   const wakePhrase=(text)=>{
     const normalized=text.toLowerCase().replace(/[.,!?]/g,' ').replace(/\s+/g,' ').trim();
-    const patterns=[/hey\s+subhajit/,/hey\s+subha\s+jeet/,/hey\s+subhajeet/,/hi\s+subhajit/];
+    const patterns=[/\b(hey|hi|hello)\s+subhajit\b/,/\b(hey|hi|hello)\s+subajit\b/,/\b(hey|hi|hello)\s+subha\s*jeet\b/,/\b(hey|hi|hello)\s+subhajeet\b/,/\b(hey|hi|hello)\s+subhojit\b/,/\b(hey|hi|hello)\s+subhojeet\b/];
     return patterns.some(p=>p.test(normalized));
   };
   const handleResult=(event)=>{
@@ -112,7 +112,7 @@
         if(!awake){
           if(wakePhrase(phrase)){
             awake=true;
-            const remainder=phrase.toLowerCase().replace(/.*?(?:hey\s+subhajit|hey\s+subha\s+jeet|hey\s+subhajeet|hi\s+subhajit)\s*/,'').trim();
+            const remainder=phrase.toLowerCase().replace(/.*?(?:(?:hey|hi|hello)\s+(?:subhajit|subajit|subha\s*jeet|subhajeet|subhojit|subhojeet))\s*/,'').trim();
             if(remainder.length>2)queuedCommand=remainder;
             say('Hi there! Welcome to Subhajit Designs. How can I help you today.');
             clearTimeout(wakeTimeout);wakeTimeout=setTimeout(()=>{awake=false},12000);
@@ -131,7 +131,7 @@
     restartTimer=setTimeout(()=>{if(!enabled||manualStop||speaking||!recognition)return;try{recognition.start()}catch(e){}},delay);
   };
   const startRecognition=()=>{
-    if(!SpeechRecognition){help.textContent='Voice wake-word listening is not supported in this browser. Use the command box below, or try a current desktop version of Chrome or Edge.';setState('idle','Voice recognition is not supported here');return false}
+    if(!SpeechRecognition){setState('idle','Voice recognition is not supported here');return false}
     if(!recognition){
       recognition=new SpeechRecognition();
       recognition.lang='en-IN';
@@ -144,6 +144,8 @@
           enabled=false;manualStop=true;setState('idle','Microphone permission was denied');help.textContent='Allow microphone access for this site in your browser settings, then tap Enable voice listening again.';enable.hidden=false;enable.textContent='Enable voice listening';return;
         }
         if(event.error==='audio-capture'){setState('idle','No microphone was found');help.textContent='Connect or enable a microphone, then try again.'}
+        else if(event.error==='network'){setState('idle','Voice recognition service unavailable');}
+        else if(event.error==='no-speech'){if(enabled&&!manualStop&&!speaking)scheduleRestart(500)}
       };
       recognition.onend=()=>{if(enabled&&!manualStop&&!speaking)scheduleRestart(400)};
     }
