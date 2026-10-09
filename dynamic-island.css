@@ -318,3 +318,45 @@ body.light-mode #dynamicIslandRoot .di-music-link{color:#333}
   opacity:1 !important;
   pointer-events:auto !important;
 }
+
+
+/* Refined collapsed Dynamic Island: premium balanced proportions */
+#dynamicIslandRoot:not(.di-open){
+  width:220px !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-card{
+  border-radius:999px !important;
+  border:1px solid rgba(255,255,255,.16) !important;
+  background:linear-gradient(145deg,rgba(25,25,28,.98),rgba(5,5,7,.98) 72%,rgba(28,9,10,.98)) !important;
+  box-shadow:0 10px 30px rgba(0,0,0,.35),0 1px 0 rgba(255,255,255,.10) inset,0 0 24px rgba(255,60,45,.045) !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-top-row{
+  min-height:48px !important;
+  padding:3px 8px !important;
+  border-radius:999px !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-toggle{
+  height:40px !important;
+  padding:0 !important;
+  border-radius:999px !important;
+  justify-content:center !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-toggle-left{
+  width:auto !important;
+  justify-content:center !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-wordmark{
+  font-size:9px !important;
+  letter-spacing:.17em !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-theme-switch{
+  display:none !important;
+}
+#dynamicIslandRoot.di-open .di-theme-switch{
+  display:inline-block !important;
+}
+@media(max-width:600px){
+  #dynamicIslandRoot:not(.di-open){width:208px !important}
+  #dynamicIslandRoot:not(.di-open) .di-top-row{min-height:46px !important}
+  #dynamicIslandRoot:not(.di-open) .di-toggle{height:38px !important}
+}
