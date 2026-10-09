@@ -494,3 +494,16 @@ body.light-mode #dynamicIslandRoot .di-music-link{color:#333}
   right:auto !important;
   transform:translateX(-50%) !important;
 }
+
+
+/* Vertically center the compact island within the hero header band */
+#dynamicIslandRoot,
+#dynamicIslandRoot:not(.di-open){
+  top:26px !important;
+}
+@media(max-width:600px){
+  #dynamicIslandRoot,
+  #dynamicIslandRoot:not(.di-open){
+    top:22px !important;
+  }
+}
