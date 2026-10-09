@@ -219,19 +219,25 @@
 #dynamicIslandRoot .di-nav button{transition:background .16s ease,color .16s ease,border-color .16s ease,transform .16s ease!important}
 
 
-/* Keep the day/night switch visible beside the Dynamic Island */
-.di-theme-switch{
-  position:fixed !important;
-  z-index:10051 !important;
-  top:20px !important;
-  right:clamp(18px,calc((100vw - 1120px)/2),72px) !important;
-  margin:0 !important;
-  font-size:14px !important;
+/* Day/night toggle lives inside the Dynamic Island top row */
+#dynamicIslandRoot .di-theme-switch{
+  position:relative !important;
+  inset:auto !important;
+  z-index:2 !important;
+  display:inline-block !important;
+  flex:0 0 42px !important;
+  width:42px !important;
+  height:24px !important;
+  margin:0 2px 0 auto !important;
+  font-size:12px !important;
 }
-@media(max-width:650px){
-  .di-theme-switch{top:20px !important;right:12px !important;font-size:12px !important}
-  #dynamicIslandRoot{top:12px}
-  #dynamicIslandRoot:not(.di-open){width:185px}
+#dynamicIslandRoot .di-theme-switch .slider:before{
+  height:17px;
+  width:17px;
+}
+#dynamicIslandRoot .di-theme-switch input:checked + .slider:before{
+  transform:translateX(17px);
+  box-shadow:inset 18px -4px 0 15px #fff000;
 }
 body.light-mode #dynamicIslandRoot .di-card{
   background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(245,245,245,.97) 62%,rgba(255,246,244,.98));
@@ -243,3 +249,8 @@ body.light-mode #dynamicIslandRoot .di-toggle{color:#111}
 body.light-mode #dynamicIslandRoot .di-wordmark{color:#111}
 body.light-mode #dynamicIslandRoot .di-nav a,
 body.light-mode #dynamicIslandRoot .di-music-link{color:#333}
+@media(max-width:600px){
+  #dynamicIslandRoot .di-theme-switch{flex-basis:38px!important;width:38px!important;height:22px!important}
+  #dynamicIslandRoot .di-theme-switch .slider:before{height:16px;width:16px}
+  #dynamicIslandRoot .di-theme-switch input:checked + .slider:before{transform:translateX(15px)}
+}
