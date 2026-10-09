@@ -5144,3 +5144,59 @@ body.light-mode #creating-showcase{
   #creating-showcase .creating-showcase-shell{width:calc(100% - 28px) !important}
   #creating-showcase .creating-showcase-stage{aspect-ratio:4 / 5;height:auto !important}
 }
+
+
+/* RESTORE THE ORIGINAL SPLIT LAYOUT — only remove the image frame */
+#creating-showcase{
+  padding:clamp(70px,9vw,130px) 0 !important;
+  background:transparent !important;
+  border-top:0 !important;
+}
+#creating-showcase .creating-showcase-shell{
+  display:grid !important;
+  grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr) !important;
+  align-items:center !important;
+  gap:clamp(38px,7vw,112px) !important;
+  width:min(1240px,calc(100% - 72px)) !important;
+}
+#creating-showcase .creating-showcase-visual{grid-column:1;grid-row:1}
+#creating-showcase .creating-showcase-copy{
+  display:block !important;
+  grid-column:2;
+  grid-row:1;
+}
+#creating-showcase .creating-showcase-stage{
+  height:clamp(360px,43vw,570px) !important;
+  aspect-ratio:auto !important;
+  background:transparent !important;
+  border-radius:18px !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+}
+#creating-showcase .creating-showcase-slide{
+  padding:0 !important;
+  border-radius:18px !important;
+  overflow:hidden !important;
+}
+#creating-showcase .creating-showcase-slide img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  border-radius:18px !important;
+  filter:none !important;
+}
+body.light-mode #creating-showcase{background:transparent !important}
+@media(max-width:800px){
+  #creating-showcase{padding:70px 0 !important}
+  #creating-showcase .creating-showcase-shell{
+    width:calc(100% - 36px) !important;
+    grid-template-columns:1fr !important;
+    gap:34px !important;
+  }
+  #creating-showcase .creating-showcase-copy{grid-column:1;grid-row:1}
+  #creating-showcase .creating-showcase-visual{grid-column:1;grid-row:2}
+  #creating-showcase .creating-showcase-stage{
+    height:clamp(320px,82vw,500px) !important;
+    aspect-ratio:auto !important;
+  }
+}
