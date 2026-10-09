@@ -480,3 +480,17 @@ body.light-mode #dynamicIslandRoot .di-music-link{color:#333}
   #dynamicIslandRoot:not(.di-open) .di-top-row{min-height:40px !important}
   #dynamicIslandRoot:not(.di-open) .di-toggle{height:34px !important}
 }
+
+
+/* Center the compact Dynamic Island against the actual viewport/header */
+#dynamicIslandRoot{
+  left:50% !important;
+  right:auto !important;
+  margin-left:0 !important;
+  transform:translateX(-50%) !important;
+}
+#dynamicIslandRoot:not(.di-open){
+  left:50% !important;
+  right:auto !important;
+  transform:translateX(-50%) !important;
+}
