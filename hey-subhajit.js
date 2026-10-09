@@ -19,8 +19,8 @@
     if(message) status.textContent=message;
     orb.setAttribute('aria-label',state==='listening'?'Voice assistant listening for Hey Subhajit':state==='speaking'?'Voice assistant speaking':'Open Hey Subhajit voice assistant');
   };
-  const openPanel=()=>{root.classList.add('is-open');orb.setAttribute('aria-expanded','true')};
-  const closePanel=()=>{root.classList.remove('is-open');orb.setAttribute('aria-expanded','false')};
+  const openPanel=()=>{};
+  const closePanel=()=>{};
   const chooseVoice=()=>{
     if(!('speechSynthesis' in window))return null;
     const voices=window.speechSynthesis.getVoices()||[];
@@ -158,17 +158,27 @@
     speaking=false;enable.hidden=false;enable.textContent='Enable voice listening';setState('idle','Voice assistant is off');
   };
   orb.addEventListener('click',()=>{
-    openPanel();
-    if(!enabled){transcript.textContent='Enable the microphone to let me listen for “Hey Subhajit”.';return}
+    if(!enabled){requestMicrophone();return}
     if(speaking){window.speechSynthesis.cancel();speaking=false;scheduleRestart(300);setState('listening','Listening for “Hey Subhajit”…')}
     else{awake=true;clearTimeout(wakeTimeout);wakeTimeout=setTimeout(()=>{awake=false},15000);say('I’m listening. What would you like to see?')}
   });
   close.addEventListener('click',closePanel);
-  enable.addEventListener('click',()=>{
-    if(enabled){disableListening();help.textContent='The microphone is off. Enable voice listening whenever you want me again.';return}
-    if(!window.isSecureContext){help.textContent='Microphone access requires a secure website (HTTPS). Open the portfolio over HTTPS and try again.';return}
-    startRecognition();
-  });
+  const requestMicrophone=async()=>{
+    if(!window.isSecureContext){setState('idle','Microphone requires HTTPS');return}
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){setState('idle','Microphone permission is unavailable');return}
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      stream.getTracks().forEach(track=>track.stop());
+      if(startRecognition()){
+        enabled=true;
+        say('Hey, welcome to my website! I’m Subhajit’s voice assistant. Just say “Hey Subhajit” whenever you need me.');
+      }
+    }catch(error){
+      setState('idle',error&&error.name==='NotAllowedError'?'Microphone permission was denied':'Microphone is unavailable');
+    }
+  };
+  enable.addEventListener('click',()=>{if(enabled)disableListening();else requestMicrophone()});
+
   root.querySelectorAll('[data-hs-command]').forEach(button=>button.addEventListener('click',()=>runCommand(button.dataset.hsCommand)));
   const submitText=()=>{const value=textInput.value.trim();if(!value)return;openPanel();textInput.value='';awake=true;runCommand(value);if(enabled){clearTimeout(wakeTimeout);wakeTimeout=setTimeout(()=>{awake=false},12000)}};
   send.addEventListener('click',submitText);
@@ -176,5 +186,6 @@
   textInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitText()}});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closePanel()});
   window.addEventListener('pagehide',()=>{enabled=false;manualStop=true;try{recognition&&recognition.stop()}catch(e){}if(window.speechSynthesis)window.speechSynthesis.cancel()});
-  setState('idle','Tap to meet your voice assistant');
+  setState('idle','Waiting for microphone permission');
+  requestMicrophone();
 })();
