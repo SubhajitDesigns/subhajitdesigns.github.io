@@ -25,7 +25,7 @@
     transcript.textContent=message;
     if(!('speechSynthesis' in window)){setState(enabled?'listening':'idle',message);return}
     speaking=true;
-    try{if(recognition){recognition.onend=null;recognition.stop()}}catch(e){}
+    try{if(recognition)recognition.stop()}catch(e){}
     window.speechSynthesis.cancel();
     const utterance=new SpeechSynthesisUtterance(message);
     utterance.lang='en-IN';utterance.rate=.96;utterance.pitch=1.02;utterance.volume=1;
@@ -133,6 +133,7 @@
   root.querySelectorAll('[data-hs-command]').forEach(button=>button.addEventListener('click',()=>runCommand(button.dataset.hsCommand)));
   const submitText=()=>{const value=textInput.value.trim();if(!value)return;openPanel();textInput.value='';awake=true;runCommand(value);if(enabled){clearTimeout(wakeTimeout);wakeTimeout=setTimeout(()=>{awake=false},12000)}};
   send.addEventListener('click',submitText);
+  root.querySelector('.hs-text-row').addEventListener('submit',e=>{e.preventDefault();submitText()});
   textInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitText()}});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closePanel()});
   window.addEventListener('pagehide',()=>{enabled=false;manualStop=true;try{recognition&&recognition.stop()}catch(e){}if(window.speechSynthesis)window.speechSynthesis.cancel()});
