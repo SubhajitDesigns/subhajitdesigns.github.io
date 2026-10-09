@@ -132,6 +132,9 @@
   window.addEventListener('pointerdown', enableSoundOnFirstGesture, { once: true });
   window.addEventListener('keydown', enableSoundOnFirstGesture, { once: true });
 
+  // Keep the music stopped on page load. Only play after the visitor presses Play.
+  audio.pause();
+  audio.currentTime = 0;
+  autoplayBlocked = false;
   sync();
-  play();
 })();
