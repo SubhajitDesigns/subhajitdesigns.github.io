@@ -13,7 +13,7 @@
   const textInput=root.querySelector('.hs-text-input');
   const send=root.querySelector('.hs-send');
   const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-  let recognition=null,enabled=false,awake=false,speaking=false,restartTimer=null,manualStop=false,lastHeard='',wakeTimeout=null,queuedCommand=null;
+  let recognition=null,enabled=false,awake=false,speaking=false,restartTimer=null,manualStop=false,lastHeard='',wakeTimeout=null,queuedCommand=null,microphoneStream=null;
   const setState=(state,message)=>{
     root.dataset.state=state;
     if(message) status.textContent=message;
@@ -100,7 +100,7 @@
   };
   const wakePhrase=(text)=>{
     const normalized=text.toLowerCase().replace(/[.,!?]/g,' ').replace(/\s+/g,' ').trim();
-    const patterns=[/\b(hey|hi|hello)\s+subhajit\b/,/\b(hey|hi|hello)\s+subajit\b/,/\b(hey|hi|hello)\s+subha\s*jeet\b/,/\b(hey|hi|hello)\s+subhajeet\b/,/\b(hey|hi|hello)\s+subhojit\b/,/\b(hey|hi|hello)\s+subhojeet\b/];
+    const patterns=[/\b(hey|hi|hello|okay|ok)\s+(subhajit|subajit|subha\s*jeet|subhajeet|subhojit|subhojeet)\b/,/\b(subhajit|subajit|subha\s*jeet|subhajeet|subhojit|subhojeet)\b/];
     return patterns.some(p=>p.test(normalized));
   };
   const handleResult=(event)=>{
@@ -114,8 +114,10 @@
             awake=true;
             const remainder=phrase.toLowerCase().replace(/.*?(?:(?:hey|hi|hello)\s+(?:subhajit|subajit|subha\s*jeet|subhajeet|subhojit|subhojeet))\s*/,'').trim();
             if(remainder.length>2)queuedCommand=remainder;
-            say('Hi there! Welcome to Subhajit Designs. How can I help you today.');
+            say('Hey, welcome.');
             clearTimeout(wakeTimeout);wakeTimeout=setTimeout(()=>{awake=false},12000);
+          } else if(/\b(about|crafted|designs|projects|resume|cv|contact|clients|services|what i do|home|top|music|song|volume|show reel|dark mode|light mode|help)\b/i.test(phrase)) {
+            awake=true;runCommand(phrase);clearTimeout(wakeTimeout);wakeTimeout=setTimeout(()=>{awake=false},12000);
           }
         }else{
           clearTimeout(wakeTimeout);
@@ -146,6 +148,7 @@
         if(event.error==='audio-capture'){setState('idle','No microphone was found');help.textContent='Connect or enable a microphone, then try again.'}
         else if(event.error==='network'){setState('idle','Voice recognition service unavailable');}
         else if(event.error==='no-speech'){if(enabled&&!manualStop&&!speaking)scheduleRestart(500)}
+        else if(event.error==='network'){setState('idle','Speech service unavailable');if(enabled&&!manualStop)scheduleRestart(1500)}
       };
       recognition.onend=()=>{if(enabled&&!manualStop&&!speaking)scheduleRestart(400)};
     }
@@ -169,11 +172,11 @@
     if(!window.isSecureContext){setState('idle','Microphone requires HTTPS');return}
     if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){setState('idle','Microphone permission is unavailable');return}
     try{
-      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-      stream.getTracks().forEach(track=>track.stop());
+      microphoneStream=await navigator.mediaDevices.getUserMedia({audio:true});
+      if(!SpeechRecognition){setState('idle','This browser does not support wake-word listening');return}
       if(startRecognition()){
         enabled=true;
-        say('Hey, welcome to my website! I’m Subhajit’s voice assistant. Just say “Hey Subhajit” whenever you need me.');
+        say('Hey, welcome.');
       }
     }catch(error){
       setState('idle',error&&error.name==='NotAllowedError'?'Microphone permission was denied':'Microphone is unavailable');
@@ -187,7 +190,7 @@
   root.querySelector('.hs-text-row').addEventListener('submit',e=>{e.preventDefault();submitText()});
   textInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitText()}});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closePanel()});
-  window.addEventListener('pagehide',()=>{enabled=false;manualStop=true;try{recognition&&recognition.stop()}catch(e){}if(window.speechSynthesis)window.speechSynthesis.cancel()});
+  window.addEventListener('pagehide',()=>{enabled=false;manualStop=true;try{recognition&&recognition.stop()}catch(e){}if(microphoneStream)microphoneStream.getTracks().forEach(track=>track.stop());if(window.speechSynthesis)window.speechSynthesis.cancel()});
   setState('idle','Waiting for microphone permission');
   requestMicrophone();
 })();
