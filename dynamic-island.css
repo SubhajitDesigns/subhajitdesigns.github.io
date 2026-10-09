@@ -209,3 +209,11 @@
   #dynamicIslandRoot #dynamicIslandMusicMount .site-music-info p{font-size:11px!important}
   #dynamicIslandRoot #dynamicIslandMusicMount .site-music-controls{gap:3px!important}
 }
+
+
+/* V3: immediate pointer response with a short, smooth visual transition */
+#dynamicIslandRoot{transition:width .24s cubic-bezier(.22,.8,.24,1)!important}
+#dynamicIslandRoot .di-card{transition:border-radius .22s ease,border-color .22s ease,box-shadow .22s ease!important}
+#dynamicIslandRoot .di-panel{transition:grid-template-rows .22s cubic-bezier(.22,.8,.24,1),opacity .16s ease!important}
+#dynamicIslandRoot .di-nav a,
+#dynamicIslandRoot .di-nav button{transition:background .16s ease,color .16s ease,border-color .16s ease,transform .16s ease!important}
