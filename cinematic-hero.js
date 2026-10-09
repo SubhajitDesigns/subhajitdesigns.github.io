@@ -1,72 +1,64 @@
-/* Cursor-controlled facial pose prototype.
-   The source clip stays paused; pointer position selects a recorded facial pose. */
+/* Cursor-controlled portrait prototype driven by the user's extracted 30 FPS sequence.
+   Video element is used only as a paused frame source; playback is never started. */
 (() => {
   const hero = document.querySelector('.cinematic-hero');
   const scene = document.getElementById('cinematicScene');
   const video = hero && hero.querySelector('video');
   if (!hero || !scene || !video) return;
-
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let frame = 0, x = 0, y = 0, targetTime = 0, seekFrame = 0;
-  let lastSeek = -1;
-  // These timestamps are based on the actual uploaded 10-second clip:
-  // front-facing, looking upward/right, looking down, side glance, and near-front.
-  const poses = [
-    { x: 0.50, y: 0.50, t: 0.15 },
-    { x: 0.78, y: 0.32, t: 3.55 },
-    { x: 0.52, y: 0.78, t: 5.45 },
-    { x: 0.82, y: 0.62, t: 7.15 },
-    { x: 0.36, y: 0.42, t: 8.10 }
-  ];
+  let raf = 0, x = 0, y = 0, targetTime = 0.10;
 
-  const pickPose = (nx, ny) => {
+  // Approximate representative poses from the supplied 240-frame sequence.
+  const poses = [
+    { x: .50, y: .50, t: .10 },
+    { x: .18, y: .50, t: 1.20 },
+    { x: .82, y: .50, t: 2.00 },
+    { x: .80, y: .22, t: 2.80 },
+    { x: .30, y: .20, t: 3.20 },
+    { x: .50, y: .82, t: 4.00 },
+    { x: .20, y: .54, t: 6.00 },
+    { x: .60, y: .18, t: 6.80 },
+    { x: .50, y: .50, t: 4.80 }
+  ];
+  const findPose = (nx, ny) => {
     let best = poses[0], bestScore = Infinity;
     for (const pose of poses) {
-      const dx = (nx - pose.x) * 1.0;
-      const dy = (ny - pose.y) * 1.15;
+      const dx = nx - pose.x, dy = (ny - pose.y) * 1.08;
       const score = dx * dx + dy * dy;
       if (score < bestScore) { bestScore = score; best = pose; }
     }
     return best.t;
   };
-
-  const animate = () => {
-    frame = 0;
+  const render = () => {
+    raf = 0;
     scene.style.setProperty('--scene-x', x.toFixed(2) + 'px');
     scene.style.setProperty('--scene-y', y.toFixed(2) + 'px');
-    if (video.readyState >= 2 && Math.abs(video.currentTime - targetTime) > 0.07) {
-      // Seeking creates a still pose; playback is never started.
+    if (video.readyState >= 2 && Math.abs(video.currentTime - targetTime) > .035) {
       try { video.currentTime = targetTime; } catch (_) {}
     }
   };
-
-  const onPointer = event => {
+  const queue = () => { if (!raf) raf = requestAnimationFrame(render); };
+  hero.addEventListener('pointermove', event => {
     if (event.pointerType === 'touch') return;
     const rect = hero.getBoundingClientRect();
     const nx = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
     const ny = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
-    targetTime = pickPose(nx, ny);
-    x = reduce.matches ? 0 : (nx - .5) * -8;
-    y = reduce.matches ? 0 : (ny - .5) * -5;
-    if (!frame) frame = requestAnimationFrame(animate);
-  };
-
-  hero.addEventListener('pointermove', onPointer, { passive: true });
-  hero.addEventListener('pointerleave', () => {
-    targetTime = poses[0].t;
-    x = 0; y = 0;
-    if (!frame) frame = requestAnimationFrame(animate);
+    targetTime = findPose(nx, ny);
+    x = reduce.matches ? 0 : (nx - .5) * -5;
+    y = reduce.matches ? 0 : (ny - .5) * -3;
+    queue();
   }, { passive: true });
-
+  hero.addEventListener('pointerleave', () => {
+    targetTime = .10; x = 0; y = 0; queue();
+  }, { passive: true });
   video.addEventListener('loadedmetadata', () => {
     video.pause();
-    video.currentTime = poses[0].t;
+    try { video.currentTime = .10; } catch (_) {}
   });
-  video.addEventListener('seeked', () => { video.pause(); });
+  video.addEventListener('seeked', () => video.pause());
   video.addEventListener('play', () => video.pause());
-  // Never call play(): use the video only as a collection of recorded facial poses.
+  video.pause();
   if (video.readyState >= 1) {
-    video.pause();
-    try { video.currentTime = poses[0].t; } catch (_) {}
+    try { video.currentTime = .10; } catch (_) {}
   }
 })();
