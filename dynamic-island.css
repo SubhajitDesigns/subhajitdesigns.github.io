@@ -584,3 +584,20 @@ body.light-mode #dynamicIslandRoot .di-music-link{color:#333}
   }
   #dynamicIslandRoot:not(.di-open){width:184px !important}
 }
+
+
+/* Apple-like breathing room when the island expands for music/navigation */
+#dynamicIslandRoot.di-open{
+  top:14px !important;
+  transform:translateX(-50%) !important;
+}
+#dynamicIslandRoot.di-open .di-card{
+  margin-top:0 !important;
+  border-radius:26px !important;
+}
+@media(max-width:600px){
+  #dynamicIslandRoot.di-open{
+    top:10px !important;
+    transform:translateX(-50%) !important;
+  }
+}
