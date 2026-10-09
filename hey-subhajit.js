@@ -13,7 +13,7 @@
   const textInput=root.querySelector('.hs-text-input');
   const send=root.querySelector('.hs-send');
   const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-  let recognition=null,enabled=false,awake=false,speaking=false,restartTimer=null,manualStop=false,lastHeard='',wakeTimeout=null,queuedCommand=null,microphoneStream=null;
+  let recognition=null,enabled=false,awake=false,speaking=false,restartTimer=null,manualStop=false,lastHeard='',wakeTimeout=null,queuedCommand=null,microphoneStream=null,restartAttempts=0;
   const setState=(state,message)=>{
     root.dataset.state=state;
     if(message) status.textContent=message;
@@ -45,7 +45,7 @@
     utterance.lang='en-IN';utterance.rate=.90;utterance.pitch=.94;utterance.volume=1;
     const voice=chooseVoice();if(voice)utterance.voice=voice;
     utterance.onstart=()=>setState('speaking','Speaking');
-    utterance.onend=()=>{speaking=false;if(queuedCommand){const next=queuedCommand;queuedCommand=null;setTimeout(()=>runCommand(next),220);return}if(enabled&&!manualStop){setState('listening','Listening for “Hey Subhajit”…');scheduleRestart(450)}else setState('idle','Voice assistant is off')};
+    utterance.onend=()=>{speaking=false;if(queuedCommand){const next=queuedCommand;queuedCommand=null;setTimeout(()=>runCommand(next),250);return}if(enabled&&!manualStop){setState('listening','Listening');scheduleRestart(700)}else setState('idle','Voice assistant is off')};
     utterance.onerror=()=>{speaking=false;if(enabled&&!manualStop)scheduleRestart(600);else setState('idle','Voice assistant is off')};
     window.speechSynthesis.speak(utterance);
   };
@@ -126,11 +126,15 @@
         }
       }else interim+=phrase+' ';
     }
-    if(interim.trim()&&awake&&!speaking)transcript.textContent='“'+interim.trim()+'…”';
+    if(interim.trim()&&!speaking){transcript.textContent='“'+interim.trim()+'…”';
+      if(!awake&&/\b(about|crafted|designs|projects|resume|cv|contact|clients|services|what i do|home|top|music|song|volume|show reel|dark mode|light mode|help)\b/i.test(interim)){
+        awake=true;clearTimeout(wakeTimeout);wakeTimeout=setTimeout(()=>{awake=false},12000);
+      }
+    }
   };
   const scheduleRestart=(delay)=>{
     clearTimeout(restartTimer);
-    restartTimer=setTimeout(()=>{if(!enabled||manualStop||speaking||!recognition)return;try{recognition.start()}catch(e){}},delay);
+    restartTimer=setTimeout(()=>{if(!enabled||manualStop||speaking||!recognition)return;try{recognition.start();restartAttempts=0}catch(e){restartAttempts++;if(restartAttempts<8)scheduleRestart(Math.min(2500,350+restartAttempts*250));else setState('idle','Voice recognition stopped. Refresh and allow microphone access.')}},delay);
   };
   const startRecognition=()=>{
     if(!SpeechRecognition){setState('idle','Voice recognition is not supported here');return false}
@@ -146,15 +150,15 @@
           enabled=false;manualStop=true;setState('idle','Microphone permission was denied');help.textContent='Allow microphone access for this site in your browser settings, then tap Enable voice listening again.';enable.hidden=false;enable.textContent='Enable voice listening';return;
         }
         if(event.error==='audio-capture'){setState('idle','No microphone was found');help.textContent='Connect or enable a microphone, then try again.'}
-        else if(event.error==='network'){setState('idle','Voice recognition service unavailable');}
+        else if(event.error==='network'){setState('idle','Speech service unavailable');if(enabled&&!manualStop)scheduleRestart(1200)}
         else if(event.error==='no-speech'){if(enabled&&!manualStop&&!speaking)scheduleRestart(500)}
-        else if(event.error==='network'){setState('idle','Speech service unavailable');if(enabled&&!manualStop)scheduleRestart(1500)}
+        else if(enabled&&!manualStop&&!speaking){scheduleRestart(800)}
       };
-      recognition.onend=()=>{if(enabled&&!manualStop&&!speaking)scheduleRestart(400)};
+      recognition.onend=()=>{if(enabled&&!manualStop&&!speaking)scheduleRestart(500)};
     }
     manualStop=false;
-    try{recognition.start();enabled=true;awake=false;setState('listening','Listening for “Hey Subhajit”…');enable.hidden=false;enable.textContent='Stop voice listening';help.textContent='Say “Hey Subhajit” to wake me, then give a command. Use Stop voice listening whenever you want to turn the microphone off.';transcript.textContent='Your microphone is on. I’m waiting for the wake phrase.';return true}
-    catch(e){enabled=true;scheduleRestart(600);return true}
+    try{recognition.start();enabled=true;awake=false;setState('listening','Listening');enable.hidden=true;help.textContent='';transcript.textContent='';return true}
+    catch(e){if(e&&e.name==='InvalidStateError'){enabled=true;scheduleRestart(500);setState('listening','Listening');return true}enabled=false;setState('idle','Could not start voice recognition');return false}
   };
   const disableListening=()=>{
     enabled=false;manualStop=true;awake=false;clearTimeout(restartTimer);clearTimeout(wakeTimeout);
