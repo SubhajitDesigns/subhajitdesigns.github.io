@@ -13,7 +13,7 @@
   const textInput=root.querySelector('.hs-text-input');
   const send=root.querySelector('.hs-send');
   const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-  let recognition=null,enabled=false,awake=false,speaking=false,restartTimer=null,manualStop=false,lastHeard='',wakeTimeout=null;
+  let recognition=null,enabled=false,awake=false,speaking=false,restartTimer=null,manualStop=false,lastHeard='',wakeTimeout=null,queuedCommand=null;
   const setState=(state,message)=>{
     root.dataset.state=state;
     if(message) status.textContent=message;
@@ -30,7 +30,7 @@
     const utterance=new SpeechSynthesisUtterance(message);
     utterance.lang='en-IN';utterance.rate=.96;utterance.pitch=1.02;utterance.volume=1;
     utterance.onstart=()=>setState('speaking','Speaking');
-    utterance.onend=()=>{speaking=false;if(enabled&&!manualStop){setState('listening','Listening for “Hey Subhajit”…');scheduleRestart(350)}else setState('idle','Voice assistant is off')};
+    utterance.onend=()=>{speaking=false;if(queuedCommand){const next=queuedCommand;queuedCommand=null;setTimeout(()=>runCommand(next),220);return}if(enabled&&!manualStop){setState('listening','Listening for “Hey Subhajit”…');scheduleRestart(350)}else setState('idle','Voice assistant is off')};
     utterance.onerror=()=>{speaking=false;if(enabled&&!manualStop)scheduleRestart(500);else setState('idle','Voice assistant is off')};
     window.speechSynthesis.speak(utterance);
   };
@@ -47,7 +47,6 @@
     transcript.textContent='“'+raw+'”';
     if(/\b(stop talking|be quiet|silence|stop speaking)\b/.test(q)){window.speechSynthesis.cancel();speaking=false;setState(enabled?'listening':'idle',enabled?'Listening for “Hey Subhajit”…':'Voice assistant is off');if(enabled)scheduleRestart(300);return}
     if(/\b(stop listening|turn off|disable voice|goodbye assistant)\b/.test(q)){disableListening();say('No problem. I’ll stop listening. Tap the orb whenever you want me again.');return}
-    if(/\b(resume|cv|curriculum vitae)\b/.test(q)){say('Of course! Opening the resume.');setTimeout(()=>{window.location.href='resume.html'},700);return}
     if(/\b(testimonials?|reviews?|client feedback)\b/.test(q)){scrollToSection('clients','the clients section');return}
     if(/\b(about|who are you|tell me about|about you|yourself)\b/.test(q)){scrollToSection('about','the About section');return}
     if(/\b(crafted|craft|portfolio work|show me your work|projects|designs|featured work)\b/.test(q)){scrollToSection('work','Crafted Designs');return}
@@ -57,6 +56,7 @@
     if(/\b(home|top|start|landing page)\b/.test(q)){scrollToSection('top','the top of the page');return}
     if(/\b(play music|play the music|start music|resume music)\b/.test(q)){const p=document.getElementById('musicPlay');if(p){p.click();say('Sure! I’ll start the soundtrack.')}else say('I can’t find the music controls right now.');return}
     if(/\b(pause music|stop music|mute music|mute the soundtrack)\b/.test(q)){const p=document.getElementById('musicMute');if(/mute/.test(q)&&p)p.click();else{const play=document.getElementById('musicPlay');if(play)play.click()}say('Okay, soundtrack controls updated.');return}
+    if(/\b(resume|cv|curriculum vitae)\b/.test(q)){say('Of course! Opening your resume.');setTimeout(()=>{window.location.href='resume.html'},900);return}
     if(/\b(help|what can you do|commands)\b/.test(q)){say('I can show you About, Crafted Designs, What I Do, Clients, Contact, or your resume. You can also ask me to control the soundtrack.');return}
     say('Sorry, I didn’t catch that. Try saying, show me your crafted designs, or open my resume.');
   };
@@ -74,9 +74,9 @@
         if(!awake){
           if(wakePhrase(phrase)){
             awake=true;
-            const remainder=phrase.toLowerCase().replace(/.*?hey\s+subha?j(?:it|eet)\s*/,'').trim();
-            say('Hi there! Welcome to Subhajit Designs. How can I help you today?');
-            if(remainder.length>2)setTimeout(()=>runCommand(remainder),1600);
+            const remainder=phrase.toLowerCase().replace(/.*?(?:hey\s+subhajit|hey\s+subha\s+jeet|hey\s+subhajeet|hi\s+subhajit)\s*/,'').trim();
+            if(remainder.length>2)queuedCommand=remainder;
+            say('Hi there! Welcome to Subhajit Designs. How can I help you today.');
             clearTimeout(wakeTimeout);wakeTimeout=setTimeout(()=>{awake=false},12000);
           }
         }else{
@@ -103,14 +103,14 @@
       recognition.onresult=handleResult;
       recognition.onerror=(event)=>{
         if(event.error==='not-allowed'||event.error==='service-not-allowed'){
-          enabled=false;manualStop=true;setState('idle','Microphone permission was denied');help.textContent='Allow microphone access for this site in your browser settings, then tap Enable voice again.';enable.hidden=false;enable.textContent='Enable voice listening';return;
+          enabled=false;manualStop=true;setState('idle','Microphone permission was denied');help.textContent='Allow microphone access for this site in your browser settings, then tap Enable voice listening again.';enable.hidden=false;enable.textContent='Enable voice listening';return;
         }
         if(event.error==='audio-capture'){setState('idle','No microphone was found');help.textContent='Connect or enable a microphone, then try again.'}
       };
       recognition.onend=()=>{if(enabled&&!manualStop&&!speaking)scheduleRestart(400)};
     }
     manualStop=false;
-    try{recognition.start();enabled=true;awake=false;setState('listening','Listening for “Hey Subhajit”…');enable.hidden=true;help.textContent='Say “Hey Subhajit” to wake me, then give a command. Listening stops when you turn it off.';transcript.textContent='Your microphone is on. I’m waiting for the wake phrase.';return true}
+    try{recognition.start();enabled=true;awake=false;setState('listening','Listening for “Hey Subhajit”…');enable.hidden=false;enable.textContent='Stop voice listening';help.textContent='Say “Hey Subhajit” to wake me, then give a command. Use Stop voice listening whenever you want to turn the microphone off.';transcript.textContent='Your microphone is on. I’m waiting for the wake phrase.';return true}
     catch(e){enabled=true;scheduleRestart(600);return true}
   };
   const disableListening=()=>{
@@ -127,6 +127,7 @@
   });
   close.addEventListener('click',closePanel);
   enable.addEventListener('click',()=>{
+    if(enabled){disableListening();help.textContent='The microphone is off. Enable voice listening whenever you want me again.';return}
     if(!window.isSecureContext){help.textContent='Microphone access requires a secure website (HTTPS). Open the portfolio over HTTPS and try again.';return}
     startRecognition();
   });
