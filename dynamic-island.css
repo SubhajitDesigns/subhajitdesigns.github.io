@@ -507,3 +507,39 @@ body.light-mode #dynamicIslandRoot .di-music-link{color:#333}
     top:22px !important;
   }
 }
+
+
+/* Compact header band; center island vertically in the band */
+.hero-nav{
+  min-height:72px !important;
+  height:72px !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  box-sizing:border-box !important;
+}
+#dynamicIslandRoot,
+#dynamicIslandRoot:not(.di-open){
+  top:36px !important;
+  transform:translate(-50%,-50%) !important;
+}
+#dynamicIslandRoot:not(.di-open){
+  width:188px !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-top-row{
+  min-height:42px !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-toggle{
+  height:36px !important;
+}
+@media(max-width:600px){
+  .hero-nav{
+    min-height:64px !important;
+    height:64px !important;
+  }
+  #dynamicIslandRoot,
+  #dynamicIslandRoot:not(.di-open){
+    top:32px !important;
+    transform:translate(-50%,-50%) !important;
+    width:184px !important;
+  }
+}
