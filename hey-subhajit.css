@@ -38,3 +38,7 @@
 #heySubhajit .hs-foot{margin-top:13px;color:#796661;font:8px 'DM Mono',monospace;letter-spacing:.08em;line-height:1.5}
 @media(max-width:520px){#heySubhajit .hs-orb-button{width:58px;height:58px}#heySubhajit .hs-panel{bottom:72px;padding:16px}}
 @media(prefers-reduced-motion:reduce){#heySubhajit *,#heySubhajit *:before,#heySubhajit *:after{animation:none!important;transition:none!important}}
+
+/* Minimal orb-only mode: keep the assistant panel completely out of view. */
+#heySubhajit .hs-panel{display:none!important}
+#heySubhajit .hs-orb-button{width:66px;height:66px}
