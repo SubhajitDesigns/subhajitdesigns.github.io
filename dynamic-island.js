@@ -8,6 +8,8 @@
 
   const root=document.createElement('div');
   root.id='dynamicIslandRoot';
+  // Explicit viewport centering prevents inherited header/layout styles from shifting the island.
+  Object.assign(root.style,{position:'fixed',left:'50vw',right:'auto',marginLeft:'0',transform:'translateX(-50%)'});
   root.innerHTML=`
     <div class="di-card">
       <div class="di-top-row">
