@@ -254,3 +254,52 @@ body.light-mode #dynamicIslandRoot .di-music-link{color:#333}
   #dynamicIslandRoot .di-theme-switch .slider:before{height:16px;width:16px}
   #dynamicIslandRoot .di-theme-switch input:checked + .slider:before{transform:translateX(15px)}
 }
+
+
+/* Fix collapsed island: center the wordmark and reserve a dedicated switch slot */
+#dynamicIslandRoot:not(.di-open) .di-top-row{
+  position:relative !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  min-height:54px !important;
+  padding:4px 8px !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-toggle{
+  position:relative !important;
+  display:flex !important;
+  flex:1 1 auto !important;
+  width:100% !important;
+  height:44px !important;
+  justify-content:center !important;
+  padding:0 54px 0 12px !important;
+  box-sizing:border-box !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-toggle-left{
+  width:100% !important;
+  justify-content:center !important;
+  text-align:center !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-theme-switch{
+  position:absolute !important;
+  top:50% !important;
+  right:10px !important;
+  transform:translateY(-50%) !important;
+  width:34px !important;
+  height:22px !important;
+  min-width:34px !important;
+  margin:0 !important;
+  flex:none !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-theme-switch .slider:before{
+  width:16px !important;
+  height:16px !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-theme-switch input:checked + .slider:before{
+  transform:translateX(12px) !important;
+}
+@media(max-width:600px){
+  #dynamicIslandRoot:not(.di-open) .di-top-row{min-height:48px !important}
+  #dynamicIslandRoot:not(.di-open) .di-toggle{height:40px !important;padding-right:48px !important}
+  #dynamicIslandRoot:not(.di-open) .di-theme-switch{right:8px !important;width:32px !important;min-width:32px !important}
+}
