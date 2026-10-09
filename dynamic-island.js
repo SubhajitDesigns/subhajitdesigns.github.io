@@ -15,7 +15,6 @@
           <span class="di-wordmark">SUBHAJIT<span style="color:#ff493b">.</span></span>
         </span>
         <span class="di-toggle-right">
-          <span class="di-status"><i class="di-status-dot"></i> DESIGNER ONLINE</span>
           <span class="di-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
           <span class="di-chevron" aria-hidden="true">⌄</span>
         </span>
