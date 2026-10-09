@@ -21,6 +21,20 @@
   };
   const openPanel=()=>{root.classList.add('is-open');orb.setAttribute('aria-expanded','true')};
   const closePanel=()=>{root.classList.remove('is-open');orb.setAttribute('aria-expanded','false')};
+  const chooseVoice=()=>{
+    if(!('speechSynthesis' in window))return null;
+    const voices=window.speechSynthesis.getVoices()||[];
+    if(!voices.length)return null;
+    const preferred=[
+      /\b(ravi|prabhat|rishi)\b.*en[-_ ]?in/i,
+      /en[-_ ]?in.*\b(ravi|prabhat|rishi)\b/i,
+      /google.*english.*india/i,
+      /english.*india/i,
+      /en[-_]IN/i
+    ];
+    for(const pattern of preferred){const found=voices.find(v=>pattern.test(v.name+' '+v.lang));if(found)return found;}
+    return voices.find(v=>/^en[-_]IN$/i.test(v.lang))||voices.find(v=>/^en[-_]/i.test(v.lang))||null;
+  };
   const say=(message)=>{
     transcript.textContent=message;
     if(!('speechSynthesis' in window)){setState(enabled?'listening':'idle',message);return}
@@ -28,10 +42,11 @@
     try{if(recognition)recognition.stop()}catch(e){}
     window.speechSynthesis.cancel();
     const utterance=new SpeechSynthesisUtterance(message);
-    utterance.lang='en-IN';utterance.rate=.96;utterance.pitch=1.02;utterance.volume=1;
+    utterance.lang='en-IN';utterance.rate=.90;utterance.pitch=.94;utterance.volume=1;
+    const voice=chooseVoice();if(voice)utterance.voice=voice;
     utterance.onstart=()=>setState('speaking','Speaking');
-    utterance.onend=()=>{speaking=false;if(queuedCommand){const next=queuedCommand;queuedCommand=null;setTimeout(()=>runCommand(next),220);return}if(enabled&&!manualStop){setState('listening','Listening for “Hey Subhajit”…');scheduleRestart(350)}else setState('idle','Voice assistant is off')};
-    utterance.onerror=()=>{speaking=false;if(enabled&&!manualStop)scheduleRestart(500);else setState('idle','Voice assistant is off')};
+    utterance.onend=()=>{speaking=false;if(queuedCommand){const next=queuedCommand;queuedCommand=null;setTimeout(()=>runCommand(next),220);return}if(enabled&&!manualStop){setState('listening','Listening for “Hey Subhajit”…');scheduleRestart(450)}else setState('idle','Voice assistant is off')};
+    utterance.onerror=()=>{speaking=false;if(enabled&&!manualStop)scheduleRestart(600);else setState('idle','Voice assistant is off')};
     window.speechSynthesis.speak(utterance);
   };
   const scrollToSection=(id,label)=>{
@@ -51,18 +66,30 @@
     if(/\b(about|who are you|tell me about|about you|yourself)\b/.test(q)){scrollToSection('about','the About section');return}
     if(/\b(crafted|craft|portfolio work|show me your work|projects|designs|featured work)\b/.test(q)){scrollToSection('work','Crafted Designs');return}
     if(/\b(what i do|services|skills|toolkit)\b/.test(q)){scrollToSection('what-i-do','What I Do');return}
-    if(/\b(client|clients|brands)\b/.test(q)){scrollToSection('clients','the Clients section');return}
-    if(/\b(contact|email|hire you|get in touch|reach you)\b/.test(q)){scrollToSection('contact','the Contact section');return}
-    if(/\b(home|top|start|landing page)\b/.test(q)){scrollToSection('top','the top of the page');return}
-    if(/\b(play music|play the music|start music|resume music)\b/.test(q)){const p=document.getElementById('musicPlay');if(p){p.click();say('Sure! I’ll start the soundtrack.')}else say('I can’t find the music controls right now.');return}
-    if(/\b(pause music|stop music|mute music|mute the soundtrack)\b/.test(q)){const p=document.getElementById('musicMute');if(/mute/.test(q)&&p)p.click();else{const play=document.getElementById('musicPlay');if(play)play.click()}say('Okay, soundtrack controls updated.');return}
-    if(/\b(resume|cv|curriculum vitae)\b/.test(q)){say('Of course! Opening your resume.');setTimeout(()=>{window.location.href='resume.html'},900);return}
-    if(/\b(help|what can you do|commands)\b/.test(q)){say('I can show you About, Crafted Designs, What I Do, Clients, Contact, or your resume. You can also ask me to control the soundtrack.');return}
+    const clickControl=(id)=>{const control=document.getElementById(id);if(control){control.click();return true}return false};
+    if(/\b(mute|turn off|switch off|disable)\b.*\b(music|soundtrack|song|audio)\b|\b(music|soundtrack|song|audio)\b.*\b(mute|turn off|switch off|disable)\b/.test(q)){
+      const mute=document.getElementById('musicMute');
+      if(mute){if(/unmute|mute/i.test(mute.getAttribute('aria-label')||''))mute.click();else mute.click()}
+      say('Okay, I’ll turn the music off.');return;
+    }
+    if(/\b(pause|stop)\b.*\b(music|soundtrack|song|audio)\b|\b(music|soundtrack|song|audio)\b.*\b(pause|stop)\b/.test(q)){
+      clickControl('musicPlay');say('Okay, I’ll pause the music.');return;
+    }
+    if(/\b(unmute|turn on|switch on|enable|play|start|resume)\b.*\b(music|soundtrack|song|audio)\b|\b(music|soundtrack|song|audio)\b.*\b(unmute|turn on|switch on|enable|play|start|resume)\b/.test(q)){
+      if(/\bunmute\b/.test(q))clickControl('musicMute');else clickControl('musicPlay');
+      say('Sure, updating the music for you.');return;
+    }
+    if(/\b(next song|next track|next music|skip song)\b/.test(q)){clickControl('musicNext');say('Skipping to the next track.');return}
+    if(/\b(previous song|previous track|go back a song)\b/.test(q)){clickControl('musicPrev');say('Going back to the previous track.');return}
+    if(/\b(show reel|play reel|watch reel)\b/.test(q)){const reel=document.getElementById('showReel');if(reel){reel.click();say('Opening the show reel.')}else say('I can’t find the show reel button.');return}
+    if(/\b(light mode|switch to light|turn on light theme)\b/.test(q)){const t=document.getElementById('themeToggle');if(t&&!t.checked)t.click();say('Switching to light mode.');return}
+    if(/\b(dark mode|switch to dark|turn on dark theme)\b/.test(q)){const t=document.getElementById('themeToggle');if(t&&t.checked)t.click();say('Switching to dark mode.');return}
+    if(/\b(help|what can you do|commands)\b/.test(q)){say('I can navigate to About, Crafted Designs, What I Do, Clients, Contact, and your resume; open the show reel; switch themes; and play, pause, mute, unmute, or skip music.');return}
     say('Sorry, I didn’t catch that. Try saying, show me your crafted designs, or open my resume.');
   };
   const wakePhrase=(text)=>{
     const normalized=text.toLowerCase().replace(/[.,!?]/g,' ').replace(/\s+/g,' ').trim();
-    const patterns=[/hey subhajit/,/hey subha jeet/,/hey subhajeet/,/hi subhajit/];
+    const patterns=[/hey\s+subhajit/,/hey\s+subha\s+jeet/,/hey\s+subhajeet/,/hi\s+subhajit/];
     return patterns.some(p=>p.test(normalized));
   };
   const handleResult=(event)=>{
