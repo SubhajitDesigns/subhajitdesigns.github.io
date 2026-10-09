@@ -68,8 +68,9 @@
   });
   root.addEventListener('pointerleave', scheduleClose);
   toggle.addEventListener('click', () => {
-    const next = !root.classList.contains('di-open');
-    setOpen(next, true);
+    // If hover has already opened it, the first click pins it open.
+    // A second click closes a pinned-open island.
+    setOpen(!pinnedOpen, true);
   });
 
   links.forEach(link => {
