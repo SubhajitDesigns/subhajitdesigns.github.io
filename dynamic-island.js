@@ -42,10 +42,8 @@
   const links=[...root.querySelectorAll('.di-nav a')];
   const coarse=window.matchMedia('(pointer: coarse)');
   let pinnedOpen=false;
-  let closeTimer=null;
 
   function setOpen(open,pin=false){
-    clearTimeout(closeTimer);
     if(pin) pinnedOpen=open;
     root.classList.toggle('di-open',Boolean(open));
     toggle.setAttribute('aria-expanded',String(Boolean(open)));
@@ -61,13 +59,11 @@
       toggle.setAttribute('aria-expanded','true');
     }
   }
-  function scheduleClose(){
-    clearTimeout(closeTimer);
-    if(!pinnedOpen&&!coarse.matches) closeTimer=setTimeout(()=>setOpen(false),180);
-  }
-
   root.addEventListener('pointerenter',()=>{if(!coarse.matches) setOpen(true);});
-  root.addEventListener('pointerleave',scheduleClose);
+  // Close as soon as the pointer leaves; CSS handles the short, smooth collapse.
+  root.addEventListener('pointerleave',()=>{
+    if(!pinnedOpen&&!coarse.matches) setOpen(false);
+  });
   toggle.addEventListener('click',()=>{
     if(root.classList.contains('di-open')&&pinnedOpen) setOpen(false,true);
     else setOpen(true,true);
