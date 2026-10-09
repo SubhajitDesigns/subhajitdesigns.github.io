@@ -76,13 +76,19 @@
     if(/\b(show reel|play reel|watch reel)\b/.test(q)){const reel=document.getElementById('showReel');if(reel){reel.click();say('Opening the show reel.')}else say('I can’t find the show reel button.');return}
     if(/\b(light mode|switch to light|turn on light theme)\b/.test(q)){const t=document.getElementById('themeToggle');if(t&&!t.checked)t.click();say('Switching to light mode.');return}
     if(/\b(dark mode|switch to dark|turn on dark theme)\b/.test(q)){const t=document.getElementById('themeToggle');if(t&&t.checked)t.click();say('Switching to dark mode.');return}
-    if(/\b(mute|silence)\b.*\b(music|soundtrack|song|audio)\b|\b(music|soundtrack|song|audio)\b.*\b(mute|silence)\b/.test(q)){
+    if(/\b(volume|sound)\s+(to\s+)?(zero|0|10|20|30|40|50|60|70|80|90|100)(\s*percent)?\b/.test(q)){
+      const match=q.match(/\b(volume|sound)\s+(to\s+)?(zero|0|10|20|30|40|50|60|70|80|90|100)(\s*percent)?\b/);
+      if(audio){const n=match[3]==='zero'?0:Number(match[3]);audio.volume=n/100;const slider=document.getElementById('musicVolume');if(slider)slider.value=String(n/100);if(n>0&&audio.muted)clickControl('musicMute');say('Setting the music volume to '+n+' percent.')}else say('I can’t find the music player.');return;
+    }
+    if(/\b(louder|turn up the volume|increase the volume|volume up)\b/.test(q)){if(audio){audio.volume=Math.min(1,audio.volume+.15);const slider=document.getElementById('musicVolume');if(slider)slider.value=String(audio.volume);if(audio.muted)clickControl('musicMute');say('Turning the volume up.')}return}
+    if(/\b(quieter|turn down the volume|lower the volume|volume down)\b/.test(q)){if(audio){audio.volume=Math.max(0,audio.volume-.15);const slider=document.getElementById('musicVolume');if(slider)slider.value=String(audio.volume);say('Turning the volume down.')}return}
+    if(/\b(mute|silence)\b.*\b(music|soundtrack|song|audio)\b|\b(music|soundtrack|song|audio)\b.*\b(mute|silence)\b|\b(turn|switch) (the )?(music|soundtrack|song|audio) (to )?(mute|silent)\b/.test(q)){
       if(audio&&!audio.muted){clickControl('musicMute');say('Okay, I’ve muted the music.')}else say('The music is already muted.');return;
     }
     if(/\b(unmute)\b.*\b(music|soundtrack|song|audio)\b|\b(music|soundtrack|song|audio)\b.*\b(unmute)\b/.test(q)){
       if(audio&&audio.muted){clickControl('musicMute');say('The music is unmuted.')}else say('The music is already unmuted.');return;
     }
-    if(/\b(turn off|switch off|stop|pause|turn down|stop playing)\b.*\b(music|soundtrack|song|audio)\b|\b(music|soundtrack|song|audio)\b.*\b(turn off|switch off|stop|pause|stop playing)\b/.test(q)){
+    if(/\b(turn off|switch off|stop|pause|turn down|stop playing)\b.*\b(music|soundtrack|song|audio)\b|\b(music|soundtrack|song|audio)\b.*\b(turn off|switch off|stop|pause|stop playing)\b|\bturn (the )?(music|soundtrack|song|audio) off\b/.test(q)){
       if(audio&&!audio.paused){clickControl('musicPlay');say('Okay, I’ve turned off the music.')}else say('The music is already stopped.');return;
     }
     if(/\b(turn on|switch on|play|start|resume)\b.*\b(music|soundtrack|song|audio)\b|\b(music|soundtrack|song|audio)\b.*\b(turn on|switch on|play|start|resume)\b/.test(q)){
