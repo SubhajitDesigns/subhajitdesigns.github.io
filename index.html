@@ -165,7 +165,124 @@
       </div>
     </div>
   </div>
+
 </section>
+
+<!-- NEW EXPERIMENTAL SECTION — original Currently Creating section above is intentionally untouched -->
+<section class="creating-showcase section" id="creating-showcase" aria-label="Selected creative experiments">
+  <div class="creating-showcase-shell">
+    <div class="creating-showcase-visual">
+      <div class="creating-showcase-stage" id="creatingShowcaseStage" aria-live="polite">
+        <article class="creating-showcase-slide is-active" data-index="0">
+          <img src="currently-creating-01-new.jpg" alt="Font Fails typography poster" loading="eager">
+        </article>
+        <article class="creating-showcase-slide" data-index="1">
+          <img src="currently-creating-02.jpg" alt="Good Designer conceptual poster" loading="lazy">
+        </article>
+        <article class="creating-showcase-slide" data-index="2">
+          <img src="currently-creating-03.png" alt="CapCut creative visual" loading="lazy">
+        </article>
+        <article class="creating-showcase-slide" data-index="3">
+          <img src="currently-creating-04.png" alt="Idea Overload editorial poster" loading="lazy">
+        </article>
+        <article class="creating-showcase-slide" data-index="4">
+          <img src="schneider-featured.png" alt="Schneider Electric creative project" loading="lazy">
+        </article>
+        <div class="creating-showcase-index"><span id="creatingShowcaseCount">01 / 05</span><span>SELECTED EXPERIMENTS</span></div>
+      </div>
+      <div class="creating-showcase-controls">
+        <div class="creating-showcase-dots" id="creatingShowcaseDots" role="tablist" aria-label="Choose creative experiment"></div>
+        <button type="button" id="creatingShowcaseNext" aria-label="Next creative experiment">NEXT <span>↗</span></button>
+      </div>
+    </div>
+    <div class="creating-showcase-copy">
+      <p class="creating-showcase-eyebrow"><span></span> CREATIVE PORTFOLIO / 02</p>
+      <h2>IDEAS INTO<br><em>IMPACT.</em></h2>
+      <p class="creating-showcase-intro">A closer look at the visual experiments, bold concepts and creative directions taking shape in my studio.</p>
+      <div class="creating-showcase-rule"></div>
+      <p class="creating-showcase-category" id="creatingShowcaseCategory">TYPOGRAPHY / ART DIRECTION</p>
+      <h3 id="creatingShowcaseTitle">FONT FAILS</h3>
+      <div class="creating-showcase-bottom"><span>DESIGN / MOTION / EXPERIMENTS</span><span id="creatingShowcaseStatus">01 — 05</span></div>
+    </div>
+  </div>
+</section>
+<script>
+/* Standalone disperse carousel for the NEW showcase. Does not modify the original section. */
+(function(){
+  const root=document.getElementById('creating-showcase');
+  if(!root||root.dataset.ready)return;
+  root.dataset.ready='1';
+  const stage=root.querySelector('#creatingShowcaseStage');
+  const slides=[...root.querySelectorAll('.creating-showcase-slide')];
+  const next=root.querySelector('#creatingShowcaseNext');
+  const dots=root.querySelector('#creatingShowcaseDots');
+  const count=root.querySelector('#creatingShowcaseCount');
+  const status=root.querySelector('#creatingShowcaseStatus');
+  const category=root.querySelector('#creatingShowcaseCategory');
+  const title=root.querySelector('#creatingShowcaseTitle');
+  const data=[
+    ['TYPOGRAPHY / ART DIRECTION','FONT FAILS'],
+    ['EDITORIAL / CREATIVE DIRECTION','GOOD DESIGNER'],
+    ['VIDEO / CREATIVE EDITING','CAPCUT VISUALS'],
+    ['CONCEPT / ART DIRECTION','IDEA OVERLOAD'],
+    ['BRAND CAMPAIGN / DESIGN','SCHNEIDER ELECTRIC']
+  ];
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current=0,busy=false,autoTimer=null;
+  slides.forEach((slide,i)=>{
+    const dot=document.createElement('button');
+    dot.type='button';dot.setAttribute('role','tab');dot.setAttribute('aria-label','Show experiment '+(i+1));
+    dot.setAttribute('aria-selected',i===0?'true':'false');
+    dot.addEventListener('click',()=>show(i));
+    dots.appendChild(dot);
+  });
+  function disperse(slide,direction){
+    const img=slide.querySelector('img');
+    if(reduce||!img||!img.complete||!img.naturalWidth)return;
+    const layer=document.createElement('div');layer.className='creating-showcase-fragments';stage.appendChild(layer);
+    const rows=6,cols=5;
+    for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+      const piece=document.createElement('div');
+      piece.className='creating-showcase-fragment';
+      piece.style.clipPath='polygon('+(c/cols*100)+'% '+(r/rows*100)+'%, '+((c+1)/cols*100)+'% '+(r/rows*100)+'%, '+((c+1)/cols*100)+'% '+((r+1)/rows*100)+'%, '+(c/cols*100)+'% '+((r+1)/rows*100)+'%)';
+      piece.style.backgroundImage='url("'+(img.currentSrc||img.src).replace(/"/g,'%22')+'")';
+      piece.style.backgroundSize='100% 100%';
+      piece.style.backgroundPosition='center';
+      layer.appendChild(piece);
+      const x=direction*(90+Math.random()*300)+(Math.random()-.5)*90;
+      const y=(Math.random()-.5)*300;
+      const rot=(Math.random()-.5)*150;
+      piece.animate([{transform:'translate3d(0,0,0) rotate(0deg) scale(1)',opacity:1,filter:'blur(0)'},{transform:'translate3d('+x+'px,'+y+'px,0) rotate('+rot+'deg) scale('+(0.25+Math.random()*.5)+')',opacity:0,filter:'blur(2px)'}],{duration:620+Math.random()*480,delay:Math.random()*90,easing:'cubic-bezier(.16,1,.3,1)',fill:'forwards'});
+    }
+    setTimeout(()=>layer.remove(),1250);
+  }
+  function show(target){
+    if(busy||target===current)return;
+    busy=true;
+    const old=slides[current],direction=target>current?1:-1;
+    disperse(old,direction);
+    old.classList.remove('is-active');
+    current=target;
+    slides[current].classList.add('is-active');
+    const [c,t]=data[current];
+    category.textContent=c;title.textContent=t;
+    count.textContent=String(current+1).padStart(2,'0')+' / '+slides.length;
+    status.textContent=String(current+1).padStart(2,'0')+' — '+String(slides.length).padStart(2,'0');
+    [...dots.children].forEach((dot,i)=>dot.setAttribute('aria-selected',i===current?'true':'false'));
+    setTimeout(()=>busy=false,520);
+    restartAuto();
+  }
+  function advance(){show((current+1)%slides.length)}
+  next.addEventListener('click',advance);
+  stage.addEventListener('click',e=>{if(e.target.closest('.creating-showcase-slide'))advance()});
+  function restartAuto(){clearInterval(autoTimer);if(!reduce)autoTimer=setInterval(()=>{if(!busy)advance()},6500)}
+  restartAuto();
+  root.addEventListener('mouseenter',()=>clearInterval(autoTimer));
+  root.addEventListener('mouseleave',restartAuto);
+  root.addEventListener('focusin',()=>clearInterval(autoTimer));
+  root.addEventListener('focusout',restartAuto);
+})();
+</script>
 <section id="about" class="aboutx section" aria-label="About Subhajit">
   <div class="aboutx-topline">
     <span>01 — ABOUT THE DESIGNER</span>
