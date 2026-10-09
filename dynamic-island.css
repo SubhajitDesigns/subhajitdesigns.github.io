@@ -424,3 +424,59 @@ body.light-mode #dynamicIslandRoot .di-music-link{color:#333}
   #dynamicIslandRoot:not(.di-open) .di-top-row{min-height:56px !important}
   #dynamicIslandRoot:not(.di-open) .di-toggle{height:46px !important}
 }
+
+
+/* Compact Apple-inspired collapsed Dynamic Island */
+#dynamicIslandRoot:not(.di-open){
+  width:188px !important;
+  top:10px !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-card{
+  border-radius:999px !important;
+  background:linear-gradient(180deg,rgba(22,22,25,.98),rgba(5,5,7,.99)) !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  box-shadow:0 7px 24px rgba(0,0,0,.34),0 1px 0 rgba(255,255,255,.07) inset !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-top-row{
+  min-height:42px !important;
+  padding:2px 8px !important;
+  justify-content:center !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-toggle{
+  height:36px !important;
+  padding:0 !important;
+  justify-content:center !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-toggle-left{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:0 !important;
+  pointer-events:none !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-wordmark{
+  font-size:9px !important;
+  letter-spacing:.14em !important;
+  text-align:center !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-mark,
+#dynamicIslandRoot:not(.di-open) .di-toggle-right{
+  display:none !important;
+}
+#dynamicIslandRoot:not(.di-open) .di-theme-switch{
+  display:none !important;
+}
+#dynamicIslandRoot.di-open .di-theme-switch{
+  display:inline-block !important;
+}
+@media(max-width:600px){
+  #dynamicIslandRoot:not(.di-open){
+    width:184px !important;
+    top:8px !important;
+  }
+  #dynamicIslandRoot:not(.di-open) .di-top-row{min-height:40px !important}
+  #dynamicIslandRoot:not(.di-open) .di-toggle{height:34px !important}
+}
