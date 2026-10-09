@@ -303,3 +303,18 @@ body.light-mode #dynamicIslandRoot .di-music-link{color:#333}
   #dynamicIslandRoot:not(.di-open) .di-toggle{height:40px !important;padding-right:48px !important}
   #dynamicIslandRoot:not(.di-open) .di-theme-switch{right:8px !important;width:32px !important;min-width:32px !important}
 }
+
+
+/* Theme switch must only appear after the Dynamic Island expands */
+#dynamicIslandRoot:not(.di-open) .di-theme-switch{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+#dynamicIslandRoot.di-open .di-theme-switch{
+  display:inline-block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+}
