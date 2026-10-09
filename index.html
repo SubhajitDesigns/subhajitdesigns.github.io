@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="style.css?v=20261009-8">
   <link rel="stylesheet" href="music-player.css?v=20261009-4">
   <link rel="stylesheet" href="dynamic-island.css?v=20261009-14">
+  <link rel="stylesheet" href="hey-subhajit.css?v=1">
 </head>
 <body>
   <div class="cursor-glow" aria-hidden="true"></div>
@@ -593,6 +594,34 @@
     </div>
   </div>
 
+
+  <!-- Hey Subhajit voice assistant: microphone stays off until the visitor enables it. -->
+  <aside id="heySubhajit" data-state="idle" aria-label="Hey Subhajit voice assistant">
+    <div class="hs-panel" role="dialog" aria-label="Hey Subhajit voice assistant controls" aria-modal="false">
+      <div class="hs-top">
+        <div class="hs-brand"><span class="hs-mini-orb" aria-hidden="true"></span><div><div class="hs-title">Hey Subhajit</div><div class="hs-kicker">PORTFOLIO VOICE ASSISTANT</div></div></div>
+        <button class="hs-close" type="button" aria-label="Close assistant panel">×</button>
+      </div>
+      <div class="hs-status" role="status" aria-live="polite"><span class="hs-status-dot" aria-hidden="true"></span><span class="hs-status-text">Tap to meet your voice assistant</span></div>
+      <div class="hs-transcript" aria-live="polite">Say “Hey Subhajit” to explore the portfolio by voice.</div>
+      <button class="hs-permission" type="button">Enable voice listening</button>
+      <p class="hs-help">Your microphone is off until you enable voice listening.</p>
+      <div class="hs-commands" aria-label="Try a command">
+        <button class="hs-command" type="button" data-hs-command="show me your about section">About</button>
+        <button class="hs-command" type="button" data-hs-command="show me your crafted designs">Crafted Designs</button>
+        <button class="hs-command" type="button" data-hs-command="open my resume">Resume</button>
+        <button class="hs-command" type="button" data-hs-command="show me your clients">Clients</button>
+        <button class="hs-command" type="button" data-hs-command="take me to contact">Contact</button>
+      </div>
+      <form class="hs-text-row" role="search">
+        <input class="hs-text-input" type="text" placeholder="Or type a command…" aria-label="Type a voice assistant command" autocomplete="off">
+        <button class="hs-send" type="submit">Go ↗</button>
+      </form>
+      <div class="hs-foot">VOICE RECOGNITION DEPENDS ON YOUR BROWSER · MIC OFF UNTIL ENABLED</div>
+    </div>
+    <button class="hs-orb-button" type="button" aria-label="Open Hey Subhajit voice assistant" aria-expanded="false"><span class="hs-orb-core" aria-hidden="true"></span></button>
+  </aside>
+
   <footer>
     <span>© 2026 SUBHAJIT</span>
     <span>BUILT WITH HTML • CSS • JS</span>
@@ -602,5 +631,6 @@
   <script src="script.js?v=20261009-2"></script>
   <script src="music-player.js?v=20261009-6"></script>
   <script src="dynamic-island.js?v=20261009-6"></script>
+  <script src="hey-subhajit.js?v=1" defer></script>
 </body>
 </html>
