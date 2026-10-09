@@ -4,8 +4,7 @@
   const musicPlayer=document.getElementById('siteMusicPlayer');
   const themeSwitch=document.querySelector('.hero-nav .switch');
   if(!header||!musicPlayer||document.getElementById('dynamicIslandRoot')) return;
-  // Keep the light/dark toggle when the original header is replaced by the Dynamic Island.
-  if(themeSwitch){themeSwitch.classList.add('di-theme-switch');document.body.appendChild(themeSwitch);}
+  // Move the light/dark toggle inside the Dynamic Island instead of outside it.
 
   const root=document.createElement('div');
   root.id='dynamicIslandRoot';
@@ -39,6 +38,7 @@
   document.body.appendChild(root);
   header.replaceChildren();
   root.querySelector('#dynamicIslandMusicMount').appendChild(musicPlayer);
+  if(themeSwitch){themeSwitch.classList.add('di-theme-switch');root.querySelector('.di-top-row').appendChild(themeSwitch);}
 
   const toggle=root.querySelector('#dynamicIslandToggle');
   const musicLink=root.querySelector('#dynamicIslandMusicLink');
