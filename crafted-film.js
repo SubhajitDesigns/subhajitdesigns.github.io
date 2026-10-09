@@ -4,7 +4,7 @@ const cards=[...track.querySelectorAll('.crafted-film-card')];let x=0,last=perfo
 function measure(){half=original.getBoundingClientRect().width;}
 function frame(now){const dt=Math.min(40,now-last);last=now;if(!reduced.matches&&!paused&&half>0){x-=dt*.035;if(Math.abs(x)>=half)x+=half;track.style.transform='translate3d('+x+'px,0,0)';}
 const center=window.innerWidth/2;cards.forEach(card=>{const r=card.getBoundingClientRect();const mid=r.left+r.width/2;const distance=Math.abs(mid-center);const range=Math.max(240,window.innerWidth*.34);const focus=Math.max(0,1-distance/range);const scale=.82+focus*.42;const opacity=.28+focus*.72;card.style.opacity=opacity.toFixed(2);card.style.filter='brightness('+(0.5+focus*.5).toFixed(2)+') saturate('+(0.7+focus*.3).toFixed(2)+')';card.style.transform='scale('+scale.toFixed(3)+')';card.classList.toggle('is-focused',focus>.72);});raf=requestAnimationFrame(frame);}
-root.addEventListener('mouseenter',()=>paused=true);root.addEventListener('mouseleave',()=>paused=false);root.addEventListener('focusin',()=>paused=true);root.addEventListener('focusout',()=>paused=false);
+root.addEventListener('focusin',()=>paused=true);root.addEventListener('focusout',()=>paused=false);
 cards.forEach(card=>{card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5;const py=(e.clientY-r.top)/r.height-.5;const current=card.style.transform;card.style.transform=current+' rotateX('+(-py*4).toFixed(2)+'deg) rotateY('+(px*5).toFixed(2)+'deg)';});card.addEventListener('pointerleave',()=>{card.style.transform='';});});
 window.addEventListener('resize',measure);measure();requestAnimationFrame(frame);
 })();
