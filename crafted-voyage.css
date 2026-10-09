@@ -2,7 +2,7 @@
 .crafted-voyage-section{position:relative;padding:58px 0 74px;overflow:hidden;background:var(--bg,#070101);color:#f8f3ee}
 .crafted-voyage-topline{width:min(1280px,calc(100% - 56px));margin:0 auto 16px;display:flex;justify-content:space-between;gap:16px;color:#9b8178;font:9px 'DM Mono',monospace;letter-spacing:.16em}
 .crafted-voyage-shell{position:relative;isolation:isolate;width:min(1280px,calc(100% - 56px));height:620px;margin:auto;overflow:hidden;background:#090a0b;border:1px solid rgba(255,255,255,.12);box-shadow:0 24px 90px #0008}
-.crafted-voyage-backdrop{position:absolute;inset:-50px;background-position:center;background-size:cover;filter:blur(26px) brightness(.32) saturate(.8);transform:scale(1.12);opacity:.9;transition:background-image .5s ease}
+.crafted-voyage-backdrop{display:none!important}
 .crafted-voyage-shell:before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,#08090ac9 0%,#090a0a45 40%,#060606c9 100%);pointer-events:none}
 .crafted-voyage-nav{height:62px;position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid #ffffff20;font:9px 'DM Mono',monospace;letter-spacing:.13em}
 .crafted-voyage-brand{font:600 19px 'DM Sans',sans-serif;letter-spacing:-.07em}.crafted-voyage-brand span{color:var(--red,#ff3426)}
@@ -24,3 +24,13 @@
 .crafted-voyage-progress{height:2px;background:#ffffff30;flex:1;max-width:240px}.crafted-voyage-progress i{display:block;width:16.66%;height:100%;background:var(--red,#ff3426);transition:width .35s}
 @media(max-width:700px){.crafted-voyage-section{padding:38px 0 46px}.crafted-voyage-topline,.crafted-voyage-shell{width:calc(100% - 24px)}.crafted-voyage-shell{height:540px}.crafted-voyage-nav{height:54px;padding:0 14px}.crafted-voyage-navlinks{gap:10px;font-size:7px}.crafted-voyage-navlinks span:last-child{display:none}.crafted-voyage-stage{inset:54px 0 48px}.voyage-craft-card{width:190px;height:285px;top:42%}.crafted-voyage-copy{top:59%;width:88%}.crafted-voyage-copy h3{font-size:30px}.crafted-voyage-arrow{width:34px;height:34px;font-size:27px}.crafted-voyage-prev{left:10px}.crafted-voyage-next{right:10px}.crafted-voyage-footer{height:48px;padding:0 12px;gap:10px;font-size:7px}.crafted-voyage-topline{font-size:7px}}
 @media(prefers-reduced-motion:reduce){.voyage-craft-card,.crafted-voyage-backdrop,.crafted-voyage-progress i{transition:none}}
+
+/* Clean black stage and restrained pointer-driven 3D card tilt. */
+.crafted-voyage-shell{background:#080808!important}
+.crafted-voyage-shell:before{background:linear-gradient(180deg,rgba(8,8,8,.92),rgba(8,8,8,.35) 42%,rgba(8,8,8,.82))!important}
+.voyage-craft-card{transform-style:preserve-3d;transition:transform .48s cubic-bezier(.2,.7,.2,1),opacity .45s,filter .45s;will-change:transform}
+.voyage-craft-card img{transform:translateZ(0);transition:transform .48s cubic-bezier(.2,.7,.2,1)}
+.voyage-craft-card.is-active:hover img{transform:translateZ(9px) scale(1.018)}
+.voyage-craft-card.is-active{transform-style:preserve-3d}
+.voyage-craft-card:focus-visible{outline:2px solid var(--red,#ff3426);outline-offset:4px}
+@media(prefers-reduced-motion:reduce){.voyage-craft-card,.voyage-craft-card img{transition:none!important}}
