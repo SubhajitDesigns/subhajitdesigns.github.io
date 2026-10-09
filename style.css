@@ -5092,3 +5092,55 @@ body.light-mode #creating-showcase .creating-showcase-intro,body.light-mode #cre
 body.light-mode #creating-showcase .creating-showcase-bottom{border-top-color:rgba(0,0,0,.12)}
 @media(max-width:800px){#creating-showcase{padding:70px 0}#creating-showcase .creating-showcase-shell{width:calc(100% - 36px);grid-template-columns:1fr;gap:34px}#creating-showcase .creating-showcase-copy{grid-row:1}#creating-showcase .creating-showcase-visual{grid-row:2}#creating-showcase .creating-showcase-stage{height:clamp(320px,82vw,500px)}#creating-showcase .creating-showcase-copy h2{font-size:clamp(58px,14vw,88px)}#creating-showcase .creating-showcase-intro{margin:20px 0 26px}#creating-showcase .creating-showcase-bottom{margin-top:28px}}
 @media(prefers-reduced-motion:reduce){#creating-showcase .creating-showcase-slide{transition:none}#creating-showcase .creating-showcase-fragment{animation:none!important}}
+
+
+/* SHOWCASE CLEANUP — artwork only, no dark frame or side panel */
+#creating-showcase{
+  padding:clamp(28px,4vw,56px) 0 !important;
+  background:transparent !important;
+  border-top:0 !important;
+}
+#creating-showcase .creating-showcase-shell{
+  display:block !important;
+  width:min(920px,calc(100% - 36px)) !important;
+}
+#creating-showcase .creating-showcase-copy{
+  display:none !important;
+}
+#creating-showcase .creating-showcase-stage{
+  height:auto !important;
+  aspect-ratio: 4 / 5;
+  overflow:hidden !important;
+  background:transparent !important;
+  border-radius:18px !important;
+  box-shadow:none !important;
+}
+#creating-showcase .creating-showcase-slide{
+  padding:0 !important;
+  border-radius:18px !important;
+  overflow:hidden !important;
+}
+#creating-showcase .creating-showcase-slide img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  border-radius:18px !important;
+  filter:none !important;
+  box-shadow:none !important;
+}
+#creating-showcase .creating-showcase-index{
+  left:14px !important;
+  right:14px !important;
+  bottom:12px !important;
+  text-shadow:0 1px 8px rgba(0,0,0,.7);
+}
+#creating-showcase .creating-showcase-controls{
+  padding-top:14px !important;
+}
+body.light-mode #creating-showcase{
+  background:transparent !important;
+}
+@media(max-width:800px){
+  #creating-showcase .creating-showcase-shell{width:calc(100% - 28px) !important}
+  #creating-showcase .creating-showcase-stage{aspect-ratio:4 / 5;height:auto !important}
+}
