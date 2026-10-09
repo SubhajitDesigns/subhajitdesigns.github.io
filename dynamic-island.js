@@ -2,7 +2,10 @@
 (() => {
   const header=document.querySelector('.hero-nav');
   const musicPlayer=document.getElementById('siteMusicPlayer');
+  const themeSwitch=document.querySelector('.hero-nav .switch');
   if(!header||!musicPlayer||document.getElementById('dynamicIslandRoot')) return;
+  // Keep the light/dark toggle when the original header is replaced by the Dynamic Island.
+  if(themeSwitch){themeSwitch.classList.add('di-theme-switch');document.body.appendChild(themeSwitch);}
 
   const root=document.createElement('div');
   root.id='dynamicIslandRoot';
