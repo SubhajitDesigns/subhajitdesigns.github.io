@@ -5054,3 +5054,41 @@ body.light-mode footer a{color:#444!important}
 body.light-mode .reel-modal{background:rgba(255,255,255,.88)!important}
 body.light-mode .reel-card{background:#fff!important;color:#111!important;border-color:rgba(17,17,17,.12)!important}
 body.light-mode .reel-close{background:rgba(0,0,0,.06)!important;color:#111!important}
+
+
+/* NEW, INDEPENDENT CURRENTLY CREATING SHOWCASE — original section remains untouched */
+#creating-showcase{position:relative;isolation:isolate;overflow:hidden;padding:clamp(70px,9vw,130px) 0;background:radial-gradient(ellipse at 18% 52%,rgba(255,52,38,.10),transparent 38%),#080405;color:#f4ece8;border-top:1px solid rgba(255,255,255,.08)}
+#creating-showcase .creating-showcase-shell{width:min(1240px,calc(100% - 72px));margin:0 auto;display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);align-items:center;gap:clamp(38px,7vw,112px)}
+#creating-showcase .creating-showcase-visual{min-width:0}
+#creating-showcase .creating-showcase-stage{position:relative;width:100%;height:clamp(360px,43vw,570px);overflow:hidden;isolation:isolate;border-radius:18px;background:radial-gradient(ellipse at center,rgba(255,56,45,.09),transparent 65%),#10090a;box-shadow:0 30px 90px rgba(0,0,0,.38),inset 0 0 0 1px rgba(255,255,255,.1)}
+#creating-showcase .creating-showcase-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:clamp(16px,2.5vw,30px);opacity:0;visibility:hidden;transform:translate3d(35px,8px,0) scale(.97);transition:opacity .55s ease,transform .75s cubic-bezier(.16,1,.3,1),visibility .55s ease;cursor:pointer}
+#creating-showcase .creating-showcase-slide.is-active{opacity:1;visibility:visible;transform:translate3d(0,0,0) scale(1);z-index:2}
+#creating-showcase .creating-showcase-slide img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 24px 30px rgba(0,0,0,.36));user-select:none}
+#creating-showcase .creating-showcase-index{position:absolute;z-index:8;left:22px;right:22px;bottom:18px;display:flex;justify-content:space-between;gap:12px;color:rgba(255,255,255,.58);font:9px/1.4 monospace;letter-spacing:.15em;pointer-events:none}
+#creating-showcase .creating-showcase-index span:first-child{color:#ff493e}
+#creating-showcase .creating-showcase-controls{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:18px}
+#creating-showcase .creating-showcase-dots{display:flex;gap:8px;align-items:center}
+#creating-showcase .creating-showcase-dots button{width:20px;height:3px;padding:0;border:0;border-radius:5px;background:rgba(255,255,255,.22);cursor:pointer;transition:width .35s ease,background .35s ease}
+#creating-showcase .creating-showcase-dots button[aria-selected=true]{width:42px;background:#ff4035}
+#creating-showcase .creating-showcase-controls>button{display:flex;align-items:center;gap:18px;padding:11px 0 11px 14px;border:0;background:none;color:#f4ece8;font:10px monospace;letter-spacing:.14em;cursor:pointer}
+#creating-showcase .creating-showcase-controls>button span{display:grid;place-items:center;width:36px;height:36px;border:1px solid rgba(255,255,255,.2);border-radius:50%;color:#ff493e;font-size:17px;transition:transform .3s ease,border-color .3s ease}
+#creating-showcase .creating-showcase-controls>button:hover span{transform:rotate(45deg);border-color:#ff493e}
+#creating-showcase .creating-showcase-copy{min-width:0}
+#creating-showcase .creating-showcase-eyebrow{display:flex;align-items:center;gap:10px;margin:0 0 28px;color:#9b817a;font:10px monospace;letter-spacing:.16em}
+#creating-showcase .creating-showcase-eyebrow span{width:7px;height:7px;border-radius:50%;background:#ff4035;box-shadow:0 0 14px rgba(255,64,53,.7)}
+#creating-showcase .creating-showcase-copy h2{margin:0;color:#f4ece8;font-family:'Bebas Neue',sans-serif;font-size:clamp(58px,7.5vw,108px);line-height:.84;letter-spacing:-.025em}
+#creating-showcase .creating-showcase-copy h2 em{color:#ff4035;font-style:normal}
+#creating-showcase .creating-showcase-intro{max-width:440px;margin:28px 0 36px;color:#a99590;font-size:clamp(14px,1.2vw,16px);line-height:1.9}
+#creating-showcase .creating-showcase-rule{width:100%;height:1px;background:linear-gradient(90deg,rgba(255,64,53,.7),rgba(255,255,255,.12),transparent);margin-bottom:22px}
+#creating-showcase .creating-showcase-category{margin:0 0 10px;color:#a99590;font:10px monospace;letter-spacing:.15em}
+#creating-showcase .creating-showcase-copy h3{margin:0;color:#fff;font-family:'DM Sans',Arial,sans-serif;font-size:clamp(24px,3vw,40px);font-weight:700;letter-spacing:-.04em;line-height:1.1}
+#creating-showcase .creating-showcase-bottom{display:flex;justify-content:space-between;gap:16px;margin-top:44px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);color:#76625d;font:9px monospace;letter-spacing:.12em}
+#creating-showcase .creating-showcase-bottom span:last-child{color:#ff493e}
+#creating-showcase .creating-showcase-fragments{position:absolute;inset:clamp(16px,2.5vw,30px);z-index:6;pointer-events:none}
+#creating-showcase .creating-showcase-fragment{position:absolute;inset:0;will-change:transform,opacity}
+body.light-mode #creating-showcase{background:radial-gradient(ellipse at 18% 52%,rgba(255,52,38,.08),transparent 38%),#f7f7f5;color:#111}
+body.light-mode #creating-showcase .creating-showcase-copy h2,body.light-mode #creating-showcase .creating-showcase-copy h3,body.light-mode #creating-showcase .creating-showcase-controls>button{color:#111}
+body.light-mode #creating-showcase .creating-showcase-intro,body.light-mode #creating-showcase .creating-showcase-category{color:#666}
+body.light-mode #creating-showcase .creating-showcase-bottom{border-top-color:rgba(0,0,0,.12)}
+@media(max-width:800px){#creating-showcase{padding:70px 0}#creating-showcase .creating-showcase-shell{width:calc(100% - 36px);grid-template-columns:1fr;gap:34px}#creating-showcase .creating-showcase-copy{grid-row:1}#creating-showcase .creating-showcase-visual{grid-row:2}#creating-showcase .creating-showcase-stage{height:clamp(320px,82vw,500px)}#creating-showcase .creating-showcase-copy h2{font-size:clamp(58px,14vw,88px)}#creating-showcase .creating-showcase-intro{margin:20px 0 26px}#creating-showcase .creating-showcase-bottom{margin-top:28px}}
+@media(prefers-reduced-motion:reduce){#creating-showcase .creating-showcase-slide{transition:none}#creating-showcase .creating-showcase-fragment{animation:none!important}}
