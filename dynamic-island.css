@@ -115,3 +115,24 @@
 @media(prefers-reduced-motion:reduce){
   #dynamicIslandRoot,#dynamicIslandRoot *{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
 }
+
+
+/* Minimal collapsed island: show only the centered SUBHAJIT wordmark */
+#dynamicIslandRoot:not(.di-open) .di-toggle{
+  justify-content:center;
+  padding:0 12px;
+}
+#dynamicIslandRoot:not(.di-open) .di-toggle-left{
+  justify-content:center;
+  width:100%;
+  gap:0;
+}
+#dynamicIslandRoot:not(.di-open) .di-mark,
+#dynamicIslandRoot:not(.di-open) .di-toggle-right{
+  display:none!important;
+}
+#dynamicIslandRoot:not(.di-open) .di-wordmark{
+  font-size:10px;
+  letter-spacing:.16em;
+  text-align:center;
+}
