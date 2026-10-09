@@ -217,3 +217,29 @@
 #dynamicIslandRoot .di-panel{transition:grid-template-rows .22s cubic-bezier(.22,.8,.24,1),opacity .16s ease!important}
 #dynamicIslandRoot .di-nav a,
 #dynamicIslandRoot .di-nav button{transition:background .16s ease,color .16s ease,border-color .16s ease,transform .16s ease!important}
+
+
+/* Keep the day/night switch visible beside the Dynamic Island */
+.di-theme-switch{
+  position:fixed !important;
+  z-index:10051 !important;
+  top:20px !important;
+  right:clamp(18px,calc((100vw - 1120px)/2),72px) !important;
+  margin:0 !important;
+  font-size:14px !important;
+}
+@media(max-width:650px){
+  .di-theme-switch{top:20px !important;right:12px !important;font-size:12px !important}
+  #dynamicIslandRoot{top:12px}
+  #dynamicIslandRoot:not(.di-open){width:185px}
+}
+body.light-mode #dynamicIslandRoot .di-card{
+  background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(245,245,245,.97) 62%,rgba(255,246,244,.98));
+  color:#111;
+  border-color:rgba(0,0,0,.13);
+  box-shadow:0 18px 65px rgba(0,0,0,.12),0 2px 0 rgba(255,255,255,.8) inset;
+}
+body.light-mode #dynamicIslandRoot .di-toggle{color:#111}
+body.light-mode #dynamicIslandRoot .di-wordmark{color:#111}
+body.light-mode #dynamicIslandRoot .di-nav a,
+body.light-mode #dynamicIslandRoot .di-music-link{color:#333}
