@@ -59,3 +59,29 @@
 @media(max-width:760px){.featured-books{padding:76px 18px 90px}.fb-head{display:block}.fb-subtitle{margin-top:20px;max-width:440px}.fb-stage{min-height:355px;padding:36px 0 52px}.fb-books{gap:0}.fb-book{width:32%;flex-basis:32%}.fb-book-caption{font-size:7px;letter-spacing:.06em;bottom:-33px}.fb-book-number{top:-22px;font-size:8px}.fb-detail,.featured-books.is-open .fb-detail{grid-template-columns:1fr;gap:25px;max-height:none}.featured-books.is-open .fb-detail{margin-top:22px}.featured-books.is-open .fb-stage{min-height:245px}.featured-books.is-open .fb-book{width:25%;flex-basis:25%}.featured-books.is-open .fb-book:not(.is-selected){opacity:.22}.featured-books.is-open .fb-book.is-selected{transform:translateY(-3px) rotateY(-6deg) scale(1.03)}.fb-detail-art-frame{max-height:430px;aspect-ratio:1/.82}.fb-detail-art-frame img{max-height:430px}.fb-meta-grid{gap:0 16px}}
 @media(max-width:420px){.fb-heading{font-size:46px}.fb-stage{min-height:300px}.fb-book-caption{white-space:normal;line-height:1.25}.fb-book-number{font-size:7px}.fb-meta-grid{grid-template-columns:1fr 1fr}.fb-price-row{align-items:flex-start;flex-direction:column}.fb-enquire{width:100%}}
 @media(prefers-reduced-motion:reduce){.featured-books *, .featured-books *:before,.featured-books *:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+
+/* User-requested image-only Featured row: no book mockup, border or shadow. */
+.featured-books .fb-stage{min-height:0;display:block;padding:24px 0 12px;perspective:none}
+.featured-books .fb-books{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2.2vw,30px);align-items:start;transform:none}
+.featured-books .fb-book,
+.featured-books .fb-book:nth-child(1),
+.featured-books .fb-book:nth-child(2),
+.featured-books .fb-book:nth-child(3),
+.featured-books .fb-book:hover,
+.featured-books .fb-book:focus-visible,
+.featured-books.is-open .fb-book,
+.featured-books.is-open .fb-book:not(.is-selected),
+.featured-books.is-open .fb-book.is-selected{position:relative;display:block;flex:none;width:100%;min-width:0;aspect-ratio:4/5;padding:0;margin:0;transform:none!important;translate:none!important;filter:none!important;opacity:1!important;z-index:1;border:0!important;border-radius:9px;background:transparent;box-shadow:none!important;outline-offset:4px;transition:opacity .35s ease,transform .5s cubic-bezier(.2,.78,.2,1)}
+.featured-books .fb-book-shell{position:absolute;inset:0;transform:none!important;transition:none}
+.featured-books .fb-pages,.featured-books .fb-spine,.featured-books .fb-book-number,.featured-books .fb-book-caption,.featured-books .fb-hint{display:none!important}
+.featured-books .fb-cover{position:absolute;inset:0;overflow:hidden;border:0!important;border-radius:9px;background:transparent;box-shadow:none!important;transform:none!important;backface-visibility:visible}
+.featured-books .fb-cover:after{display:none!important}
+.featured-books .fb-cover img{display:block;width:100%;height:100%;object-fit:cover;border:0;border-radius:9px;box-shadow:none;transform:none!important;filter:none!important;transition:transform .65s cubic-bezier(.2,.78,.2,1)}
+.featured-books .fb-book:hover .fb-cover img{transform:scale(1.025)!important}
+.featured-books.is-open .fb-book:not(.is-selected){opacity:.35!important;transform:scale(.97)!important}
+.featured-books.is-open .fb-book.is-selected{opacity:1!important;transform:translateY(-4px)!important}
+.featured-books .fb-detail{margin-top:0}
+.featured-books.is-open .fb-detail{margin-top:38px}
+@media(max-width:760px){.featured-books .fb-books{gap:10px}.featured-books .fb-book,.featured-books .fb-book:nth-child(1),.featured-books .fb-book:nth-child(2),.featured-books .fb-book:nth-child(3),.featured-books.is-open .fb-book{aspect-ratio:3/4}.featured-books .fb-cover,.featured-books .fb-cover img{border-radius:7px}.featured-books.is-open .fb-detail{margin-top:24px}}
+@media(max-width:420px){.featured-books .fb-books{gap:8px}.featured-books .fb-book,.featured-books .fb-book:nth-child(1),.featured-books .fb-book:nth-child(2),.featured-books .fb-book:nth-child(3),.featured-books.is-open .fb-book{aspect-ratio:2/3}}
