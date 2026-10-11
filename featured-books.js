@@ -1,6 +1,6 @@
 /* Featured book showcase interaction — isolated from the rest of the portfolio */
 (() => {
-  const root = document.querySelector('#featuredBooks');
+  const root = document.querySelector('#featured');
   if (!root || root.dataset.ready === 'true') return;
   root.dataset.ready = 'true';
   const books = [...root.querySelectorAll('.fb-book')];
