@@ -1,33 +1,28 @@
-/* Minimal white loading intro, inspired by clean creative-portfolio pre-loaders */
-.cinematic-intro{
-  position:fixed;inset:0;z-index:20000;display:grid;place-items:center;
-  overflow:hidden;background:#fff;color:#111;opacity:1;visibility:visible;
-  pointer-events:auto;isolation:isolate;
-}
-.cinematic-intro-loader{
-  width:min(280px,72vw);display:flex;flex-direction:column;align-items:center;
-  text-align:center;transform:translateY(8px);opacity:0;
-}
-.cinematic-intro.is-running .cinematic-intro-loader{
-  animation:cinematicLoaderAppear .65s cubic-bezier(.2,.75,.25,1) forwards;
-}
-.cinematic-intro-wordmark{
-  margin-bottom:clamp(38px,8vh,76px);font:600 11px/1.2 'DM Mono',monospace;
-  letter-spacing:.28em;color:#161616;
-}
-.cinematic-intro-wordmark span{font-size:8px;vertical-align:top;letter-spacing:0;margin-left:3px}
-.cinematic-intro-counter{font:400 clamp(64px,12vw,108px)/.9 'DM Sans',Arial,sans-serif;letter-spacing:-.085em;font-variant-numeric:tabular-nums;color:#111}
-.cinematic-intro-counter sup{font:400 13px 'DM Mono',monospace;letter-spacing:0;vertical-align:top;margin:7px 0 0 7px;display:inline-block}
-.cinematic-intro-progress{display:block;width:100%;height:1px;margin-top:30px;background:#e8e8e8;overflow:hidden}
+/* White typographic preloader: corner typing, drifting background type, then an oversized counter reveal. */
+.cinematic-intro{position:fixed;inset:0;z-index:20000;display:grid;place-items:center;overflow:hidden;background:#fff;color:#111;visibility:visible;opacity:1;isolation:isolate}
+.cinematic-intro-corner{position:absolute;top:clamp(22px,4vw,52px);left:clamp(22px,4vw,54px);z-index:3;display:flex;align-items:center;gap:5px;font:500 11px/1.2 'DM Mono',monospace;letter-spacing:-.025em;color:#111}
+.cinematic-intro-typing{display:inline-block;overflow:hidden;white-space:nowrap;width:0;border-right:1px solid #111;animation:cinematicTyping 1.05s steps(15,end) .15s forwards,cinematicBlink .8s step-end infinite}
+.cinematic-intro-corner i{display:none}
+.cinematic-intro-backtext{position:absolute;left:-12vw;top:50%;width:124vw;transform:translateY(-50%) rotate(-8deg);overflow:hidden;white-space:nowrap;pointer-events:none;font:600 clamp(64px,13vw,190px)/.85 'DM Sans',Arial,sans-serif;letter-spacing:-.085em;color:#f1f1f1;will-change:transform}
+.cinematic-intro-backtext span{display:inline-block;padding-right:.18em;animation:cinematicBackDrift 22s linear infinite}
+.cinematic-intro-backtext span+span{animation-delay:-11s}
+.cinematic-intro-loader{position:relative;z-index:2;width:min(300px,70vw);display:flex;flex-direction:column;align-items:center;text-align:center;transform:translateY(8px);opacity:0}
+.cinematic-intro.is-running .cinematic-intro-loader{animation:cinematicLoaderAppear .55s cubic-bezier(.2,.75,.25,1) .12s forwards}
+.cinematic-intro-counter{position:relative;display:flex;align-items:flex-start;justify-content:center;white-space:nowrap;font:400 clamp(72px,12vw,132px)/.82 'DM Sans',Arial,sans-serif;letter-spacing:-.095em;font-variant-numeric:tabular-nums;color:#111;transform-origin:center;will-change:transform}
+.cinematic-intro-counter sup{font:400 13px 'DM Mono',monospace;letter-spacing:0;vertical-align:top;margin:5px 0 0 8px}
+.cinematic-intro-progress{display:block;width:100%;height:1px;margin-top:35px;background:#e8e8e8;overflow:hidden}
 .cinematic-intro-progress i{display:block;width:0;height:100%;background:#111;transform-origin:left center}
-.cinematic-intro.is-running .cinematic-intro-progress i{animation:cinematicLoaderProgress 1.9s cubic-bezier(.4,0,.2,1) forwards}
-.cinematic-intro-label{margin:17px 0 0;font:9px 'DM Mono',monospace;letter-spacing:.2em;color:#777}
-.cinematic-intro.is-exiting{pointer-events:none;animation:cinematicLoaderExit .65s cubic-bezier(.7,0,.2,1) forwards}
+.cinematic-intro.is-running .cinematic-intro-progress i{animation:cinematicLoaderProgress 2.15s cubic-bezier(.4,0,.2,1) forwards}
+.cinematic-intro-label{margin:16px 0 0;font:9px 'DM Mono',monospace;letter-spacing:.19em;color:#777}
+.cinematic-intro.is-complete .cinematic-intro-counter{animation:cinematicCounterTakeover .85s cubic-bezier(.72,0,.18,1) forwards}
+.cinematic-intro.is-exiting{pointer-events:none;animation:cinematicLoaderExit .75s cubic-bezier(.76,0,.18,1) forwards}
+.cinematic-intro.is-exiting .cinematic-intro-backtext,.cinematic-intro.is-exiting .cinematic-intro-corner,.cinematic-intro.is-exiting .cinematic-intro-label,.cinematic-intro.is-exiting .cinematic-intro-progress{opacity:0;transition:opacity .18s ease}
+@keyframes cinematicTyping{from{width:0}to{width:15ch}}
+@keyframes cinematicBlink{50%{border-color:transparent}}
+@keyframes cinematicBackDrift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes cinematicLoaderAppear{to{opacity:1;transform:translateY(0)}}
 @keyframes cinematicLoaderProgress{to{width:100%}}
-@keyframes cinematicLoaderExit{0%{opacity:1;visibility:visible;transform:translateY(0)}100%{opacity:0;visibility:hidden;transform:translateY(-10px)}}
-@media(prefers-reduced-motion:reduce){
- .cinematic-intro.is-running .cinematic-intro-loader{animation:none;opacity:1;transform:none}
- .cinematic-intro.is-running .cinematic-intro-progress i{animation:none;width:100%}
- .cinematic-intro.is-exiting{animation:none;opacity:0;visibility:hidden}
-}
+@keyframes cinematicCounterTakeover{0%{transform:scale(1)}100%{transform:scale(22)}}
+@keyframes cinematicLoaderExit{0%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}
+@media(max-width:600px){.cinematic-intro-backtext{font-size:24vw}.cinematic-intro-counter{font-size:clamp(76px,20vw,112px)}.cinematic-intro-progress{margin-top:28px}.cinematic-intro-label{font-size:8px}}
+@media(prefers-reduced-motion:reduce){.cinematic-intro-typing{width:15ch;animation:none}.cinematic-intro-backtext span{animation:none}.cinematic-intro.is-running .cinematic-intro-loader{animation:none;opacity:1;transform:none}.cinematic-intro.is-running .cinematic-intro-progress i{animation:none;width:100%}.cinematic-intro.is-complete .cinematic-intro-counter{animation:none}.cinematic-intro.is-exiting{animation:cinematicLoaderExit .2s linear forwards}}
