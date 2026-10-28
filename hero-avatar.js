@@ -3,208 +3,55 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const mount = document.getElementById("heroAvatarCanvas");
 const loading = document.getElementById("heroAvatarLoading");
-if (!mount) throw new Error("Hero avatar mount was not found.");
-
-const ASSET_ROOT = "https://raw.githubusercontent.com/kblood/CharacterCreator/master/output/";
-const MODEL_URL = ASSET_ROOT + "base_body.glb";
-const HAIR_URL = ASSET_ROOT + "hair_short02.glb";
+if (!mount) throw new Error("Avatar mount not found.");
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color("#050303");
-
-const camera = new THREE.PerspectiveCamera(29, 1, 0.01, 100);
-camera.position.set(0, 1.56, 1.22);
-
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.7));
+scene.background = new THREE.Color("#070506");
+const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+camera.position.set(0, 1.55, 4.8);
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.18;
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.setClearColor("#050303", 1);
-renderer.domElement.setAttribute("aria-label", "Interactive 3D character");
+renderer.toneMappingExposure = 1.12;
 mount.appendChild(renderer.domElement);
-
-scene.add(new THREE.HemisphereLight(0xffe9dc, 0x190605, 1.7));
-const keyLight = new THREE.DirectionalLight(0xffe2d2, 3.2);
-keyLight.position.set(-2.6, 3.6, 4.2);
-keyLight.castShadow = true;
-scene.add(keyLight);
-const fillLight = new THREE.PointLight(0xff3c2c, 18, 7, 2);
-fillLight.position.set(2.3, 1.8, 2.1);
-scene.add(fillLight);
-const rimLight = new THREE.PointLight(0x8c1b14, 22, 6, 2);
-rimLight.position.set(-1.8, 2.3, -1.7);
-scene.add(rimLight);
-
-const characterRoot = new THREE.Group();
-scene.add(characterRoot);
-const loader = new GLTFLoader();
-const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
-const headBones = [];
-const eyeBones = [];
-const morphMeshes = [];
-let modelReady = false;
-let blinkAt = 2.8 + Math.random() * 2;
-let blinkElapsed = -1;
-let blinkDuration = 0.15;
-let lastTime = 0;
-let targetLookY = 0;
-let headTargetY = 0;
-let baseHeadHeight = 1.55;
-
-function smooth(t){ return t*t*(3-2*t); }
-function blinkValue(t){
-  if(t <= 0 || t >= 1) return 0;
-  const close = 0.38;
-  return t < close ? smooth(t/close) : 1-smooth((t-close)/(1-close));
+scene.add(new THREE.HemisphereLight(0xffe9df, 0x241018, 2.1));
+const key = new THREE.DirectionalLight(0xffeee7, 3.2); key.position.set(-3, 5, 5); scene.add(key);
+const rim = new THREE.PointLight(0xff3428, 14, 9); rim.position.set(2, 2.8, -1.5); scene.add(rim);
+const fill = new THREE.PointLight(0xb4c8ff, 5, 8); fill.position.set(-3, 1.4, 2); scene.add(fill);
+const root = new THREE.Group(); scene.add(root);
+const pointer = {x:0,y:0,tx:0,ty:0};
+let mixer = null, head = null, headBase = null, ready = false;
+const clock = new THREE.Clock();
+function resize(){const w=Math.max(1,mount.clientWidth),h=Math.max(1,mount.clientHeight);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+new ResizeObserver(resize).observe(mount); resize();
+mount.addEventListener("pointermove",e=>{const r=mount.getBoundingClientRect();pointer.tx=((e.clientX-r.left)/r.width)*2-1;pointer.ty=1-((e.clientY-r.top)/r.height)*2;},{passive:true});
+mount.addEventListener("pointerleave",()=>{pointer.tx=0;pointer.ty=0;},{passive:true});
+const loader=new GLTFLoader();
+loader.load("https://threejs.org/examples/models/gltf/RobotExpressive/RobotExpressive.glb",gltf=>{
+ const model=gltf.scene;
+ model.scale.setScalar(0.92);
+ model.position.set(0,-1.05,0);
+ model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;} if(o.isBone&&/head/i.test(o.name)&&!head){head=o;headBase=o.quaternion.clone();}});
+ root.add(model);
+ mixer=new THREE.AnimationMixer(model);
+ const idle=gltf.animations.find(a=>/idle/i.test(a.name))||gltf.animations[0];
+ if(idle)mixer.clipAction(idle).play();
+ camera.lookAt(0,0.65,0);
+ ready=true;
+ if(loading){loading.classList.add("is-hidden");setTimeout(()=>loading.remove(),700);}
+},undefined,error=>{console.error("Friendly 3D model failed to load",error);if(loading)loading.textContent="3D CHARACTER UNAVAILABLE";});
+function animate(){
+ requestAnimationFrame(animate);
+ const dt=Math.min(clock.getDelta(),0.05),t=clock.elapsedTime;
+ pointer.x+=(pointer.tx-pointer.x)*0.065;pointer.y+=(pointer.ty-pointer.y)*0.065;
+ if(mixer)mixer.update(dt);
+ if(head&&headBase){
+   const target=new THREE.Quaternion().setFromEuler(new THREE.Euler(-pointer.y*0.13,pointer.x*0.22,0,"YXZ"));
+   head.quaternion.copy(headBase).multiply(target);
+ }
+ root.rotation.y=Math.sin(t*0.3)*0.035 + pointer.x*0.045;
+ root.position.y=Math.sin(t*0.9)*0.018;
+ renderer.render(scene,camera);
 }
-function setMorph(mesh, name, value){
-  const idx = mesh.morphTargetDictionary && mesh.morphTargetDictionary[name];
-  if(idx !== undefined && mesh.morphTargetInfluences) mesh.morphTargetInfluences[idx] = value;
-}
-function eachMorph(name, value){
-  for(const mesh of morphMeshes) setMorph(mesh, name, value);
-}
-function scanCharacter(root){
-  root.traverse(obj => {
-    if(obj.isMesh){
-      obj.frustumCulled = false;
-      obj.castShadow = true;
-      obj.receiveShadow = true;
-      if(obj.morphTargetDictionary && obj.morphTargetInfluences) morphMeshes.push(obj);
-      const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-      for(const mat of mats){
-        if(!mat) continue;
-        mat.needsUpdate = true;
-        if(mat.roughness !== undefined) mat.roughness = Math.min(0.92, Math.max(0.28, mat.roughness));
-      }
-    }
-    if(obj.isBone){
-      const n = (obj.name || "").toLowerCase();
-      if(n === "head" || (n.includes("head") && !n.includes("headtop"))) headBones.push({bone:obj, rest:obj.quaternion.clone()});
-      if(["eye.l","eyel","eye_l","lefteye"].includes(n)) eyeBones.push({bone:obj, rest:obj.quaternion.clone(), side:-1});
-      if(["eye.r","eyer","eye_r","righteye"].includes(n)) eyeBones.push({bone:obj, rest:obj.quaternion.clone(), side:1});
-    }
-  });
-}
-function updateGaze(){
-  const yaw = THREE.MathUtils.clamp(mouse.x * 0.28, -0.26, 0.26);
-  const pitch = THREE.MathUtils.clamp(mouse.y * 0.12, -0.12, 0.12);
-  const left = Math.max(0, yaw) / 0.5236;
-  const right = Math.max(0, -yaw) / 0.5236;
-  const up = Math.max(0, pitch) / 0.4363;
-  const down = Math.max(0, -pitch) / 0.4363;
-  eachMorph("look_left", left);
-  eachMorph("look_right", right);
-  eachMorph("look_up", up);
-  eachMorph("look_down", down);
-  for(const item of eyeBones){
-    const euler = new THREE.Euler(pitch * 0.75, yaw * 0.8, 0, "YXZ");
-    item.bone.quaternion.copy(item.rest).multiply(new THREE.Quaternion().setFromEuler(euler));
-  }
-}
-function frame(now){
-  requestAnimationFrame(frame);
-  const time = now * 0.001;
-  const dt = Math.min(0.05, lastTime ? time - lastTime : 0.016);
-  lastTime = time;
-  mouse.x += (mouse.targetX - mouse.x) * 0.075;
-  mouse.y += (mouse.targetY - mouse.y) * 0.075;
-
-  if(modelReady){
-    const idle = Math.sin(time * 0.72) * 0.012;
-    for(const item of headBones){
-      const euler = new THREE.Euler(-mouse.y * 0.10 + idle, mouse.x * 0.26, Math.sin(time * 0.45) * 0.008, "YXZ");
-      item.bone.quaternion.copy(item.rest).multiply(new THREE.Quaternion().setFromEuler(euler));
-    }
-    updateGaze();
-
-    if(blinkElapsed >= 0){
-      blinkElapsed += dt;
-      const v = blinkValue(blinkElapsed / blinkDuration);
-      eachMorph("blink_left", v);
-      eachMorph("blink_right", v);
-      if(blinkElapsed >= blinkDuration){
-        blinkElapsed = -1;
-        eachMorph("blink_left", 0);
-        eachMorph("blink_right", 0);
-        blinkAt = 2.1 + Math.random() * 3.8;
-      }
-    }else{
-      blinkAt -= dt;
-      if(blinkAt <= 0){
-        blinkElapsed = 0;
-        blinkDuration = 0.12 + Math.random() * 0.06;
-      }
-    }
-    characterRoot.rotation.y = Math.sin(time * 0.25) * 0.012;
-    characterRoot.position.y = Math.sin(time * 0.8) * 0.004;
-  }
-  renderer.render(scene, camera);
-}
-requestAnimationFrame(frame);
-
-function resize(){
-  const w = Math.max(1, mount.clientWidth);
-  const h = Math.max(1, mount.clientHeight);
-  renderer.setSize(w, h, false);
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
-}
-new ResizeObserver(resize).observe(mount);
-resize();
-
-function pointerMove(event){
-  const rect = mount.getBoundingClientRect();
-  mouse.targetX = THREE.MathUtils.clamp(((event.clientX - rect.left) / rect.width) * 2 - 1, -1, 1);
-  mouse.targetY = THREE.MathUtils.clamp(1 - ((event.clientY - rect.top) / rect.height) * 2, -1, 1);
-}
-mount.addEventListener("pointermove", pointerMove, { passive: true });
-mount.addEventListener("pointerleave", () => { mouse.targetX = 0; mouse.targetY = 0; }, { passive: true });
-mount.addEventListener("touchmove", event => {
-  const touch = event.touches && event.touches[0];
-  if(touch) pointerMove(touch);
-}, { passive: true });
-
-async function loadAvatar(){
-  try{
-    const gltf = await loader.loadAsync(MODEL_URL);
-    const model = gltf.scene;
-    scanCharacter(model);
-    const bounds = new THREE.Box3().setFromObject(model);
-    const size = bounds.getSize(new THREE.Vector3());
-    const height = size.y || 1.8;
-    const top = bounds.max.y;
-    baseHeadHeight = top - height * 0.105;
-    camera.position.set(0, baseHeadHeight, Math.max(0.88, height * 0.66));
-    camera.lookAt(0, baseHeadHeight, 0);
-    characterRoot.add(model);
-
-    try{
-      const hairGltf = await loader.loadAsync(HAIR_URL);
-      const hair = hairGltf.scene;
-      hair.traverse(obj => {
-        if(obj.isMesh){
-          obj.frustumCulled = false;
-          const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-          for(const mat of mats){
-            if(mat && mat.color) mat.color.set("#211512");
-            if(mat && mat.roughness !== undefined) mat.roughness = 0.78;
-          }
-        }
-      });
-      characterRoot.add(hair);
-    }catch(hairError){
-      console.warn("Optional hairstyle could not be loaded; continuing with the base character.", hairError);
-    }
-    modelReady = true;
-    if(loading) loading.classList.add("is-hidden");
-    setTimeout(() => { if(loading) loading.remove(); }, 800);
-  }catch(error){
-    console.error("The free 3D character could not be loaded.", error);
-    if(loading) loading.innerHTML = '<span></span> CONNECTING TO THE DIGITAL HUMAN';
-  }
-}
-loadAvatar();
+animate();
