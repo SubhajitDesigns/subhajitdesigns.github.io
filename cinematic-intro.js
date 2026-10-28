@@ -3,7 +3,6 @@
   const intro=document.getElementById('cinematicIntro');
   if(!intro)return;
   const count=document.getElementById('cinematicIntroCount');
-  const progressBar=document.getElementById('cinematicIntroProgress');
   const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const duration=reduced?350:2800;
   const start=performance.now();
