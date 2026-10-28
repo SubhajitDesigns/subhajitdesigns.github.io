@@ -1,29 +1,39 @@
-/* Cinematic typographic intro inspired by the reference: corner wordmark, drifting oversized type, centered count, full-screen counter takeover. */
-.cinematic-intro{position:fixed;inset:0;z-index:20000;display:grid;place-items:center;overflow:hidden;background:#fff;color:#101010;visibility:visible;opacity:1;isolation:isolate}
-.cinematic-intro-corner{position:absolute;top:clamp(22px,4vw,52px);left:clamp(22px,4vw,54px);z-index:3;display:flex;align-items:center;gap:5px;font:500 11px/1.2 'DM Mono',monospace;letter-spacing:-.025em;color:#111}
-.cinematic-intro-typing{display:inline-block;overflow:hidden;white-space:nowrap;width:0;border-right:1px solid #111;animation:cinematicTyping 1.05s steps(15,end) .12s forwards,cinematicBlink .8s step-end infinite}
-.cinematic-intro-corner i{display:none}
-.cinematic-intro-backtext{position:absolute;left:-15vw;top:50%;width:130vw;transform:translateY(-50%) rotate(-8deg);overflow:hidden;white-space:nowrap;pointer-events:none;font:600 clamp(70px,14vw,205px)/.82 'DM Sans',Arial,sans-serif;letter-spacing:-.09em;color:#ededed;will-change:transform}
-.cinematic-intro-backtext span{display:inline-block;padding-right:.22em;animation:cinematicBackDrift 18s linear infinite}
-.cinematic-intro-backtext span+span{animation-delay:-9s}
-.cinematic-intro-loader{position:relative;z-index:2;width:min(320px,72vw);display:flex;flex-direction:column;align-items:center;text-align:center;transform:translateY(8px);opacity:0}
-.cinematic-intro.is-running .cinematic-intro-loader{animation:cinematicLoaderAppear .55s cubic-bezier(.2,.75,.25,1) .12s forwards}
-.cinematic-intro-counter{position:relative;display:flex;align-items:flex-start;justify-content:center;white-space:nowrap;font:400 clamp(78px,12.5vw,140px)/.82 'DM Sans',Arial,sans-serif;letter-spacing:-.095em;font-variant-numeric:tabular-nums;color:#111;transform:scale(1);transform-origin:center center;will-change:transform;z-index:4}
-.cinematic-intro-counter sup{font:400 13px 'DM Mono',monospace;letter-spacing:0;vertical-align:top;margin:5px 0 0 8px}
-.cinematic-intro-progress{display:block;width:100%;height:1px;margin-top:34px;background:#e7e7e7;overflow:hidden}
-.cinematic-intro-progress i{display:block;width:0;height:100%;background:#111;transform-origin:left center}
-.cinematic-intro.is-running .cinematic-intro-progress i{animation:cinematicLoaderProgress 2.6s cubic-bezier(.4,0,.2,1) forwards}
-.cinematic-intro-label{margin:16px 0 0;font:9px 'DM Mono',monospace;letter-spacing:.19em;color:#777}
-.cinematic-intro.is-complete .cinematic-intro-counter{animation:cinematicCounterTakeover .92s cubic-bezier(.72,0,.18,1) forwards}
-.cinematic-intro.is-exiting{pointer-events:none;animation:cinematicLoaderExit .52s cubic-bezier(.76,0,.18,1) forwards}
-.cinematic-intro.is-exiting .cinematic-intro-backtext,.cinematic-intro.is-exiting .cinematic-intro-corner,.cinematic-intro.is-exiting .cinematic-intro-label,.cinematic-intro.is-exiting .cinematic-intro-progress{opacity:0;transition:opacity .16s ease}
-@keyframes cinematicTyping{from{width:0}to{width:15ch}}
-@keyframes cinematicBlink{50%{border-color:transparent}}
-@keyframes cinematicBackDrift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@keyframes cinematicLoaderAppear{to{opacity:1;transform:translateY(0)}}
-@keyframes cinematicLoaderProgress{to{width:100%}}
-@keyframes cinematicCounterTakeover{0%{transform:scale(1)}100%{transform:scale(26)}}
-@keyframes cinematicLoaderExit{0%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}
-@media(max-width:600px){.cinematic-intro-backtext{font-size:25vw}.cinematic-intro-counter{font-size:clamp(78px,20vw,116px)}.cinematic-intro-progress{margin-top:27px}.cinematic-intro-label{font-size:8px}.cinematic-intro.is-complete .cinematic-intro-counter{animation-name:cinematicCounterTakeoverMobile}}
-@keyframes cinematicCounterTakeoverMobile{0%{transform:scale(1)}100%{transform:scale(19)}}
-@media(prefers-reduced-motion:reduce){.cinematic-intro-typing{width:15ch;animation:none}.cinematic-intro-backtext span{animation:none}.cinematic-intro.is-running .cinematic-intro-loader{animation:none;opacity:1;transform:none}.cinematic-intro.is-running .cinematic-intro-progress i{animation:none;width:100%}.cinematic-intro.is-complete .cinematic-intro-counter{animation:cinematicCounterTakeover .35s ease-in forwards}.cinematic-intro.is-exiting{animation:cinematicLoaderExit .2s linear forwards}}
+/* Moncy Dev intro adaptation for Subhajit's portfolio: marquee, rounded loading pill, welcome state, expanding reveal. */
+.cinematic-intro{position:fixed;inset:0;z-index:20000;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#eae5ec;color:#0b080c;visibility:visible;opacity:1;isolation:isolate;transition:background-color .3s}
+.cinematic-intro-header{position:absolute;top:0;left:0;width:100%;padding:clamp(20px,3vw,38px) clamp(22px,4.5vw,68px);box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;z-index:5;color:#0b080c}
+.cinematic-intro-logo{font:700 15px/1 'DM Sans',sans-serif;letter-spacing:-.06em;color:inherit;text-decoration:none}
+.cinematic-intro-logo span{color:#a87cff}
+.cinematic-intro-mark{height:46px;width:80px;display:flex;align-items:center;justify-content:center;gap:3px;overflow:hidden}
+.cinematic-intro-mark i{display:block;width:3px;height:12px;background:#0b080c;border-radius:3px;animation:cinematicMark 1.05s ease-in-out infinite alternate}
+.cinematic-intro-mark i:nth-child(3n){animation-delay:-.5s}.cinematic-intro-mark i:nth-child(2n){animation-delay:-.25s}.cinematic-intro-mark i:nth-child(5n){animation-delay:-.75s}
+.cinematic-intro-backtext{position:absolute;left:0;top:50%;width:100%;transform:translateY(-50%);overflow:hidden;pointer-events:none;color:#d5cedb;font:700 clamp(54px,8.5vw,126px)/.98 'DM Sans',Arial,sans-serif;letter-spacing:-.075em;white-space:nowrap}
+.cinematic-intro-track{display:flex;align-items:center;width:max-content;gap:.35em;animation:cinematicMarquee 24s linear infinite}
+.cinematic-intro-track span{display:block}.cinematic-intro-track b{font-size:.3em;color:#b9a9c9;margin:0 .3em}
+.cinematic-intro-track-second{margin-left:-15%;animation-direction:reverse;animation-duration:29s;margin-top:.1em}
+.cinematic-intro-wrap{--Lsize:230px;position:relative;z-index:3;width:var(--Lsize);min-width:var(--Lsize);height:88px;min-height:88px;box-sizing:border-box;padding:6px;border-radius:100px;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 15px 25px rgba(0,0,0,.16);transition:min-width .85s cubic-bezier(.33,.11,1,.72),min-height .85s cubic-bezier(.33,.11,1,.72),border-radius .85s cubic-bezier(.33,.11,1,.72),box-shadow .4s ease;will-change:min-width,min-height,border-radius}
+.cinematic-intro-hover{position:absolute;left:50%;top:50%;width:240px;height:130px;transform:translate(-50%,-50%);border-radius:50%;background:#a87cff;filter:blur(34px);opacity:0;transition:opacity .4s;pointer-events:none}
+.cinematic-intro-wrap:hover .cinematic-intro-hover{opacity:.55}
+.cinematic-intro-loader{position:relative;z-index:2;width:100%;padding:0 25px;box-sizing:border-box;font:500 14px/1.2 'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.cinematic-intro-loading-row{display:flex;justify-content:space-between;align-items:center;gap:10px;white-space:nowrap;transition:opacity .3s,transform .5s}
+.cinematic-intro-loading-count{display:flex;align-items:flex-start;font-variant-numeric:tabular-nums}
+.cinematic-intro-loading-count sup{font:10px 'DM Mono',monospace;margin:0 0 0 3px}
+.cinematic-intro-progress{width:100%;height:2px;background:#343434;margin-top:12px;overflow:hidden}
+.cinematic-intro-progress i{display:block;width:0;height:100%;background:#a87cff;transform-origin:left center}
+.cinematic-intro.is-running .cinematic-intro-progress i{animation:cinematicProgress 2.8s cubic-bezier(.4,0,.2,1) forwards}
+.cinematic-intro-welcome{position:absolute;left:0;top:50%;width:100%;text-align:center;transform:translateY(30px);opacity:0;font:600 15px/1 'DM Sans',sans-serif;letter-spacing:.12em;transition:opacity .35s,transform .5s}
+.cinematic-intro.is-complete .cinematic-intro-loading-row{opacity:0;transform:translateY(-30px)}
+.cinematic-intro.is-complete .cinematic-intro-progress{opacity:0;transition:opacity .2s}
+.cinematic-intro.is-complete .cinematic-intro-welcome{opacity:1;transform:translateY(-50%);transition-delay:.15s}
+.cinematic-intro.is-expanding .cinematic-intro-wrap{min-width:calc(100vw + 5000px);min-height:calc(100vh + 500px);border-radius:5000px;box-shadow:none;transition-delay:0ms}
+.cinematic-intro.is-expanding .cinematic-intro-hover{opacity:0}
+.cinematic-intro.is-expanding .cinematic-intro-welcome{opacity:0;transform:translateY(-100px);transition-delay:0s}
+.cinematic-intro.is-expanding .cinematic-intro-header,.cinematic-intro.is-expanding .cinematic-intro-backtext,.cinematic-intro.is-expanding .cinematic-intro-foot{opacity:0;transition:opacity .18s ease}
+.cinematic-intro.is-exiting{pointer-events:none;animation:cinematicReveal .7s cubic-bezier(.76,0,.18,1) forwards}
+.cinematic-intro-foot{position:absolute;left:0;bottom:0;width:100%;box-sizing:border-box;padding:clamp(20px,3vw,38px) clamp(22px,4.5vw,68px);display:flex;justify-content:space-between;gap:20px;z-index:4;font:9px 'DM Mono',monospace;letter-spacing:.13em;color:#756c7b;transition:opacity .2s}
+@keyframes cinematicMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes cinematicProgress{to{width:100%}}
+@keyframes cinematicMark{from{height:7px;opacity:.5}to{height:35px;opacity:1}}
+@keyframes cinematicReveal{0%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}
+@media(min-width:1400px){.cinematic-intro-wrap{--Lsize:270px;height:100px;min-height:100px}.cinematic-intro-loader{font-size:16px}}
+@media(max-width:600px){.cinematic-intro-header{padding:22px}.cinematic-intro-mark{transform:scale(.8);transform-origin:right center}.cinematic-intro-backtext{font-size:15vw}.cinematic-intro-wrap{--Lsize:220px;width:var(--Lsize);min-width:var(--Lsize);height:82px;min-height:82px}.cinematic-intro-loader{padding:0 22px}.cinematic-intro-foot{padding:22px;font-size:7px;letter-spacing:.08em}.cinematic-intro.is-expanding .cinematic-intro-wrap{min-width:calc(100vw + 1500px);min-height:calc(100vh + 500px)}}
+@media(prefers-reduced-motion:reduce){.cinematic-intro-track,.cinematic-intro-mark i{animation:none}.cinematic-intro.is-running .cinematic-intro-progress i{animation:none;width:100%}.cinematic-intro.is-expanding .cinematic-intro-wrap{transition-duration:.2s}.cinematic-intro.is-exiting{animation-duration:.2s}}
