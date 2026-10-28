@@ -37,3 +37,12 @@
 @media(min-width:1400px){.cinematic-intro-wrap{--Lsize:270px;height:100px;min-height:100px}.cinematic-intro-loader{font-size:16px}}
 @media(max-width:600px){.cinematic-intro-header{padding:22px}.cinematic-intro-mark{transform:scale(.8);transform-origin:right center}.cinematic-intro-backtext{font-size:15vw}.cinematic-intro-wrap{--Lsize:220px;width:var(--Lsize);min-width:var(--Lsize);height:82px;min-height:82px}.cinematic-intro-loader{padding:0 22px}.cinematic-intro-foot{padding:22px;font-size:7px;letter-spacing:.08em}.cinematic-intro.is-expanding .cinematic-intro-wrap{min-width:calc(100vw + 1500px);min-height:calc(100vh + 500px)}}
 @media(prefers-reduced-motion:reduce){.cinematic-intro-track,.cinematic-intro-mark i{animation:none}.cinematic-intro.is-running .cinematic-intro-progress i{animation:none;width:100%}.cinematic-intro.is-expanding .cinematic-intro-wrap{transition-duration:.2s}.cinematic-intro.is-exiting{animation-duration:.2s}}
+
+/* Completion wipe: a white vertical cursor sweeps across the loading label as it gives way to Welcome. */
+.cinematic-intro-loader::after{content:"";position:absolute;left:25px;top:50%;width:3px;height:1.15em;border-radius:2px;background:#fff;opacity:0;transform:translateY(-50%);z-index:5;pointer-events:none}
+.cinematic-intro.is-complete .cinematic-intro-loader::after{opacity:1;animation:cinematicWhiteWipe .62s cubic-bezier(.65,0,.35,1) forwards}
+.cinematic-intro.is-complete .cinematic-intro-loading-row{animation:cinematicLoadingTextWipe .62s cubic-bezier(.65,0,.35,1) forwards}
+.cinematic-intro.is-complete .cinematic-intro-welcome{transition-delay:.22s}
+@keyframes cinematicWhiteWipe{0%{left:25px;opacity:0}8%{opacity:1}85%{opacity:1}100%{left:calc(100% - 28px);opacity:0}}
+@keyframes cinematicLoadingTextWipe{0%{clip-path:inset(0 0 0 0);opacity:1}65%{clip-path:inset(0 0 0 100%);opacity:1}100%{clip-path:inset(0 0 0 100%);opacity:0}}
+@media(max-width:600px){.cinematic-intro-loader::after{left:22px}@keyframes cinematicWhiteWipe{0%{left:22px;opacity:0}8%{opacity:1}85%{opacity:1}100%{left:calc(100% - 25px);opacity:0}}}
