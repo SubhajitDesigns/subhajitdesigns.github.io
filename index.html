@@ -28,7 +28,7 @@
 
   <link rel="stylesheet" href="crafted-voyage.css?v=20261010-1">
   <link rel="stylesheet" href="cinematic-intro.css?v=20261029-6">
-  <link rel="stylesheet" href="hero-avatar.css?v=20261029-2">
+  <link rel="stylesheet" href="hero-avatar.css?v=20261029-3">
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
 </head>
 <body>
@@ -72,15 +72,14 @@
   </label>
 </header>
 
-<section class="hero hero-eye-follow-fullscreen" id="home" aria-label="Interactive portfolio hero">
-  <iframe
-    class="hero-eye-follow-fullscreen-frame"
-    src="https://davvcdn.lon1.cdn.digitaloceanspaces.com/5d09212874274e8825848af919f3cc3d/fa1ab99615d524dffc60.html"
-    title="Full-screen interactive portfolio experience"
-    frameborder="0"
-    allow="accelerometer; gyroscope; magnetometer"
-    loading="eager">
-  </iframe>
+<section class="hero hero-avatar-stage" id="home" aria-label="Stylized interactive 3D character">
+  <div class="hero-avatar-glow hero-avatar-glow-one" aria-hidden="true"></div>
+  <div class="hero-avatar-glow hero-avatar-glow-two" aria-hidden="true"></div>
+  <div class="hero-avatar-canvas" id="heroAvatarCanvas" aria-label="A friendly stylized 3D robot that responds to your cursor"></div>
+  <div class="hero-avatar-vignette" aria-hidden="true"></div>
+  <div class="hero-avatar-loading" id="heroAvatarLoading" aria-live="polite"><span></span> INITIALIZING</div>
+  <div class="hero-avatar-credit" aria-hidden="true">A LITTLE DIGITAL PERSONALITY <i>·</i> MOVE YOUR CURSOR</div>
+  <script type="module" src="hero-avatar.js?v=20261029-2"></script>
 </section>
 
 <section class="currently-creating" id="currently-creating" aria-label="Currently Creating">
