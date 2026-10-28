@@ -1,30 +1,33 @@
-/* Cinematic welcome intro — isolated from existing portfolio components */
-.cinematic-intro{position:fixed;inset:0;z-index:20000;display:grid;place-items:center;overflow:hidden;background:#070101;color:#f5e9e2;isolation:isolate;opacity:1;visibility:visible;transform:translateZ(0)}
-.cinematic-intro:before{content:"";position:absolute;inset:-20%;z-index:-2;background:radial-gradient(ellipse at 50% 45%,rgba(255,52,38,.22),transparent 38%),radial-gradient(ellipse at 15% 100%,rgba(130,8,0,.16),transparent 42%);animation:cinematicIntroGlow 6s ease-in-out infinite alternate}
-.cinematic-intro:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(7,1,1,.45),transparent 30%,transparent 70%,rgba(7,1,1,.45))}
-.cinematic-intro-marquee{position:absolute;left:-8vw;width:116vw;overflow:hidden;white-space:nowrap;pointer-events:none;font-family:'Bebas Neue','Arial Narrow',Impact,sans-serif;font-size:clamp(38px,8vw,124px);line-height:.9;letter-spacing:.025em;color:rgba(245,233,226,.105);will-change:transform}
-.cinematic-intro-marquee span{display:inline-block;padding-right:.15em}
-.cinematic-intro-marquee-one{top:15%;transform:rotate(-5deg);animation:cinematicIntroMarqueeLeft 28s linear infinite}
-.cinematic-intro-marquee-two{bottom:13%;transform:rotate(5deg);font-size:clamp(30px,6vw,92px);color:rgba(255,52,38,.18);animation:cinematicIntroMarqueeRight 34s linear infinite}
-.cinematic-intro-center{width:min(94vw,1500px);position:relative;z-index:2;text-align:center}
-.cinematic-intro-eyebrow{margin:0 0 clamp(24px,5vh,58px);font:500 10px 'DM Mono',monospace;letter-spacing:.24em;color:#c7a9a0;opacity:0;animation:cinematicIntroRise .65s .12s ease forwards}
-.cinematic-intro-welcome{margin:0;overflow:visible;font-family:'Bebas Neue','Arial Narrow',Impact,sans-serif;font-size:clamp(72px,18.5vw,300px);font-weight:400;line-height:.78;letter-spacing:-.025em;white-space:nowrap;transform:scale(.38);opacity:0;transform-origin:center;will-change:transform,opacity}
-.cinematic-intro-welcome span{display:inline-block;background:linear-gradient(180deg,#fff8f2 0%,#f1dcd2 48%,#ff4938 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 35px rgba(255,52,38,.12))}
-.cinematic-intro.is-running .cinematic-intro-welcome{animation:cinematicIntroScale 1.65s cubic-bezier(.16,1,.3,1) .25s forwards}
-.cinematic-intro-bottom{display:flex;align-items:center;justify-content:center;gap:16px;margin:clamp(28px,5vh,54px) auto 0;width:min(330px,76vw);font:9px 'DM Mono',monospace;letter-spacing:.14em;color:#ad8c82;opacity:0;animation:cinematicIntroRise .55s .35s ease forwards}
-.cinematic-intro-progress{height:1px;flex:1;background:rgba(245,233,226,.16);overflow:hidden}
-.cinematic-intro-progress i{display:block;width:0;height:100%;background:#ff3426;box-shadow:0 0 12px rgba(255,52,38,.8)}
-.cinematic-intro.is-running .cinematic-intro-progress i{animation:cinematicIntroProgress 2.35s linear forwards}
-.cinematic-intro-flash{position:absolute;inset:0;background:#ff3426;opacity:0;pointer-events:none}
-.cinematic-intro.is-exiting{animation:cinematicIntroExit .9s cubic-bezier(.76,0,.2,1) forwards;pointer-events:none}
-.cinematic-intro.is-exiting .cinematic-intro-flash{animation:cinematicIntroFlash .72s ease-out forwards}
-@keyframes cinematicIntroScale{0%{opacity:0;transform:scale(.38)}18%{opacity:1}78%{opacity:1;transform:scale(1.05)}100%{opacity:1;transform:scale(1.14)}}
-@keyframes cinematicIntroProgress{to{width:100%}}
-@keyframes cinematicIntroRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-@keyframes cinematicIntroMarqueeLeft{from{translate:0 0}to{translate:-50% 0}}
-@keyframes cinematicIntroMarqueeRight{from{translate:-50% 0}to{translate:0 0}}
-@keyframes cinematicIntroGlow{from{transform:scale(1);opacity:.7}to{transform:scale(1.12);opacity:1}}
-@keyframes cinematicIntroFlash{0%{opacity:0}22%{opacity:.16}100%{opacity:0}}
-@keyframes cinematicIntroExit{0%{opacity:1;visibility:visible;clip-path:inset(0 0 0 0)}100%{opacity:0;visibility:hidden;clip-path:inset(0 0 100% 0)}}
-@media(max-width:600px){.cinematic-intro-welcome{font-size:19vw}.cinematic-intro-eyebrow{font-size:8px;letter-spacing:.16em}.cinematic-intro-marquee-one{top:23%}.cinematic-intro-marquee-two{bottom:23%}.cinematic-intro-bottom{gap:10px;font-size:8px}}
-@media(prefers-reduced-motion:reduce){.cinematic-intro-marquee,.cinematic-intro:before{animation:none}.cinematic-intro.is-running .cinematic-intro-welcome{animation:none;opacity:1;transform:scale(1)}.cinematic-intro.is-running .cinematic-intro-progress i{animation:none;width:100%}.cinematic-intro.is-exiting{animation:cinematicIntroExit .2s linear forwards}}
+/* Minimal white loading intro, inspired by clean creative-portfolio pre-loaders */
+.cinematic-intro{
+  position:fixed;inset:0;z-index:20000;display:grid;place-items:center;
+  overflow:hidden;background:#fff;color:#111;opacity:1;visibility:visible;
+  pointer-events:auto;isolation:isolate;
+}
+.cinematic-intro-loader{
+  width:min(280px,72vw);display:flex;flex-direction:column;align-items:center;
+  text-align:center;transform:translateY(8px);opacity:0;
+}
+.cinematic-intro.is-running .cinematic-intro-loader{
+  animation:cinematicLoaderAppear .65s cubic-bezier(.2,.75,.25,1) forwards;
+}
+.cinematic-intro-wordmark{
+  margin-bottom:clamp(38px,8vh,76px);font:600 11px/1.2 'DM Mono',monospace;
+  letter-spacing:.28em;color:#161616;
+}
+.cinematic-intro-wordmark span{font-size:8px;vertical-align:top;letter-spacing:0;margin-left:3px}
+.cinematic-intro-counter{font:400 clamp(64px,12vw,108px)/.9 'DM Sans',Arial,sans-serif;letter-spacing:-.085em;font-variant-numeric:tabular-nums;color:#111}
+.cinematic-intro-counter sup{font:400 13px 'DM Mono',monospace;letter-spacing:0;vertical-align:top;margin:7px 0 0 7px;display:inline-block}
+.cinematic-intro-progress{display:block;width:100%;height:1px;margin-top:30px;background:#e8e8e8;overflow:hidden}
+.cinematic-intro-progress i{display:block;width:0;height:100%;background:#111;transform-origin:left center}
+.cinematic-intro.is-running .cinematic-intro-progress i{animation:cinematicLoaderProgress 1.9s cubic-bezier(.4,0,.2,1) forwards}
+.cinematic-intro-label{margin:17px 0 0;font:9px 'DM Mono',monospace;letter-spacing:.2em;color:#777}
+.cinematic-intro.is-exiting{pointer-events:none;animation:cinematicLoaderExit .65s cubic-bezier(.7,0,.2,1) forwards}
+@keyframes cinematicLoaderAppear{to{opacity:1;transform:translateY(0)}}
+@keyframes cinematicLoaderProgress{to{width:100%}}
+@keyframes cinematicLoaderExit{0%{opacity:1;visibility:visible;transform:translateY(0)}100%{opacity:0;visibility:hidden;transform:translateY(-10px)}}
+@media(prefers-reduced-motion:reduce){
+ .cinematic-intro.is-running .cinematic-intro-loader{animation:none;opacity:1;transform:none}
+ .cinematic-intro.is-running .cinematic-intro-progress i{animation:none;width:100%}
+ .cinematic-intro.is-exiting{animation:none;opacity:0;visibility:hidden}
+}
