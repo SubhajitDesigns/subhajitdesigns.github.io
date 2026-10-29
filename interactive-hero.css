@@ -124,3 +124,22 @@
  #home.subh-portrait-hero .portrait-left{top:30%}
  #home.subh-portrait-hero .portrait-right{top:auto;bottom:100px}
 }
+
+/* 2026-10-29 corrective patch: remove duplicate legacy island from this hero design */
+#dynamicIslandRoot{display:none!important}
+#home.subh-portrait-hero .portrait-nav{z-index:50}
+#home.subh-portrait-hero .subh-hero-stage{z-index:4}
+#home.subh-portrait-hero .portrait-glow{z-index:0}
+#home.subh-portrait-hero .portrait-left,#home.subh-portrait-hero .portrait-right{z-index:8}
+#home.subh-portrait-hero .portrait-scroll,#home.subh-portrait-hero .portrait-tracking{z-index:20}
+#home.subh-portrait-hero .scroll-about-panel{z-index:10}
+#home.subh-portrait-hero .portrait-scroll{position:absolute!important;bottom:30px!important;top:auto!important;left:50%!important;margin:0!important}
+#home.subh-portrait-hero .portrait-tracking{position:absolute!important;bottom:30px!important;top:auto!important;left:4.8%!important;margin:0!important}
+#home.subh-portrait-hero .scroll-about-panel{position:absolute!important;right:0;top:0;margin:0!important;width:48%;height:100svh;min-height:0;padding:clamp(100px,15vh,150px) 5vw 70px 2vw;opacity:0;transform:translateX(70px);pointer-events:none;display:flex;flex-direction:column;justify-content:center;transition:opacity .25s ease,transform .4s ease;background:linear-gradient(90deg,rgba(9,7,13,.05),rgba(9,7,13,.97) 20%,#09070d 70%)}
+#home.subh-portrait-hero.is-scrolled .scroll-about-panel{opacity:1;transform:translateX(0);pointer-events:auto}
+#home.subh-portrait-hero.is-scrolled .portrait-left,#home.subh-portrait-hero.is-scrolled .portrait-right{opacity:0;pointer-events:none}
+#home.subh-portrait-hero.is-scrolled .portrait-scroll{opacity:0}
+@media(max-width:760px){
+ #home.subh-portrait-hero .scroll-about-panel{width:100%;height:100svh;padding:110px 24px 80px}
+ #home.subh-portrait-hero .portrait-tracking{display:none!important}
+}
