@@ -109,3 +109,18 @@
  #home.subh-portrait-hero .portrait-tracking{display:none}
  .scroll-about-panel h2{font-size:40px}
 }
+
+/* Final composition correction: portrait crop at load; keep a clean nav and usable scroll transition */
+#home.subh-portrait-hero .portrait-nav{z-index:30}
+#home.subh-portrait-hero .subh-hero-stage{z-index:3}
+#home.subh-portrait-hero .portrait-left,#home.subh-portrait-hero .portrait-right{z-index:8}
+#home.subh-portrait-hero .scroll-about-panel{z-index:9}
+#home.subh-portrait-hero .portrait-left{top:47%;transform:translateY(-50%)}
+#home.subh-portrait-hero .portrait-right{top:47%;transform:translateY(-50%)}
+#home.subh-portrait-hero .scroll-about-panel{background:linear-gradient(90deg,rgba(9,7,13,.05),rgba(9,7,13,.97) 20%,#09070d 70%)}
+#home.subh-portrait-hero.is-scrolled .portrait-left,#home.subh-portrait-hero.is-scrolled .portrait-right{opacity:0;pointer-events:none}
+#home.subh-portrait-hero.is-scrolled .scroll-about-panel{opacity:1;transform:translateX(0);pointer-events:auto}
+@media(max-width:760px){
+ #home.subh-portrait-hero .portrait-left{top:30%}
+ #home.subh-portrait-hero .portrait-right{top:auto;bottom:100px}
+}
