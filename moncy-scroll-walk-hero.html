@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -557,28 +557,19 @@
         headBone = character.getObjectByName('spine.006') || character.getObjectByName('spine006') || null;
         neckBone = character.getObjectByName('spine.005') || character.getObjectByName('spine005') || null;
 
-        // Find workstation pieces by exact names first, then use a conservative
-        // name-based fallback. The uploaded model may use different Blender names.
-        const nameOf = (node) => (node.name || '').toLowerCase().replace(/[._\s-]/g, '');
-        const nodes = [];
-        character.traverse((node) => nodes.push(node));
+        // Find laptop screen and screenlight
+        monitorObject = character.getObjectByName('Plane.004') || character.getObjectByName('Plane004') || null;
+        screenLightMesh = character.getObjectByName('screenlight') || null;
 
-        monitorObject = nodes.find((node) => ['plane004', 'plane4', 'laptopscreen', 'monitorscreen'].includes(nameOf(node))) || null;
-        screenLightMesh = nodes.find((node) => nameOf(node) === 'screenlight') || null;
-
-        // Keep the landing hero focused on the character, not the workstation.
-        // Hide laptop/monitor/keyboard/desk meshes by semantic name, because
-        // GLB exports often rename Blender objects and the old exact-name check
-        // left the laptop screen visible in front of the face.
-        const workstationTerms = ['laptop', 'monitor', 'screen', 'keyboard', 'desk', 'tabletop'];
-        nodes.forEach((node) => {
-          const n = nameOf(node);
-          if (workstationTerms.some((term) => n.includes(term)) && node !== character) {
-            node.visible = false;
-          }
-        });
-        if (monitorObject) monitorObject.visible = false;
-        if (screenLightMesh) screenLightMesh.visible = false;
+        // IN THE HERO SECTION: HIDE THE LAPTOP SCREEN SO FACE & UPPER BODY ARE FULLY VISIBLE!
+        if (monitorObject) {
+          monitorObject.visible = false;
+          monitorObject.position.y = -10;
+        }
+        if (screenLightMesh) {
+          screenLightMesh.visible = false;
+          screenLightMesh.position.y = -10;
+        }
 
         // Animations Setup
         mixer = new THREE.AnimationMixer(character);
@@ -652,11 +643,11 @@
           end: "bottom top",
           scrub: 1.2,
           invalidateOnRefresh: true,
-          onUpdate: () => {
-            // Keep the laptop hidden: this model's screen was blocking the
-            // character's face and does not match the intended hero framing.
-            if (monitorObject) monitorObject.visible = false;
-            if (screenLightMesh) screenLightMesh.visible = false;
+          onUpdate: (self) => {
+            // Show laptop screen ONLY after scrolling down past hero!
+            const showLaptop = self.progress > 0.08;
+            if (monitorObject) monitorObject.visible = showLaptop;
+            if (screenLightMesh) screenLightMesh.visible = showLaptop;
           }
         }
       });
@@ -668,7 +659,9 @@
         .to(character.rotation, { y: 0.72, duration: 1 }, 0)
         // Camera pulls back to reveal the full character workstation
         .to(camera.position, { z: 27, y: 12.5, duration: 1 }, 0)
-        // The workstation remains hidden so it cannot cover the character.
+        // Laptop screen slides up into place from below desk as character moves left!
+        .fromTo(monitorObject ? monitorObject.position : {}, { y: -10 }, { y: 9.04, duration: 0.8 }, 0.2)
+        .fromTo(screenLightMesh ? screenLightMesh.position : {}, { y: -10 }, { y: 9.04, duration: 0.8 }, 0.2)
         // Backlight follows to the left
         .to(rimCircle, { left: "30%", scale: 1.1, opacity: 0.6, duration: 1 }, 0)
         // Landing hero texts fade out and rise
