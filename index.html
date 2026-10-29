@@ -1,34 +1,18 @@
-
-
-
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Subhajit — Interactive 3D Portfolio</title>
-  <meta name="description" content="Subhajit — Graphic Designer & Motion Designer. Selected visual design, branding, social media and campaign work.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subhajit — Moncy Scroll Walk Hero</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>
-    (function(){
-      try{
-        if(localStorage.getItem('subhajit-theme') === 'light'){
-          document.documentElement.classList.add('light-mode-preload');
-        }
-      }catch(e){}
-    })();
-  </script>
-  <link rel="stylesheet" href="style.css?v=20261010-eye-follow-1">
-  <link rel="stylesheet" href="music-player.css?v=20261009-4">
-  <link rel="stylesheet" href="dynamic-island.css?v=20261009-14">
-
-
-  <link rel="stylesheet" href="crafted-voyage.css?v=20261010-1">
-  <link rel="stylesheet" href="cinematic-intro.css?v=20261029-6">
-<style id="moncy-scroll-walk-css">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="./modelData.js"></script>
+  <style>
     :root {
       --bg: #07080c;
       --accent: #c481ff;
@@ -349,84 +333,9 @@
       .about-content-box, .whatido-box { width: 100%; max-width: 100%; }
       .navbar { padding: 1.5rem; }
     }
-  
-#moncy-scroll-about { position:relative; z-index:3; }
-#moncy-scroll-about .about-content-box { max-width:760px; margin-left:auto; margin-right:5vw; }
-#moncy-scroll-about .stats-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
-#moncy-scroll-about .stats-grid > div { padding:20px 16px; border:1px solid rgba(196,129,255,.22); border-radius:16px; background:rgba(18,22,34,.45); }
-#moncy-scroll-about .stat-number { color:#c481ff; font-size:clamp(2rem,3vw,3.5rem); font-weight:800; }
-#moncy-scroll-about .stat-label { color:#94a3b8; font-size:.75rem; letter-spacing:.12em; text-transform:uppercase; }
-#webgl-fixed-wrapper { z-index:2; } .page-container { position:relative; z-index:3; }
-@media(max-width:700px){#moncy-scroll-about .about-content-box{margin:0 24px}#moncy-scroll-about .stats-grid{grid-template-columns:1fr}}
-
-/* Refined Moncy scroll handoff: character only accompanies the real About section */
-#hero { min-height:100vh; height:100vh; }
-#hero-left-text, #hero-right-text { will-change: transform, opacity; }
-/* Keep the Moncy hero scene visible behind About Me; no section-color jump. */
-#about.aboutx { position:relative; z-index:3; min-height:100vh; display:flex; align-items:center; background:transparent !important; }
-#about .aboutx-topline { width:100%; }
-#about .aboutx-grid { display:block; width:min(56%,760px); margin-left:auto; margin-right:4vw; }
-#about .aboutx-left { display:none !important; }
-#about .aboutx-right { width:100%; }
-#about .aboutx-copy { max-width:720px; }
-#about .aboutx-copy p:not(.aboutx-label) { font-size:clamp(14px,1.15vw,17px); }
-#about .aboutx-credentials { margin-top:30px; }
-#webgl-fixed-wrapper { will-change:opacity,transform; }
-#webgl-canvas { display:block; }
-@media(max-width:850px) {
-  #about.aboutx { padding-top:110px; }
-  #about .aboutx-grid { width:100%; margin:0; }
-  #about .aboutx-topline { gap:20px; }
-}
-</style>
+  </style>
 </head>
 <body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="./modelData.js"></script>
-  <div class="cinematic-intro" id="cinematicIntro" role="status" aria-label="Loading Subhajit's portfolio">
-    <div class="cinematic-intro-header">
-      <a class="cinematic-intro-logo" href="#top" aria-label="Subhajit portfolio">SUBHAJIT<span>·</span>DESIGNER</a>
-      <div class="cinematic-intro-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-    </div>
-    <div class="cinematic-intro-backtext" aria-hidden="true">
-      <div class="cinematic-intro-track"><span>A CREATIVE DESIGNER</span><b>?</b><span>AN AI DESIGNER</span><b>?</b><span>A CREATIVE DESIGNER</span><b>?</b><span>AN AI DESIGNER</span><b>?</b></div>
-      <div class="cinematic-intro-track cinematic-intro-track-second"><span>A CREATIVE DESIGNER</span><b>?</b><span>AN AI DESIGNER</span><b>?</b><span>A CREATIVE DESIGNER</span><b>?</b><span>AN AI DESIGNER</span><b>?</b></div>
-    </div>
-    <div class="cinematic-intro-wrap" id="cinematicIntroWrap">
-      <div class="cinematic-intro-hover" aria-hidden="true"></div>
-      <div class="cinematic-intro-loader">
-        <div class="cinematic-intro-loading-row"><span id="cinematicIntroLoadingText">Loading</span><span class="cinematic-intro-loading-count"><span id="cinematicIntroCount">00</span><sup>%</sup></span></div>
-        <div class="cinematic-intro-welcome" id="cinematicIntroWelcome">WELCOME</div>
-      </div>
-    </div>
-    <div class="cinematic-intro-foot"><span>SUBHAJIT DAS</span><span>DESIGN · MOTION · AI</span></div>
-  </div>
-  <div class="cursor-glow" aria-hidden="true"></div>
-  <div class="cursor-dot" aria-hidden="true"></div>
-
-
-
-
-  <main id="top">
-    <header class="hero-nav" aria-label="Dynamic Island setup" style="display:none!important" hidden>
-  <aside class="site-music" id="siteMusicPlayer" aria-label="Website music player">
-    <div class="site-music-top"><span class="site-music-label"><span class="site-music-live"></span> SOUNDTRACK</span><button class="site-music-collapse" id="musicCollapse" type="button" aria-label="Minimize music player">-</button></div>
-    <div class="site-music-main"><div class="site-music-art" aria-hidden="true"><span>?</span></div><div class="site-music-info"><p id="musicTrackName">Midnight Drive</p><span id="musicTrackArtist">Portfolio radio · 01</span></div></div>
-    <div class="site-music-controls"><button id="musicPrev" type="button" aria-label="Previous track">?</button><button class="site-music-play" id="musicPlay" type="button" aria-label="Play music">?</button><button id="musicNext" type="button" aria-label="Next track">?</button><button id="musicMute" type="button" aria-label="Mute audio">?</button></div>
-    <div class="site-music-progress-row"><span id="musicCurrentTime">0:00</span><input id="musicProgress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Track progress"><span id="musicDuration">0:00</span></div>
-    <div class="site-music-volume-row"><span>VOL</span><input id="musicVolume" type="range" min="0" max="1" value="0.55" step="0.01" aria-label="Volume"><span id="musicTrackNumber">01 / 03</span></div>
-    <audio id="siteMusicAudio" preload="none"></audio>
-  </aside>
-  <label class="switch" aria-label="Toggle light and dark mode">
-    <input id="themeToggle" type="checkbox" aria-label="Switch to light mode">
-    <span class="slider"></span>
-  </label>
-</header>
-
-
   <!-- Ambient Moncy.dev Glow Circles -->
   <div class="ambient-glow-left"></div>
   <div class="character-rim" id="rim-circle"></div>
@@ -455,18 +364,16 @@
     </a>
     <nav class="nav-links">
       <a href="#about" class="nav-link">About</a>
-      <a href="#what-i-do" class="nav-link">What I Do</a>
-      <a href="#resume" class="nav-link">Career</a>
+      <a href="#whatido" class="nav-link">What I Do</a>
+      <a href="#career" class="nav-link">Career</a>
       <a href="#work" class="nav-link">Work</a>
-      <a class="nav-btn" href="#contact">Get In Touch</a>
+      <button class="nav-btn">Get In Touch</button>
     </nav>
   </header>
 
   <!-- Scrollable Page Flow -->
   <div class="page-container">
     <!-- SECTION 1: LANDING / HERO -->
-
-
     <section class="landing-section" id="hero">
       <div class="landing-intro" id="hero-left-text">
         <h2>Hello! I'm</h2>
@@ -488,8 +395,62 @@
       </div>
     </section>
 
+    <!-- SECTION 2: ABOUT ME (Character glides to the left side and laptop appears) -->
+    <section class="about-section" id="about">
+      <div class="about-content-box">
+        <span class="section-badge">About Me</span>
+        <h2 class="about-title">Designing ideas into reality.</h2>
+        <p class="about-text">
+          I’m Subhajit Das — an AI designer and motion creative building bold visuals, brand identities, motion graphics and digital experiences.
+        </p>
+        <div class="stats-grid">
+          <div>
+            <div class="stat-number">07+</div>
+            <div class="stat-label">Years Creating</div>
+          </div>
+          <div>
+            <div class="stat-number">100+</div>
+            <div class="stat-label">Brands</div>
+          </div>
+          <div>
+            <div class="stat-number">6000+</div>
+            <div class="stat-label">Designs</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <!-- Existing Featured Work and later sections remain unchanged -->
+    <!-- SECTION 3: WHAT I DO -->
+    <section class="whatido-section" id="whatido">
+      <div class="whatido-box">
+        <div class="service-card">
+          <div class="service-num">01 / THREE.JS & WEBGL</div>
+          <h3 class="service-title">3D Interactive Development</h3>
+          <p class="service-desc">
+            Custom real-time 3D models, smooth camera scroll choreography, shader effects, and interactive physics running seamlessly at 60 FPS in the browser.
+          </p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-num">02 / FRONTEND ARCHITECTURE</div>
+          <h3 class="service-title">Creative Web Engineering</h3>
+          <p class="service-desc">
+            Modern React and TypeScript applications built with modular components, fluid GSAP ScrollTrigger animations, and pixel-perfect responsiveness.
+          </p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-num">03 / UI/UX DESIGN</div>
+          <h3 class="service-title">Visual & Spatial Direction</h3>
+          <p class="service-desc">
+            Designing futuristic, human-centric interfaces, subtle glassmorphic surfaces, and motion design that elevates the brand story.
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- EXISTING FEATURED WORK SECTION -->
     <section id="work" class="crafted section crafted-gallery-enabled" aria-label="Crafted Designs">
   <div class="crafted-heading">
     <p>FEATURED WORK</p>
@@ -532,258 +493,10 @@
     <div class="crafted-gallery-hint"><span>MOVE</span><i>?</i><span>HOVER • EXPLORE • OPEN</span></div>
   </div>
 </section>
-
-<section id="craftedVoyage" class="crafted-voyage-section" aria-label="Featured creative projects">
-  <div class="crafted-voyage-topline"><span>THE CREATIVE JOURNEY</span><span>SELECTED PROJECTS · 2026</span></div>
-  <div class="crafted-voyage-shell" id="voyageCraftGallery">
-    <div class="crafted-voyage-backdrop" aria-hidden="true"></div>
-    <div class="crafted-voyage-nav"><a class="crafted-voyage-brand" href="#craftedVoyage">SUBH<span>·</span></a><div class="crafted-voyage-navlinks"><span>DESIGN</span><span>CAMPAIGNS</span><span>VISUAL STORIES</span></div><span class="crafted-voyage-count" id="voyageCraftCount">01 / 06</span></div>
-    <div class="crafted-voyage-stage">
-      <button class="crafted-voyage-arrow crafted-voyage-prev" type="button" aria-label="Previous project">‹</button>
-      <div class="crafted-voyage-cards" id="voyageCraftCards"></div>
-      <button class="crafted-voyage-arrow crafted-voyage-next" type="button" aria-label="Next project">›</button>
-      <div class="crafted-voyage-copy"><p id="voyageCraftKicker">CAMPAIGN · CREATIVE</p><h3 id="voyageCraftTitle">GOOGLE ADS</h3><span id="voyageCraftSubtitle">DESIGNED TO MAKE AN IMPACT</span></div>
-    </div>
-    <div class="crafted-voyage-footer"><span>DRAG · CLICK · EXPLORE</span><div class="crafted-voyage-progress"><i id="voyageCraftProgress"></i></div><span>01 — 06</span></div>
-  </div>
-</section>
-
-
-
-
-
-<section id="clients" class="client-logo-section" aria-label="Clients I have worked with">
-  <div class="client-logo-head">
-    <span>CLIENTS</span>
-    <span>BRANDS I'VE WORKED WITH</span>
   </div>
 
-  <div class="client-logo-marquee">
-    <div class="client-logo-track">
-      <div class="client-logo-item"><img src="hotel-ma-grand.png" alt="Hotel Ma Grand"></div>
-      <div class="client-logo-item"><img src="ma-realty.png" alt="MA Realty"></div>
-      <div class="client-logo-item"><img src="yuven-motors.png" alt="Yuven Motors"></div>
-      <div class="client-logo-item"><img src="gb.png" alt="GB"></div>
-      <div class="client-logo-item"><img src="su.png" alt="SU"></div>
-      <div class="client-logo-item"><img src="acemath.png" alt="AceMath"></div>
-      <div class="client-logo-item"><img src="mamaearth.png" alt="Mamaearth"></div>
-      <div class="client-logo-item"><img src="dharmi-realty.png" alt="Dharmi Realty"></div>
-      <div class="client-logo-item"><img src="freehit.png" alt="FreeHit"></div>
-      <div class="client-logo-item"><img src="untouch-nature.png" alt="Untouch Nature"></div>
-      <div class="client-logo-item"><img src="heli-tours-travels.png" alt="Heli Tours & Travels"></div>
-      <div class="client-logo-item"><img src="jivantika-organic.png" alt="Jivantika Organic"></div>
-      <div class="client-logo-item"><img src="son-kapila.png" alt="Son Kapila"></div>
-      <div class="client-logo-item"><img src="mobiles-24.png" alt="Mobiles 24"></div>
-      <div class="client-logo-item"><img src="client-16.png" alt="Client 16"></div>
-      <div class="client-logo-item"><img src="vedainn.png" alt="Vedainn"></div>
-
-      <!-- Duplicate set for a seamless infinite loop -->
-      <div class="client-logo-item"><img src="hotel-ma-grand.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="ma-realty.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="yuven-motors.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="gb.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="su.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="acemath.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="mamaearth.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="dharmi-realty.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="freehit.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="untouch-nature.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="heli-tours-travels.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="jivantika-organic.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="son-kapila.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="mobiles-24.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="client-16.png" alt="" aria-hidden="true"></div>
-      <div class="client-logo-item"><img src="vedainn.png" alt="" aria-hidden="true"></div>
-    </div>
-  </div>
-</section>
-
-<style>
-  .client-logo-section{
-    position:relative;
-    overflow:hidden;
-    padding:38px 0 42px;
-    border-top:1px solid rgba(255,255,255,.1);
-    border-bottom:1px solid rgba(255,255,255,.1);
-    background:transparent;
-  }
-
-  .client-logo-head{
-    width:min(1120px,calc(100% - 56px));
-    margin:0 auto 25px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:20px;
-    color:#806860;
-    font:9px 'DM Mono',monospace;
-    letter-spacing:.15em;
-  }
-
-  .client-logo-marquee{
-    width:100vw;
-    margin-left:calc(50% - 50vw);
-    overflow:hidden;
-    position:relative;
-    -webkit-mask-image:linear-gradient(
-      to right,
-      transparent,
-      #000 8%,
-      #000 92%,
-      transparent
-    );
-    mask-image:linear-gradient(
-      to right,
-      transparent,
-      #000 8%,
-      #000 92%,
-      transparent
-    );
-  }
-
-  .client-logo-track{
-    display:flex;
-    align-items:center;
-    width:max-content;
-    gap:24px;
-    animation:clientLogoMove 32s linear infinite reverse;
-    will-change:transform;
-  }
-
-  .client-logo-item{
-    flex:0 0 170px;
-    height:78px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:15px 24px;
-    border:1px solid rgba(255,255,255,.08);
-    background:rgba(255,255,255,.018);
-    border-radius:5px;
-    transition:
-      transform .35s ease,
-      border-color .35s ease,
-      background .35s ease;
-  }
-
-  .client-logo-item:hover{
-    transform:translateY(-5px);
-    border-color:rgba(255,61,53,.45);
-    background:rgba(255,61,53,.045);
-  }
-
-  .client-logo-item img{
-    display:block;
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    filter:grayscale(1);
-    opacity:.58;
-    transition:
-      filter .35s ease,
-      opacity .35s ease,
-      transform .35s ease;
-  }
-
-  .client-logo-item:hover img{
-    filter:grayscale(0);
-    opacity:1;
-  }
-
-  @keyframes clientLogoMove{
-    from{
-      transform:translateX(0);
-    }
-    to{
-      transform:translateX(calc(-50% - 12px));
-    }
-  }
-
-  @media(max-width:700px){
-    .client-logo-section{
-      padding:30px 0 34px;
-    }
-
-    .client-logo-head{
-      width:calc(100% - 28px);
-      font-size:7px;
-    }
-
-    .client-logo-item{
-      flex-basis:135px;
-      height:64px;
-      padding:11px 18px;
-    }
-
-    .client-logo-track{
-      gap:16px;
-      animation-duration:26s;
-      animation-direction:reverse;
-    }
-  }
-
-  @media(prefers-reduced-motion:reduce){
-    .client-logo-track{
-      animation:none;
-    }
-  }
-</style>
-
-    <section id="contact" class="contact section">
-      <p class="eyebrow">GET IN TOUCH</p>
-      <h2>Have a project<br><em>in mind?</em></h2>
-      <a class="email" href="mailto:myselfsubhajitdas@gmail.com">myselfsubhajitdas@gmail.com <span>?</span></a>
-      <div class="socials">
-        <a href="#" aria-label="Behance">Behance ?</a>
-        <a href="#" aria-label="Instagram">Instagram ?</a>
-        <a href="#" aria-label="LinkedIn">LinkedIn ?</a>
-        <a href="#" aria-label="YouTube">YouTube ?</a>
-      </div>
-    </section>
-  </main>
-
-  <div class="reel-modal" id="reelModal" aria-hidden="true">
-    <div class="reel-card" role="dialog" aria-modal="true" aria-label="Subhajit show reel preview">
-      <button class="reel-close" id="reelClose" type="button" aria-label="Close reel">×</button>
-      <video
-        class="reel-video"
-        id="reelVideo"
-        src="show-reel.mp4"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        aria-label="Subhajit show reel"
-      ></video>
-    </div>
-  </div>
-
-
-  
-
-  <footer>
-    <span>© 2026 SUBHAJIT</span>
-    <span>BUILT WITH HTML • CSS • JS</span>
-    <a href="#top">BACK TO TOP ?</a>
-  </footer>
-
-  <script src="cinematic-intro.js?v=20261029-6"></script>
-  <script src="script.js?v=20261009-2"></script>
-<script src="music-player.js?v=20261010-6"></script>
-  <script src="dynamic-island.js?v=20261009-6"></script>
-  <script src="crafted-voyage.js?v=20261010-1"></script>
   <script>
-    window.setTimeout(function () {
-      var loader = document.querySelector(".subh-hero-loader");
-      if (loader && !loader.classList.contains("is-hidden")) {
-        loader.textContent = "3D CHARACTER FAILED TO INITIALIZE — PLEASE REFRESH";
-        loader.style.background = "transparent";
-        window.setTimeout(function(){ loader.classList.add("is-hidden"); }, 5000);
-      }
-    }, 22000);
-  </script>
-<script id="moncy-scroll-walk-script">    // ==========================================
+    // ==========================================
     // THREE.JS + GSAP SCROLL ANIMATION SYSTEM
     // ==========================================
     gsap.registerPlugin(ScrollTrigger);
@@ -973,7 +686,7 @@
           trigger: "#hero",
           start: "top top",
           end: "bottom top",
-          scrub: 2.0,
+          scrub: 1.2,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             // Show laptop screen ONLY after scrolling down past hero!
@@ -1000,24 +713,21 @@
         .to("#hero-left-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
         .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0);
 
-      // TIMELINE 2: Keep the character beside the real About section.
-      // Fade and lift the character only as Creative Toolkit enters the viewport.
+      // TIMELINE 2: Scrolling from About into What I Do Section
       const tl2 = gsap.timeline({
         scrollTrigger: {
-          trigger: "#work",
-          start: "top bottom",
-          end: "top top",
-          scrub: 2.5,
-          invalidateOnRefresh: true
+          trigger: "#about",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.5,
+          invalidateOnRefresh: true,
         }
       });
 
       tl2
-        .to(character.position, { x: -4.65, y: -0.15, duration: 0.35, ease: "none" }, 0)
-        .to(character.rotation, { y: 0.72, x: 0.02, duration: 0.35, ease: "none" }, 0)
-        .to("#webgl-fixed-wrapper", { autoAlpha: 0, y: -100, duration: 0.65, ease: "none" }, 0.35)
-        .to(rimCircle, { opacity: 0, duration: 0.65, ease: "none" }, 0.35)
-        .to(".ambient-glow-left", { opacity: 0, duration: 0.65, ease: "none" }, 0.35);
+        .to(character.position, { x: -4.8, y: -0.8, duration: 1 }, 0)
+        .to(character.rotation, { y: 0.88, x: 0.08, duration: 1 }, 0)
+        .to(camera.position, { z: 29, y: 11.8, duration: 1 }, 0);
     }
 
     // 5. Mouse Tracking & Kinematics
@@ -1065,7 +775,7 @@
 
       // Head Bone Rotation (Exactly like Moncy.dev)
       if (headBone) {
-        if (scrollY < document.querySelector("#about").offsetTop + document.querySelector("#about").offsetHeight) {
+        if (scrollY < 250) {
           // When in the Hero Section: Full face and head track the cursor!
         const maxRotationY = Math.PI / 4.5; // ~40 deg — moncy.dev level responsiveness
           const targetRotY = mouse.x * maxRotationY;
