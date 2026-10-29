@@ -364,7 +364,8 @@
 /* Refined Moncy scroll handoff: character only accompanies the real About section */
 #hero { min-height:100vh; height:100vh; }
 #hero-left-text, #hero-right-text { will-change: transform, opacity; }
-#about.aboutx { position:relative; z-index:4; min-height:100vh; display:flex; align-items:center; }
+/* Keep the Moncy hero scene visible behind About Me; no section-color jump. */
+#about.aboutx { position:relative; z-index:3; min-height:100vh; display:flex; align-items:center; background:transparent !important; }
 #about .aboutx-topline { width:100%; }
 #about .aboutx-grid { display:block; width:min(56%,760px); margin-left:auto; margin-right:4vw; }
 #about .aboutx-left { display:none !important; }
@@ -1168,10 +1169,10 @@
       // Fade and lift the character only as Creative Toolkit enters the viewport.
       const tl2 = gsap.timeline({
         scrollTrigger: {
-          trigger: "#what-i-do",
-          start: "top bottom",
-          end: "top top",
-          scrub: 2.0,
+          trigger: "#about",
+          start: "bottom bottom",
+          end: "bottom top",
+          scrub: 2.5,
           invalidateOnRefresh: true
         }
       });
