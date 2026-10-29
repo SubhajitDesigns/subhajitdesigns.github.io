@@ -73,6 +73,25 @@
       z-index: 0;
     }
 
+    /* Featured photo gallery */
+    .crafted-gallery-cards{position:relative;z-index:3;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,2vw,24px);width:min(1240px,100%);margin:2.5rem auto 0}
+    .featured-photo-card{appearance:none;display:block;min-width:0;padding:0;text-align:left;color:#fff;background:rgba(16,14,23,.78);border:1px solid rgba(255,255,255,.12);border-radius:18px;overflow:hidden;cursor:pointer;box-shadow:0 18px 45px rgba(0,0,0,.24);transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease,background .35s ease}
+    .featured-photo-card:hover,.featured-photo-card:focus-visible{transform:translateY(-7px);border-color:rgba(196,129,255,.65);box-shadow:0 24px 55px rgba(0,0,0,.4),0 0 26px rgba(196,129,255,.1);outline:none}
+    .featured-photo-card.is-selected{border-color:rgba(196,129,255,.8);background:rgba(35,23,47,.92);box-shadow:0 0 0 1px rgba(196,129,255,.16),0 20px 48px rgba(0,0,0,.3)}
+    .featured-photo-frame{display:block;position:relative;aspect-ratio:4/5;overflow:hidden;background:#17131d}
+    .featured-photo-frame:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(6,5,10,.22));pointer-events:none}
+    .featured-photo-frame img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .65s cubic-bezier(.2,.7,.2,1),filter .35s ease}
+    .featured-photo-card:hover .featured-photo-frame img,.featured-photo-card.is-selected .featured-photo-frame img{transform:scale(1.045)}
+    .featured-photo-label{display:grid;grid-template-columns:1fr auto;gap:7px 8px;align-items:center;padding:15px 15px 17px}
+    .featured-photo-label small{grid-column:1/-1;color:#b9a9ca;font-size:.62rem;letter-spacing:.14em;font-weight:650}
+    .featured-photo-label strong{font-size:clamp(.78rem,1.2vw,1rem);letter-spacing:.035em;line-height:1.2}
+    .featured-photo-label i{font-style:normal;font-size:1.15rem;color:#d3a8ff;transition:transform .25s ease}
+    .featured-photo-card:hover .featured-photo-label i{transform:translate(2px,-2px)}
+    .crafted-gallery-center{display:none!important}
+    .crafted-gallery-hint{margin:1.6rem auto 0;position:relative;z-index:3}
+    @media(max-width:850px){.crafted-gallery-cards{grid-template-columns:repeat(2,minmax(0,1fr));max-width:650px}.featured-photo-label{padding:12px}}
+    @media(max-width:420px){.crafted-gallery-cards{gap:10px}.featured-photo-label strong{font-size:.76rem}.featured-photo-label small{font-size:.55rem}}
+
     /* Compact expandable iPhone Dynamic Island navigation */
     .navbar{position:fixed;top:1.2rem;left:0;width:100%;display:flex;justify-content:center;align-items:flex-start;padding:0 1rem;z-index:100;pointer-events:none}
     .navbar .nav-island{pointer-events:auto;display:flex;flex-direction:column;align-items:center;width:max-content;max-width:min(94vw,620px);padding:5px;border-radius:999px;overflow:hidden;color:#fff;background:rgba(8,7,12,.88);border:1px solid rgba(211,174,255,.3);box-shadow:0 10px 38px rgba(0,0,0,.35),0 0 22px rgba(170,92,255,.12),inset 0 1px 0 rgba(255,255,255,.09);backdrop-filter:blur(24px) saturate(155%);-webkit-backdrop-filter:blur(24px) saturate(155%);transition:border-radius .35s ease,padding .35s ease}
@@ -647,7 +666,24 @@
   <div class="crafted-gallery" id="craftedGallery">
     <div class="crafted-gallery-vignette" aria-hidden="true"></div>
     <div class="crafted-gallery-stage">
-      <div class="crafted-gallery-cards" id="craftedGalleryCards"></div>
+      <div class="crafted-gallery-cards" id="craftedGalleryCards" aria-label="Featured photo projects">
+        <button class="featured-photo-card is-selected" type="button" data-image="currently-creating-04.png" data-title="IDEA OVERLOAD" data-type="EDITORIAL / PHOTO MANIPULATION" data-kicker="CONCEPT • ART DIRECTION • PHOTO MANIPULATION" aria-pressed="true">
+          <span class="featured-photo-frame"><img src="currently-creating-04.png" alt="Idea Overload editorial poster by Subhajit" loading="lazy"></span>
+          <span class="featured-photo-label"><small>01 / EDITORIAL</small><strong>IDEA OVERLOAD</strong><i>↗</i></span>
+        </button>
+        <button class="featured-photo-card" type="button" data-image="currently-creating-01-new.jpg" data-title="FONT FAILS" data-type="TYPOGRAPHY / ART DIRECTION" data-kicker="TYPOGRAPHY • VISUAL EXPERIMENT">
+          <span class="featured-photo-frame"><img src="currently-creating-01-new.jpg" alt="Font Fails typography poster by Subhajit" loading="lazy"></span>
+          <span class="featured-photo-label"><small>02 / TYPOGRAPHY</small><strong>FONT FAILS</strong><i>↗</i></span>
+        </button>
+        <button class="featured-photo-card" type="button" data-image="currently-creating-02.jpg" data-title="GOOD DESIGN?" data-type="CONCEPTUAL / EDITORIAL DESIGN" data-kicker="CONCEPT • EDITORIAL • BRAND THINKING">
+          <span class="featured-photo-frame"><img src="currently-creating-02.jpg" alt="Good Design conceptual poster by Subhajit" loading="lazy"></span>
+          <span class="featured-photo-label"><small>03 / CONCEPT</small><strong>GOOD DESIGN?</strong><i>↗</i></span>
+        </button>
+        <button class="featured-photo-card" type="button" data-image="currently-creating-03.png" data-title="CAPCUT" data-type="VISUAL CAMPAIGN / CREATIVE DESIGN" data-kicker="CREATIVE CAMPAIGN • DIGITAL VISUALS">
+          <span class="featured-photo-frame"><img src="currently-creating-03.png" alt="CapCut creative poster by Subhajit" loading="lazy"></span>
+          <span class="featured-photo-label"><small>04 / CAMPAIGN</small><strong>CAPCUT</strong><i>↗</i></span>
+        </button>
+      </div>
       <div class="crafted-gallery-edge crafted-gallery-edge-left" aria-hidden="true">
         <span>SELECTED WORK</span><i></i><span>2026</span>
       </div>
@@ -1098,6 +1134,31 @@
 
     animate();
   </script>
+<script>
+(() => {
+  const cards = Array.from(document.querySelectorAll('.featured-photo-card'));
+  const image = document.getElementById('craftedCenterImage');
+  const number = document.getElementById('craftedCenterNumber');
+  const type = document.getElementById('craftedCenterType');
+  const kicker = document.getElementById('craftedCenterKicker');
+  const title = document.getElementById('craftedCenterTitle');
+  if (!cards.length) return;
+  cards.forEach((card) => {
+    card.addEventListener('click', () => {
+      cards.forEach((item) => {
+        const selected = item === card;
+        item.classList.toggle('is-selected', selected);
+        item.setAttribute('aria-pressed', String(selected));
+      });
+      if (image) { image.src = card.dataset.image; image.alt = card.dataset.title + ' by Subhajit'; }
+      if (title) title.textContent = card.dataset.title;
+      if (type) type.textContent = card.dataset.type;
+      if (kicker) kicker.textContent = card.dataset.kicker;
+      if (number) number.textContent = String(cards.indexOf(card) + 1).padStart(2, '0') + ' / ' + String(cards.length).padStart(2, '0');
+    });
+  });
+})();
+</script>
 <script>(()=>{const i=document.getElementById('navIsland'),b=document.getElementById('islandTrigger'),m=document.getElementById('islandMenu');if(!i||!b||!m)return;const close=()=>{i.classList.remove('is-open');b.setAttribute('aria-expanded','false')};b.addEventListener('click',()=>{const open=i.classList.toggle('is-open');b.setAttribute('aria-expanded',String(open))});m.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('click',e=>{if(!i.contains(e.target))close()});document.addEventListener('keydown',e=>{if(e.key==='Escape')close()})})();</script>
 <script>
 (() => {
