@@ -25,6 +25,7 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+    html.intro-active, body.intro-active { overflow: hidden !important; height: 100%; overscroll-behavior: none; }
     body { background-color: var(--bg); font-family: var(--font-geist); color: #fff; overflow-x: hidden; }
 
     #webgl-fixed-wrapper {
@@ -498,7 +499,7 @@
 }
 </style>
 </head>
-<body>
+<body class="intro-active">
   <!-- Ambient Moncy.dev Glow Circles -->
   <div class="ambient-glow-left"></div>
   <div class="character-rim" id="rim-circle"></div>
@@ -679,6 +680,8 @@
                 loadingScreen.classList.add('is-leaving');
                 setTimeout(() => {
                   loadingScreen.style.display = 'none';
+                  document.documentElement.classList.remove('intro-active');
+                  document.body.classList.remove('intro-active');
                 }, 950);
               }, 900);
             }, 1000);
