@@ -303,7 +303,7 @@
       width: 100vw;
       height: 100vh;
       z-index: 999999999;
-      background: #eae5ec;
+      background: #08070b;
       color: #fff;
       display: flex;
       align-items: center;
@@ -316,7 +316,7 @@
       top: 28px;
       left: max(24px, calc((100vw - 1320px) / 2));
       z-index: 3;
-      color: #111;
+      color: #e8dff2;
       font-size: 14px;
       font-weight: 700;
       letter-spacing: .2px;
@@ -327,7 +327,7 @@
       left: 0;
       width: 100%;
       transform: translateY(-50%);
-      color: rgba(23, 19, 27, .42);
+      color: rgba(190, 164, 215, .24);
       filter: blur(.8px);
       font-size: clamp(42px, 5.6vw, 100px);
       line-height: 1.12;
@@ -767,6 +767,8 @@
     let headIntroStart = 0;
     let headIntroBaseX = -0.18;
     let neckIntroBaseX = 0;
+    let characterIntroFinished = false;
+    let userMovedMouse = false;
     let monitorObject = null;
     let screenLightMesh = null;
 
@@ -859,8 +861,16 @@
             introAction.reset();
             introAction.enabled = true;
             introAction.setEffectiveWeight(1);
+            introAction.setEffectiveTimeScale(0.72);
             introAction.play();
             window.__characterIntroRequested = false;
+            characterIntroFinished = false;
+            mixer.addEventListener("finished", function onIntroFinished(event) {
+              if (event.action === introAction) {
+                characterIntroFinished = true;
+                mixer.removeEventListener("finished", onIntroFinished);
+              }
+            });
           };
           if (window.__characterIntroRequested) window.__playCharacterIntro();
         }
@@ -957,6 +967,7 @@
     });
 
     window.addEventListener('mousemove', (e) => {
+      userMovedMouse = true;
       mouse.targetX = (e.clientX / window.innerWidth) * 2 - 1;
       mouse.targetY = -(e.clientY / window.innerHeight) * 2 + 1;
       if (scrollY < 200) {
@@ -982,8 +993,8 @@
       mouse.x += (mouse.targetX - mouse.x) * 0.28;
       mouse.y += (mouse.targetY - mouse.y) * 0.28;
 
-      // Moncy-style head tracking: follows cursor height and direction with eased motion.
-      if (headBone) {
+      // Keep the head still until the intro nod finishes and the visitor moves the mouse.
+      if (headBone && characterIntroFinished && userMovedMouse) {
         if (scrollY < 200) {
           const maxRotation = Math.PI / 6;
           headBone.rotation.y = THREE.MathUtils.lerp(
