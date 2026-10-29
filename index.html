@@ -298,34 +298,170 @@
     #loading-screen {
       position: fixed;
       inset: 0;
-      z-index: 100;
-      background: #fff;
-      color: #111;
+      width: 100vw;
+      height: 100vh;
+      z-index: 999999999;
+      background: #eae5ec;
+      color: #fff;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1.1rem;
-      transition: opacity .8s ease, visibility .8s;
       overflow: hidden;
       isolation: isolate;
     }
-    .intro-brand { position:absolute; top: clamp(22px,4vw,54px); left: clamp(22px,4vw,58px); z-index:1; font: 600 11px/1.2 monospace; letter-spacing:.12em; color:#171717; }
-    .intro-marquee { position:absolute; inset:-15% -30%; display:flex; flex-direction:column; justify-content:center; gap:0; overflow:hidden; pointer-events:none; z-index:0; transform:rotate(-8deg) scale(1.08); }
-    .intro-marquee-line { display:block; white-space:nowrap; font-size:clamp(4.5rem,12.5vw,13rem); line-height:.95; font-weight:800; letter-spacing:-.085em; color:#f2f2f2; animation:intro-drift 22s linear infinite; }
-    .intro-marquee-line:nth-child(even) { transform:translateX(-12%); animation-direction:reverse; color:#f5f5f5; }
-    .intro-marquee-line span { padding-right:.25em; }
-    @keyframes intro-drift { from { translate:0 0; } to { translate:-18% 0; } }
-    .intro-counter { position:relative; z-index:1; font-size:clamp(4.5rem,12vw,10rem); font-weight:300; letter-spacing:-.09em; color:#111; font-variant-numeric:tabular-nums; line-height:.9; }
-    .intro-progress-track { position:relative; z-index:1; width:min(220px,42vw); height:2px; background:#e6e6e6; overflow:hidden; }
-    #intro-progress-fill { width:0%; height:100%; background:#111; }
-    #loading-screen .loader-text { position:relative; z-index:1; font:500 .62rem/1.4 monospace; letter-spacing:.18em; color:#777; text-transform:uppercase; }
-    .intro-welcome { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:#fff; color:#111; font-size:clamp(3.5rem,17vw,19rem); font-weight:800; letter-spacing:-.1em; white-space:nowrap; transform:translateY(110%); opacity:0; pointer-events:none; z-index:2; }
-    #loading-screen.is-welcoming .intro-welcome { animation:welcome-cover 1.15s cubic-bezier(.76,0,.24,1) forwards; }
-    #loading-screen.is-welcoming .intro-counter, #loading-screen.is-welcoming .intro-progress-track, #loading-screen.is-welcoming .loader-text, #loading-screen.is-welcoming .intro-brand { opacity:0; transition:opacity .25s ease; }
-    @keyframes welcome-cover { 0% { transform:translateY(110%); opacity:1; } 100% { transform:translateY(0); opacity:1; } }
-    #loading-screen.is-leaving { opacity:0; visibility:hidden; }
-    @media (prefers-reduced-motion:reduce) { .intro-marquee-line { animation-duration:60s; } }
+    .intro-brand {
+      position: absolute;
+      top: 28px;
+      left: max(24px, calc((100vw - 1320px) / 2));
+      z-index: 3;
+      color: #111;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+    .intro-marquee {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      transform: translateY(-50%);
+      color: #17131b;
+      font-size: clamp(42px, 5.6vw, 100px);
+      line-height: 1.12;
+      font-weight: 600;
+      text-transform: uppercase;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+    .intro-marquee-row {
+      display: flex;
+      width: max-content;
+      animation: moncy-marquee 27s linear infinite;
+    }
+    .intro-marquee-row:nth-child(2) {
+      transform: translateX(-17%);
+      animation-direction: reverse;
+    }
+    .intro-marquee-row:nth-child(3) {
+      animation-duration: 32s;
+    }
+    .intro-marquee-row span {
+      padding: 0 50px;
+      position: relative;
+      flex: none;
+    }
+    .intro-marquee-row span::before {
+      content: "";
+      width: 17px;
+      height: 17px;
+      background: currentColor;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    @keyframes moncy-marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-35%); }
+    }
+    .intro-wrap {
+      --intro-size: 145px;
+      position: relative;
+      z-index: 2;
+      padding: 6px;
+      min-width: 0;
+      min-height: 0;
+      border-radius: 100px;
+      background: #000;
+      overflow: hidden;
+      transition: .8s ease-in-out;
+      transition-delay: .2s;
+      box-shadow: 0 15px 15px rgba(0,0,0,.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .intro-wrap::before {
+      content: "";
+      position: absolute;
+      width: 250px;
+      height: 120px;
+      top: var(--mouse-y, 50%);
+      left: var(--mouse-x, 50%);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: #a87cff;
+      filter: blur(30px);
+      opacity: .85;
+      pointer-events: none;
+    }
+    .intro-button {
+      position: relative;
+      z-index: 1;
+      padding: 20px 50px;
+      border-radius: 100px;
+      background: #000;
+      overflow: hidden;
+      font-size: 18px;
+      font-weight: 500;
+      color: #eae5ec;
+      min-width: 250px;
+      text-transform: uppercase;
+    }
+    .intro-counter-line { position: relative; width: var(--intro-size); overflow: hidden; }
+    .intro-counter-line span { position: absolute; top: 50%; right: 0; transform: translateY(-50%); font-weight: 300; opacity: .7; }
+    .intro-welcome-label {
+      position: relative;
+      z-index: 1;
+      width: var(--intro-size);
+      min-width: var(--intro-size);
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: 1s;
+    }
+    .intro-cursor {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translate(100%, -50%);
+      width: 15px;
+      height: 25px;
+      background: white;
+      animation: intro-blink 1s linear infinite;
+    }
+    @keyframes intro-blink {
+      0%,100% { opacity: 0; }
+      25%,75% { opacity: 1; }
+    }
+    #loading-screen.is-welcoming .intro-wrap {
+      transition-delay: 0ms;
+      transition-timing-function: cubic-bezier(.33,.11,1,.72);
+      min-width: calc(100vw + 5000px);
+      min-height: calc(100vh + 500px);
+      border-radius: 5000px;
+      box-shadow: none;
+    }
+    #loading-screen.is-welcoming .intro-button { overflow: visible; }
+    #loading-screen.is-welcoming .intro-welcome-label {
+      opacity: 0;
+      transform: translateY(100px);
+      transition: .5s;
+    }
+    #loading-screen.is-welcoming .intro-cursor { animation: none; opacity: 0; }
+    #loading-screen.is-leaving { opacity: 0; visibility: hidden; transition: opacity .9s ease, visibility .9s; }
+    @media (min-width: 1400px) {
+      .intro-wrap { --intro-size: 210px; }
+      .intro-button { padding: 30px 70px; font-size: 25px; }
+    }
+    @media (max-width: 600px) {
+      .intro-marquee { font-size: 42px; }
+      .intro-marquee-row span { padding: 0 28px; }
+      .intro-button { padding: 18px 30px; min-width: 220px; font-size: 15px; }
+    }
 
     @media (max-width: 1024px) {
       .landing-section { flex-direction: column; justify-content: space-around; text-align: center; }
@@ -342,17 +478,18 @@
 
   <!-- Loading Screen -->
   <div id="loading-screen" aria-label="Portfolio introduction">
-    <div class="intro-brand">SUBHAJIT.DESIGNS <span>— PORTFOLIO</span></div>
+    <div class="intro-brand">SUBHAJIT.DESIGNS</div>
     <div class="intro-marquee" aria-hidden="true">
-      <div class="intro-marquee-line"><span>DESIGNER · CREATIVE · DEVELOPER · </span><span>DESIGNER · CREATIVE · DEVELOPER · </span></div>
-      <div class="intro-marquee-line"><span>VISUAL STORIES · DIGITAL WORLDS · </span><span>VISUAL STORIES · DIGITAL WORLDS · </span></div>
-      <div class="intro-marquee-line"><span>DESIGNER · CREATIVE · DEVELOPER · </span><span>DESIGNER · CREATIVE · DEVELOPER · </span></div>
-      <div class="intro-marquee-line"><span>VISUAL STORIES · DIGITAL WORLDS · </span><span>VISUAL STORIES · DIGITAL WORLDS · </span></div>
+      <div class="intro-marquee-row"><span>A Creative Designer</span><span>A Creative Developer</span><span>A Creative Designer</span><span>A Creative Developer</span></div>
+      <div class="intro-marquee-row"><span>A Creative Developer</span><span>A Creative Designer</span><span>A Creative Developer</span><span>A Creative Designer</span></div>
+      <div class="intro-marquee-row"><span>A Creative Designer</span><span>A Creative Developer</span><span>A Creative Designer</span><span>A Creative Developer</span></div>
     </div>
-    <div class="intro-counter" id="intro-counter">00</div>
-    <div class="intro-progress-track"><div id="intro-progress-fill"></div></div>
-    <div class="loader-text" id="loader-msg">LOADING EXPERIENCE</div>
-    <div class="intro-welcome" id="intro-welcome" aria-hidden="true">WELCOME</div>
+    <div class="intro-wrap" id="intro-wrap">
+      <div class="intro-button">
+        <div class="intro-counter-line">Loading <span id="intro-counter">0%</span><i class="intro-cursor" id="intro-cursor"></i></div>
+      </div>
+      <div class="intro-welcome-label" id="intro-welcome">Welcome</div>
+    </div>
   </div>
 
   <!-- Fixed WebGL Canvas Container -->
@@ -514,33 +651,37 @@
     const loadingScreen = document.getElementById('loading-screen');
     const loaderMsg = document.getElementById('loader-msg');
     const introCounter = document.getElementById('intro-counter');
-    const introProgressFill = document.getElementById('intro-progress-fill');
-    const introWelcome = document.getElementById('intro-welcome');
     const trackerDisplay = document.getElementById('tracker-display');
 
-    let introValue = 0, introTarget = 0;
+    const introWrap = document.getElementById('intro-wrap');
+    let introValue = 0, introTarget = 0, introFinished = false;
     const introInterval = setInterval(() => {
       if (introValue < introTarget) {
-        introValue = Math.min(introTarget, introValue + Math.max(1, Math.ceil((introTarget - introValue) * 0.12)));
-        if (introCounter) introCounter.textContent = String(introValue).padStart(2, '0');
-        if (introProgressFill) introProgressFill.style.width = introValue + '%';
+        introValue = Math.min(introTarget, introValue + (introValue < 50 ? 1 : Math.max(1, Math.ceil((introTarget - introValue) * .12))));
+        if (introCounter) introCounter.textContent = introValue + '%';
       }
     }, 28);
     window.__setIntroProgress = value => { introTarget = Math.max(introTarget, Math.min(100, value)); };
     window.__finishPortfolioIntro = () => {
+      if (introFinished) return;
+      introFinished = true;
       window.__setIntroProgress(100);
       const waitForCount = () => {
         if (introValue < 100) return requestAnimationFrame(waitForCount);
         clearInterval(introInterval);
         loadingScreen.classList.add('is-welcoming');
-        if (introWelcome) introWelcome.setAttribute('aria-hidden', 'false');
         setTimeout(() => {
           loadingScreen.classList.add('is-leaving');
-          setTimeout(() => { loadingScreen.style.display = 'none'; }, 900);
-        }, 1250);
+          setTimeout(() => { loadingScreen.style.display = 'none'; }, 950);
+        }, 1350);
       };
       waitForCount();
     };
+    loadingScreen.addEventListener('mousemove', e => {
+      const rect = introWrap.getBoundingClientRect();
+      introWrap.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+      introWrap.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+    });
     const rimCircle = document.getElementById('rim-circle');
 
     // 1. Three.js Scene & Camera Setup
@@ -704,7 +845,7 @@
         if (xhr.total > 0) {
           const pct = Math.round((xhr.loaded / xhr.total) * 100);
           loaderMsg.textContent = `LOADING 3D CHARACTER · ${pct}%`;
-          window.__setIntroProgress(pct);
+          window.__setIntroProgress(Math.max(pct, 5));
         }
       },
       (err) => {
