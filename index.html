@@ -73,16 +73,40 @@
     }
 
     .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 2rem 4rem;
-      z-index: 50;
-      pointer-events: auto;
+      position: fixed; top: 1.25rem; left: 0; width: 100%;
+      display: flex; justify-content: center; align-items: center;
+      padding: 0 1.25rem; z-index: 50; pointer-events: none;
+    }
+    /* Centered iPhone Dynamic-Island-inspired floating navigation */
+    .navbar .brand-logo { display: none; }
+    .navbar .nav-links {
+      pointer-events: auto; display: flex; align-items: center; justify-content: center;
+      gap: clamp(1rem, 2.5vw, 2.15rem); padding: .78rem 1.35rem; min-height: 52px;
+      border-radius: 999px; background: rgba(12,10,18,.76);
+      border: 1px solid rgba(218,187,255,.28);
+      box-shadow: 0 10px 36px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.08), 0 0 24px rgba(183,99,255,.10);
+      backdrop-filter: blur(22px) saturate(150%); -webkit-backdrop-filter: blur(22px) saturate(150%);
+      transition: padding .35s ease, background .35s ease, box-shadow .35s ease;
+    }
+    .navbar .nav-link {
+      position: relative; color: rgba(245,239,255,.78); text-decoration: none;
+      white-space: nowrap; font-size: .82rem; font-weight: 600; letter-spacing: .015em;
+      transition: color .2s ease, transform .2s ease;
+    }
+    .navbar .nav-link:hover { color: #fff; transform: translateY(-1px); }
+    .navbar .nav-btn {
+      padding: .55rem 1rem; border-radius: 999px; background: rgba(190,117,255,.18);
+      border: 1px solid rgba(202,145,255,.48); color: #fff; white-space: nowrap; font-size: .8rem;
+    }
+    @media (max-width: 600px) {
+      .navbar { top: .75rem; padding: 0 .65rem; }
+      .navbar .nav-links { gap: .8rem; padding: .7rem .9rem; min-height: 46px; }
+      .navbar .nav-link { font-size: .7rem; letter-spacing: 0; }
+      .navbar .nav-btn { padding: .45rem .7rem; font-size: .7rem; }
+    }
+    @media (max-width: 390px) {
+      .navbar .nav-links { gap: .58rem; padding: .65rem .7rem; }
+      .navbar .nav-link { font-size: .65rem; }
     }
 
     .brand-logo {
@@ -514,16 +538,11 @@
 
   <!-- Navigation -->
   <header class="navbar">
-    <a href="#" class="brand-logo">
-      <span class="brand-dot"></span>
-      <span>SD<span style="color: var(--accent);">.DEV</span></span>
-    </a>
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Main navigation">
       <a href="#about" class="nav-link">About</a>
       <a href="#whatido" class="nav-link">What I Do</a>
-      <a href="#career" class="nav-link">Career</a>
       <a href="#work" class="nav-link">Work</a>
-      <button class="nav-btn">Get In Touch</button>
+      <a href="mailto:hello@subhajitdesigns.github.io" class="nav-btn">Contact</a>
     </nav>
   </header>
 
