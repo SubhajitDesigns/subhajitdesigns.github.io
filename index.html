@@ -901,16 +901,20 @@
     function setupScrollTimelines() {
       if (!character) return;
 
-      // TIMELINE 1: Scrolling from Landing Hero into About Section
+      // TIMELINE 1: Pin the hero while the character/workstation transition completes.
+      // The Featured Work gallery remains below this pinned sequence and only enters
+      // after the character has reached the left-side composition.
       const tl1 = gsap.timeline({
         scrollTrigger: {
           trigger: "#hero",
           start: "top top",
-          end: "bottom top",
+          end: "+=1400",
+          pin: true,
+          pinSpacing: true,
           scrub: 1.2,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            // Show laptop screen ONLY after scrolling down past hero!
             const showLaptop = self.progress > 0.08;
             if (monitorObject) monitorObject.visible = showLaptop;
             if (screenLightMesh) screenLightMesh.visible = showLaptop;
@@ -934,21 +938,8 @@
         .to("#hero-left-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
         .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0);
 
-      // TIMELINE 2: Scrolling from About into What I Do Section
-      const tl2 = gsap.timeline({
-        scrollTrigger: {
-          trigger: "#about",
-          start: "top top",
-          end: "bottom top",
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        }
-      });
-
-      tl2
-        .to(character.position, { x: -4.8, y: -0.8, duration: 1 }, 0)
-        .to(character.rotation, { y: 0.88, x: 0.08, duration: 1 }, 0)
-        .to(camera.position, { z: 29, y: 11.8, duration: 1 }, 0);
+      // The old About section has been removed, so the hero timeline above now
+      // owns the complete transition into the existing Featured Work section.
     }
 
     // 5. Mouse Tracking & Kinematics
