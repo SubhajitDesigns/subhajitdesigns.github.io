@@ -148,8 +148,8 @@ if (root) {
   function animate() {
     requestAnimationFrame(animate);
     const dt = Math.min(clock.getDelta(), .05);
-    pointer.x = THREE.MathUtils.damp(pointer.x, pointer.tx, reduceMotion ? 2 : 3.4, dt);
-    pointer.y = THREE.MathUtils.damp(pointer.y, pointer.ty, reduceMotion ? 2 : 3.4, dt);
+    pointer.x = THREE.MathUtils.damp(pointer.x, pointer.tx, reduceMotion ? 2 : 8.5, dt);
+    pointer.y = THREE.MathUtils.damp(pointer.y, pointer.ty, reduceMotion ? 2 : 8.5, dt);
     scrollProgress = THREE.MathUtils.damp(scrollProgress, scrollTarget, reduceMotion ? 2 : 3.2, dt);
 
     if (loaded) {
@@ -169,16 +169,16 @@ if (root) {
       // In the hero, the head follows the cursor; during the scroll it turns
       // toward the content, matching the supplied reference interaction.
       if (head && baseHead) {
-        const targetY = p < .42 ? baseHead.y + pointer.x * .24 : baseHead.y + .22;
-        const targetX = p < .42 ? baseHead.x - pointer.y * .13 : baseHead.x - .12;
-        head.rotation.y = THREE.MathUtils.damp(head.rotation.y, targetY, 7, dt);
-        head.rotation.x = THREE.MathUtils.damp(head.rotation.x, targetX, 7, dt);
+        const targetY = p < .42 ? baseHead.y + pointer.x * .44 : baseHead.y + .32;
+        const targetX = p < .42 ? baseHead.x - pointer.y * .28 : baseHead.x - .12;
+        head.rotation.y = THREE.MathUtils.damp(head.rotation.y, targetY, 12, dt);
+        head.rotation.x = THREE.MathUtils.damp(head.rotation.x, targetX, 12, dt);
       }
       if (neck && baseNeck) {
-        const targetY = p < .42 ? baseNeck.y + pointer.x * .075 : baseNeck.y + .08;
-        const targetX = p < .42 ? baseNeck.x - pointer.y * .045 : baseNeck.x - .04;
-        neck.rotation.y = THREE.MathUtils.damp(neck.rotation.y, targetY, 6, dt);
-        neck.rotation.x = THREE.MathUtils.damp(neck.rotation.x, targetX, 6, dt);
+        const targetY = p < .42 ? baseNeck.y + pointer.x * .14 : baseNeck.y + .08;
+        const targetX = p < .42 ? baseNeck.x - pointer.y * .09 : baseNeck.x - .04;
+        neck.rotation.y = THREE.MathUtils.damp(neck.rotation.y, targetY, 10, dt);
+        neck.rotation.x = THREE.MathUtils.damp(neck.rotation.x, targetX, 10, dt);
       }
       eyeBones.forEach(eye => {
         eye.rotation.y = pointer.x * .11;
@@ -196,3 +196,4 @@ if (root) {
   resize();
   animate();
 }
+
