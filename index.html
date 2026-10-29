@@ -681,16 +681,17 @@
             loadingScreen.classList.add('is-complete');
             setTimeout(() => {
               loadingScreen.classList.add('is-welcoming');
+              // Start the character intro as Welcome appears, so its head-lift
+              // is already underway when the capsule finishes opening.
+              if (typeof window.__playCharacterIntro === 'function') {
+                window.__playCharacterIntro();
+              } else {
+                window.__characterIntroRequested = true;
+              }
               setTimeout(() => {
                 loadingScreen.classList.add('is-leaving');
                 setTimeout(() => {
                   loadingScreen.style.display = 'none';
-                  // Start the character gesture only after the intro has fully cleared.
-                  if (typeof window.__playCharacterIntro === 'function') {
-                    window.__playCharacterIntro();
-                  } else {
-                    window.__characterIntroRequested = true;
-                  }
                 }, 950);
               }, 900);
             }, 1000);
