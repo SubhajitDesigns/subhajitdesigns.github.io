@@ -649,7 +649,6 @@
 
     const canvas = document.getElementById('webgl-canvas');
     const loadingScreen = document.getElementById('loading-screen');
-    const loaderMsg = document.getElementById('loader-msg');
     const introCounter = document.getElementById('intro-counter');
     const trackerDisplay = document.getElementById('tracker-display');
 
@@ -669,11 +668,21 @@
       const waitForCount = () => {
         if (introValue < 100) return requestAnimationFrame(waitForCount);
         clearInterval(introInterval);
-        loadingScreen.classList.add('is-welcoming');
+        if (introCounter) introCounter.textContent = '100%';
+        // Hide the loading side before expanding the welcome pill, so both labels never overlap.
+        const counterLine = document.querySelector('.intro-counter-line');
+        if (counterLine) {
+          counterLine.style.transition = 'opacity .25s ease, transform .4s ease';
+          counterLine.style.opacity = '0';
+          counterLine.style.transform = 'translateY(-12px)';
+        }
         setTimeout(() => {
-          loadingScreen.classList.add('is-leaving');
-          setTimeout(() => { loadingScreen.style.display = 'none'; }, 950);
-        }, 1350);
+          loadingScreen.classList.add('is-welcoming');
+          setTimeout(() => {
+            loadingScreen.classList.add('is-leaving');
+            setTimeout(() => { loadingScreen.style.display = 'none'; }, 950);
+          }, 1150);
+        }, 280);
       };
       waitForCount();
     };
@@ -682,6 +691,11 @@
       introWrap.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
       introWrap.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
     });
+    // Safety net: if the model host stalls or reports no progress, the intro still completes.
+    setTimeout(() => {
+      if (!introFinished) window.__finishPortfolioIntro();
+    }, 9000);
+
     const rimCircle = document.getElementById('rim-circle');
 
     // 1. Three.js Scene & Camera Setup
@@ -844,12 +858,16 @@
       (xhr) => {
         if (xhr.total > 0) {
           const pct = Math.round((xhr.loaded / xhr.total) * 100);
-          loaderMsg.textContent = `LOADING 3D CHARACTER · ${pct}%`;
-          window.__setIntroProgress(Math.max(pct, 5));
+          window.__setIntroProgress(Math.min(92, Math.max(pct, 5)));
+        } else {
+          // Some GLB hosts don't send a total; keep the visual counter moving.
+          window.__setIntroProgress(Math.min(85, introTarget + 1));
         }
       },
       (err) => {
         console.error("Model load error:", err);
+        // A failed 3D model must not trap visitors on the intro screen.
+        setTimeout(() => window.__finishPortfolioIntro(), 350);
       }
     );
 
