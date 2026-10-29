@@ -806,9 +806,10 @@
           }
         });
 
-        // Bone bindings
-        headBone = character.getObjectByName('spine.006') || character.getObjectByName('spine006') || null;
-        neckBone = character.getObjectByName('spine.005') || character.getObjectByName('spine005') || null;
+        // Moncy's rig names the head control "spine006" (without a dot).
+        headBone = character.getObjectByName('spine006') || character.getObjectByName('spine.006') || null;
+        neckBone = character.getObjectByName('spine005') || character.getObjectByName('spine.005') || null;
+        console.info('[Hero character] head bone:', headBone?.name || 'NOT FOUND', '| neck bone:', neckBone?.name || 'NOT FOUND');
 
         // Find laptop screen and screenlight
         monitorObject = character.getObjectByName('Plane.004') || character.getObjectByName('Plane004') || null;
@@ -854,16 +855,23 @@
             blinkAct.play();
           }
 
-          // 4. Trigger a deliberate head/neck gesture after the intro capsule opens.
+          // 4. Play the character's authored intro clip when the capsule has cleared.
+          const introClip = gltf.animations.find(clip => clip.name === 'introAnimation');
+          let introAction = null;
+          if (introClip) {
+            introAction = mixer.clipAction(introClip);
+            introAction.setLoop(THREE.LoopOnce, 1);
+            introAction.clampWhenFinished = true;
+            introAction.enabled = false;
+          }
           window.__playCharacterIntro = () => {
-            if (headIntroActive || !headBone) return;
-            headIntroBaseX = headBone.rotation.x;
-            neckIntroBaseX = neckBone ? neckBone.rotation.x : 0;
-            headIntroStart = performance.now();
-            headIntroActive = true;
+            if (!introAction) return;
+            introAction.reset();
+            introAction.enabled = true;
+            introAction.setEffectiveWeight(1);
+            introAction.play();
             window.__characterIntroRequested = false;
           };
-          // If the loading transition finished before the GLB was ready, play it now.
           if (window.__characterIntroRequested) window.__playCharacterIntro();
         }
 
@@ -984,39 +992,34 @@
         mixer.update(delta);
       }
 
-      // Stronger head/neck gesture: anticipation dip, decisive lift, overshoot, settle.
-      if (headIntroActive && headBone) {
-        const t = (performance.now() - headIntroStart) / 1000;
-        const ease = p => { p = Math.max(0, Math.min(1, p)); return p * p * (3 - 2 * p); };
-        let offset;
-        if (t < 0.18) offset = 0.28 * ease(t / 0.18);
-        else if (t < 0.58) offset = 0.28 - 0.96 * ease((t - 0.18) / 0.40);
-        else if (t < 0.80) offset = -0.68 - 0.14 * ease((t - 0.58) / 0.22);
-        else if (t < 1.18) offset = -0.82 + 0.22 * ease((t - 0.80) / 0.38);
-        else { offset = -0.60; headIntroActive = false; }
-        headBone.rotation.x = headIntroBaseX + offset;
-        if (neckBone) neckBone.rotation.x = neckIntroBaseX + offset * 0.34;
-      }
 
       // Smooth mouse lerp
       mouse.x += (mouse.targetX - mouse.x) * 0.28;
       mouse.y += (mouse.targetY - mouse.y) * 0.28;
 
-      // Head Bone Rotation (Exactly like Moncy.dev)
-      if (headBone && !headIntroActive) {
-        if (scrollY < 250) {
-          // When in the Hero Section: Full face and head track the cursor!
-        const maxRotationY = Math.PI / 4.5; // ~40 deg — moncy.dev level responsiveness
-          const targetRotY = mouse.x * maxRotationY;
-        headBone.rotation.y = THREE.MathUtils.lerp(headBone.rotation.y, targetRotY, 0.45);
-
-        const maxRotationX = 0.42;
-        const targetRotX = -mouse.y * maxRotationX - 0.18;
-        headBone.rotation.x = THREE.MathUtils.lerp(headBone.rotation.x, targetRotX, 0.38);
-        } else {
-          // When scrolled down into content sections:
-          headBone.rotation.y = THREE.MathUtils.lerp(headBone.rotation.y, 0.25, 0.05);
-          headBone.rotation.x = THREE.MathUtils.lerp(headBone.rotation.x, -0.28, 0.05);
+      // Moncy-style head tracking: follows cursor height and direction with eased motion.
+      if (headBone) {
+        if (scrollY < 200) {
+          const maxRotation = Math.PI / 6;
+          headBone.rotation.y = THREE.MathUtils.lerp(
+            headBone.rotation.y, mouse.x * maxRotation, 0.2
+          );
+          const minRotationX = -0.3;
+          const maxRotationX = 0.4;
+          let targetRotationX;
+          if (mouse.y > minRotationX) {
+            targetRotationX = mouse.y < maxRotationX
+              ? -mouse.y - 0.5 * maxRotation
+              : -maxRotation - 0.5 * maxRotation;
+          } else {
+            targetRotationX = -minRotationX - 0.5 * maxRotation;
+          }
+          headBone.rotation.x = THREE.MathUtils.lerp(
+            headBone.rotation.x, targetRotationX, 0.1
+          );
+        } else if (window.innerWidth > 1024) {
+          headBone.rotation.x = THREE.MathUtils.lerp(headBone.rotation.x, -0.4, 0.03);
+          headBone.rotation.y = THREE.MathUtils.lerp(headBone.rotation.y, -0.3, 0.03);
         }
       }
 
