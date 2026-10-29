@@ -222,12 +222,12 @@
 
     /* Long, two-panel About experience inspired by Moncy's expandable timeline. */
     .about-section {
-      display:block; min-height:190vh; height:auto; padding:0 4rem;
+      display:block; min-height:235vh; height:auto; padding:16vh 4rem 0;
       position:relative; isolation:isolate;
     }
     .about-panels {
-      position:sticky; top:10vh; height:80vh; min-height:570px; max-height:850px;
-      width:min(100%,760px); margin-left:auto; margin-right:0;
+      position:sticky; top:16vh; height:68vh; min-height:500px; max-height:720px;
+      width:min(100%,520px); margin-left:auto; margin-right:4vw;
       display:flex; flex-direction:column; gap:0;
       padding:0; overflow:visible;
     }
@@ -259,12 +259,12 @@
     .about-achievement span { display:block; color:var(--text-muted); font-size:.76rem; letter-spacing:.1em; text-transform:uppercase; margin-top:.45rem; }
     .about-panel-hint { position:absolute; right:1.5rem; bottom:1.25rem; color:rgba(240,235,248,.55); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; }
     @media(max-width:1024px) {
-      .about-section { padding:0 1.5rem; min-height:170vh; }
-      .about-panels { width:100%; top:12vh; height:76vh; min-height:540px; }
+      .about-section { padding:12vh 1.5rem 0; min-height:220vh; }
+      .about-panels { width:min(100%,520px); margin-right:0; top:14vh; height:70vh; min-height:500px; }
     }
     @media(max-width:600px) {
-      .about-section { padding:0 .8rem; min-height:165vh; }
-      .about-panels { top:10vh; height:78vh; min-height:520px; }
+      .about-section { padding:8vh .8rem 0; min-height:205vh; }
+      .about-panels { width:100%; margin-right:0; top:10vh; height:76vh; min-height:500px; }
       .about-panel { padding:1.15rem; }
       .about-achievements { gap:.6rem; }
       .about-achievement { padding:.8rem; }
