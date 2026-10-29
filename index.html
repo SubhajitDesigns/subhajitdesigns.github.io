@@ -240,6 +240,16 @@
 
     .landing-intro h1 span { font-weight: 300; color: #cbd5e1; }
 
+    .landing-intro h1.tech-name-heading{position:relative;width:min(560px,48vw);max-width:100%;height:clamp(150px,19vw,230px);font-size:inherit;line-height:1;letter-spacing:0;overflow:visible}
+    .tech-name-canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:pan-y;outline:none}
+    .tech-name-canvas:active{cursor:grabbing}
+    .tech-name-fallback{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:.06em;font-size:clamp(2.8rem,5.5vw,4.8rem);letter-spacing:2px;pointer-events:none}
+    .tech-name-fallback span{font-weight:300;color:#cbd5e1}
+    .tech-name-heading.is-canvas-ready .tech-name-fallback{opacity:0}
+    @media(max-width:1024px){.landing-intro h1.tech-name-heading{width:min(560px,90vw);height:clamp(150px,28vw,220px);margin-inline:auto}}
+    @media(prefers-reduced-motion:reduce){.tech-name-canvas{cursor:default}}
+
+
     .landing-info { text-align: right; max-width: 450px; }
 
     .landing-info h3 {
@@ -681,9 +691,9 @@
     <section class="landing-section" id="hero">
       <div class="landing-intro" id="hero-left-text">
         <h2>Hello! I'm</h2>
-        <h1>
-          SUBHAJIT
-          <span>DAS</span>
+        <h1 class="tech-name-heading" aria-label="Subhajit Das">
+          <canvas id="techNameCanvas" class="tech-name-canvas" role="img" aria-label="Interactive dashed-line text animation spelling Subhajit Das"></canvas>
+          <span class="tech-name-fallback">SUBHAJIT<br><span>DAS</span></span>
         </h1>
       </div>
 
@@ -826,6 +836,93 @@
   </div>
 
   <script>
+(() => {
+  const canvas = document.getElementById('techNameCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const heading = canvas.closest('.tech-name-heading');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const words = ['SUBHAJIT', 'DAS'];
+  let width = 560, height = 230, dpr = 1, points = [], pointer = {x:-9999,y:-9999}, kick = 0, dragging = false, lastPointer = null, sweep = 0, raf = 0;
+  const fontFamily = 'Geist, Arial, sans-serif';
+  function resize() {
+    const box = canvas.getBoundingClientRect();
+    width = Math.max(280, box.width || 560); height = Math.max(150, box.height || 230);
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(width*dpr); canvas.height = Math.round(height*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    buildPoints(); draw(performance.now());
+  }
+  function buildPoints() {
+    points = [];
+    const off = document.createElement('canvas');
+    off.width = Math.round(width); off.height = Math.round(height);
+    const o = off.getContext('2d');
+    const fs = Math.min(height*.43, width/8.4, 92);
+    o.fillStyle = '#fff'; o.textAlign='left'; o.textBaseline='middle'; o.font = '600 '+fs+'px '+fontFamily;
+    const x = Math.max(2, (width - Math.min(width-8, fs*8.2))/2);
+    o.fillText(words[0], x, height*.32, width-8);
+    o.font = '600 '+fs+'px '+fontFamily;
+    o.fillText(words[1], x, height*.76, width-8);
+    const data=o.getImageData(0,0,off.width,off.height).data;
+    const step=Math.max(3,Math.round(fs/20));
+    for(let y=0;y<off.height;y+=step) for(let xx=0;xx<off.width;xx+=step) {
+      if(data[(y*off.width+xx)*4+3]>100 && Math.random()<.9) {
+        points.push({x:xx,y,ox:xx,oy:y,phase:Math.random()*Math.PI*2,seed:Math.random(),vx:0,vy:0});
+      }
+    }
+  }
+  function draw(now) {
+    ctx.clearRect(0,0,width,height);
+    const time=now*.001, mouseReach=200, kickPower=kick;
+    for(const p of points) {
+      let dx=p.x-pointer.x, dy=p.y-pointer.y, dist=Math.hypot(dx,dy)||1;
+      if(dist<mouseReach) {
+        const force=(1-dist/mouseReach)*.7;
+        p.vx += dx/dist*force*.7; p.vy += dy/dist*force*.7;
+      }
+      if(kickPower>.02) {
+        const kdx=p.x-width/2, kdy=p.y-height/2, kd=Math.hypot(kdx,kdy)||1;
+        p.vx += kdx/kd*kickPower*(.3+p.seed*.8);
+        p.vy += kdy/kd*kickPower*(.3+p.seed*.8);
+      }
+      p.vx += (p.ox-p.x)*.045; p.vy += (p.oy-p.y)*.045;
+      p.vx *= .86; p.vy *= .86; p.x += p.vx; p.y += p.vy;
+      const alpha=.45 + .45*(.5+.5*Math.sin(time*2+p.phase));
+      ctx.globalAlpha=alpha;
+      ctx.strokeStyle=p.seed>.88?'#b99aff':'currentColor';
+      ctx.strokeStyle=p.seed>.88?'#b99aff':'rgba(244,239,255,.9)';
+      ctx.lineWidth=1.4;
+      ctx.setLineDash([4,2]);
+      const len=1.2+(p.seed*2.2);
+      ctx.beginPath();ctx.moveTo(p.x-len/2,p.y);ctx.lineTo(p.x+len/2,p.y);ctx.stroke();
+    }
+    ctx.setLineDash([]);ctx.globalAlpha=1;
+    if(!reduceMotion) {
+      sweep=(sweep+.004)%1;
+      ctx.globalAlpha=.18;
+      const sx=sweep*width;
+      const grad=ctx.createLinearGradient(sx-40,0,sx+40,0);
+      grad.addColorStop(0,'rgba(130,88,255,0)');grad.addColorStop(.5,'rgba(160,125,255,.65)');grad.addColorStop(1,'rgba(130,88,255,0)');
+      ctx.fillStyle=grad;ctx.fillRect(sx-40,0,80,height);ctx.globalAlpha=1;
+      kick*=.94;
+      raf=requestAnimationFrame(draw);
+    }
+  }
+  function animate(now){draw(now);}
+  canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();pointer={x:e.clientX-r.left,y:e.clientY-r.top};if(dragging&&lastPointer){const dx=e.clientX-lastPointer.x,dy=e.clientY-lastPointer.y;for(const p of points){p.vx+=dx*.04;p.vy+=dy*.04}}lastPointer={x:e.clientX,y:e.clientY};});
+  canvas.addEventListener('pointerleave',()=>{pointer={x:-9999,y:-9999};lastPointer=null;});
+  canvas.addEventListener('pointerdown',e=>{dragging=true;lastPointer={x:e.clientX,y:e.clientY};canvas.setPointerCapture?.(e.pointerId);});
+  canvas.addEventListener('pointerup',()=>{dragging=false;lastPointer=null;});
+  canvas.addEventListener('click',()=>{kick=reduceMotion?0:18;});
+  if('ResizeObserver' in window) new ResizeObserver(resize).observe(canvas); else window.addEventListener('resize',resize);
+  heading.classList.add('is-canvas-ready');
+  resize();
+  if(!reduceMotion) raf=requestAnimationFrame(draw); else draw(performance.now());
+})();
+</script>
+
+<script>
     // ==========================================
     // THREE.JS + GSAP SCROLL ANIMATION SYSTEM
     // ==========================================
