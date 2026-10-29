@@ -70,3 +70,42 @@
  .subh-portrait-hero .portrait-scroll{bottom:22px;font-size:9px}
  .subh-portrait-hero .portrait-tracking{left:18px;bottom:68px;font-size:9px;padding:7px 10px}
 }
+
+/* Pinned scroll transition: portrait slides left while About panel enters on right */
+#home.subh-portrait-hero{height:190svh!important;min-height:1250px!important;overflow:visible!important}
+#home.subh-portrait-hero .portrait-nav,
+#home.subh-portrait-hero .portrait-left,
+#home.subh-portrait-hero .portrait-right,
+#home.subh-portrait-hero .portrait-scroll,
+#home.subh-portrait-hero .portrait-tracking,
+#home.subh-portrait-hero .subh-hero-stage,
+#home.subh-portrait-hero .portrait-glow{position:sticky}
+#home.subh-portrait-hero .portrait-nav{top:24px;height:0;z-index:12}
+#home.subh-portrait-hero .subh-hero-stage{position:sticky;top:0;height:100svh;margin-top:0;inset:auto;z-index:2;pointer-events:none}
+#home.subh-portrait-hero .portrait-glow{position:absolute;top:50%;left:50%;height:min(90svh,850px);width:min(62vw,850px)}
+#home.subh-portrait-hero .portrait-left{position:absolute;top:50%;left:4.8%;transform:translateY(-42%);z-index:5}
+#home.subh-portrait-hero .portrait-right{position:absolute;top:50%;right:4.7%;transform:translateY(-42%);z-index:5}
+#home.subh-portrait-hero .portrait-scroll{position:sticky;top:calc(100svh - 68px);margin-top:-50px;left:50%;transform:translateX(-50%);width:max-content;z-index:10}
+#home.subh-portrait-hero .portrait-tracking{position:sticky;top:calc(100svh - 72px);margin-top:-45px;width:max-content;z-index:10}
+#home.subh-portrait-hero .scroll-about-panel{position:sticky;top:0;z-index:7;box-sizing:border-box;margin-top:-100svh;margin-left:auto;width:48%;height:100svh;min-height:650px;padding:clamp(110px,16vh,170px) 5vw 70px 2vw;background:linear-gradient(90deg,rgba(9,7,13,0),rgba(9,7,13,.94) 18%,#09070d 65%);opacity:0;transform:translateX(70px);pointer-events:none;display:flex;flex-direction:column;justify-content:center;transition:opacity .2s}
+#home.subh-portrait-hero.is-scrolled .scroll-about-panel{opacity:1;transform:translateX(0);pointer-events:auto}
+#home.subh-portrait-hero.is-scrolled .portrait-left{opacity:0;transition:opacity .2s}
+#home.subh-portrait-hero.is-scrolled .portrait-right{opacity:0;transition:opacity .2s}
+.scroll-about-kicker{font:11px 'DM Mono',monospace;letter-spacing:.15em;color:#d5a1ff;margin:0 0 54px}
+.scroll-about-label{font:12px 'DM Mono',monospace;letter-spacing:.14em;color:#a9a1b6;margin:0 0 18px}
+.scroll-about-panel h2{font-size:clamp(38px,4.2vw,64px);line-height:1.02;letter-spacing:-.045em;margin:0 0 24px;color:#f8f4ff}
+.scroll-about-panel h2 span{color:#c47af4}
+.scroll-about-copy{max-width:470px;color:#b8b2c3;font-size:clamp(15px,1.3vw,18px);line-height:1.8}
+.scroll-about-stats{display:flex;gap:clamp(16px,2vw,34px);margin:28px 0 34px}
+.scroll-about-stats div{display:flex;flex-direction:column;gap:7px}
+.scroll-about-stats strong{font-size:clamp(25px,2.8vw,40px);color:#d09aff}
+.scroll-about-stats span{font:10px 'DM Mono',monospace;letter-spacing:.08em;color:#8e879e}
+.scroll-about-link{align-self:flex-start;color:#f4eaff;text-decoration:none;border:1px solid #71458a;border-radius:999px;padding:13px 20px;font-size:12px;letter-spacing:.06em}
+#home.subh-portrait-hero .subh-hero-stage canvas{position:absolute;inset:0;width:100%;height:100%}
+@media(max-width:760px){
+ #home.subh-portrait-hero{height:160svh!important;min-height:1120px!important}
+ #home.subh-portrait-hero .scroll-about-panel{width:100%;height:100svh;padding:120px 24px 80px;margin-top:-100svh;background:rgba(9,7,13,.95)}
+ .scroll-about-kicker{margin-bottom:30px}
+ #home.subh-portrait-hero .portrait-tracking{display:none}
+ .scroll-about-panel h2{font-size:40px}
+}
