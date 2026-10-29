@@ -25,7 +25,18 @@ if(root){
   let mixer=null,blinkAction=null,head=null,neck=null,eyeBones=[],baseHead=null,baseNeck=null,lastBlink=0,nextBlink=2.7,loaded=false;
   const clock=new THREE.Clock();
   const loader=new GLTFLoader();
+  let loadFinished=false;
+  const loadTimeout=setTimeout(()=>{if(!loadFinished){loadFinished=true;showFallback('3D MODEL IS TAKING TOO LONG TO LOAD');}},18000);
+  function showFallback(message){
+    stage.classList.add('has-fallback');
+    loaderLabel.textContent=message;
+    loaderLabel.classList.remove('is-hidden');
+    loaderLabel.hidden=false;
+    setTimeout(()=>loaderLabel.classList.add('is-hidden'),2600);
+    setTimeout(()=>loaderLabel.hidden=true,3200);
+  }
   loader.load('./character-only.glb',gltf=>{
+    if(loadFinished)return;loadFinished=true;clearTimeout(loadTimeout);
     const model=gltf.scene;
     modelRoot.add(model);
     model.updateMatrixWorld(true);
@@ -50,12 +61,12 @@ if(root){
     loaderLabel.classList.add('is-hidden');
     setTimeout(()=>loaderLabel.hidden=true,550);
     resize();
-  },undefined,error=>{
-    console.warn('3D hero model could not load. Add character-only.glb to the repository root.',error);
-    stage.classList.add('has-fallback');
-    loaderLabel.textContent='ADD CHARACTER-ONLY.GLB TO THE SITE ROOT';
-    setTimeout(()=>loaderLabel.classList.add('is-hidden'),2200);
-    setTimeout(()=>loaderLabel.hidden=true,2800);
+  },progress=>{
+    if(progress&&progress.total>0){const pct=Math.round(progress.loaded/progress.total*100);loaderLabel.textContent='INITIALIZING CHARACTER… '+pct+'%';}
+  },error=>{
+    if(loadFinished)return;loadFinished=true;clearTimeout(loadTimeout);
+    console.warn('3D hero model could not load. Check character-only.glb path and browser console.',error);
+    showFallback('3D MODEL FAILED TO LOAD — CHECK character-only.glb');
   });
   function resize(){const r=stage.getBoundingClientRect();if(!r.width||!r.height)return;renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();}
   const ro=new ResizeObserver(resize);ro.observe(stage);window.addEventListener('resize',resize,{passive:true});
