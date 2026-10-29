@@ -58,11 +58,11 @@ loader.load('./Models/Cartoon%20Man.glb',g=>{
  const scale=3.6/maxDim;model.scale.setScalar(scale);
  const scaledSize=size.multiplyScalar(scale);
  // Tight portrait framing: face, neck and shoulders only, not the full body.
- camera.position.set(0,2.05,5.4);
- camera.lookAt(0,2.05,0);
+ camera.position.set(0,2.65,5.0);
+ camera.lookAt(0,2.65,0);
  root.position.set(innerWidth>700?.12:0,-.03,0);
- // Keep portrait crop consistent on wide and narrow screens.
- camera.zoom=1.0; camera.updateProjectionMatrix();
+ // Close portrait crop: face, neck and upper shoulders; hide most of the torso.
+ camera.zoom=1.65; camera.updateProjectionMatrix();
  loading.classList.add('hide');setTimeout(()=>loading.remove(),500);
 },xhr=>{
  if(xhr.total)loadingText.firstChild.textContent='LOADING CHARACTER · '+Math.round(xhr.loaded/xhr.total*100)+'%';
