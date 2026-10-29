@@ -681,6 +681,9 @@
             loadingScreen.classList.add('is-complete');
             setTimeout(() => {
               loadingScreen.classList.add('is-welcoming');
+              if (typeof window.__playCharacterIntro === 'function') {
+                window.__playCharacterIntro();
+              }
               setTimeout(() => {
                 loadingScreen.classList.add('is-leaving');
                 setTimeout(() => { loadingScreen.style.display = 'none'; }, 950);
@@ -765,6 +768,7 @@
     let headBone = null;
     let neckBone = null;
     let mixer = null;
+    let headIntroActive = false;
     let monitorObject = null;
     let screenLightMesh = null;
 
@@ -842,13 +846,27 @@
             blinkAct.play();
           }
 
-          // 4. Intro animation
+          // 4. Cinematic intro animation: wait until the loading capsule opens.
+          // Playing this while the loading screen is still up would waste the head-lift.
           const introClip = gltf.animations.find(c => c.name === 'introAnimation');
           if (introClip) {
             const introAct = mixer.clipAction(introClip);
             introAct.setLoop(THREE.LoopOnce, 1);
             introAct.clampWhenFinished = true;
-            introAct.play();
+            introAct.enabled = false;
+            let introHasPlayed = false;
+            window.__playCharacterIntro = () => {
+              if (introHasPlayed) return;
+              introHasPlayed = true;
+              introAct.reset();
+              introAct.enabled = true;
+              introAct.setEffectiveWeight(1);
+              introAct.play();
+              headIntroActive = true;
+            };
+            mixer.addEventListener('finished', (event) => {
+              if (event.action === introAct) headIntroActive = false;
+            });
           }
         }
 
@@ -974,7 +992,7 @@
       mouse.y += (mouse.targetY - mouse.y) * 0.28;
 
       // Head Bone Rotation (Exactly like Moncy.dev)
-      if (headBone) {
+      if (headBone && !headIntroActive) {
         if (scrollY < 250) {
           // When in the Hero Section: Full face and head track the cursor!
         const maxRotationY = Math.PI / 4.5; // ~40 deg — moncy.dev level responsiveness
