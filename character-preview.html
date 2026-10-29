@@ -31,7 +31,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const stage=document.querySelector('#stage'), loading=document.querySelector('#loading'), loadingText=document.querySelector('#loadingText'), errorBox=document.querySelector('#error');
 const scene=new THREE.Scene(); scene.background=null;
-const camera=new THREE.PerspectiveCamera(27,innerWidth/innerHeight,.01,1000);
+const camera=new THREE.PerspectiveCamera(20,innerWidth/innerHeight,.01,1000);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);
 renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
@@ -58,9 +58,11 @@ loader.load('./Models/Cool%20Man.glb',g=>{
  const scale=3.6/maxDim;model.scale.setScalar(scale);
  const scaledSize=size.multiplyScalar(scale);
  // Tight portrait framing: face, neck and shoulders only, not the full body.
- camera.position.set(0,1.12,3.25);
- camera.lookAt(0,1.08,0);
+ camera.position.set(0,2.15,3.8);
+ camera.lookAt(0,2.08,0);
  root.position.set(innerWidth>700?.12:0,-.03,0);
+ // Keep portrait crop consistent on wide and narrow screens.
+ camera.zoom=1.35; camera.updateProjectionMatrix();
  loading.classList.add('hide');setTimeout(()=>loading.remove(),500);
 },xhr=>{
  if(xhr.total)loadingText.firstChild.textContent='LOADING CHARACTER · '+Math.round(xhr.loaded/xhr.total*100)+'%';
