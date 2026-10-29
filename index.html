@@ -100,6 +100,13 @@
     .portfolio-gallery-eyebrow i{width:22px;height:1px;background:rgba(200,166,236,.7)}
     .portfolio-gallery-heading h2{margin:18px 0 12px;font-size:clamp(2.7rem,7vw,5.7rem);line-height:.95;letter-spacing:-.075em;font-weight:750}
     .portfolio-gallery-heading h2 span{color:#c481ff}
+    /* FlippingWordSwap-style heading adapted for this static HTML portfolio */
+    .flipping-word-swap{display:flex;align-items:center;justify-content:center;position:relative;min-height:1.18em;margin:18px 0 12px;color:#f5f5f5;font-size:clamp(2.25rem,6.3vw,48px);font-weight:700;line-height:1;letter-spacing:-.025em;perspective:700px;white-space:nowrap}
+    .flipping-word-swap .flip-word{position:absolute;display:flex;align-items:center;justify-content:center;gap:0;opacity:0;pointer-events:none}
+    .flipping-word-swap .flip-char{display:inline-block;transform-origin:50% 50%;transform:rotateX(-90deg) translateY(.12em);opacity:0;transition:transform 400ms cubic-bezier(.2,.7,.2,1),opacity 260ms ease;transition-delay:var(--flip-delay,0ms);backface-visibility:hidden}
+    .flipping-word-swap .flip-word.is-active .flip-char{transform:rotateX(0deg) translateY(0);opacity:1}
+    .flipping-word-swap .flip-word.is-leaving .flip-char{transform:rotateX(90deg) translateY(-.12em);opacity:0}
+    @media(max-width:420px){.flipping-word-swap{font-size:clamp(2rem,9vw,2.5rem)}}
     .portfolio-gallery-heading p{max-width:490px;margin:0 auto;color:rgba(235,227,245,.62);font-size:clamp(.9rem,1.4vw,1.05rem);line-height:1.7}
     .portfolio-gallery-marquee{position:relative;overflow:hidden;width:calc(100% + clamp(2.4rem,10vw,10rem));margin:0 calc(clamp(1.2rem,5vw,5rem) * -1);padding:1.2rem 0 2.1rem;mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
     .portfolio-gallery-track{display:flex;align-items:center;gap:clamp(16px,2.4vw,32px);width:max-content;animation:portfolioGalleryDrift 68s linear infinite;will-change:transform}
@@ -759,7 +766,10 @@
 <section id="gallery" class="portfolio-gallery-section" aria-labelledby="portfolio-gallery-title">
   <div class="portfolio-gallery-heading">
     <span class="portfolio-gallery-eyebrow"><i></i> VISUAL ARCHIVE <i></i></span>
-    <h2 id="portfolio-gallery-title">THE <span>GALLERY</span></h2>
+    <div class="flipping-word-swap" id="portfolioGalleryWordSwap" aria-label="Componentry, Consistency">
+      <span class="flip-word is-active" aria-hidden="true">Componentry</span>
+      <span class="flip-word" aria-hidden="true">Consistency</span>
+    </div>
     <p>A closer look at ideas, experiments, and visuals made to stand out.</p>
   </div>
   <div class="portfolio-gallery-marquee" aria-label="Animated portfolio gallery">
@@ -1280,6 +1290,44 @@
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && lightbox.classList.contains('is-open')) close();
   });
+})();
+</script>
+<script>
+(()=> {
+  const root = document.getElementById('portfolioGalleryWordSwap');
+  if (!root) return;
+  const words = Array.from(root.querySelectorAll('.flip-word'));
+  words.forEach(word => {
+    const value = word.textContent.trim();
+    word.textContent = '';
+    Array.from(value).forEach((char, index) => {
+      const span = document.createElement('span');
+      span.className = 'flip-char';
+      span.textContent = char === ' ' ? '\\u00a0' : char;
+      span.style.setProperty('--flip-delay', (index * 44) + 'ms');
+      word.appendChild(span);
+    });
+  });
+  let active = 0;
+  words[0].classList.add('is-active');
+  words[1].classList.remove('is-active');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reducedMotion) {
+    words.forEach((word, index) => { word.style.opacity = index === 0 ? '1' : '0'; });
+    return;
+  }
+  words[0].style.opacity = '1';
+  setInterval(() => {
+    const next = (active + 1) % words.length;
+    words[active].classList.remove('is-active');
+    words[active].classList.add('is-leaving');
+    words[next].classList.remove('is-leaving');
+    words[next].classList.add('is-active');
+    words[active].style.opacity = '0';
+    words[next].style.opacity = '1';
+    window.setTimeout(() => words[active].classList.remove('is-leaving'), 700);
+    active = next;
+  }, 2800);
 })();
 </script>
 <script>(()=>{const i=document.getElementById('navIsland'),b=document.getElementById('islandTrigger'),m=document.getElementById('islandMenu');if(!i||!b||!m)return;const close=()=>{i.classList.remove('is-open');b.setAttribute('aria-expanded','false')};b.addEventListener('click',()=>{const open=i.classList.toggle('is-open');b.setAttribute('aria-expanded',String(open))});m.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('click',e=>{if(!i.contains(e.target))close()});document.addEventListener('keydown',e=>{if(e.key==='Escape')close()})})();</script>
