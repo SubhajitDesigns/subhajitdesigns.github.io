@@ -360,6 +360,25 @@
 #moncy-scroll-about .stat-label { color:#94a3b8; font-size:.75rem; letter-spacing:.12em; text-transform:uppercase; }
 #webgl-fixed-wrapper { z-index:2; } .page-container { position:relative; z-index:3; }
 @media(max-width:700px){#moncy-scroll-about .about-content-box{margin:0 24px}#moncy-scroll-about .stats-grid{grid-template-columns:1fr}}
+
+/* Refined Moncy scroll handoff: character only accompanies the real About section */
+#hero { min-height:100vh; height:100vh; }
+#hero-left-text, #hero-right-text { will-change: transform, opacity; }
+#about.aboutx { position:relative; z-index:4; min-height:100vh; display:flex; align-items:center; }
+#about .aboutx-topline { width:100%; }
+#about .aboutx-grid { display:block; width:min(56%,760px); margin-left:auto; margin-right:4vw; }
+#about .aboutx-left { display:none !important; }
+#about .aboutx-right { width:100%; }
+#about .aboutx-copy { max-width:720px; }
+#about .aboutx-copy p:not(.aboutx-label) { font-size:clamp(14px,1.15vw,17px); }
+#about .aboutx-credentials { margin-top:30px; }
+#webgl-fixed-wrapper { will-change:opacity,transform; }
+#webgl-canvas { display:block; }
+@media(max-width:850px) {
+  #about.aboutx { padding-top:110px; }
+  #about .aboutx-grid { width:100%; margin:0; }
+  #about .aboutx-topline { gap:20px; }
+}
 </style>
 </head>
 <body>
@@ -447,72 +466,7 @@
   <!-- Scrollable Page Flow -->
   <div class="page-container">
     <!-- SECTION 1: LANDING / HERO -->
-    <section class="landing-section" id="hero">
-      <div class="landing-intro" id="hero-left-text">
-        <h2>Hello! I'm</h2>
-        <h1>
-          SUBHAJIT
-          <span>DAS</span>
-        </h1>
-      </div>
 
-      <div class="landing-info" id="hero-right-text">
-        <h3>A Creative</h3>
-        <div class="landing-info-h2">Designer</div>
-        <div class="landing-info-sub">Video Editor</div>
-      </div>
-
-      <div class="scroll-down-hint">
-        <span>Scroll to Explore</span>
-        <span>↓</span>
-      </div>
-    </section>
-
-    <!-- SECTION 2: ABOUT ME (Character glides to the left side and laptop appears) -->
-    <section class="about-section" id="moncy-scroll-about">
-      <div class="about-content-box">
-        <span class="section-badge">About Me</span>
-        <h2 class="about-title">Designing ideas into reality.</h2>
-        <p class="about-text">
-          I’m Subhajit Das — an AI designer and motion creative building bold visuals, brand identities, motion graphics and digital experiences.
-        </p>
-        <div class="stats-grid">
-          <div>
-            <div class="stat-number">07+</div>
-            <div class="stat-label">Years Creating</div>
-          </div>
-          <div>
-            <div class="stat-number">100+</div>
-            <div class="stat-label">Brands</div>
-          </div>
-          <div>
-            <div class="stat-number">6000+</div>
-            <div class="stat-label">Designs</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </div>
-
-        <div class="service-card">
-          <div class="service-num">02 / FRONTEND ARCHITECTURE</div>
-          <h3 class="service-title">Creative Web Engineering</h3>
-          <p class="service-desc">
-            Modern React and TypeScript applications built with modular components, fluid GSAP ScrollTrigger animations, and pixel-perfect responsiveness.
-          </p>
-        </div>
-
-        <div class="service-card">
-          <div class="service-num">03 / UI/UX DESIGN</div>
-          <h3 class="service-title">Visual & Spatial Direction</h3>
-          <p class="service-desc">
-            Designing futuristic, human-centric interfaces, subtle glassmorphic surfaces, and motion design that elevates the brand story.
-          </p>
-        </div>
-      </div>
-    </section>
-  </div>
 
 <section id="about" class="aboutx section" aria-label="About Subhajit">
   <div class="aboutx-topline">
@@ -1170,7 +1124,7 @@
           trigger: "#hero",
           start: "top top",
           end: "bottom top",
-          scrub: 1.2,
+          scrub: 2.0,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             // Show laptop screen ONLY after scrolling down past hero!
@@ -1197,21 +1151,24 @@
         .to("#hero-left-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
         .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0);
 
-      // TIMELINE 2: Scrolling from About into What I Do Section
+      // TIMELINE 2: Character is present for the real About section only.
+      // As the About section leaves, the character and ambient glow smoothly exit before Creative Toolkit.
       const tl2 = gsap.timeline({
         scrollTrigger: {
-          trigger: "#moncy-scroll-about",
+          trigger: "#about",
           start: "top top",
           end: "bottom top",
-          scrub: 1.5,
-          invalidateOnRefresh: true,
+          scrub: 2.0,
+          invalidateOnRefresh: true
         }
       });
 
       tl2
-        .to(character.position, { x: -4.8, y: -0.8, duration: 1 }, 0)
-        .to(character.rotation, { y: 0.88, x: 0.08, duration: 1 }, 0)
-        .to(camera.position, { z: 29, y: 11.8, duration: 1 }, 0);
+        .to(character.position, { x: -4.65, y: -0.15, duration: 0.35, ease: "none" }, 0)
+        .to(character.rotation, { y: 0.72, x: 0.02, duration: 0.35, ease: "none" }, 0)
+        .to("#webgl-fixed-wrapper", { autoAlpha: 0, y: -100, duration: 0.65, ease: "none" }, 0.35)
+        .to(rimCircle, { opacity: 0, duration: 0.65, ease: "none" }, 0.35)
+        .to(".ambient-glow-left", { opacity: 0, duration: 0.65, ease: "none" }, 0.35);
     }
 
     // 5. Mouse Tracking & Kinematics
@@ -1259,7 +1216,7 @@
 
       // Head Bone Rotation (Exactly like Moncy.dev)
       if (headBone) {
-        if (scrollY < 250) {
+        if (scrollY < document.querySelector("#about").offsetTop + document.querySelector("#about").offsetHeight) {
           // When in the Hero Section: Full face and head track the cursor!
         const maxRotationY = Math.PI / 4.5; // ~40 deg — moncy.dev level responsiveness
           const targetRotY = mouse.x * maxRotationY;
