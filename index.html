@@ -771,6 +771,7 @@
     let headIntroActive = false;
     let headIntroStart = 0;
     let headIntroBaseX = -0.18;
+    let neckIntroBaseX = 0;
     let monitorObject = null;
     let screenLightMesh = null;
 
@@ -848,28 +849,14 @@
             blinkAct.play();
           }
 
-          // 4. Cinematic intro animation: wait until the loading capsule opens.
-          // Playing this while the loading screen is still up would waste the head-lift.
-          const introClip = gltf.animations.find(c => c.name === 'introAnimation');
-          if (introClip) {
-            const introAct = mixer.clipAction(introClip);
-            introAct.setLoop(THREE.LoopOnce, 1);
-            introAct.clampWhenFinished = true;
-            introAct.enabled = false;
-            let introHasPlayed = false;
-            window.__playCharacterIntro = () => {
-              if (introHasPlayed) return;
-              introHasPlayed = true;
-              introAct.reset();
-              introAct.enabled = true;
-              introAct.setEffectiveWeight(1);
-              introAct.timeScale = 1.15;
-              introAct.play();
-              headIntroBaseX = headBone ? headBone.rotation.x : -0.18;
-              headIntroStart = performance.now();
-              headIntroActive = true;
-            };
-          }
+          // 4. Trigger a deliberate head/neck gesture after the intro capsule opens.
+          window.__playCharacterIntro = () => {
+            if (headIntroActive || !headBone) return;
+            headIntroBaseX = headBone.rotation.x;
+            neckIntroBaseX = neckBone ? neckBone.rotation.x : 0;
+            headIntroStart = performance.now();
+            headIntroActive = true;
+          };
         }
 
         // Setup the GSAP ScrollTrigger timeline matching moncy.dev!
@@ -989,29 +976,18 @@
         mixer.update(delta);
       }
 
-      // Deliberate cinematic head-lift with a small overshoot, then settle.
-      // Apply after mixer.update so this authored motion remains visible.
+      // Stronger head/neck gesture: anticipation dip, decisive lift, overshoot, settle.
       if (headIntroActive && headBone) {
         const t = (performance.now() - headIntroStart) / 1000;
         const ease = p => { p = Math.max(0, Math.min(1, p)); return p * p * (3 - 2 * p); };
-        let pitch;
-        if (t < 0.22) {
-          pitch = headIntroBaseX + 0.16 * ease(t / 0.22);
-        } else if (t < 0.72) {
-          pitch = headIntroBaseX + 0.16 - 0.48 * ease((t - 0.22) / 0.5);
-        } else if (t < 1.02) {
-          pitch = headIntroBaseX - 0.32 + 0.07 * ease((t - 0.72) / 0.3);
-        } else if (t < 1.42) {
-          pitch = headIntroBaseX - 0.25 + 0.07 * ease((t - 1.02) / 0.4);
-        } else {
-          pitch = headIntroBaseX - 0.18;
-          headIntroActive = false;
-        }
-        headBone.rotation.x = pitch;
-        if (neckBone) {
-          const neckWeight = t < 0.72 ? 0.28 : 0.18;
-          neckBone.rotation.x = THREE.MathUtils.lerp(neckBone.rotation.x, pitch * neckWeight, 0.16);
-        }
+        let offset;
+        if (t < 0.18) offset = 0.28 * ease(t / 0.18);
+        else if (t < 0.58) offset = 0.28 - 0.96 * ease((t - 0.18) / 0.40);
+        else if (t < 0.80) offset = -0.68 - 0.14 * ease((t - 0.58) / 0.22);
+        else if (t < 1.18) offset = -0.82 + 0.22 * ease((t - 0.80) / 0.38);
+        else { offset = -0.60; headIntroActive = false; }
+        headBone.rotation.x = headIntroBaseX + offset;
+        if (neckBone) neckBone.rotation.x = neckIntroBaseX + offset * 0.34;
       }
 
       // Smooth mouse lerp
