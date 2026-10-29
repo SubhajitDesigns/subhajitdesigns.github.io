@@ -299,34 +299,33 @@
       position: fixed;
       inset: 0;
       z-index: 100;
-      background: #07080c;
+      background: #fff;
+      color: #111;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1.25rem;
-      transition: opacity 0.8s ease, visibility 0.8s;
+      gap: 1.1rem;
+      transition: opacity .8s ease, visibility .8s;
+      overflow: hidden;
+      isolation: isolate;
     }
-
-    .intro-counter { font-size: clamp(3rem, 10vw, 8rem); font-weight: 300; letter-spacing: -.08em; color: #f4efff; font-variant-numeric: tabular-nums; line-height: 1; }
-    .intro-progress-track { width: min(240px, 45vw); height: 2px; background: rgba(196,129,255,.22); overflow: hidden; }
-    #intro-progress-fill { width: 0%; height: 100%; background: #c481ff; box-shadow: 0 0 16px #c481ff; }
-    #loading-screen { overflow: hidden; isolation: isolate; }
-    #loading-screen .loader-text { font-size: .68rem; letter-spacing: .28em; }
-    .intro-welcome { position: absolute; inset: 0; display:flex; align-items:center; justify-content:center; background:#07080c; color:#f7f3ff; font-size:clamp(3.5rem,16vw,18rem); font-weight:800; letter-spacing:-.09em; white-space:nowrap; transform:translateY(110%); opacity:0; pointer-events:none; z-index:2; }
-    #loading-screen.is-welcoming .intro-welcome { animation: welcome-cover 1.15s cubic-bezier(.76,0,.24,1) forwards; }
-    #loading-screen.is-welcoming .intro-counter, #loading-screen.is-welcoming .intro-progress-track, #loading-screen.is-welcoming .loader-text { opacity:0; transition:opacity .25s ease; }
+    .intro-brand { position:absolute; top: clamp(22px,4vw,54px); left: clamp(22px,4vw,58px); z-index:1; font: 600 11px/1.2 monospace; letter-spacing:.12em; color:#171717; }
+    .intro-marquee { position:absolute; inset:-15% -30%; display:flex; flex-direction:column; justify-content:center; gap:0; overflow:hidden; pointer-events:none; z-index:0; transform:rotate(-8deg) scale(1.08); }
+    .intro-marquee-line { display:block; white-space:nowrap; font-size:clamp(4.5rem,12.5vw,13rem); line-height:.95; font-weight:800; letter-spacing:-.085em; color:#f2f2f2; animation:intro-drift 22s linear infinite; }
+    .intro-marquee-line:nth-child(even) { transform:translateX(-12%); animation-direction:reverse; color:#f5f5f5; }
+    .intro-marquee-line span { padding-right:.25em; }
+    @keyframes intro-drift { from { translate:0 0; } to { translate:-18% 0; } }
+    .intro-counter { position:relative; z-index:1; font-size:clamp(4.5rem,12vw,10rem); font-weight:300; letter-spacing:-.09em; color:#111; font-variant-numeric:tabular-nums; line-height:.9; }
+    .intro-progress-track { position:relative; z-index:1; width:min(220px,42vw); height:2px; background:#e6e6e6; overflow:hidden; }
+    #intro-progress-fill { width:0%; height:100%; background:#111; }
+    #loading-screen .loader-text { position:relative; z-index:1; font:500 .62rem/1.4 monospace; letter-spacing:.18em; color:#777; text-transform:uppercase; }
+    .intro-welcome { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:#fff; color:#111; font-size:clamp(3.5rem,17vw,19rem); font-weight:800; letter-spacing:-.1em; white-space:nowrap; transform:translateY(110%); opacity:0; pointer-events:none; z-index:2; }
+    #loading-screen.is-welcoming .intro-welcome { animation:welcome-cover 1.15s cubic-bezier(.76,0,.24,1) forwards; }
+    #loading-screen.is-welcoming .intro-counter, #loading-screen.is-welcoming .intro-progress-track, #loading-screen.is-welcoming .loader-text, #loading-screen.is-welcoming .intro-brand { opacity:0; transition:opacity .25s ease; }
     @keyframes welcome-cover { 0% { transform:translateY(110%); opacity:1; } 100% { transform:translateY(0); opacity:1; } }
     #loading-screen.is-leaving { opacity:0; visibility:hidden; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .loader-text {
-      font-size: 1.1rem;
-      letter-spacing: 2px;
-      color: var(--accent);
-      text-transform: uppercase;
-      font-weight: 500;
-    }
+    @media (prefers-reduced-motion:reduce) { .intro-marquee-line { animation-duration:60s; } }
 
     @media (max-width: 1024px) {
       .landing-section { flex-direction: column; justify-content: space-around; text-align: center; }
@@ -343,9 +342,16 @@
 
   <!-- Loading Screen -->
   <div id="loading-screen" aria-label="Portfolio introduction">
+    <div class="intro-brand">SUBHAJIT.DESIGNS <span>— PORTFOLIO</span></div>
+    <div class="intro-marquee" aria-hidden="true">
+      <div class="intro-marquee-line"><span>DESIGNER · CREATIVE · DEVELOPER · </span><span>DESIGNER · CREATIVE · DEVELOPER · </span></div>
+      <div class="intro-marquee-line"><span>VISUAL STORIES · DIGITAL WORLDS · </span><span>VISUAL STORIES · DIGITAL WORLDS · </span></div>
+      <div class="intro-marquee-line"><span>DESIGNER · CREATIVE · DEVELOPER · </span><span>DESIGNER · CREATIVE · DEVELOPER · </span></div>
+      <div class="intro-marquee-line"><span>VISUAL STORIES · DIGITAL WORLDS · </span><span>VISUAL STORIES · DIGITAL WORLDS · </span></div>
+    </div>
     <div class="intro-counter" id="intro-counter">00</div>
     <div class="intro-progress-track"><div id="intro-progress-fill"></div></div>
-    <div class="loader-text" id="loader-msg">INITIALIZING EXPERIENCE</div>
+    <div class="loader-text" id="loader-msg">LOADING EXPERIENCE</div>
     <div class="intro-welcome" id="intro-welcome" aria-hidden="true">WELCOME</div>
   </div>
 
