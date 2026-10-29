@@ -468,6 +468,19 @@
     <!-- SECTION 1: LANDING / HERO -->
 
 
+<section class="landing-section" id="hero" aria-label="Hero introduction">
+  <div class="landing-intro" id="hero-left-text">
+    <h2>Hello! I'm</h2>
+    <h1>SUBHAJIT <span>DAS</span></h1>
+  </div>
+  <div class="landing-info" id="hero-right-text">
+    <h3>A Creative</h3>
+    <div class="landing-info-h2">Designer</div>
+    <div class="landing-info-sub">Video Editor</div>
+  </div>
+  <div class="scroll-down-hint"><span>Scroll to Explore</span><span>↓</span></div>
+</section>
+
 <section id="about" class="aboutx section" aria-label="About Subhajit">
   <div class="aboutx-topline">
     <span>01 — ABOUT THE DESIGNER</span>
@@ -1151,13 +1164,13 @@
         .to("#hero-left-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
         .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0);
 
-      // TIMELINE 2: Character is present for the real About section only.
-      // As the About section leaves, the character and ambient glow smoothly exit before Creative Toolkit.
+      // TIMELINE 2: Keep the character beside the real About section.
+      // Fade and lift the character only as Creative Toolkit enters the viewport.
       const tl2 = gsap.timeline({
         scrollTrigger: {
-          trigger: "#about",
-          start: "top top",
-          end: "bottom top",
+          trigger: "#what-i-do",
+          start: "top bottom",
+          end: "top top",
           scrub: 2.0,
           invalidateOnRefresh: true
         }
