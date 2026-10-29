@@ -72,9 +72,8 @@ if (root) {
     const workstationNodeNames = new Set(['plane', 'plane002', 'plane003', 'plane004', 'cube002', 'screenlight', 'keyboard']);
     model.traverse(object => {
       const rawName = (object.name || '').toLowerCase();
-      const normalizedName = rawName.replace(/[._\\s-]/g, '');
-      // The supplied Scroll-Walk HTML specifically targets Plane.004 and screenlight.
-      // Remember those parts so they can be revealed as the visitor scrolls.
+      const normalizedName = rawName.replace(/[._\s-]/g, '');
+      // Normalize exported Blender names so workstation pieces can be hidden reliably.
       const isWorkstationPart = workstationNodeNames.has(normalizedName) ||
         workstationWords.some(word => normalizedName.includes(word));
       if (isWorkstationPart) {
