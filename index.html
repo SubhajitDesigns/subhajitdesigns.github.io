@@ -1084,7 +1084,7 @@
         mouse.y = THREE.MathUtils.lerp(mouse.y, mouse.targetY, followEase);
         const yawOffset = THREE.MathUtils.clamp(mouse.x * 0.58, -0.48, 0.48);
         // Cursor near the top of the screen should tilt the face upward.
-        const pitchOffset = THREE.MathUtils.clamp(mouse.y * 0.32, -0.28, 0.28);
+        const pitchOffset = THREE.MathUtils.clamp(-mouse.y * 0.32, -0.28, 0.28);
         headBone.rotation.y = headBaseRotation.y + yawOffset;
         headBone.rotation.x = headBaseRotation.x + pitchOffset;
       } else if (headBone && characterIntroFinished && scrollY >= 200) {
