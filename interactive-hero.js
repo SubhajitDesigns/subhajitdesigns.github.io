@@ -1,6 +1,6 @@
 /* Interactive 3D hero + Moncy-style scroll choreography — Subhajit Das */
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js';
-import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from 'https://esm.sh/three@0.169.0';
+import { GLTFLoader } from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
 
 const root = document.querySelector('#home.subh-hero');
 if (root) {
