@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moncy.dev - Authentic 3D Character (Full Color & Shading)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="./modelData.js"></script>
+  <style>
+    :root {
+      --bg: #07080c;
+      --accent: #c481ff;
+      --accent-glow: rgba(196, 129, 255, 0.45);
+      --text-muted: #94a3b8;
+      --card-bg: rgba(18, 22, 34, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --font-geist: 'Geist', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background-color: var(--bg); font-family: var(--font-geist); color: #fff; overflow-x: hidden; }
+
+    #webgl-fixed-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    #webgl-canvas { width: 100%; height: 100%; }
+
+    /* Moncy.dev signature ambient backlight circles */
+    .character-rim {
+      position: fixed;
+      width: 520px;
+      height: 520px;
+      z-index: 1;
+      background-color: #f59bf8;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -40%) scale(1.3);
+      box-shadow: inset 70px 40px 90px 0px rgba(85, 0, 255, 0.75);
+      filter: blur(80px);
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.85;
+      transition: all 0.5s ease;
+    }
+
+    .ambient-glow-left {
+      position: fixed;
+      top: 10%;
+      left: 5%;
+      width: 340px;
+      height: 340px;
+      background: #fb8dff;
+      box-shadow: inset -50px 40px 50px rgba(84, 0, 255, 0.6);
+      filter: blur(85px);
+      border-radius: 50%;
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 4rem;
+      z-index: 50;
+      pointer-events: auto;
+    }
+
+    .brand-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover { color: #fff; }
+
+    .nav-btn {
+      padding: 0.65rem 1.5rem;
+      border-radius: 9999px;
+      background: rgba(196, 129, 255, 0.12);
+      border: 1px solid rgba(196, 129, 255, 0.35);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: rgba(196, 129, 255, 0.25);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .page-container { position: relative; z-index: 10; width: 100%; }
+
+    section {
+      position: relative;
+      min-height: 100vh;
+      padding: 4rem 4rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .landing-section { justify-content: space-between; height: 100vh; }
+    .landing-intro { max-width: 450px; }
+
+    .landing-intro h2 {
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    .landing-intro h1 {
+      font-size: clamp(2.8rem, 5.5vw, 4.8rem);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: 2px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .landing-intro h1 span { font-weight: 300; color: #cbd5e1; }
+
+    .landing-info { text-align: right; max-width: 450px; }
+
+    .landing-info h3 {
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+
+    .landing-info-h2 {
+      color: var(--accent);
+      font-size: clamp(2.4rem, 4.8vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .landing-info-sub {
+      font-size: clamp(1.8rem, 3.8vw, 3.2rem);
+      font-weight: 600;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #cbd5e1;
+    }
+
+    .scroll-down-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: bounce 2s infinite ease-in-out;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, 8px); }
+    }
+
+    .about-section { display: flex; justify-content: flex-end; }
+
+    .about-content-box {
+      width: 50%;
+      max-width: 620px;
+      padding: 3rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(20px);
+      border-radius: 1.5rem;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .section-badge {
+      display: inline-block;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .about-title { font-size: 2.8rem; font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; }
+    .about-text { font-size: 1.15rem; line-height: 1.7; color: var(--text-muted); margin-bottom: 2rem; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 1.5rem;
+    }
+
+    .stat-number { font-size: 2rem; font-weight: 700; color: #fff; }
+    .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+    .whatido-section { display: flex; justify-content: flex-end; }
+
+    .whatido-box {
+      width: 50%;
+      max-width: 620px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      padding: 2rem 2.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(20px);
+      border-radius: 1.25rem;
+      transition: all 0.3s ease;
+    }
+
+    .service-card:hover { border-color: var(--accent); transform: translateX(8px); }
+    .service-num { color: var(--accent); font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .service-title { font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .service-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+
+    .tracker-pill {
+      position: fixed;
+      bottom: 2rem;
+      left: 4rem;
+      z-index: 50;
+      font-family: monospace;
+      color: var(--accent);
+      font-size: 0.85rem;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      padding: 0.45rem 1.1rem;
+      border-radius: 9999px;
+      pointer-events: none;
+    }
+
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: #07080c;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      transition: opacity 0.8s ease, visibility 0.8s;
+    }
+
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(196, 129, 255, 0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader-text {
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    @media (max-width: 1024px) {
+      .landing-section { flex-direction: column; justify-content: space-around; text-align: center; }
+      .about-section, .whatido-section { justify-content: center; }
+      .about-content-box, .whatido-box { width: 100%; max-width: 100%; }
+      .navbar { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Ambient Moncy.dev Glow Circles -->
+  <div class="ambient-glow-left"></div>
+  <div class="character-rim" id="rim-circle"></div>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader-spinner"></div>
+    <div class="loader-text" id="loader-msg">Loading Authentic 3D Character...</div>
+  </div>
+
+  <!-- Fixed WebGL Canvas Container -->
+  <div id="webgl-fixed-wrapper">
+    <canvas id="webgl-canvas"></canvas>
+  </div>
+
+  <!-- Fixed Tracker Indicator -->
+  <div class="tracker-pill" id="tracker-display">
+    Mode: Hero Face Tracking (X: 0.00 | Y: 0.00)
+  </div>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <a href="#" class="brand-logo">
+      <span class="brand-dot"></span>
+      <span>SD<span style="color: var(--accent);">.DEV</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#whatido" class="nav-link">What I Do</a>
+      <a href="#career" class="nav-link">Career</a>
+      <a href="#work" class="nav-link">Work</a>
+      <button class="nav-btn">Get In Touch</button>
+    </nav>
+  </header>
+
+  <!-- Scrollable Page Flow -->
+  <div class="page-container">
+    <!-- SECTION 1: LANDING / HERO -->
+    <section class="landing-section" id="hero">
+      <div class="landing-intro" id="hero-left-text">
+        <h2>Hello! I'm</h2>
+        <h1>
+          SUBHAJIT
+          <span>DAS</span>
+        </h1>
+      </div>
+
+      <div class="landing-info" id="hero-right-text">
+        <h3>A Creative</h3>
+        <div class="landing-info-h2">Designer</div>
+        <div class="landing-info-sub">Video Editor</div>
+      </div>
+
+      <div class="scroll-down-hint">
+        <span>Scroll to Explore</span>
+        <span>↓</span>
+      </div>
+    </section>
+
+    <!-- SECTION 2: ABOUT ME (Character glides to the left side and laptop appears) -->
+    <section class="about-section" id="about">
+      <div class="about-content-box">
+        <span class="section-badge">About Me</span>
+        <h2 class="about-title">Crafting Engaging Digital Narratives</h2>
+        <p class="about-text">
+          I am a passionate creative developer and designer merging interactive 3D WebGL experiences with polished frontend engineering. Specializing in Three.js, GSAP, and full-stack architecture, I create websites that leave a lasting impression.
+        </p>
+        <div class="stats-grid">
+          <div>
+            <div class="stat-number">4+</div>
+            <div class="stat-label">Years Exp</div>
+          </div>
+          <div>
+            <div class="stat-number">25+</div>
+            <div class="stat-label">Projects</div>
+          </div>
+          <div>
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Dedication</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: WHAT I DO -->
+    <section class="whatido-section" id="whatido">
+      <div class="whatido-box">
+        <div class="service-card">
+          <div class="service-num">01 / THREE.JS & WEBGL</div>
+          <h3 class="service-title">3D Interactive Development</h3>
+          <p class="service-desc">
+            Custom real-time 3D models, smooth camera scroll choreography, shader effects, and interactive physics running seamlessly at 60 FPS in the browser.
+          </p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-num">02 / FRONTEND ARCHITECTURE</div>
+          <h3 class="service-title">Creative Web Engineering</h3>
+          <p class="service-desc">
+            Modern React and TypeScript applications built with modular components, fluid GSAP ScrollTrigger animations, and pixel-perfect responsiveness.
+          </p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-num">03 / UI/UX DESIGN</div>
+          <h3 class="service-title">Visual & Spatial Direction</h3>
+          <p class="service-desc">
+            Designing futuristic, human-centric interfaces, subtle glassmorphic surfaces, and motion design that elevates the brand story.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ==========================================
+    // THREE.JS + GSAP SCROLL ANIMATION SYSTEM
+    // ==========================================
+    gsap.registerPlugin(ScrollTrigger);
+
+    const canvas = document.getElementById('webgl-canvas');
+    const loadingScreen = document.getElementById('loading-screen');
+    const loaderMsg = document.getElementById('loader-msg');
+    const trackerDisplay = document.getElementById('tracker-display');
+    const rimCircle = document.getElementById('rim-circle');
+
+    // 1. Three.js Scene & Camera Setup
+    const scene = new THREE.Scene();
+
+    // Perspective Telephoto Camera (FOV: 14.5)
+    const aspect = window.innerWidth / window.innerHeight;
+    const camera = new THREE.PerspectiveCamera(14.5, aspect, 0.1, 1000);
+    // Positioned to frame face, cap, and chest directly in the center
+    camera.position.set(0, 12.6, 23.2);
+    camera.zoom = 1.05;
+    camera.updateProjectionMatrix();
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      alpha: true,
+      antialias: true,
+      powerPreference: 'high-performance'
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.25;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    // 2. Realistic Studio & Character PBR Lighting Setup
+    // Warm ambient light
+    const ambientLight = new THREE.AmbientLight(0x352b45, 2.2);
+    scene.add(ambientLight);
+
+    // Warm key light on face & skin
+    const keyLight = new THREE.DirectionalLight(0xffecd6, 2.4);
+    keyLight.position.set(3, 14, 8);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.width = 1024;
+    keyLight.shadow.mapSize.height = 1024;
+    scene.add(keyLight);
+
+    // Signature Moncy.dev Violet / Purple Rim Light (from left rear)
+    const rimLightPurple = new THREE.PointLight(0xd975ff, 4.2, 35, 1.8);
+    rimLightPurple.position.set(-6, 12, -4);
+    scene.add(rimLightPurple);
+
+    // Cyan / Blue Accent Rim Light (from right rear)
+    const rimLightCyan = new THREE.PointLight(0x00f2fe, 3.2, 30, 2.0);
+    rimLightCyan.position.set(6, 10, -4);
+    scene.add(rimLightCyan);
+
+    // Soft front fill light
+    const fillLight = new THREE.PointLight(0xffffff, 1.4, 25);
+    fillLight.position.set(0, 10, 8);
+    scene.add(fillLight);
+
+    // Screen light (glowing monitor light on chest)
+    const screenLight = new THREE.PointLight(0x88e0ff, 2.0, 12);
+    screenLight.position.set(0, 3.8, 2.8);
+    scene.add(screenLight);
+
+    // 3. Load 3D Character
+    let character = null;
+    let headBone = null;
+    let neckBone = null;
+    let mixer = null;
+    let monitorObject = null;
+    let screenLightMesh = null;
+
+    const gltfLoader = new THREE.GLTFLoader();
+    const modelSource = (typeof window.CHARACTER_GLB_BASE64 !== 'undefined')
+      ? window.CHARACTER_GLB_BASE64
+      : './character.glb';
+
+    gltfLoader.load(
+      modelSource,
+      (gltf) => {
+        character = gltf.scene;
+        scene.add(character);
+
+        // Position character initially in center
+        character.position.set(0, -0.6, 0);
+
+        // Optimize materials for rich color and sheen
+        character.traverse((child) => {
+          if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            if (child.material) {
+              child.material.envMapIntensity = 1.2;
+              child.material.needsUpdate = true;
+            }
+          }
+        });
+
+        // Bone bindings
+        headBone = character.getObjectByName('spine.006') || character.getObjectByName('spine006') || null;
+        neckBone = character.getObjectByName('spine.005') || character.getObjectByName('spine005') || null;
+
+        // Find laptop screen and screenlight
+        monitorObject = character.getObjectByName('Plane.004') || character.getObjectByName('Plane004') || null;
+        screenLightMesh = character.getObjectByName('screenlight') || null;
+
+        // IN THE HERO SECTION: HIDE THE LAPTOP SCREEN SO FACE & UPPER BODY ARE FULLY VISIBLE!
+        if (monitorObject) {
+          monitorObject.visible = false;
+          monitorObject.position.y = -10;
+        }
+        if (screenLightMesh) {
+          screenLightMesh.visible = false;
+          screenLightMesh.position.y = -10;
+        }
+
+        // Animations Setup
+        mixer = new THREE.AnimationMixer(character);
+
+        if (gltf.animations && gltf.animations.length > 0) {
+          // 1. Typing animation loop
+          const typingClip = gltf.animations.find(c => c.name === 'typing');
+          if (typingClip) {
+            const typingAction = mixer.clipAction(typingClip);
+            typingAction.timeScale = 1.1;
+            typingAction.play();
+          }
+
+          // 2. Keyboard keys animation
+          ['key1', 'key2', 'key5', 'key6'].forEach(kName => {
+            const clip = gltf.animations.find(c => c.name === kName);
+            if (clip) {
+              const act = mixer.clipAction(clip);
+              act.timeScale = 1.2;
+              act.play();
+            }
+          });
+
+          // 3. Eye Blinking loop
+          const blinkClip = gltf.animations.find(c => c.name === 'Blink');
+          if (blinkClip) {
+            const blinkAct = mixer.clipAction(blinkClip);
+            blinkAct.timeScale = 0.8;
+            blinkAct.play();
+          }
+
+          // 4. Intro animation
+          const introClip = gltf.animations.find(c => c.name === 'introAnimation');
+          if (introClip) {
+            const introAct = mixer.clipAction(introClip);
+            introAct.setLoop(THREE.LoopOnce, 1);
+            introAct.clampWhenFinished = true;
+            introAct.play();
+          }
+        }
+
+        // Setup the GSAP ScrollTrigger timeline matching moncy.dev!
+        setupScrollTimelines();
+
+        // Hide loading
+        setTimeout(() => {
+          loadingScreen.style.opacity = '0';
+          setTimeout(() => { loadingScreen.style.display = 'none'; }, 800);
+        }, 500);
+      },
+      (xhr) => {
+        if (xhr.total > 0) {
+          const pct = Math.round((xhr.loaded / xhr.total) * 100);
+          loaderMsg.textContent = `Loading 3D Character... ${pct}%`;
+        }
+      },
+      (err) => {
+        console.error("Model load error:", err);
+      }
+    );
+
+    // 4. GSAP Scroll Choreography
+    function setupScrollTimelines() {
+      if (!character) return;
+
+      // TIMELINE 1: Scrolling from Landing Hero into About Section
+      const tl1 = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.2,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            // Show laptop screen ONLY after scrolling down past hero!
+            const showLaptop = self.progress > 0.08;
+            if (monitorObject) monitorObject.visible = showLaptop;
+            if (screenLightMesh) screenLightMesh.visible = showLaptop;
+          }
+        }
+      });
+
+      tl1
+        // Character moves to the LEFT side of the screen
+        .to(character.position, { x: -4.5, duration: 1 }, 0)
+        // Character rotates to face the 3D perspective towards the right
+        .to(character.rotation, { y: 0.72, duration: 1 }, 0)
+        // Camera pulls back to reveal the full character workstation
+        .to(camera.position, { z: 27, y: 12.5, duration: 1 }, 0)
+        // Laptop screen slides up into place from below desk as character moves left!
+        .fromTo(monitorObject ? monitorObject.position : {}, { y: -10 }, { y: 9.04, duration: 0.8 }, 0.2)
+        .fromTo(screenLightMesh ? screenLightMesh.position : {}, { y: -10 }, { y: 9.04, duration: 0.8 }, 0.2)
+        // Backlight follows to the left
+        .to(rimCircle, { left: "30%", scale: 1.1, opacity: 0.6, duration: 1 }, 0)
+        // Landing hero texts fade out and rise
+        .to("#hero-left-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
+        .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0);
+
+      // TIMELINE 2: Scrolling from About into What I Do Section
+      const tl2 = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#about",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.5,
+          invalidateOnRefresh: true,
+        }
+      });
+
+      tl2
+        .to(character.position, { x: -4.8, y: -0.8, duration: 1 }, 0)
+        .to(character.rotation, { y: 0.88, x: 0.08, duration: 1 }, 0)
+        .to(camera.position, { z: 29, y: 11.8, duration: 1 }, 0);
+    }
+
+    // 5. Mouse Tracking & Kinematics
+    const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+    let scrollY = 0;
+
+    window.addEventListener('scroll', () => {
+      scrollY = window.scrollY;
+      if (scrollY < 200) {
+        trackerDisplay.textContent = `Mode: Hero Face Tracking (X: ${mouse.targetX.toFixed(2)} | Y: ${mouse.targetY.toFixed(2)})`;
+      } else {
+        trackerDisplay.textContent = `Mode: Pinned Scroll Perspective (Scroll: ${Math.round(scrollY)}px)`;
+      }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.targetX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.targetY = -(e.clientY / window.innerHeight) * 2 + 1;
+      if (scrollY < 200) {
+        trackerDisplay.textContent = `Mode: Hero Face Tracking (X: ${mouse.targetX.toFixed(2)} | Y: ${mouse.targetY.toFixed(2)})`;
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // 6. Render Loop with Scroll-Aware Head Tracking
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const delta = clock.getDelta();
+
+      if (mixer) {
+        mixer.update(delta);
+      }
+
+      // Smooth mouse lerp
+      mouse.x += (mouse.targetX - mouse.x) * 0.28;
+      mouse.y += (mouse.targetY - mouse.y) * 0.28;
+
+      // Head Bone Rotation (Exactly like Moncy.dev)
+      if (headBone) {
+        if (scrollY < 250) {
+          // When in the Hero Section: Full face and head track the cursor!
+        const maxRotationY = Math.PI / 4.5; // ~40 deg — moncy.dev level responsiveness
+          const targetRotY = mouse.x * maxRotationY;
+        headBone.rotation.y = THREE.MathUtils.lerp(headBone.rotation.y, targetRotY, 0.45);
+
+        const maxRotationX = 0.42;
+        const targetRotX = -mouse.y * maxRotationX - 0.18;
+        headBone.rotation.x = THREE.MathUtils.lerp(headBone.rotation.x, targetRotX, 0.38);
+        } else {
+          // When scrolled down into content sections:
+          headBone.rotation.y = THREE.MathUtils.lerp(headBone.rotation.y, 0.25, 0.05);
+          headBone.rotation.x = THREE.MathUtils.lerp(headBone.rotation.x, -0.28, 0.05);
+        }
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
