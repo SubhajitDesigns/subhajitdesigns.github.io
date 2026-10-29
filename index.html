@@ -101,8 +101,9 @@
     .portfolio-gallery-heading h2{margin:18px 0 12px;font-size:clamp(2.7rem,7vw,5.7rem);line-height:.95;letter-spacing:-.075em;font-weight:750}
     .portfolio-gallery-heading h2 span{color:#c481ff}
     /* FlippingWordSwap-style heading adapted for this static HTML portfolio */
-    .flipping-word-swap{display:flex;align-items:center;justify-content:center;position:relative;min-height:1.18em;margin:18px 0 12px;color:#f5f5f5;font-size:clamp(2.25rem,6.3vw,48px);font-weight:700;line-height:1;letter-spacing:-.025em;perspective:700px;white-space:nowrap}
-    .flipping-word-swap .flip-word{position:absolute;display:flex;align-items:center;justify-content:center;gap:0;opacity:0;pointer-events:none}
+    .flipping-word-swap{display:flex;align-items:center;justify-content:center;position:relative;width:100%;min-height:1.18em;margin:18px 0 12px;color:#f5f5f5;font-size:clamp(2.25rem,6.3vw,48px);font-weight:700;line-height:1;letter-spacing:-.025em;perspective:700px;white-space:nowrap}
+    .flipping-word-swap .flip-word{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0;opacity:0;pointer-events:none}
+    .flipping-word-swap .flip-word:first-child{opacity:1}
     .flipping-word-swap .flip-char{display:inline-block;transform-origin:50% 50%;transform:rotateX(-90deg) translateY(.12em);opacity:0;transition:transform 400ms cubic-bezier(.2,.7,.2,1),opacity 260ms ease;transition-delay:var(--flip-delay,0ms);backface-visibility:hidden}
     .flipping-word-swap .flip-word.is-active .flip-char{transform:rotateX(0deg) translateY(0);opacity:1}
     .flipping-word-swap .flip-word.is-leaving .flip-char{transform:rotateX(90deg) translateY(-.12em);opacity:0}
@@ -1294,9 +1295,11 @@
 </script>
 <script>
 (()=> {
+  const init = () => {
   const root = document.getElementById('portfolioGalleryWordSwap');
   if (!root) return;
   const words = Array.from(root.querySelectorAll('.flip-word'));
+  if (words.length < 2) return;
   words.forEach(word => {
     const value = word.textContent.trim();
     word.textContent = '';
@@ -1328,6 +1331,12 @@
     window.setTimeout(() => words[active].classList.remove('is-leaving'), 700);
     active = next;
   }, 2800);
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
 })();
 </script>
 <script>(()=>{const i=document.getElementById('navIsland'),b=document.getElementById('islandTrigger'),m=document.getElementById('islandMenu');if(!i||!b||!m)return;const close=()=>{i.classList.remove('is-open');b.setAttribute('aria-expanded','false')};b.addEventListener('click',()=>{const open=i.classList.toggle('is-open');b.setAttribute('aria-expanded',String(open))});m.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('click',e=>{if(!i.contains(e.target))close()});document.addEventListener('keydown',e=>{if(e.key==='Escape')close()})})();</script>
