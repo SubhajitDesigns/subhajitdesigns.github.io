@@ -989,11 +989,6 @@
 
       const delta = clock.getDelta();
 
-      if (mixer) {
-        mixer.update(delta);
-      }
-
-
       // Smooth mouse lerp
       mouse.x += (mouse.targetX - mouse.x) * 0.28;
       mouse.y += (mouse.targetY - mouse.y) * 0.28;
@@ -1022,6 +1017,12 @@
           headBone.rotation.x = THREE.MathUtils.lerp(headBone.rotation.x, -0.4, 0.03);
           headBone.rotation.y = THREE.MathUtils.lerp(headBone.rotation.y, -0.3, 0.03);
         }
+      }
+
+      // Match Moncy's update order: apply the authored animation AFTER head tracking.
+      // Otherwise cursor tracking overwrites the intro clip every frame, making the nod invisible.
+      if (mixer) {
+        mixer.update(delta);
       }
 
       renderer.render(scene, camera);
