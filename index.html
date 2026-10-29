@@ -726,40 +726,40 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 1.12;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     // 2. Realistic Studio & Character PBR Lighting Setup
     // Warm ambient light
-    const ambientLight = new THREE.AmbientLight(0x352b45, 2.2);
+    const ambientLight = new THREE.AmbientLight(0x302238, 1.35);
     scene.add(ambientLight);
 
     // Warm key light on face & skin
-    const keyLight = new THREE.DirectionalLight(0xffecd6, 2.4);
-    keyLight.position.set(3, 14, 8);
+    const keyLight = new THREE.DirectionalLight(0xffe2d1, 3.0);
+    keyLight.position.set(-2.5, 11, 9);
     keyLight.castShadow = true;
     keyLight.shadow.mapSize.width = 1024;
     keyLight.shadow.mapSize.height = 1024;
     scene.add(keyLight);
 
     // Signature Moncy.dev Violet / Purple Rim Light (from left rear)
-    const rimLightPurple = new THREE.PointLight(0xd975ff, 4.2, 35, 1.8);
-    rimLightPurple.position.set(-6, 12, -4);
+    const rimLightPurple = new THREE.PointLight(0xc66aff, 3.4, 27, 1.9);
+    rimLightPurple.position.set(-5, 10, -5);
     scene.add(rimLightPurple);
 
     // Cyan / Blue Accent Rim Light (from right rear)
-    const rimLightCyan = new THREE.PointLight(0x00f2fe, 3.2, 30, 2.0);
-    rimLightCyan.position.set(6, 10, -4);
+    const rimLightCyan = new THREE.PointLight(0x42cfe8, 1.15, 24, 2.2);
+    rimLightCyan.position.set(5, 8, -5);
     scene.add(rimLightCyan);
 
     // Soft front fill light
-    const fillLight = new THREE.PointLight(0xffffff, 1.4, 25);
-    fillLight.position.set(0, 10, 8);
+    const fillLight = new THREE.PointLight(0xffd9d0, 1.0, 22);
+    fillLight.position.set(0, 8, 9);
     scene.add(fillLight);
 
     // Screen light (glowing monitor light on chest)
-    const screenLight = new THREE.PointLight(0x88e0ff, 2.0, 12);
+    const screenLight = new THREE.PointLight(0x88cce8, 0.65, 10);
     screenLight.position.set(0, 3.8, 2.8);
     scene.add(screenLight);
 
@@ -769,6 +769,8 @@
     let neckBone = null;
     let mixer = null;
     let headIntroActive = false;
+    let headIntroStart = 0;
+    let headIntroBaseX = -0.18;
     let monitorObject = null;
     let screenLightMesh = null;
 
@@ -861,12 +863,12 @@
               introAct.reset();
               introAct.enabled = true;
               introAct.setEffectiveWeight(1);
+              introAct.timeScale = 1.15;
               introAct.play();
+              headIntroBaseX = headBone ? headBone.rotation.x : -0.18;
+              headIntroStart = performance.now();
               headIntroActive = true;
             };
-            mixer.addEventListener('finished', (event) => {
-              if (event.action === introAct) headIntroActive = false;
-            });
           }
         }
 
@@ -985,6 +987,31 @@
 
       if (mixer) {
         mixer.update(delta);
+      }
+
+      // Deliberate cinematic head-lift with a small overshoot, then settle.
+      // Apply after mixer.update so this authored motion remains visible.
+      if (headIntroActive && headBone) {
+        const t = (performance.now() - headIntroStart) / 1000;
+        const ease = p => { p = Math.max(0, Math.min(1, p)); return p * p * (3 - 2 * p); };
+        let pitch;
+        if (t < 0.22) {
+          pitch = headIntroBaseX + 0.16 * ease(t / 0.22);
+        } else if (t < 0.72) {
+          pitch = headIntroBaseX + 0.16 - 0.48 * ease((t - 0.22) / 0.5);
+        } else if (t < 1.02) {
+          pitch = headIntroBaseX - 0.32 + 0.07 * ease((t - 0.72) / 0.3);
+        } else if (t < 1.42) {
+          pitch = headIntroBaseX - 0.25 + 0.07 * ease((t - 1.02) / 0.4);
+        } else {
+          pitch = headIntroBaseX - 0.18;
+          headIntroActive = false;
+        }
+        headBone.rotation.x = pitch;
+        if (neckBone) {
+          const neckWeight = t < 0.72 ? 0.28 : 0.18;
+          neckBone.rotation.x = THREE.MathUtils.lerp(neckBone.rotation.x, pitch * neckWeight, 0.16);
+        }
       }
 
       // Smooth mouse lerp
