@@ -220,42 +220,59 @@
       50% { transform: translate(-50%, 8px); }
     }
 
-    .about-section { display: flex; justify-content: flex-end; }
-
-    .about-content-box {
-      width: 50%;
-      max-width: 620px;
-      padding: 3rem;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(20px);
-      border-radius: 1.5rem;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    /* Long, two-panel About experience inspired by Moncy's expandable timeline. */
+    .about-section {
+      display:block; min-height:190vh; height:auto; padding:0 4rem;
+      position:relative; isolation:isolate;
     }
-
-    .section-badge {
-      display: inline-block;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-weight: 600;
-      margin-bottom: 1rem;
+    .about-panels {
+      position:sticky; top:10vh; height:80vh; min-height:570px; max-height:850px;
+      width:min(100%,760px); margin-left:auto; margin-right:0;
+      display:flex; flex-direction:column; gap:0;
+      padding:0; overflow:visible;
     }
-
-    .about-title { font-size: 2.8rem; font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; }
-    .about-text { font-size: 1.15rem; line-height: 1.7; color: var(--text-muted); margin-bottom: 2rem; }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding-top: 1.5rem;
+    .about-panel {
+      position:relative; flex:0.42 1 0; min-height:0; overflow:hidden;
+      display:flex; flex-direction:column; justify-content:center;
+      padding:clamp(1.35rem,3vw,2.5rem);
+      background:rgba(9,9,14,.82); border:1px solid rgba(202,190,222,.2);
+      backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+      box-shadow:0 18px 42px rgba(0,0,0,.22);
+      transition:flex .7s cubic-bezier(.2,.8,.2,1),background .35s ease,border-color .35s ease;
+      cursor:pointer;
     }
-
-    .stat-number { font-size: 2rem; font-weight: 700; color: #fff; }
-    .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+    .about-panel:first-child { border-radius:22px 22px 0 0; border-bottom-color:rgba(255,255,255,.08); }
+    .about-panel:last-child { border-radius:0 0 22px 22px; border-top-color:rgba(255,255,255,.08); }
+    .about-panel.is-active { flex:1.58 1 0; background:rgba(13,12,20,.91); border-color:rgba(196,129,255,.34); }
+    .about-panel:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+    .about-panel-kicker { color:var(--accent); font-size:.82rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; margin-bottom:.9rem; }
+    .about-panel-title { margin:0 0 .9rem; font-size:clamp(2.2rem,5vw,4.8rem); line-height:.98; font-weight:800; letter-spacing:-.045em; }
+    .about-panel:not(.is-active) .about-panel-title { font-size:clamp(1.6rem,3vw,2.6rem); margin-bottom:0; }
+    .about-panel-subtitle { color:rgba(235,229,244,.55); font-size:.95rem; margin:0 0 .8rem; }
+    .about-panel-copy { max-width:620px; color:var(--text-muted); font-size:clamp(.95rem,1.2vw,1.08rem); line-height:1.75; margin:0; }
+    .about-panel-extra { opacity:0; max-height:0; overflow:hidden; transform:translateY(12px); transition:opacity .35s ease .08s,transform .45s ease,max-height .55s ease; }
+    .about-panel.is-active .about-panel-extra { opacity:1; max-height:420px; transform:translateY(0); }
+    .about-panel:not(.is-active) .about-panel-extra { pointer-events:none; }
+    .about-achievements { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin-top:1.25rem; }
+    .about-achievement { padding:1rem 1.1rem; border:1px solid rgba(255,255,255,.13); border-radius:14px; background:rgba(255,255,255,.035); }
+    .about-achievement strong { display:block; color:#fff; font-size:clamp(1.8rem,3vw,2.7rem); line-height:1.1; }
+    .about-achievement span { display:block; color:var(--text-muted); font-size:.76rem; letter-spacing:.1em; text-transform:uppercase; margin-top:.45rem; }
+    .about-panel-hint { position:absolute; right:1.5rem; bottom:1.25rem; color:rgba(240,235,248,.55); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; }
+    @media(max-width:1024px) {
+      .about-section { padding:0 1.5rem; min-height:170vh; }
+      .about-panels { width:100%; top:12vh; height:76vh; min-height:540px; }
+    }
+    @media(max-width:600px) {
+      .about-section { padding:0 .8rem; min-height:165vh; }
+      .about-panels { top:10vh; height:78vh; min-height:520px; }
+      .about-panel { padding:1.15rem; }
+      .about-achievements { gap:.6rem; }
+      .about-achievement { padding:.8rem; }
+      .about-panel-hint { right:1rem; bottom:.8rem; font-size:.62rem; }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      .about-panel,.about-panel-extra { transition:none !important; }
+    }
 
     .whatido-section { display: flex; justify-content: flex-end; }
 
@@ -555,28 +572,34 @@
       </div>
     </section>
 
-    <!-- SECTION 2: ABOUT ME (Character glides to the left side and laptop appears) -->
-    <section class="about-section" id="about">
-      <div class="about-content-box">
-        <span class="section-badge">About Me</span>
-        <h2 class="about-title">Designing ideas into reality.</h2>
-        <p class="about-text">
-          I’m Subhajit Das — an AI designer and motion creative building bold visuals, brand identities, motion graphics and digital experiences.
-        </p>
-        <div class="stats-grid">
-          <div>
-            <div class="stat-number">07+</div>
-            <div class="stat-label">Years Creating</div>
+    <!-- SECTION 2: ABOUT + ACHIEVEMENTS -->
+    <section class="about-section" id="about" aria-label="About and achievements">
+      <div class="about-panels" id="aboutPanels">
+        <article class="about-panel is-active" data-about-panel="about" tabindex="0" role="button" aria-expanded="true" aria-label="About Me">
+          <div class="about-panel-kicker">01 / THE CREATIVE BEHIND THE WORK</div>
+          <h2 class="about-panel-title">About Me<span aria-hidden="true">.</span></h2>
+          <div class="about-panel-extra">
+            <p class="about-panel-subtitle">Designing visuals that speak.</p>
+            <p class="about-panel-copy">I’m Subhajit Das — a self-taught AI designer and motion creative. I’ve built my career through continuous learning, real client projects, and a passion for turning ideas into clear, engaging visuals. My work spans brand identities, graphic design, motion graphics, and digital experiences—bringing strategy and storytelling together in every project.</p>
+            <div class="about-achievements">
+              <div class="about-achievement"><strong>07+</strong><span>Years creating</span></div>
+              <div class="about-achievement"><strong>100+</strong><span>Brands worked with</span></div>
+            </div>
           </div>
-          <div>
-            <div class="stat-number">100+</div>
-            <div class="stat-label">Brands</div>
+          <span class="about-panel-hint">Hover to explore</span>
+        </article>
+        <article class="about-panel" data-about-panel="achievements" tabindex="0" role="button" aria-expanded="false" aria-label="Achievements">
+          <div class="about-panel-kicker">02 / THE WORK IN NUMBERS</div>
+          <h2 class="about-panel-title">Achievements<span aria-hidden="true">.</span></h2>
+          <div class="about-panel-extra">
+            <p class="about-panel-subtitle">Consistency, creativity, and trust earned through the work.</p>
+            <div class="about-achievements">
+              <div class="about-achievement"><strong>100+</strong><span>Brands</span></div>
+              <div class="about-achievement"><strong>6000+</strong><span>Designs created</span></div>
+            </div>
           </div>
-          <div>
-            <div class="stat-number">6000+</div>
-            <div class="stat-label">Designs</div>
-          </div>
-        </div>
+          <span class="about-panel-hint">Hover to explore</span>
+        </article>
       </div>
     </section>
 
@@ -1031,5 +1054,41 @@
     animate();
   </script>
 <script>(()=>{const i=document.getElementById('navIsland'),b=document.getElementById('islandTrigger'),m=document.getElementById('islandMenu');if(!i||!b||!m)return;const close=()=>{i.classList.remove('is-open');b.setAttribute('aria-expanded','false')};b.addEventListener('click',()=>{const open=i.classList.toggle('is-open');b.setAttribute('aria-expanded',String(open))});m.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('click',e=>{if(!i.contains(e.target))close()});document.addEventListener('keydown',e=>{if(e.key==='Escape')close()})})();</script>
+<script>
+(() => {
+  const section = document.getElementById('about');
+  const panels = Array.from(document.querySelectorAll('[data-about-panel]'));
+  if (!section || panels.length !== 2) return;
+  const activate = (chosen) => panels.forEach(panel => {
+    const active = panel === chosen;
+    panel.classList.toggle('is-active', active);
+    panel.setAttribute('aria-expanded', String(active));
+  });
+  panels.forEach(panel => {
+    panel.addEventListener('mouseenter', () => activate(panel));
+    panel.addEventListener('focus', () => activate(panel));
+    panel.addEventListener('click', () => activate(panel));
+    panel.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        activate(panel);
+      }
+    });
+  });
+  let scrollTick = false;
+  window.addEventListener('scroll', () => {
+    if (scrollTick) return;
+    scrollTick = true;
+    requestAnimationFrame(() => {
+      const rect = section.getBoundingClientRect();
+      const travel = Math.max(1, section.offsetHeight - window.innerHeight);
+      const progress = Math.min(1, Math.max(0, -rect.top / travel));
+      if (progress > .48 && progress < .96) activate(panels[1]);
+      else if (progress <= .48) activate(panels[0]);
+      scrollTick = false;
+    });
+  }, { passive: true });
+})();
+</script>
 </body>
 </html>
