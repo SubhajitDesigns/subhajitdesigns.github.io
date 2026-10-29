@@ -58,7 +58,7 @@ if (root) {
     setTimeout(() => { loaderLabel.hidden = true; }, 3200);
   }
 
-  loader.load('https://d2ol7oe51mr4n9.cloudfront.net/user_3J5wMb6jrWj1Y3i6X8tSPeXaSPn/39369152-a9ac-406c-972a-2ffdaf9cbbab.glb', gltf => {
+  loader.load('./character.glb', gltf => {
     if (loadFinished) return;
     loadFinished = true;
     clearTimeout(loadTimeout);
@@ -119,12 +119,38 @@ if (root) {
     if (head) baseHead = head.rotation.clone();
     if (neck) baseNeck = neck.rotation.clone();
     mixer = new THREE.AnimationMixer(model);
+
+    // Play the animation clips provided by the uploaded character model.
+    const typingClip = gltf.animations.find(clip => clip.name.toLowerCase() === 'typing');
+    if (typingClip) {
+      const typingAction = mixer.clipAction(typingClip);
+      typingAction.timeScale = 1.1;
+      typingAction.play();
+    }
+
+    ['key1', 'key2', 'key5', 'key6'].forEach(name => {
+      const clip = gltf.animations.find(animation => animation.name.toLowerCase() === name);
+      if (clip) {
+        const action = mixer.clipAction(clip);
+        action.timeScale = 1.2;
+        action.play();
+      }
+    });
+
     const blink = gltf.animations.find(animation => /blink/i.test(animation.name));
     if (blink) {
       blinkAction = mixer.clipAction(blink);
-      blinkAction.setLoop(THREE.LoopOnce, 1);
-      blinkAction.clampWhenFinished = true;
+      blinkAction.timeScale = 0.8;
       blinkAction.enabled = true;
+      blinkAction.play();
+    }
+
+    const introClip = gltf.animations.find(clip => clip.name.toLowerCase() === 'introanimation');
+    if (introClip) {
+      const introAction = mixer.clipAction(introClip);
+      introAction.setLoop(THREE.LoopOnce, 1);
+      introAction.clampWhenFinished = true;
+      introAction.play();
     }
 
     loaded = true;
