@@ -398,6 +398,23 @@
       color:#eae5ec; width:360px; height:76px; min-width:250px;
       display:flex; align-items:center; justify-content:center; text-transform:uppercase;
     }
+    /* Thin white sweep between the completed loading counter and Welcome. */
+    .intro-button::after {
+      content:""; position:absolute; z-index:8; left:0; top:50%;
+      width:100%; height:2px; background:#fff;
+      box-shadow:0 0 8px rgba(255,255,255,.7);
+      transform:translateY(-50%) scaleX(0); transform-origin:left center;
+      opacity:0; pointer-events:none;
+    }
+    #loading-screen.is-wiping .intro-button::after {
+      animation:intro-white-wipe .58s cubic-bezier(.76,0,.24,1) forwards;
+    }
+    @keyframes intro-white-wipe {
+      0% { transform:translateY(-50%) scaleX(0); opacity:0; }
+      12% { opacity:1; }
+      82% { transform:translateY(-50%) scaleX(1); opacity:1; }
+      100% { transform:translateY(-50%) scaleX(1); opacity:0; }
+    }
     .intro-loading-container {
       position:absolute; width:var(--intro-size); max-width:var(--intro-size); top:50%;
       transition:max-width 1s, opacity .45s; left:50px; z-index:3; transform:translateY(-50%);
@@ -661,17 +678,21 @@
           counterLine.style.opacity = '0';
           counterLine.style.transform = 'translateY(-12px)';
         }
-        // Phase 1: finish the loading label completely before showing Welcome.
+        // Phase 1: sweep a thin white line across the capsule to clear Loading.
         setTimeout(() => {
-          loadingScreen.classList.add('is-welcome-visible');
-          // Phase 2: hold the clean Welcome state, then expand the capsule.
+          loadingScreen.classList.add('is-wiping');
+          // Phase 2: reveal Welcome only after the white wipe has completed.
           setTimeout(() => {
-            loadingScreen.classList.add('is-welcoming');
+            loadingScreen.classList.add('is-welcome-visible');
+            // Phase 3: hold the clean Welcome state, then expand the capsule.
             setTimeout(() => {
-              loadingScreen.classList.add('is-leaving');
-              setTimeout(() => { loadingScreen.style.display = 'none'; }, 950);
-            }, 1050);
-          }, 850);
+              loadingScreen.classList.add('is-welcoming');
+              setTimeout(() => {
+                loadingScreen.classList.add('is-leaving');
+                setTimeout(() => { loadingScreen.style.display = 'none'; }, 950);
+              }, 1050);
+            }, 850);
+          }, 580);
         }, 300);
       };
       waitForCount();
