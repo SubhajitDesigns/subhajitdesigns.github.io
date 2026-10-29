@@ -1,0 +1,13 @@
+/* Scroll-walk integration overrides for the existing Subhajit portfolio hero */
+#home.subh-hero{min-height:100svh!important}
+.subh-hero .subh-hero-stage{inset:0 0 0 34%;transition:transform .3s ease}
+#home.subh-hero.is-scrolled .subh-hero-copy{transform:translate3d(-1.5vw,-1.5vh,0);opacity:.18}
+#home.subh-hero.is-scrolled .subh-hero-stage{transform:translate3d(-1.5vw,0,0) scale(.985)}
+@media(max-width:760px){
+  #home.subh-hero{min-height:94svh!important}
+  .subh-hero .subh-hero-stage{inset:18% 0 0 15%;opacity:.78;mask-image:linear-gradient(180deg,transparent 0%,#000 22%,#000 100%)}
+  #home.subh-hero.is-scrolled .subh-hero-copy{opacity:.35}
+}
+@media(prefers-reduced-motion:reduce){
+  #home.subh-hero.is-scrolled .subh-hero-copy,#home.subh-hero.is-scrolled .subh-hero-stage{transform:none;transition:none!important}
+}
