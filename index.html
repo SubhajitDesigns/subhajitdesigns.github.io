@@ -1075,15 +1075,19 @@
       // Advance the authored animation first so the intro nod remains intact.
       if (mixer) mixer.update(delta);
 
-      // Once the intro nod has finished, smoothly follow new cursor movement.
-      // Do not react to the cursor's pre-existing position until it actually moves.
+      // Responsive face tracking: use the latest cursor position directly, with
+      // enough range and a quick frame-rate-independent ease to feel connected.
       if (headBone && characterIntroFinished && userMovedMouse && scrollY < 200) {
-        mouse.x = THREE.MathUtils.lerp(mouse.x, mouse.targetX, 0.08);
-        mouse.y = THREE.MathUtils.lerp(mouse.y, mouse.targetY, 0.08);
-        const targetYaw = mouse.x * 0.32;
-        const targetPitch = THREE.MathUtils.clamp(-mouse.y * 0.16, -0.18, 0.18);
-        headBone.rotation.y = THREE.MathUtils.lerp(headBone.rotation.y, targetYaw, 0.08);
-        headBone.rotation.x = THREE.MathUtils.lerp(headBone.rotation.x, targetPitch, 0.08);
+        const followEase = 1 - Math.exp(-12 * delta);
+        mouse.x = THREE.MathUtils.lerp(mouse.x, mouse.targetX, followEase);
+        mouse.y = THREE.MathUtils.lerp(mouse.y, mouse.targetY, followEase);
+
+        // Horizontal cursor position controls yaw; vertical position controls pitch.
+        // Keep movement expressive but avoid unnatural full rotations.
+        const targetYaw = THREE.MathUtils.clamp(mouse.x * 0.62, -0.52, 0.52);
+        const targetPitch = THREE.MathUtils.clamp(-mouse.y * 0.34, -0.30, 0.30);
+        headBone.rotation.y = THREE.MathUtils.lerp(headBone.rotation.y, targetYaw, followEase);
+        headBone.rotation.x = THREE.MathUtils.lerp(headBone.rotation.x, targetPitch, followEase);
       }
 
       renderer.render(scene, camera);
