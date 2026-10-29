@@ -37,6 +37,7 @@ if (root) {
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
   let mixer = null, blinkAction = null, head = null, neck = null, nextBlink = 2.7;
   let eyeBones = [], baseHead = null, baseNeck = null, loaded = false;
+  let scrollRevealMeshes = [];
   let scrollTarget = 0, scrollProgress = 0;
   const clock = new THREE.Clock();
   const loader = new GLTFLoader();
@@ -69,8 +70,15 @@ if (root) {
     // controls the framing and can sit directly in front of the character.
     const workstationWords = ['laptop', 'monitor', 'screen', 'keyboard', 'desk', 'tabletop', 'computer'];
     model.traverse(object => {
-      const normalizedName = (object.name || '').toLowerCase().replace(/[._\\s-]/g, '');
-      if (object.isMesh && workstationWords.some(word => normalizedName.includes(word))) {
+      const rawName = (object.name || '').toLowerCase();
+      const normalizedName = rawName.replace(/[._\\s-]/g, '');
+      // The supplied Scroll-Walk HTML specifically targets Plane.004 and screenlight.
+      // Remember those parts so they can be revealed as the visitor scrolls.
+      const isMonitorPart = /^(plane004|screenlight)$/.test(normalizedName);
+      if (object.isMesh && isMonitorPart) {
+        object.visible = false;
+        scrollRevealMeshes.push(object);
+      } else if (object.isMesh && workstationWords.some(word => normalizedName.includes(word))) {
         object.visible = false;
       }
     });
@@ -172,6 +180,10 @@ if (root) {
       // Scroll choreography: the character glides left, turns toward the page,
       // and the camera eases back as the hero gives way to the next section.
       const p = scrollProgress;
+      // Scroll-Walk behavior: keep the monitor hidden in the opening hero,
+      // then reveal its model parts after the user starts scrolling.
+      const showWorkstation = p > .08;
+      scrollRevealMeshes.forEach(mesh => { mesh.visible = showWorkstation; });
       modelRoot.position.x = THREE.MathUtils.lerp(.12, -1.05, p);
       modelRoot.position.y = -.16 + (p > .05 && !reduceMotion ? Math.sin(clock.elapsedTime * 7) * .012 * p : 0);
       modelRoot.rotation.y = (reduceMotion ? 0 : Math.sin(clock.elapsedTime * .35) * .025) + p * .52;
