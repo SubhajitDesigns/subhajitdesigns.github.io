@@ -681,12 +681,17 @@
             loadingScreen.classList.add('is-complete');
             setTimeout(() => {
               loadingScreen.classList.add('is-welcoming');
-              if (typeof window.__playCharacterIntro === 'function') {
-                window.__playCharacterIntro();
-              }
               setTimeout(() => {
                 loadingScreen.classList.add('is-leaving');
-                setTimeout(() => { loadingScreen.style.display = 'none'; }, 950);
+                setTimeout(() => {
+                  loadingScreen.style.display = 'none';
+                  // Start the character gesture only after the intro has fully cleared.
+                  if (typeof window.__playCharacterIntro === 'function') {
+                    window.__playCharacterIntro();
+                  } else {
+                    window.__characterIntroRequested = true;
+                  }
+                }, 950);
               }, 900);
             }, 1000);
           }, 580);
@@ -856,7 +861,10 @@
             neckIntroBaseX = neckBone ? neckBone.rotation.x : 0;
             headIntroStart = performance.now();
             headIntroActive = true;
+            window.__characterIntroRequested = false;
           };
+          // If the loading transition finished before the GLB was ready, play it now.
+          if (window.__characterIntroRequested) window.__playCharacterIntro();
         }
 
         // Setup the GSAP ScrollTrigger timeline matching moncy.dev!
