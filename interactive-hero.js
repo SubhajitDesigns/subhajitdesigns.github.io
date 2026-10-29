@@ -57,7 +57,7 @@ if (root) {
     setTimeout(() => { loaderLabel.hidden = true; }, 3200);
   }
 
-  loader.load('./character.glb', gltf => {
+  loader.load('https://d2ol7oe51mr4n9.cloudfront.net/user_3J5wMb6jrWj1Y3i6X8tSPeXaSPn/39369152-a9ac-406c-972a-2ffdaf9cbbab.glb', gltf => {
     if (loadFinished) return;
     loadFinished = true;
     clearTimeout(loadTimeout);
@@ -115,8 +115,8 @@ if (root) {
     if (loadFinished) return;
     loadFinished = true;
     clearTimeout(loadTimeout);
-    console.warn('3D hero model could not load. Check character.glb path and browser console.', error);
-    showFallback('3D MODEL FAILED TO LOAD — CHECK character.glb');
+    console.warn('3D hero model could not load. Check the hosted character model URL and browser console.', error);
+    showFallback('3D MODEL FAILED TO LOAD — CHECK MODEL CONNECTION');
   });
 
   function resize() {
