@@ -11,7 +11,7 @@ if (root) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(32, 1, .1, 100);
-  camera.position.set(0, .2, 5.7);
+  camera.position.set(0, .35, 3.45);
 
   const renderer = new THREE.WebGLRenderer({
     canvas, alpha: true, antialias: true, powerPreference: 'high-performance'
@@ -92,9 +92,9 @@ if (root) {
     model.position.sub(center);
     model.updateMatrixWorld(true);
 
-    const targetHeight = 2.75;
+    const targetHeight = 3.5;
     modelRoot.scale.setScalar(targetHeight / Math.max(size.y, .001));
-    modelRoot.position.set(.72, -.22, 0);
+    modelRoot.position.set(0, -.03, 0);
     model.traverse(object => {
       if (object.isMesh) {
         object.castShadow = true;
@@ -181,6 +181,8 @@ if (root) {
   window.addEventListener('pointermove', event => {
     pointer.tx = (event.clientX / window.innerWidth - .5) * 2;
     pointer.ty = (event.clientY / window.innerHeight - .5) * 2;
+    const tracking = document.getElementById('portraitTracking');
+    if (tracking) tracking.textContent = 'Mode: Hero Face Tracking (X: ' + pointer.tx.toFixed(2) + ' | Y: ' + pointer.ty.toFixed(2) + ')';
   }, { passive: true });
   root.addEventListener('pointerleave', () => { pointer.tx = 0; pointer.ty = 0; });
 
@@ -206,15 +208,15 @@ if (root) {
       const p = scrollProgress;
       // Keep the workstation meshes hidden: the hero uses a clean character cutout,
       // not the source scene's monitor/desk which obscures the face and clips the frame.
-      modelRoot.position.x = THREE.MathUtils.lerp(.12, -1.05, p);
-      modelRoot.position.y = -.16 + (p > .05 && !reduceMotion ? Math.sin(clock.elapsedTime * 7) * .012 * p : 0);
+      modelRoot.position.x = THREE.MathUtils.lerp(0, -1.25, p);
+      modelRoot.position.y = -.03 + (p > .05 && !reduceMotion ? Math.sin(clock.elapsedTime * 7) * .012 * p : 0);
       modelRoot.rotation.y = (reduceMotion ? 0 : Math.sin(clock.elapsedTime * .35) * .025) + p * .52;
       modelRoot.rotation.z = p > .05 && !reduceMotion ? Math.sin(clock.elapsedTime * 3.5) * .012 * p : 0;
 
       camera.position.x = THREE.MathUtils.lerp(0, -.15, p);
-      camera.position.y = THREE.MathUtils.lerp(.2, .08, p);
-      camera.position.z = THREE.MathUtils.lerp(5.7, 7.35, p);
-      camera.lookAt(THREE.MathUtils.lerp(0, -.24, p), .16, 0);
+      camera.position.y = THREE.MathUtils.lerp(.35, .25, p);
+      camera.position.z = THREE.MathUtils.lerp(3.45, 5.2, p);
+      camera.lookAt(THREE.MathUtils.lerp(0, -.24, p), .35, 0);
 
       // In the hero, the head follows the cursor; during the scroll it turns
       // toward the content, matching the supplied reference interaction.
