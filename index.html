@@ -395,25 +395,8 @@
     .intro-button {
       position:relative; z-index:1; padding:20px 50px; border-radius:100px;
       background:#000; overflow:hidden; font-size:18px; font-weight:500;
-      color:#eae5ec; width:360px; height:76px; min-width:250px;
-      display:flex; align-items:center; justify-content:center; text-transform:uppercase;
-    }
-    /* Thin white sweep between the completed loading counter and Welcome. */
-    .intro-button::after {
-      content:""; position:absolute; z-index:8; left:0; top:50%;
-      width:100%; height:2px; background:#fff;
-      box-shadow:0 0 8px rgba(255,255,255,.7);
-      transform:translateY(-50%) scaleX(0); transform-origin:left center;
-      opacity:0; pointer-events:none;
-    }
-    #loading-screen.is-wiping .intro-button::after {
-      animation:intro-white-wipe .58s cubic-bezier(.76,0,.24,1) forwards;
-    }
-    @keyframes intro-white-wipe {
-      0% { transform:translateY(-50%) scaleX(0); opacity:0; }
-      12% { opacity:1; }
-      82% { transform:translateY(-50%) scaleX(1); opacity:1; }
-      100% { transform:translateY(-50%) scaleX(1); opacity:0; }
+      color:#eae5ec; display:flex; align-items:center; justify-content:center;
+      text-transform:uppercase; white-space:nowrap;
     }
     .intro-loading-container {
       position:absolute; width:var(--intro-size); max-width:var(--intro-size); top:50%;
@@ -425,15 +408,13 @@
     .intro-counter-line span { position:absolute; top:50%; right:0; transform:translateY(-50%); font-weight:300; opacity:.7; }
     .intro-loading-box { position:absolute; right:0; top:50%; transform:translate(100%,-50%); width:15px; height:25px; background:#fff; animation:intro-blink 1s linear infinite; }
     .intro-welcome-label {
-      position:absolute; inset:0; z-index:4; letter-spacing:2px; text-transform:uppercase;
-      width:100%; max-width:none; margin:0; overflow:hidden; display:flex;
-      justify-content:center; align-items:center; text-align:center;
-      opacity:0; visibility:hidden; transition:opacity .35s ease, visibility .35s ease;
-      pointer-events:none;
+      position:relative; inset:auto; z-index:4; letter-spacing:2px; text-transform:uppercase;
+      width:var(--intro-size); max-width:var(--intro-size); margin:0; overflow:hidden;
+      display:flex; justify-content:center; align-items:center; text-align:center;
+      transition:opacity .5s ease, max-width 1s ease; pointer-events:none; flex:none;
     }
-    .intro-welcome-label span { display:block; transition:transform .65s ease, opacity .55s ease; }
-    #loading-screen.is-welcome-visible .intro-welcome-label { opacity:1; visibility:visible; }
-    #loading-screen.is-welcome-visible .intro-loading-container { opacity:0; }
+    .intro-welcome-label span { display:block; transition:transform 1s ease, opacity .5s ease; }
+    #loading-screen.is-complete .intro-loading-container { max-width:0; }
     .intro-cursor { position:absolute; right:0; top:50%; transform:translate(100%,-50%); width:15px; height:25px; background:white; animation:intro-blink 1s linear infinite; }
     .intro-loading-box { position:absolute; right:0; top:50%; transform:translate(100%,-50%); width:15px; height:25px; background:white; animation:intro-blink 1s linear infinite; }
     @keyframes intro-blink { 0%,100%{opacity:0} 25%,75%{opacity:1} }
@@ -451,12 +432,14 @@
     @media (min-width:1400px) {
       .intro-wrap { --intro-size:210px; }
       .intro-button { padding:30px 70px; font-size:25px; }
+      .intro-welcome-label { width:var(--intro-size); max-width:var(--intro-size); }
       .intro-loading-container { left:70px; }
     }
     @media (max-width:600px) {
       .intro-marquee { font-size:42px; }
       .intro-marquee-row span { padding:0 28px; }
-      .intro-button { padding:18px 30px; min-width:220px; font-size:15px; }
+      .intro-button { padding:18px 30px; font-size:15px; }
+      .intro-welcome-label { width:var(--intro-size); max-width:var(--intro-size); }
     }
 
     @media (max-width: 1024px) {
@@ -671,29 +654,18 @@
         if (introValue < 100) return requestAnimationFrame(waitForCount);
         clearInterval(introInterval);
         if (introCounter) introCounter.textContent = '100%';
-        // Hide the loading side before expanding the welcome pill, so both labels never overlap.
-        const counterLine = document.querySelector('.intro-counter-line');
-        if (counterLine) {
-          counterLine.style.transition = 'opacity .25s ease, transform .4s ease';
-          counterLine.style.opacity = '0';
-          counterLine.style.transform = 'translateY(-12px)';
-        }
-        // Phase 1: sweep a thin white line across the capsule to clear Loading.
+        // Match Moncy's actual sequence: collapse the Loading counter to reveal Welcome,
+        // pause on the clean Welcome pill, then expand the capsule to uncover the portfolio.
         setTimeout(() => {
-          loadingScreen.classList.add('is-wiping');
-          // Phase 2: reveal Welcome only after the white wipe has completed.
+          loadingScreen.classList.add('is-complete');
           setTimeout(() => {
-            loadingScreen.classList.add('is-welcome-visible');
-            // Phase 3: hold the clean Welcome state, then expand the capsule.
+            loadingScreen.classList.add('is-welcoming');
             setTimeout(() => {
-              loadingScreen.classList.add('is-welcoming');
-              setTimeout(() => {
-                loadingScreen.classList.add('is-leaving');
-                setTimeout(() => { loadingScreen.style.display = 'none'; }, 950);
-              }, 1050);
-            }, 850);
-          }, 580);
-        }, 300);
+              loadingScreen.classList.add('is-leaving');
+              setTimeout(() => { loadingScreen.style.display = 'none'; }, 950);
+            }, 900);
+          }, 1000);
+        }, 600);
       };
       waitForCount();
     };
