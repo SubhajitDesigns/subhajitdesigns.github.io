@@ -384,83 +384,53 @@
       align-items: center;
       justify-content: center;
     }
-    .intro-wrap::before {
-      content: "";
-      position: absolute;
-      width: 250px;
-      height: 120px;
-      top: var(--mouse-y, 50%);
-      left: var(--mouse-x, 50%);
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      background: #a87cff;
-      filter: blur(30px);
-      opacity: .85;
-      pointer-events: none;
+    .intro-hover {
+      background:#a87cff; width:250px; height:120px; position:absolute;
+      top:var(--mouse-y,50%); left:var(--mouse-x,50%); border-radius:50%;
+      transform:translate(-50%,-50%); filter:blur(30px); opacity:1; transition:opacity .5s;
     }
+    .intro-wrap:hover .intro-hover { opacity:1; }
+    .intro-wrap.is-expanding .intro-hover { opacity:0; }
     .intro-button {
-      position: relative;
-      z-index: 1;
-      padding: 20px 50px;
-      border-radius: 100px;
-      background: #000;
-      overflow: hidden;
-      font-size: 18px;
-      font-weight: 500;
-      color: #eae5ec;
-      min-width: 250px;
-      text-transform: uppercase;
+      position:relative; z-index:1; padding:20px 50px; border-radius:100px;
+      background:#000; overflow:hidden; font-size:18px; font-weight:500;
+      color:#eae5ec; min-width:250px; text-transform:uppercase;
     }
-    .intro-counter-line { position: relative; width: var(--intro-size); overflow: hidden; }
-    .intro-counter-line span { position: absolute; top: 50%; right: 0; transform: translateY(-50%); font-weight: 300; opacity: .7; }
+    .intro-loading-container {
+      position:absolute; width:100%; max-width:var(--intro-size); top:50%;
+      transition:1s; left:50px; z-index:3; transform:translateY(-50%);
+    }
+    .intro-counter-line { position:relative; width:var(--intro-size); overflow:hidden; }
+    .intro-counter-line span { position:absolute; top:50%; right:0; transform:translateY(-50%); font-weight:300; opacity:.7; }
     .intro-welcome-label {
-      position: relative;
-      z-index: 1;
-      width: var(--intro-size);
-      min-width: var(--intro-size);
-      text-align: center;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      transition: 1s;
+      position:relative; letter-spacing:2px; text-transform:uppercase; width:var(--intro-size);
+      overflow:hidden; display:flex; justify-content:center; align-items:center; text-align:center;
+      transition:1s; max-width:var(--intro-size); margin-left:var(--intro-size);
     }
-    .intro-cursor {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translate(100%, -50%);
-      width: 15px;
-      height: 25px;
-      background: white;
-      animation: intro-blink 1s linear infinite;
-    }
-    @keyframes intro-blink {
-      0%,100% { opacity: 0; }
-      25%,75% { opacity: 1; }
-    }
+    .intro-welcome-label span { display:block; transition:1s; }
+    .intro-cursor { position:absolute; right:0; top:50%; transform:translate(100%,-50%); width:15px; height:25px; background:white; animation:intro-blink 1s linear infinite; }
+    .intro-loading-box { position:absolute; right:0; top:50%; transform:translate(100%,-50%); width:15px; height:25px; background:white; animation:intro-blink 1s linear infinite; }
+    @keyframes intro-blink { 0%,100%{opacity:0} 25%,75%{opacity:1} }
     #loading-screen.is-welcoming .intro-wrap {
-      transition-delay: 0ms;
-      transition-timing-function: cubic-bezier(.33,.11,1,.72);
-      min-width: calc(100vw + 5000px);
-      min-height: calc(100vh + 500px);
-      border-radius: 5000px;
-      box-shadow: none;
+      transition-delay:0ms; transition-timing-function:cubic-bezier(.33,.11,1,.72);
+      min-width:calc(100vw + 5000px); min-height:calc(100vh + 500px);
+      border-radius:5000px; box-shadow:none;
     }
-    #loading-screen.is-welcoming .intro-button { overflow: visible; }
-    #loading-screen.is-welcoming .intro-welcome-label {
-      opacity: 0;
-      transform: translateY(100px);
-      transition: .5s;
+    #loading-screen.is-welcoming .intro-button { overflow:visible; }
+    #loading-screen.is-welcoming .intro-loading-container { max-width:0; opacity:0; }
+    #loading-screen.is-welcoming .intro-welcome-label { overflow:visible; }
+    #loading-screen.is-welcoming .intro-welcome-label span { transform:translateY(100px); opacity:0; }
+    #loading-screen.is-welcoming .intro-hover { opacity:0; }
+    #loading-screen.is-leaving { opacity:0; visibility:hidden; transition:opacity .9s ease,visibility .9s; }
+    @media (min-width:1400px) {
+      .intro-wrap { --intro-size:210px; }
+      .intro-button { padding:30px 70px; font-size:25px; }
+      .intro-loading-container { left:70px; }
     }
-    #loading-screen.is-welcoming .intro-cursor { animation: none; opacity: 0; }
-    #loading-screen.is-leaving { opacity: 0; visibility: hidden; transition: opacity .9s ease, visibility .9s; }
-    @media (min-width: 1400px) {
-      .intro-wrap { --intro-size: 210px; }
-      .intro-button { padding: 30px 70px; font-size: 25px; }
-    }
-    @media (max-width: 600px) {
-      .intro-marquee { font-size: 42px; }
-      .intro-marquee-row span { padding: 0 28px; }
-      .intro-button { padding: 18px 30px; min-width: 220px; font-size: 15px; }
+    @media (max-width:600px) {
+      .intro-marquee { font-size:42px; }
+      .intro-marquee-row span { padding:0 28px; }
+      .intro-button { padding:18px 30px; min-width:220px; font-size:15px; }
     }
 
     @media (max-width: 1024px) {
@@ -485,10 +455,16 @@
       <div class="intro-marquee-row"><span>A Creative Designer</span><span>A Creative Developer</span><span>A Creative Designer</span><span>A Creative Developer</span></div>
     </div>
     <div class="intro-wrap" id="intro-wrap">
-      <div class="intro-button">
-        <div class="intro-counter-line">Loading <span id="intro-counter">0%</span><i class="intro-cursor" id="intro-cursor"></i></div>
+      <div class="intro-hover"></div>
+      <div class="intro-button" id="intro-button">
+        <div class="intro-loading-container" id="intro-loading-container">
+          <div class="intro-loading-content">
+            <div class="intro-counter-line">Loading <span id="intro-counter">0%</span><i class="intro-cursor" id="intro-cursor"></i></div>
+          </div>
+          <div class="intro-loading-box"></div>
+        </div>
+        <div class="intro-welcome-label"><span>Welcome</span></div>
       </div>
-      <div class="intro-welcome-label" id="intro-welcome">Welcome</div>
     </div>
   </div>
 
