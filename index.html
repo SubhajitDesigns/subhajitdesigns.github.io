@@ -816,6 +816,7 @@
     // 3. Load 3D Character
     let character = null;
     let headBone = null;
+    let headBaseRotation = { x: 0, y: 0, z: 0 };
     let neckBone = null;
     let eyebrowBones = [];
     let eyebrowBaseRotations = new Map();
@@ -858,6 +859,7 @@
 
         // Moncy's rig names the head control "spine006" (without a dot).
         headBone = character.getObjectByName('spine006') || character.getObjectByName('spine.006') || null;
+        if (headBone) headBaseRotation = { x: headBone.rotation.x, y: headBone.rotation.y, z: headBone.rotation.z };
         neckBone = character.getObjectByName('spine005') || character.getObjectByName('spine.005') || null;
         // Detect eyebrow controls/meshes by common rig naming conventions.
         character.traverse((child) => {
@@ -1075,19 +1077,20 @@
       // Advance the authored animation first so the intro nod remains intact.
       if (mixer) mixer.update(delta);
 
-      // Responsive face tracking: use the latest cursor position directly, with
-      // enough range and a quick frame-rate-independent ease to feel connected.
+      // Cursor tracking is an offset from the rig's original head pose.
       if (headBone && characterIntroFinished && userMovedMouse && scrollY < 200) {
-        const followEase = 1 - Math.exp(-12 * delta);
+        const followEase = 1 - Math.exp(-22 * delta);
         mouse.x = THREE.MathUtils.lerp(mouse.x, mouse.targetX, followEase);
         mouse.y = THREE.MathUtils.lerp(mouse.y, mouse.targetY, followEase);
-
-        // Horizontal cursor position controls yaw; vertical position controls pitch.
-        // Keep movement expressive but avoid unnatural full rotations.
-        const targetYaw = THREE.MathUtils.clamp(mouse.x * 0.62, -0.52, 0.52);
-        const targetPitch = THREE.MathUtils.clamp(-mouse.y * 0.34, -0.30, 0.30);
-        headBone.rotation.y = THREE.MathUtils.lerp(headBone.rotation.y, targetYaw, followEase);
-        headBone.rotation.x = THREE.MathUtils.lerp(headBone.rotation.x, targetPitch, followEase);
+        const yawOffset = THREE.MathUtils.clamp(mouse.x * 0.58, -0.48, 0.48);
+        // Cursor near the top of the screen should tilt the face upward.
+        const pitchOffset = THREE.MathUtils.clamp(mouse.y * 0.32, -0.28, 0.28);
+        headBone.rotation.y = headBaseRotation.y + yawOffset;
+        headBone.rotation.x = headBaseRotation.x + pitchOffset;
+      } else if (headBone && characterIntroFinished && scrollY >= 200) {
+        const returnEase = 1 - Math.exp(-10 * delta);
+        headBone.rotation.x = THREE.MathUtils.lerp(headBone.rotation.x, headBaseRotation.x, returnEase);
+        headBone.rotation.y = THREE.MathUtils.lerp(headBone.rotation.y, headBaseRotation.y, returnEase);
       }
 
       renderer.render(scene, camera);
