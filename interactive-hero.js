@@ -57,7 +57,7 @@ if (root) {
     setTimeout(() => { loaderLabel.hidden = true; }, 3200);
   }
 
-  loader.load('./character-only.glb', gltf => {
+  loader.load('./character.glb', gltf => {
     if (loadFinished) return;
     loadFinished = true;
     clearTimeout(loadTimeout);
@@ -115,8 +115,8 @@ if (root) {
     if (loadFinished) return;
     loadFinished = true;
     clearTimeout(loadTimeout);
-    console.warn('3D hero model could not load. Check character-only.glb path and browser console.', error);
-    showFallback('3D MODEL FAILED TO LOAD — CHECK character-only.glb');
+    console.warn('3D hero model could not load. Check character.glb path and browser console.', error);
+    showFallback('3D MODEL FAILED TO LOAD — CHECK character.glb');
   });
 
   function resize() {
