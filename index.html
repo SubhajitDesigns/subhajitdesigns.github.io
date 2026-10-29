@@ -325,7 +325,8 @@
       left: 0;
       width: 100%;
       transform: translateY(-50%);
-      color: #17131b;
+      color: rgba(23, 19, 27, .58);
+      filter: blur(.55px);
       font-size: clamp(42px, 5.6vw, 100px);
       line-height: 1.12;
       font-weight: 600;
@@ -397,11 +398,14 @@
       color:#eae5ec; min-width:250px; text-transform:uppercase;
     }
     .intro-loading-container {
-      position:absolute; width:100%; max-width:var(--intro-size); top:50%;
-      transition:1s; left:50px; z-index:3; transform:translateY(-50%);
+      position:absolute; width:var(--intro-size); max-width:var(--intro-size); top:50%;
+      transition:max-width 1s, opacity .45s; left:50px; z-index:3; transform:translateY(-50%);
+      height:100%; background:#000; overflow:hidden; display:flex; align-items:center;
     }
-    .intro-counter-line { position:relative; width:var(--intro-size); overflow:hidden; }
+    .intro-loading-content { position:relative; background:#000; width:100%; overflow:hidden; text-transform:uppercase; }
+    .intro-counter-line { position:relative; width:var(--intro-size); overflow:hidden; white-space:nowrap; }
     .intro-counter-line span { position:absolute; top:50%; right:0; transform:translateY(-50%); font-weight:300; opacity:.7; }
+    .intro-loading-box { position:absolute; right:0; top:50%; transform:translate(100%,-50%); width:15px; height:25px; background:#fff; animation:intro-blink 1s linear infinite; }
     .intro-welcome-label {
       position:relative; letter-spacing:2px; text-transform:uppercase; width:var(--intro-size);
       overflow:hidden; display:flex; justify-content:center; align-items:center; text-align:center;
