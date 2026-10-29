@@ -46,7 +46,7 @@ const pointer={x:0,y:0};
 addEventListener('pointermove',e=>{pointer.x=(e.clientX/innerWidth-.5)*2;pointer.y=(e.clientY/innerHeight-.5)*2;targetY=-pointer.x*.19;targetX=-pointer.y*.12;});
 addEventListener('pointerleave',()=>{targetX=0;targetY=0;});
 const loader=new GLTFLoader();
-loader.load('./Models/Cool%20Man.glb',g=>{
+loader.load('./Models/Cartoon%20Man.glb',g=>{
  model=g.scene;root.add(model);
  model.traverse(o=>{
   if(o.isBone && /head|neck/i.test(o.name) && !head) head=o;
@@ -68,7 +68,7 @@ loader.load('./Models/Cool%20Man.glb',g=>{
  if(xhr.total)loadingText.firstChild.textContent='LOADING CHARACTER · '+Math.round(xhr.loaded/xhr.total*100)+'%';
 },err=>{
  console.error(err);loadingText.firstChild.textContent='CHARACTER COULD NOT LOAD';
- errorBox.style.display='block';errorBox.textContent='Please check that the model is published at /Models/Cool%20Man.glb and reload this preview.';
+ errorBox.style.display='block';errorBox.textContent='Please check that the model is published at /Models/Cartoon%20Man.glb and reload this preview.';
 });
 const clock=new THREE.Clock();
 function animate(){
