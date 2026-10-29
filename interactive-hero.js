@@ -1,6 +1,9 @@
 /* Interactive 3D hero + Moncy-style scroll choreography — Subhajit Das */
 import * as THREE from 'https://esm.sh/three@0.169.0';
 import { GLTFLoader } from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
+import { gsap } from 'https://esm.sh/gsap@3.12.5';
+import { ScrollTrigger } from 'https://esm.sh/gsap@3.12.5/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
 
 const root = document.querySelector('#home.subh-hero');
 if (root) {
@@ -39,6 +42,7 @@ if (root) {
   let eyeBones = [], baseHead = null, baseNeck = null, loaded = false;
   let scrollRevealMeshes = [];
   let scrollTarget = 0, scrollProgress = 0;
+  let scrollTriggerInstance = null;
   const clock = new THREE.Clock();
   const loader = new GLTFLoader();
   let loadFinished = false;
@@ -186,14 +190,30 @@ if (root) {
   }, { passive: true });
   root.addEventListener('pointerleave', () => { pointer.tx = 0; pointer.ty = 0; });
 
-  function updateScrollState() {
-    const heroHeight = Math.max(root.offsetHeight, window.innerHeight);
-    scrollTarget = reduceMotion ? 0 : THREE.MathUtils.clamp(window.scrollY / (heroHeight * .88), 0, 1);
-    root.classList.toggle('is-scrolled', scrollTarget > .12);
+  // Use the same GSAP ScrollTrigger scrub choreography as the supplied Hero3D
+  // reference. Progress is tied to this hero section, not absolute page scrollY.
+  function setupScrollChoreography() {
+    if (scrollTriggerInstance) scrollTriggerInstance.kill();
+    if (reduceMotion) {
+      scrollTarget = 0;
+      root.classList.remove('is-scrolled');
+      return;
+    }
+    scrollTriggerInstance = ScrollTrigger.create({
+      trigger: root,
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 1.2,
+      invalidateOnRefresh: true,
+      onUpdate: self => {
+        scrollTarget = self.progress;
+        root.classList.toggle('is-scrolled', self.progress > 0.12);
+      }
+    });
+    ScrollTrigger.refresh();
   }
-  window.addEventListener('scroll', updateScrollState, { passive: true });
-  window.addEventListener('resize', updateScrollState, { passive: true });
-  updateScrollState();
+  setupScrollChoreography();
+  window.addEventListener('resize', () => ScrollTrigger.refresh(), { passive: true });
 
   function animate() {
     requestAnimationFrame(animate);
@@ -208,15 +228,15 @@ if (root) {
       const p = scrollProgress;
       // Keep the workstation meshes hidden: the hero uses a clean character cutout,
       // not the source scene's monitor/desk which obscures the face and clips the frame.
-      modelRoot.position.x = THREE.MathUtils.lerp(0, -3.05, p);
+      modelRoot.position.x = THREE.MathUtils.lerp(0, -4.5, p);
       modelRoot.position.y = -.03 + (p > .05 && !reduceMotion ? Math.sin(clock.elapsedTime * 7) * .012 * p : 0);
-      modelRoot.rotation.y = (reduceMotion ? 0 : Math.sin(clock.elapsedTime * .35) * .025) + p * .52;
+      modelRoot.rotation.y = (reduceMotion ? 0 : Math.sin(clock.elapsedTime * .35) * .025) + p * .72;
       modelRoot.rotation.z = p > .05 && !reduceMotion ? Math.sin(clock.elapsedTime * 3.5) * .012 * p : 0;
 
-      camera.position.x = THREE.MathUtils.lerp(0, -.15, p);
+      camera.position.x = THREE.MathUtils.lerp(0, -.2, p);
       camera.position.y = THREE.MathUtils.lerp(.82, .78, p);
-      camera.position.z = THREE.MathUtils.lerp(5.15, 5.8, p);
-      camera.lookAt(THREE.MathUtils.lerp(0, .35, p), .82, 0);
+      camera.position.z = THREE.MathUtils.lerp(5.35, 6.2, p);
+      camera.lookAt(THREE.MathUtils.lerp(0, -.15, p), .82, 0);
 
       // In the hero, the head follows the cursor; during the scroll it turns
       // toward the content, matching the supplied reference interaction.
