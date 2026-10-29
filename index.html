@@ -416,12 +416,13 @@
       100% { transform:translateY(-50%) scaleX(1); opacity:0; }
     }
     .intro-loading-container {
-      position:absolute; width:var(--intro-size); max-width:var(--intro-size); top:50%;
-      transition:max-width 1s, opacity .45s; left:50px; z-index:3; transform:translateY(-50%);
+      position:absolute; width:100%; max-width:100%; top:50%;
+      transition:max-width 1s, opacity .45s; left:0; z-index:3; transform:translateY(-50%);
       height:100%; background:#000; overflow:hidden; display:flex; align-items:center;
+      justify-content:center; padding:0 14px; box-sizing:border-box;
     }
     .intro-loading-content { position:relative; background:#000; width:100%; overflow:hidden; text-transform:uppercase; }
-    .intro-counter-line { position:relative; width:var(--intro-size); overflow:hidden; white-space:nowrap; }
+    .intro-counter-line { position:relative; width:100%; overflow:hidden; white-space:nowrap; text-align:center; padding-right:0; box-sizing:border-box; }
     .intro-counter-line span { position:absolute; top:50%; right:0; transform:translateY(-50%); font-weight:300; opacity:.7; }
     .intro-loading-box { position:absolute; right:0; top:50%; transform:translate(100%,-50%); width:15px; height:25px; background:#fff; animation:intro-blink 1s linear infinite; }
     .intro-welcome-label {
@@ -451,7 +452,6 @@
     @media (min-width:1400px) {
       .intro-wrap { --intro-size:210px; }
       .intro-button { padding:30px 70px; font-size:25px; }
-      .intro-loading-container { left:70px; }
     }
     @media (max-width:600px) {
       .intro-marquee { font-size:42px; }
