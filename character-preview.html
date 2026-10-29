@@ -56,13 +56,19 @@ loader.load('./Models/Cartoon%20Man.glb',g=>{
  model.position.sub(center);
  const maxDim=Math.max(size.x,size.y,size.z)||1;
  const scale=3.6/maxDim;model.scale.setScalar(scale);
- const scaledSize=size.multiplyScalar(scale);
- // Tight portrait framing: face, neck and shoulders only, not the full body.
- camera.position.set(0,2.65,5.0);
- camera.lookAt(0,2.65,0);
- root.position.set(innerWidth>700?.12:0,-.03,0);
- // Close portrait crop: face, neck and upper shoulders; hide most of the torso.
- camera.zoom=1.65; camera.updateProjectionMatrix();
+ // Make a portrait crop rather than showing the full character.
+ camera.position.set(0,1.55,5.0);
+ camera.lookAt(0,1.15,0);
+ root.position.set(innerWidth>700?.10:0,-.03,0);
+ camera.zoom=1.9; camera.updateProjectionMatrix();
+ // Preserve the model's authored materials. Record eye-related mesh/material names
+ // in the browser console so missing pupils can be diagnosed without guessing.
+ model.traverse(o=>{
+   if(o.isMesh && /eye|pupil|iris|cornea/i.test(o.name)){
+     const mats=Array.isArray(o.material)?o.material:[o.material];
+     console.info('[Character eye mesh]',o.name,mats.map(m=>({name:m.name,color:m.color?.getHexString(),map:!!m.map,emissive:m.emissive?.getHexString()})));
+   }
+ });
  loading.classList.add('hide');setTimeout(()=>loading.remove(),500);
 },xhr=>{
  if(xhr.total)loadingText.firstChild.textContent='LOADING CHARACTER · '+Math.round(xhr.loaded/xhr.total*100)+'%';
