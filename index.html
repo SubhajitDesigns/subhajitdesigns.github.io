@@ -487,16 +487,57 @@
     }
   </style>
 <style>
-/* Hide the on-screen development tracker and unwanted work-gallery overlay labels. */
+/* Featured Work begins after the pinned hero transition completes. */
 #trackerDisplay,
 .tracker-display,
-.crafted-heading,
 .crafted-gallery-edge,
 .crafted-gallery-center-meta,
 .crafted-gallery-center-copy,
 .crafted-gallery-hint {
   display: none !important;
 }
+#work.crafted-gallery-enabled {
+  position: relative;
+  display: block;
+  min-height: 100vh;
+  padding: clamp(5rem, 10vh, 8rem) clamp(1.25rem, 5vw, 5rem) 5rem;
+  margin: 0;
+  isolation: isolate;
+  background: #08080d;
+}
+#work .crafted-heading {
+  display: block !important;
+  position: relative;
+  z-index: 2;
+  width: min(100%, 1120px);
+  margin: 0 auto clamp(2.5rem, 6vh, 5rem);
+  color: #f7f4fb;
+  text-align: left;
+}
+#work .crafted-heading p {
+  margin: 0 0 1rem;
+  color: #c084fc;
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+#work .crafted-heading h2 {
+  margin: 0;
+  font-size: clamp(2.6rem, 7vw, 6.5rem);
+  line-height: .95;
+  letter-spacing: -.055em;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+#work .crafted-heading h2 span { color: #c084fc; }
+#work .crafted-heading > div {
+  margin-top: 1.1rem;
+  color: #9ca3af;
+  font-size: .9rem;
+  letter-spacing: .12em;
+}
+#work .crafted-gallery { min-height: 70vh; }
+
 </style>
 </head>
 <body class="intro-active">
