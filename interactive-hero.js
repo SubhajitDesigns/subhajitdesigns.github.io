@@ -11,7 +11,7 @@ if (root) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(32, 1, .1, 100);
-  camera.position.set(0, .28, 4.35);
+  camera.position.set(0, .42, 5.15);
 
   const renderer = new THREE.WebGLRenderer({
     canvas, alpha: true, antialias: true, powerPreference: 'high-performance'
@@ -92,7 +92,7 @@ if (root) {
     model.position.sub(center);
     model.updateMatrixWorld(true);
 
-    const targetHeight = 2.75;
+    const targetHeight = 3.9;
     modelRoot.scale.setScalar(targetHeight / Math.max(size.y, .001));
     modelRoot.position.set(0, -.03, 0);
     model.traverse(object => {
@@ -208,15 +208,15 @@ if (root) {
       const p = scrollProgress;
       // Keep the workstation meshes hidden: the hero uses a clean character cutout,
       // not the source scene's monitor/desk which obscures the face and clips the frame.
-      modelRoot.position.x = THREE.MathUtils.lerp(0, -2.15, p);
+      modelRoot.position.x = THREE.MathUtils.lerp(0, -2.45, p);
       modelRoot.position.y = -.03 + (p > .05 && !reduceMotion ? Math.sin(clock.elapsedTime * 7) * .012 * p : 0);
       modelRoot.rotation.y = (reduceMotion ? 0 : Math.sin(clock.elapsedTime * .35) * .025) + p * .52;
       modelRoot.rotation.z = p > .05 && !reduceMotion ? Math.sin(clock.elapsedTime * 3.5) * .012 * p : 0;
 
       camera.position.x = THREE.MathUtils.lerp(0, -.15, p);
-      camera.position.y = THREE.MathUtils.lerp(.28, .28, p);
-      camera.position.z = THREE.MathUtils.lerp(4.35, 5.0, p);
-      camera.lookAt(THREE.MathUtils.lerp(0, -.05, p), .28, 0);
+      camera.position.y = THREE.MathUtils.lerp(.42, .38, p);
+      camera.position.z = THREE.MathUtils.lerp(5.15, 5.8, p);
+      camera.lookAt(THREE.MathUtils.lerp(0, .15, p), .42, 0);
 
       // In the hero, the head follows the cursor; during the scroll it turns
       // toward the content, matching the supplied reference interaction.
