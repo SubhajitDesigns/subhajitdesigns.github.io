@@ -35,7 +35,7 @@ if (root) {
   const modelRoot = new THREE.Group();
   scene.add(modelRoot);
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
-  let mixer = null, blinkAction = null, head = null, neck = null;
+  let mixer = null, blinkAction = null, head = null, neck = null, nextBlink = 2.7;
   let eyeBones = [], baseHead = null, baseNeck = null, loaded = false;
   let scrollTarget = 0, scrollProgress = 0;
   const clock = new THREE.Clock();
