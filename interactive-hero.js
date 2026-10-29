@@ -69,9 +69,11 @@ import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/
 
   // 4. Load Character from your repository
   const gltfLoader = new GLTFLoader();
+  // Load the character-only asset explicitly; the old character.glb contains
+  // the desk/monitor setup and can leave the loader stuck if that file fails.
   const modelUrl = (typeof window.CHARACTER_GLB_BASE64 !== 'undefined' && window.CHARACTER_GLB_BASE64)
     ? window.CHARACTER_GLB_BASE64
-    : './character.glb';
+    : './character-only.glb';
 
   gltfLoader.load(
     modelUrl,
@@ -109,14 +111,12 @@ import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/
       }
     },
     (err) => {
-      console.warn('Fallback loading ./character-only.glb:', err);
-      gltfLoader.load('./character-only.glb', (g2) => {
-        character = g2.scene;
-        scene.add(character);
-        character.position.set(0, isMobile ? -1.1 : -0.6, 0);
-        headBone = character.getObjectByName('spine.006') || null;
-        hideLoader();
-      });
+      console.error('Could not load character model:', modelUrl, err);
+      if (loaderLabel) {
+        loaderLabel.textContent = 'CHARACTER FAILED TO LOAD — CHECK character-only.glb';
+        loaderLabel.style.opacity = '1';
+        loaderLabel.style.display = 'block';
+      }
     }
   );
 
