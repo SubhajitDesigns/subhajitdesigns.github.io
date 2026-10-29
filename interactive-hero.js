@@ -63,12 +63,28 @@ if (root) {
     clearTimeout(loadTimeout);
 
     const model = gltf.scene;
+
+    // This model export includes a workstation in some versions. Hide those
+    // named meshes before measuring the model, otherwise the laptop/desk
+    // controls the framing and can sit directly in front of the character.
+    const workstationWords = ['laptop', 'monitor', 'screen', 'keyboard', 'desk', 'tabletop', 'computer'];
+    model.traverse(object => {
+      const normalizedName = (object.name || '').toLowerCase().replace(/[._\\s-]/g, '');
+      if (object.isMesh && workstationWords.some(word => normalizedName.includes(word))) {
+        object.visible = false;
+      }
+    });
+
     modelRoot.add(model);
     model.updateMatrixWorld(true);
-    const box = new THREE.Box3().setFromObject(model);
+    const box = new THREE.Box3();
+    model.traverse(object => {
+      if (object.isMesh && object.visible) box.expandByObject(object);
+    });
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
     model.position.sub(center);
+    model.updateMatrixWorld(true);
 
     const targetHeight = 3.65;
     modelRoot.scale.setScalar(targetHeight / Math.max(size.y, .001));
