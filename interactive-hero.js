@@ -68,17 +68,16 @@ if (root) {
     // This model export includes a workstation in some versions. Hide those
     // named meshes before measuring the model, otherwise the laptop/desk
     // controls the framing and can sit directly in front of the character.
-    const workstationWords = ['laptop', 'monitor', 'screen', 'keyboard', 'desk', 'tabletop', 'computer'];
+    const workstationWords = ['laptop', 'monitor', 'screen', 'keyboard', 'desk', 'tabletop', 'computer', 'keys', 'ground'];
+    const workstationNodeNames = new Set(['plane', 'plane002', 'plane003', 'plane004', 'cube002', 'screenlight', 'keyboard']);
     model.traverse(object => {
       const rawName = (object.name || '').toLowerCase();
       const normalizedName = rawName.replace(/[._\\s-]/g, '');
       // The supplied Scroll-Walk HTML specifically targets Plane.004 and screenlight.
       // Remember those parts so they can be revealed as the visitor scrolls.
-      const isMonitorPart = /^(plane004|screenlight)$/.test(normalizedName);
-      if (object.isMesh && isMonitorPart) {
-        object.visible = false;
-        scrollRevealMeshes.push(object);
-      } else if (object.isMesh && workstationWords.some(word => normalizedName.includes(word))) {
+      const isWorkstationPart = workstationNodeNames.has(normalizedName) ||
+        workstationWords.some(word => normalizedName.includes(word));
+      if (isWorkstationPart) {
         object.visible = false;
       }
     });
@@ -94,9 +93,9 @@ if (root) {
     model.position.sub(center);
     model.updateMatrixWorld(true);
 
-    const targetHeight = 3.65;
+    const targetHeight = 2.75;
     modelRoot.scale.setScalar(targetHeight / Math.max(size.y, .001));
-    modelRoot.position.set(.12, -.16, 0);
+    modelRoot.position.set(.72, -.22, 0);
     model.traverse(object => {
       if (object.isMesh) {
         object.castShadow = true;
@@ -206,10 +205,8 @@ if (root) {
       // Scroll choreography: the character glides left, turns toward the page,
       // and the camera eases back as the hero gives way to the next section.
       const p = scrollProgress;
-      // Scroll-Walk behavior: keep the monitor hidden in the opening hero,
-      // then reveal its model parts after the user starts scrolling.
-      const showWorkstation = p > .08;
-      scrollRevealMeshes.forEach(mesh => { mesh.visible = showWorkstation; });
+      // Keep the workstation meshes hidden: the hero uses a clean character cutout,
+      // not the source scene's monitor/desk which obscures the face and clips the frame.
       modelRoot.position.x = THREE.MathUtils.lerp(.12, -1.05, p);
       modelRoot.position.y = -.16 + (p > .05 && !reduceMotion ? Math.sin(clock.elapsedTime * 7) * .012 * p : 0);
       modelRoot.rotation.y = (reduceMotion ? 0 : Math.sin(clock.elapsedTime * .35) * .025) + p * .52;
