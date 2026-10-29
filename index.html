@@ -599,5 +599,15 @@
   <script src="dynamic-island.js?v=20261009-6"></script>
   <script src="crafted-voyage.js?v=20261010-1"></script>
   <script type="module" src="interactive-hero.js?v=20261029-scroll-walk-2"></script>
+  <script>
+    window.setTimeout(function () {
+      var loader = document.querySelector(".subh-hero-loader");
+      if (loader && !loader.classList.contains("is-hidden")) {
+        loader.textContent = "3D CHARACTER FAILED TO INITIALIZE — PLEASE REFRESH";
+        loader.style.background = "transparent";
+        window.setTimeout(function(){ loader.classList.add("is-hidden"); }, 5000);
+      }
+    }, 22000);
+  </script>
 </body>
 </html>
