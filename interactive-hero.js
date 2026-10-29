@@ -58,7 +58,7 @@ if (root) {
     setTimeout(() => { loaderLabel.hidden = true; }, 3200);
   }
 
-  loader.load('./character.glb', gltf => {
+  loader.load('./character-only.glb', gltf => {
     if (loadFinished) return;
     loadFinished = true;
     clearTimeout(loadTimeout);
