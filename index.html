@@ -14,7 +14,7 @@
   <script src="./modelData.js"></script>
   <style>
     :root {
-      --bg: #0b0506;
+      --bg: #030304;
       --accent: #ff4d4d;
       --accent-glow: rgba(255, 77, 77, 0.45);
       --text-muted: #94a3b8;
@@ -46,11 +46,10 @@
       width: 520px;
       height: 520px;
       z-index: 1;
-      background-color: #ff3b3b;
+      background: radial-gradient(circle, rgba(150, 18, 30, 0.48) 0%, rgba(95, 10, 18, 0.25) 44%, rgba(35, 4, 8, 0) 74%);
       top: 50%;
       left: 50%;
       transform: translate(-50%, -40%) scale(1.3);
-      box-shadow: inset 70px 40px 90px 0px rgba(120, 0, 0, 0.75);
       filter: blur(80px);
       border-radius: 50%;
       pointer-events: none;
@@ -64,11 +63,25 @@
       left: 5%;
       width: 340px;
       height: 340px;
-      background: #ff5a5a;
-      box-shadow: inset -50px 40px 50px rgba(120, 0, 0, 0.6);
-      filter: blur(85px);
+      background: #a3202b;
+      box-shadow: inset -50px 40px 50px rgba(85, 8, 15, 0.48);
+      filter: blur(95px);
       border-radius: 50%;
-      opacity: 0.35;
+      opacity: 0.24;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .ambient-glow-right {
+      position: fixed;
+      top: 43%;
+      right: 4%;
+      width: 300px;
+      height: 360px;
+      background: #8f1b27;
+      box-shadow: inset 45px 30px 55px rgba(75, 6, 12, 0.42);
+      filter: blur(100px);
+      border-radius: 50%;
+      opacity: 0.2;
       pointer-events: none;
       z-index: 0;
     }
@@ -676,6 +689,7 @@
 <body class="intro-active">
   <!-- Ambient Moncy.dev Glow Circles -->
   <div class="ambient-glow-left"></div>
+  <div class="ambient-glow-right"></div>
   <div class="character-rim" id="rim-circle"></div>
 
   <!-- Loading Screen -->
@@ -923,7 +937,7 @@
 
     // 2. Realistic Studio & Character PBR Lighting Setup
     // Warm ambient light
-    const ambientLight = new THREE.AmbientLight(0x302238, 1.35);
+    const ambientLight = new THREE.AmbientLight(0x241719, 1.15);
     scene.add(ambientLight);
 
     // Warm key light on face & skin
@@ -934,15 +948,15 @@
     keyLight.shadow.mapSize.height = 1024;
     scene.add(keyLight);
 
-    // Signature Moncy.dev Violet / Purple Rim Light (from left rear)
-    const rimLightPurple = new THREE.PointLight(0xc66aff, 3.4, 27, 1.9);
-    rimLightPurple.position.set(-5, 10, -5);
-    scene.add(rimLightPurple);
+    // Restrained red rim light from the left rear
+    const rimLightRed = new THREE.PointLight(0xe83949, 2.7, 27, 1.9);
+    rimLightRed.position.set(-5, 10, -5);
+    scene.add(rimLightRed);
 
-    // Cyan / Blue Accent Rim Light (from right rear)
-    const rimLightCyan = new THREE.PointLight(0x42cfe8, 1.15, 24, 2.2);
-    rimLightCyan.position.set(5, 8, -5);
-    scene.add(rimLightCyan);
+    // Low red fill from the right rear to keep purple-blue reflections out of the eyes
+    const rimLightWarm = new THREE.PointLight(0x9f3038, 0.85, 24, 2.2);
+    rimLightWarm.position.set(5, 8, -5);
+    scene.add(rimLightWarm);
 
     // Soft front fill light
     const fillLight = new THREE.PointLight(0xffd9d0, 1.0, 22);
@@ -992,7 +1006,20 @@
             child.castShadow = true;
             child.receiveShadow = true;
             if (child.material) {
-              child.material.envMapIntensity = 1.2;
+              child.material.envMapIntensity = 0.9;
+              const materials = Array.isArray(child.material) ? child.material : [child.material];
+              materials.forEach((material) => {
+                const isEyeSurface = /(eye|iris|pupil)/i.test(`${child.name || ''} ${material.name || ''}`);
+                if (!isEyeSurface) return;
+                ['color', 'emissive'].forEach((property) => {
+                  const tint = material[property];
+                  if (!tint || typeof tint.getHSL !== 'function' || typeof tint.setHSL !== 'function') return;
+                  const hsl = {};
+                  tint.getHSL(hsl);
+                  if (hsl.h > 0.68 && hsl.h < 0.95) tint.setHSL(0.08, Math.min(hsl.s, 0.12), hsl.l);
+                });
+                material.needsUpdate = true;
+              });
               child.material.needsUpdate = true;
             }
           }
