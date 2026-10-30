@@ -1625,6 +1625,8 @@
     let characterIntroFinished = false;
     let userMovedMouse = false;
     let monitorObject = null;
+    let keyboardObject = null;
+    let keyboardBaseY = 0;
     let screenLightMesh = null;
     let screenGlowMaterials = [];
 
@@ -1694,6 +1696,12 @@
 
         // Find laptop screen and screenlight
         monitorObject = character.getObjectByName('Plane.004') || character.getObjectByName('Plane004') || null;
+        keyboardObject = character.getObjectByName('Keyboard') || null;
+        if (keyboardObject) {
+          keyboardBaseY = keyboardObject.position.y;
+          keyboardObject.position.y = -10;
+          keyboardObject.visible = false;
+        }
         screenLightMesh = character.getObjectByName('screenlight') || null;
         character.add(screenLight);
         screenLight.position.set(0, 8.7, 3.4);
@@ -1713,6 +1721,7 @@
           monitorObject.visible = false;
           monitorObject.position.y = -10;
         }
+        if (keyboardObject) keyboardObject.visible = false;
         if (screenLightMesh) {
           screenLightMesh.visible = false;
           screenLightMesh.position.y = -10;
@@ -1848,6 +1857,7 @@
             const laptopGlow = THREE.MathUtils.clamp((self.progress - laptopRevealProgress) / 0.22, 0, 1);
             const showLaptop = self.progress >= laptopRevealProgress;
             if (monitorObject) monitorObject.visible = showLaptop;
+            if (keyboardObject) keyboardObject.visible = showLaptop;
             if (screenLightMesh) screenLightMesh.visible = showLaptop;
             screenLight.visible = laptopGlow > 0;
             screenLight.intensity = laptopGlow * 2.4;
@@ -1860,10 +1870,11 @@
 
       tl1
         .to(character.position, { x: -2.4, y: -1.15, duration: 1 }, 0)
-        .to(character.scale, { x: 1.16, y: 1.16, z: 1.16, duration: 1 }, 0)
+        .to(character.scale, { x: 1.08, y: 1.08, z: 1.08, duration: 1 }, 0)
         .to(character.rotation, { y: 0.72, duration: 1 }, 0)
         .to(camera.position, { z: 26.5, y: 12.5, duration: 1 }, 0)
         .fromTo(monitorObject ? monitorObject.position : {}, { y: -10 }, { y: 9.04, duration: 0.8, ease: "power2.out" }, 2.12)
+        .fromTo(keyboardObject ? keyboardObject.position : {}, { y: -10 }, { y: keyboardBaseY, duration: 0.8, ease: "power2.out" }, 2.12)
         .fromTo(screenLightMesh ? screenLightMesh.position : {}, { y: -10 }, { y: 9.04, duration: 0.8, ease: "power2.out" }, 2.12)
         .to(rimCircle, { left: "30%", scale: 1.15, opacity: 0.9, duration: 1 }, 0)
         .to("#hero-left-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
