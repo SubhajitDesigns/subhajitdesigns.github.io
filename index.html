@@ -631,6 +631,7 @@
 }
 #work.crafted-gallery-enabled {
   position: relative;
+  z-index: 3;
   display: block;
   min-height: 100vh;
   padding: clamp(5rem, 10vh, 8rem) clamp(1.25rem, 5vw, 5rem) 5rem;
@@ -1627,6 +1628,7 @@
     let monitorObject = null;
     let keyboardObject = null;
     let keyboardBaseY = 0;
+    let laptopGlowLevel = 0;
     let screenLightMesh = null;
     let screenGlowMaterials = [];
 
@@ -1859,11 +1861,8 @@
             if (monitorObject) monitorObject.visible = showLaptop;
             if (keyboardObject) keyboardObject.visible = showLaptop;
             if (screenLightMesh) screenLightMesh.visible = showLaptop;
+            laptopGlowLevel = laptopGlow;
             screenLight.visible = laptopGlow > 0;
-            screenLight.intensity = laptopGlow * 2.4;
-            screenGlowMaterials.forEach((material) => {
-              material.emissiveIntensity = laptopGlow * 1.35;
-            });
           }
         }
       });
@@ -1890,8 +1889,33 @@
         .fromTo(aboutCards[2], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 2.62)
         .fromTo(aboutText[2], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, stagger: 0.08 }, 2.68)
         .fromTo(aboutHeadingLetters[2], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.08, stagger: 0.012 }, 2.70);
-// The pinned hero now reveals the About, experience, and achievements panels
-      // before releasing into the Crafted Designs section.
+
+      const craftedWalk = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#work",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.1,
+          invalidateOnRefresh: true
+        }
+      });
+      craftedWalk
+        .to(character.position, { x: -3.35, duration: 1.16, ease: "none" }, 0)
+        .to(character.position, { y: -1.70, duration: 0.12, ease: "sine.inOut" }, 0.08)
+        .to(character.position, { y: -1.80, duration: 0.12, ease: "sine.inOut" }, 0.20)
+        .to(character.position, { y: -1.70, duration: 0.12, ease: "sine.inOut" }, 0.36)
+        .to(character.position, { y: -1.80, duration: 0.12, ease: "sine.inOut" }, 0.48)
+        .to(character.position, { y: -1.70, duration: 0.12, ease: "sine.inOut" }, 0.64)
+        .to(character.position, { y: -1.80, duration: 0.12, ease: "sine.inOut" }, 0.76)
+        .to(character.position, { y: -1.70, duration: 0.12, ease: "sine.inOut" }, 0.92)
+        .to(character.position, { y: -1.80, duration: 0.12, ease: "sine.inOut" }, 1.04)
+        .to(character.rotation, { z: 0.025, duration: 0.16, ease: "sine.inOut" }, 0)
+        .to(character.rotation, { z: -0.025, duration: 0.32, ease: "sine.inOut" }, 0.16)
+        .to(character.rotation, { z: 0.025, duration: 0.32, ease: "sine.inOut" }, 0.48)
+        .to(character.rotation, { z: -0.025, duration: 0.32, ease: "sine.inOut" }, 0.80)
+        .to(character.rotation, { z: 0, duration: 0.16, ease: "sine.inOut" }, 1.12);
+      // The pinned hero reveals About, experience, and achievements before the
+      // character continues moving left through the translucent Crafted section.
     }
 
     // 5. Mouse Tracking & Kinematics
@@ -1959,6 +1983,18 @@
 
       // Advance the authored animation first so the intro nod remains intact.
       if (mixer) mixer.update(delta);
+
+      if (laptopGlowLevel > 0) {
+        const t = clock.elapsedTime;
+        const screenPulse = 0.80 + 0.16 * (0.5 + 0.5 * Math.sin(t * 3.6)) + 0.04 * Math.sin(t * 15.2);
+        screenLight.intensity = laptopGlowLevel * 2.4 * screenPulse;
+        screenGlowMaterials.forEach((material) => {
+          material.emissiveIntensity = laptopGlowLevel * 1.35 * screenPulse;
+        });
+      } else {
+        screenLight.intensity = 0;
+        screenGlowMaterials.forEach((material) => { material.emissiveIntensity = 0; });
+      }
 
       // Cursor tracking is an offset from the rig's original head pose.
       if (headBone && characterIntroFinished && userMovedMouse && scrollY < 200) {
