@@ -105,6 +105,59 @@
     @media(max-width:850px){.crafted-gallery-cards{grid-template-columns:repeat(2,minmax(0,1fr));max-width:650px}.featured-photo-label{padding:12px}}
     @media(max-width:420px){.crafted-gallery-cards{gap:10px}.featured-photo-label strong{font-size:.76rem}.featured-photo-label small{font-size:.55rem}}
 
+    /* Continuous software-logo loop beneath the selected work gallery */
+    .software-logo-loop {
+      position: relative;
+      z-index: 20;
+      display: block;
+      width: 100%;
+      min-height: 0;
+      padding: 14px 0;
+      overflow: hidden;
+      border-block: 1px solid rgba(244,242,236,.12);
+      background: rgba(10,10,11,.82);
+    }
+    .software-logo-loop-viewport {
+      width: 100%;
+      overflow: hidden;
+      mask-image: linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
+      -webkit-mask-image: linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
+    }
+    .software-logo-loop-track {
+      display: inline-flex;
+      align-items: center;
+      gap: 56px;
+      width: max-content;
+      white-space: nowrap;
+      will-change: transform;
+    }
+    .software-logo-loop-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #8A8893;
+      font: 700 18px/1 system-ui,sans-serif;
+      letter-spacing: -.012em;
+    }
+    .software-logo-loop-item img {
+      display: block;
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+    }
+    .software-logo-loop-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #4A6BFF;
+      flex: 0 0 5px;
+    }
+    @media(max-width:600px) {
+      .software-logo-loop-track { gap: 36px; }
+      .software-logo-loop-item { font-size: 15px; }
+      .software-logo-loop-item img { width: 30px; height: 30px; }
+    }
+
     /* Standalone gallery below Crafted Designs */
     .portfolio-gallery-section{position:relative;z-index:20;isolation:isolate;overflow:hidden;clear:both;padding:clamp(5rem,9vw,8rem) clamp(1.2rem,5vw,5rem) 3rem;background:linear-gradient(180deg,rgba(15,7,8,.96),rgba(20,8,9,.98));border-top:1px solid rgba(255,255,255,.08)}
     .portfolio-gallery-section:before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background:radial-gradient(ellipse at 15% 12%,rgba(255,77,77,.12),transparent 45%),radial-gradient(ellipse at 90% 75%,rgba(180,55,55,.09),transparent 42%)}
@@ -1329,6 +1382,11 @@
   </div>
 </section>
 
+<section id="software-logo-loop" class="software-logo-loop" aria-label="Creative software logos">
+  <div class="software-logo-loop-viewport">
+    <div class="software-logo-loop-track" id="softwareLogoTrack"></div>
+  </div>
+</section>
 
   </div>
 
@@ -2821,6 +2879,65 @@ const TechText = ({
 
 const techMount = document.getElementById('techNameReactMount');
 if (techMount) ReactDOM.createRoot(techMount).render(<TechText text="SUBHAJIT DAS" fontWeight={600} fontSize={150} reveal="letter" dashLength={4} dashGap={2} specks={15} clickKick guides={false} fontFamily="" letterSpacing={-0.05} accentColor="currentColor" reach={200} softness={0.7} lineStyle="dashed" strokeWidth={1.5} speed={1} bounce={0.4} selection labels color="currentColor" align="center" draggable sweep />);
+</script>
+<script>
+(() => {
+  const track = document.getElementById('softwareLogoTrack');
+  if (!track) return;
+
+  const logos = [
+    { name: 'After Effects', src: 'icons/icon-ae.webp' },
+    { name: 'Illustrator', src: 'icons/icon-ai.webp' },
+    { name: 'CapCut', src: 'icons/icon-capcut.webp' },
+    { name: 'Figma', src: 'icons/icon-figma.webp' },
+    { name: 'Premiere Pro', src: 'icons/icon-pr.webp' },
+    { name: 'Photoshop', src: 'icons/icon-ps.webp' }
+  ];
+
+  for (let cycle = 0; cycle < 3; cycle++) {
+    logos.forEach((item) => {
+      const entry = document.createElement('span');
+      entry.className = 'software-logo-loop-item';
+      if (cycle > 0) entry.setAttribute('aria-hidden', 'true');
+
+      const logo = document.createElement('img');
+      logo.src = item.src;
+      logo.alt = '';
+      logo.width = 36;
+      logo.height = 36;
+      logo.loading = 'lazy';
+      logo.decoding = 'async';
+
+      const dot = document.createElement('span');
+      dot.className = 'software-logo-loop-dot';
+      dot.setAttribute('aria-hidden', 'true');
+
+      const label = document.createElement('span');
+      label.textContent = item.name;
+
+      entry.append(logo, dot, label);
+      track.appendChild(entry);
+    });
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const speed = 60;
+  const direction = -1;
+  let offset = 0;
+  let last = performance.now();
+
+  function tick(now) {
+    const delta = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    offset += direction * speed * delta;
+    const stripWidth = track.scrollWidth / 3;
+    if (stripWidth > 0 && offset <= -stripWidth) offset += stripWidth;
+    track.style.transform = `translateX(${offset.toFixed(2)}px)`;
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+})();
 </script>
 
 </body>
