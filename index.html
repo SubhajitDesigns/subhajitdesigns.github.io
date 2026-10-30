@@ -685,12 +685,14 @@
 #work .crafted-gallery { min-height: 70vh; }
 
 
-/* My Work coverflow gallery */
+
+/* Full-width, auto-moving My Work coverflow */
 #my-work-gallery {
   position: relative;
   z-index: 11;
+  width: 100%;
   min-height: 100vh;
-  padding: clamp(4.5rem, 9vh, 7rem) clamp(1.2rem, 5vw, 5rem);
+  padding: clamp(4rem, 8vh, 6.5rem) 0;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -705,12 +707,12 @@
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 50% 42%, rgba(145,22,34,.18), transparent 52%),
-    radial-gradient(ellipse at 4% 88%, rgba(100,12,22,.13), transparent 35%),
-    radial-gradient(ellipse at 96% 82%, rgba(100,12,22,.12), transparent 34%);
+    radial-gradient(ellipse at 50% 42%, rgba(145,22,34,.2), transparent 55%),
+    radial-gradient(ellipse at 0% 88%, rgba(100,12,22,.16), transparent 35%),
+    radial-gradient(ellipse at 100% 82%, rgba(100,12,22,.15), transparent 34%);
 }
-#my-work-gallery .my-work-inner { width: min(100%, 1180px); margin: auto; }
-#my-work-gallery .my-work-heading { max-width: 720px; margin: 0 auto 1rem; text-align: center; }
+#my-work-gallery .my-work-inner { width: 100%; margin: auto; }
+#my-work-gallery .my-work-heading { width: min(88vw, 720px); margin: 0 auto 1rem; text-align: center; }
 #my-work-gallery .my-work-heading p:first-child {
   margin: 0 0 1rem;
   color: #ff7777;
@@ -736,52 +738,61 @@
   line-height: 1.65;
 }
 #my-work-gallery .coverflow {
-  --u: .25vmin;
   display: grid;
   justify-items: center;
-  gap: clamp(1.25rem, 3.5vmin, 2.6rem);
+  gap: clamp(.75rem, 2vh, 1.5rem);
+  width: 100%;
   font-family: var(--font-geist), sans-serif;
 }
 #my-work-gallery .view {
   display: grid;
   place-items: center;
-  width: 100%;
-  height: 50vmin;
-  min-height: 300px;
-  max-height: 540px;
-  perspective: calc(700 * var(--u));
-  outline-offset: 8px;
+  width: 100vw;
+  height: clamp(390px, 54vw, 650px);
+  perspective: 1400px;
+  outline: none;
 }
 #my-work-gallery .track {
   position: relative;
-  width: calc(130 * var(--u));
-  height: calc(165 * var(--u));
+  width: 100vw;
+  height: 100%;
   transform-style: preserve-3d;
   pointer-events: none;
 }
 #my-work-gallery .cover-card {
   position: absolute;
-  inset: 0;
+  top: 50%;
+  left: 50%;
   display: block;
+  width: clamp(220px, 22vw, 330px);
+  height: clamp(300px, 34vw, 460px);
   overflow: hidden;
   padding: 0;
   border: 1px solid rgba(255,255,255,.18);
-  border-radius: calc(12 * var(--u));
+  border-radius: 18px;
   color: #fff;
-  background: linear-gradient(160deg, hsl(var(--hue) 72% 44%), hsl(var(--hue) 68% 23%));
-  box-shadow: 0 calc(16 * var(--u)) calc(24 * var(--u)) calc(-14 * var(--u)) #000, 0 0 28px rgba(255,65,65,.1);
-  cursor: pointer;
+  background: #16090b;
+  box-shadow: 0 22px 50px rgba(0,0,0,.5), 0 0 32px rgba(255,65,65,.12);
   pointer-events: auto;
   transform:
-    translateX(calc(var(--o) * 44 * var(--u) + var(--sign) * 34 * var(--u)))
-    translateZ(calc(var(--abs) * -60 * var(--u)))
-    rotateY(calc(var(--sign) * -58deg));
-  transition: transform .55s cubic-bezier(.2,.8,.2,1), opacity .55s, filter .55s, border-color .35s;
-  filter: brightness(calc(1 - var(--abs) * .12));
-  opacity: clamp(0, calc(2.2 - var(--abs) * .8), 1);
+    translate(-50%, -50%)
+    translateX(calc(var(--o) * clamp(100px, 15vw, 220px) + var(--sign) * clamp(35px, 4vw, 60px)))
+    translateZ(calc(var(--abs) * -72px))
+    rotateY(calc(var(--sign) * -52deg));
+  transition:
+    transform .95s cubic-bezier(.22,.72,.23,1),
+    opacity .85s ease,
+    filter .85s ease,
+    border-color .5s ease;
+  filter: brightness(calc(1 - var(--abs) * .11));
+  opacity: clamp(0, calc(2.2 - var(--abs) * .72), 1);
+  will-change: transform, opacity;
+}
+#my-work-gallery .cover-card[aria-current="true"] {
+  border-color: rgba(255,112,112,.85);
+  box-shadow: 0 25px 60px rgba(0,0,0,.58), 0 0 34px rgba(255,65,65,.18);
 }
 #my-work-gallery .cover-card.is-far { opacity: 0; pointer-events: none; }
-#my-work-gallery .cover-card[aria-pressed="true"] { border-color: rgba(255,112,112,.8); }
 #my-work-gallery .cover-card img {
   position: absolute;
   inset: 0;
@@ -793,16 +804,16 @@
 #my-work-gallery .cover-card::after {
   content: "";
   position: absolute;
-  inset: 30% 0 0;
-  background: linear-gradient(transparent 5%, rgba(8,4,6,.86));
+  inset: 28% 0 0;
+  background: linear-gradient(transparent 5%, rgba(8,4,6,.88));
 }
 #my-work-gallery .cover-card-title {
   position: absolute;
   z-index: 1;
   inset: auto 0 0;
-  padding: calc(9 * var(--u));
+  padding: 20px;
   color: #fff;
-  font-size: clamp(.62rem, 1.15vw, .9rem);
+  font-size: clamp(.75rem, 1.2vw, 1rem);
   font-weight: 750;
   letter-spacing: .07em;
   line-height: 1.2;
@@ -810,52 +821,29 @@
 }
 #my-work-gallery .cover-card-title small {
   display: block;
-  margin-bottom: .4em;
+  margin-bottom: .5em;
   color: #ffc0c0;
   font-size: .68em;
   font-weight: 650;
   letter-spacing: .15em;
 }
-#my-work-gallery .coverflow-controls {
-  display: grid;
-  justify-items: center;
-  gap: 1rem;
-  text-align: center;
-}
 #my-work-gallery .coverflow-caption {
   min-height: 1.3em;
   color: rgba(255,239,240,.78);
-  font-size: .9rem;
-  font-weight: 600;
-  letter-spacing: .12em;
+  font-size: .82rem;
+  font-weight: 650;
+  letter-spacing: .15em;
+  text-align: center;
 }
-#my-work-gallery .coverflow-row { display: flex; gap: .8rem; }
-#my-work-gallery .coverflow-row button {
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 52px;
-  padding: 0;
-  border: 1px solid rgba(255,255,255,.14);
-  border-radius: 50%;
-  color: #fff;
-  background: rgba(255,90,90,.12);
-  cursor: pointer;
-  transition: background-color .25s, border-color .25s, transform .25s;
+#my-work-gallery .view:focus-visible { outline: 2px solid #ff6a6a; outline-offset: -8px; }
+@media(max-width:700px) {
+  #my-work-gallery { min-height: 88vh; padding: 4rem 0; }
+  #my-work-gallery .view { height: clamp(320px, 88vw, 470px); }
+  #my-work-gallery .cover-card { width: clamp(205px, 58vw, 270px); height: clamp(285px, 78vw, 390px); }
+  #my-work-gallery .cover-card-title { padding: 14px; font-size: .8rem; }
 }
-#my-work-gallery .coverflow-row button:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255,110,110,.5);
-  background: rgba(255,75,75,.25);
-}
-#my-work-gallery .coverflow-row button svg { width: 20px; height: 20px; }
-#my-work-gallery .coverflow :focus-visible { outline: 3px solid #ff6a6a; outline-offset: 5px; }
-@media(max-width:600px) {
-  #my-work-gallery { min-height: 88vh; padding: 4.5rem 1rem; }
-  #my-work-gallery .view { height: 48vmin; min-height: 250px; }
-  #my-work-gallery .track { width: calc(112 * var(--u)); height: calc(148 * var(--u)); }
-  #my-work-gallery .cover-card-title { padding: 10px; }
-  #my-work-gallery .coverflow-row button { width: 48px; height: 48px; }
+@media(prefers-reduced-motion:reduce) {
+  #my-work-gallery .cover-card { transition-duration: .01ms; }
 }
 </style>
 </head>
@@ -1010,40 +998,122 @@
     <header class="my-work-heading">
       <p>SELECTED PROJECTS</p>
       <h2 id="my-work-title">MY <span>WORK</span></h2>
-      <p>A closer look at selected ideas, visual experiments, and campaigns.</p>
+      <p>A closer look at design, branding, product campaigns, and visual ideas.</p>
     </header>
-    <div class="coverflow" aria-label="Selected work carousel">
-      <div class="view" tabindex="0" aria-label="Coverflow. Use the left and right arrow keys">
+    <div class="coverflow" aria-label="Automatic selected work coverflow">
+      <div class="view" tabindex="0" aria-label="Auto-moving coverflow. Use left and right arrow keys to browse">
         <div class="track">
-          <button class="cover-card" type="button" style="--hue: 2" aria-label="Idea Overload, editorial and photo manipulation" data-title="IDEA OVERLOAD" aria-pressed="false">
-            <img src="currently-creating-04.png" alt="Idea Overload editorial poster" loading="lazy">
+          <article class="cover-card" data-title="IDEA OVERLOAD" data-category="EDITORIAL" style="--hue: 0">
+            <img src="currently-creating-04.webp" alt="IDEA OVERLOAD editorial design by Subhajit" loading="lazy">
             <span class="cover-card-title"><small>01 / EDITORIAL</small>IDEA OVERLOAD</span>
-          </button>
-          <button class="cover-card" type="button" style="--hue: 350" aria-label="Font Fails, typography and art direction" data-title="FONT FAILS" aria-pressed="false">
-            <img src="currently-creating-01-new.jpg" alt="Font Fails typography poster" loading="lazy">
+          </article>
+          <article class="cover-card" data-title="FONT FAILS" data-category="TYPOGRAPHY" style="--hue: 17">
+            <img src="currently-creating-01.webp" alt="FONT FAILS typography design by Subhajit" loading="lazy">
             <span class="cover-card-title"><small>02 / TYPOGRAPHY</small>FONT FAILS</span>
-          </button>
-          <button class="cover-card" type="button" style="--hue: 4" aria-label="Good Design, conceptual and editorial design" data-title="GOOD DESIGN?" aria-pressed="false">
-            <img src="currently-creating-02.jpg" alt="Good Design conceptual poster" loading="lazy">
+          </article>
+          <article class="cover-card" data-title="GOOD DESIGN?" data-category="CONCEPT" style="--hue: 34">
+            <img src="currently-creating-02.webp" alt="GOOD DESIGN? concept design by Subhajit" loading="lazy">
             <span class="cover-card-title"><small>03 / CONCEPT</small>GOOD DESIGN?</span>
-          </button>
-          <button class="cover-card" type="button" style="--hue: 8" aria-label="CapCut, visual campaign" data-title="CAPCUT" aria-pressed="false">
-            <img src="currently-creating-03.png" alt="CapCut creative campaign poster" loading="lazy">
+          </article>
+          <article class="cover-card" data-title="CAPCUT" data-category="CAMPAIGN" style="--hue: 51">
+            <img src="currently-creating-03.webp" alt="CAPCUT campaign design by Subhajit" loading="lazy">
             <span class="cover-card-title"><small>04 / CAMPAIGN</small>CAPCUT</span>
-          </button>
+          </article>
+          <article class="cover-card" data-title="AD CAMPAIGN" data-category="ADVERTISING" style="--hue: 68">
+            <img src="ad-2.webp" alt="AD CAMPAIGN advertising design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>05 / ADVERTISING</small>AD CAMPAIGN</span>
+          </article>
+          <article class="cover-card" data-title="BALI TRAVEL" data-category="TRAVEL" style="--hue: 85">
+            <img src="bali.webp" alt="BALI TRAVEL travel design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>06 / TRAVEL</small>BALI TRAVEL</span>
+          </article>
+          <article class="cover-card" data-title="BRIDAL JEWELLERY" data-category="BRANDING" style="--hue: 102">
+            <img src="bridal-jewellery.webp" alt="BRIDAL JEWELLERY branding design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>07 / BRANDING</small>BRIDAL JEWELLERY</span>
+          </article>
+          <article class="cover-card" data-title="CHOCOLATE DAY" data-category="CAMPAIGN" style="--hue: 119">
+            <img src="chocolate-day.webp" alt="CHOCOLATE DAY campaign design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>08 / CAMPAIGN</small>CHOCOLATE DAY</span>
+          </article>
+          <article class="cover-card" data-title="DHARMI REALTY" data-category="REAL ESTATE" style="--hue: 136">
+            <img src="dharmi-realty.webp" alt="DHARMI REALTY real estate design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>09 / REAL ESTATE</small>DHARMI REALTY</span>
+          </article>
+          <article class="cover-card" data-title="FRENCH FRIES" data-category="FOOD CAMPAIGN" style="--hue: 153">
+            <img src="french-fries.webp" alt="FRENCH FRIES food campaign design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>10 / FOOD CAMPAIGN</small>FRENCH FRIES</span>
+          </article>
+          <article class="cover-card" data-title="GOLD RATE" data-category="SOCIAL CAMPAIGN" style="--hue: 170">
+            <img src="gold-rate.webp" alt="GOLD RATE social campaign design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>11 / SOCIAL CAMPAIGN</small>GOLD RATE</span>
+          </article>
+          <article class="cover-card" data-title="VISUAL DESIGN" data-category="GRAPHIC DESIGN" style="--hue: 187">
+            <img src="graphic.webp" alt="VISUAL DESIGN graphic design design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>12 / GRAPHIC DESIGN</small>VISUAL DESIGN</span>
+          </article>
+          <article class="cover-card" data-title="HONEY" data-category="PRODUCT CAMPAIGN" style="--hue: 204">
+            <img src="honey.webp" alt="HONEY product campaign design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>13 / PRODUCT CAMPAIGN</small>HONEY</span>
+          </article>
+          <article class="cover-card" data-title="JAISALMER" data-category="TRAVEL" style="--hue: 221">
+            <img src="jaisalmer.webp" alt="JAISALMER travel design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>14 / TRAVEL</small>JAISALMER</span>
+          </article>
+          <article class="cover-card" data-title="MOMO STREET" data-category="RESTAURANT" style="--hue: 238">
+            <img src="momo-street.webp" alt="MOMO STREET restaurant design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>15 / RESTAURANT</small>MOMO STREET</span>
+          </article>
+          <article class="cover-card" data-title="MONK" data-category="BRAND IDENTITY" style="--hue: 255">
+            <img src="monk.webp" alt="MONK brand identity design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>16 / BRAND IDENTITY</small>MONK</span>
+          </article>
+          <article class="cover-card" data-title="ORGANIC" data-category="PRODUCT DESIGN" style="--hue: 272">
+            <img src="organic.webp" alt="ORGANIC product design design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>17 / PRODUCT DESIGN</small>ORGANIC</span>
+          </article>
+          <article class="cover-card" data-title="PORTFOLIO 07" data-category="VISUAL DESIGN" style="--hue: 289">
+            <img src="port%207.webp" alt="PORTFOLIO 07 visual design design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>18 / VISUAL DESIGN</small>PORTFOLIO 07</span>
+          </article>
+          <article class="cover-card" data-title="RESTAURANT" data-category="BRANDING" style="--hue: 306">
+            <img src="restaurant.webp" alt="RESTAURANT branding design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>19 / BRANDING</small>RESTAURANT</span>
+          </article>
+          <article class="cover-card" data-title="SOCIAL MEDIA" data-category="CAMPAIGN" style="--hue: 323">
+            <img src="followes.webp" alt="SOCIAL MEDIA campaign design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>20 / CAMPAIGN</small>SOCIAL MEDIA</span>
+          </article>
+          <article class="cover-card" data-title="MOMO STREET 02" data-category="RESTAURANT" style="--hue: 340">
+            <img src="momo-street-2.jpg.webp" alt="MOMO STREET 02 restaurant design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>21 / RESTAURANT</small>MOMO STREET 02</span>
+          </article>
+          <article class="cover-card" data-title="MOBILES 24" data-category="PRODUCT AD" style="--hue: 357">
+            <img src="mobiles-24.png" alt="MOBILES 24 product ad design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>22 / PRODUCT AD</small>MOBILES 24</span>
+          </article>
+          <article class="cover-card" data-title="HOTEL MA GRAND" data-category="HOSPITALITY" style="--hue: 14">
+            <img src="hotel-ma-grand.png" alt="HOTEL MA GRAND hospitality design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>23 / HOSPITALITY</small>HOTEL MA GRAND</span>
+          </article>
+          <article class="cover-card" data-title="YUVEN MOTORS" data-category="BRANDING" style="--hue: 31">
+            <img src="yuven-motors.png" alt="YUVEN MOTORS branding design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>24 / BRANDING</small>YUVEN MOTORS</span>
+          </article>
+          <article class="cover-card" data-title="JIVANTIKA ORGANIC" data-category="BRANDING" style="--hue: 48">
+            <img src="jivantika-organic.png" alt="JIVANTIKA ORGANIC branding design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>25 / BRANDING</small>JIVANTIKA ORGANIC</span>
+          </article>
+          <article class="cover-card" data-title="MA REALTY" data-category="REAL ESTATE" style="--hue: 65">
+            <img src="ma-realty.png" alt="MA REALTY real estate design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>26 / REAL ESTATE</small>MA REALTY</span>
+          </article>
+          <article class="cover-card" data-title="FREEHIT" data-category="BRANDING" style="--hue: 82">
+            <img src="freehit.png" alt="FREEHIT branding design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>27 / BRANDING</small>FREEHIT</span>
+          </article>
         </div>
       </div>
-      <div class="coverflow-controls">
-        <output class="coverflow-caption" aria-live="polite">03 / 04 — GOOD DESIGN?</output>
-        <div class="coverflow-row">
-          <button type="button" data-dir="-1" aria-label="Previous project">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-          </button>
-          <button type="button" data-dir="1" aria-label="Next project">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-          </button>
-        </div>
-      </div>
+      <output class="coverflow-caption" aria-live="polite">01 / 27 — IDEA OVERLOAD</output>
     </div>
   </div>
 </section>
@@ -1055,49 +1125,85 @@
 
 <script>
 (() => {
-  const root = document.querySelector('#my-work-gallery .coverflow');
-  if (!root) return;
-  const items = [...root.querySelectorAll('.cover-card')];
+  const section = document.getElementById('my-work-gallery');
+  const root = section?.querySelector('.coverflow');
+  const track = root?.querySelector('.track');
+  if (!section || !root || !track) return;
+
+  const originals = [...track.querySelectorAll('.cover-card')];
+  const count = originals.length;
+  for (let cycle = 0; cycle < 2; cycle++) {
+    originals.forEach((card) => {
+      const clone = card.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      track.appendChild(clone);
+    });
+  }
+
+  const items = [...track.querySelectorAll('.cover-card')];
   const caption = root.querySelector('.coverflow-caption');
   const view = root.querySelector('.view');
-  let active = Math.floor(items.length / 2);
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let active = count + Math.floor(count / 2);
+  let timer = null;
+  let visible = false;
+  let paused = false;
 
   function layout() {
-    items.forEach((el, i) => {
-      const offset = i - active;
-      el.style.setProperty('--o', offset);
-      el.style.setProperty('--abs', Math.abs(offset));
-      el.style.setProperty('--sign', Math.sign(offset));
-      el.style.zIndex = items.length - Math.abs(offset);
-      el.classList.toggle('is-far', Math.abs(offset) > 2);
-      el.setAttribute('aria-pressed', String(i === active));
+    items.forEach((card, index) => {
+      const offset = index - active;
+      card.style.setProperty('--o', offset);
+      card.style.setProperty('--abs', Math.abs(offset));
+      card.style.setProperty('--sign', Math.sign(offset));
+      card.style.zIndex = String(items.length - Math.abs(offset));
+      card.classList.toggle('is-far', Math.abs(offset) > 2);
+      card.setAttribute('aria-current', String(index === active));
     });
-    caption.textContent = String(active + 1).padStart(2, '0') + ' / ' +
-      String(items.length).padStart(2, '0') + ' — ' +
-      items[active].dataset.title;
+    const projectIndex = ((active - count) % count + count) % count;
+    caption.textContent = String(projectIndex + 1).padStart(2, '0') + ' / ' +
+      String(count).padStart(2, '0') + ' — ' + originals[projectIndex].dataset.title;
   }
 
-  function go(direction) {
-    active = Math.max(0, Math.min(items.length - 1, active + direction));
+  function advance(direction = -1) {
+    active += direction;
     layout();
+    if (direction < 0 && active < count) {
+      window.setTimeout(() => {
+        active += count;
+        layout();
+      }, 1000);
+    } else if (direction > 0 && active >= count * 2) {
+      window.setTimeout(() => {
+        active -= count;
+        layout();
+      }, 1000);
+    }
   }
 
-  root.addEventListener('click', (event) => {
-    const control = event.target.closest('[data-dir]');
-    if (control) {
-      go(Number(control.dataset.dir));
-      return;
+  function stop() {
+    if (timer) window.clearInterval(timer);
+    timer = null;
+  }
+  function start() {
+    if (!timer && visible && !paused && !reducedMotion) {
+      timer = window.setInterval(() => advance(-1), 2800);
     }
-    const card = event.target.closest('.cover-card');
-    const index = items.indexOf(card);
-    if (index >= 0) go(index - active);
-  });
+  }
 
+  section.addEventListener('mouseenter', () => { paused = true; stop(); });
+  section.addEventListener('mouseleave', () => { paused = false; start(); });
+  section.addEventListener('focusin', () => { paused = true; stop(); });
+  section.addEventListener('focusout', () => { paused = false; start(); });
   view.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowLeft') { event.preventDefault(); go(-1); }
-    if (event.key === 'ArrowRight') { event.preventDefault(); go(1); }
+    if (event.key === 'ArrowLeft') { event.preventDefault(); advance(-1); }
+    if (event.key === 'ArrowRight') { event.preventDefault(); advance(1); }
   });
 
+  const observer = new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    if (visible) start(); else stop();
+  }, { threshold: 0.2 });
+  observer.observe(section);
   layout();
 })();
 </script>
