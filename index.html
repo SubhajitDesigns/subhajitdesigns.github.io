@@ -1229,6 +1229,16 @@
     // ==========================================
     gsap.registerPlugin(ScrollTrigger);
 
+    // A refresh should replay the portfolio from the landing section, not the
+    // browser's previously restored scroll position.
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    const pageNavigation = performance.getEntriesByType?.('navigation')?.[0];
+    const isReload = pageNavigation?.type === 'reload';
+    if (isReload) {
+      window.scrollTo(0, 0);
+      window.addEventListener('pageshow', () => window.scrollTo(0, 0), { once: true });
+    }
+
     const canvas = document.getElementById('webgl-canvas');
     const loadingScreen = document.getElementById('loading-screen');
     const introCounter = document.getElementById('intro-counter');
@@ -1278,6 +1288,11 @@
                   loadingScreen.style.display = 'none';
                   document.documentElement.classList.remove('intro-active');
                   document.body.classList.remove('intro-active');
+                  window.scrollTo(0, 0);
+                  if (window.ScrollTrigger) {
+                    ScrollTrigger.refresh();
+                    ScrollTrigger.update();
+                  }
                 }, 950);
               }, 900);
             }, 1000);
