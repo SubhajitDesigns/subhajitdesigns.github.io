@@ -43,17 +43,17 @@
     /* Moncy.dev signature ambient backlight circles */
     .character-rim {
       position: fixed;
-      width: 520px;
-      height: 520px;
+      width: 620px;
+      height: 620px;
       z-index: 1;
-      background: radial-gradient(circle, rgba(150, 18, 30, 0.48) 0%, rgba(95, 10, 18, 0.25) 44%, rgba(35, 4, 8, 0) 74%);
+      background: radial-gradient(circle, rgba(185, 20, 34, 0.68) 0%, rgba(115, 12, 22, 0.38) 44%, rgba(35, 4, 8, 0) 74%);
       top: 50%;
       left: 50%;
       transform: translate(-50%, -40%) scale(1.3);
-      filter: blur(80px);
+      filter: blur(72px);
       border-radius: 50%;
       pointer-events: none;
-      opacity: 0.85;
+      opacity: 0.95;
       transition: all 0.5s ease;
     }
 
@@ -1009,9 +1009,10 @@
     fillLight.position.set(0, 8, 9);
     scene.add(fillLight);
 
-    // Screen light (glowing monitor light on chest)
-    const screenLight = new THREE.PointLight(0x88cce8, 0.65, 10);
-    screenLight.position.set(0, 3.8, 2.8);
+    // Laptop screen light stays off until the workstation enters during scroll.
+    const screenLight = new THREE.PointLight(0xffd6c5, 0, 12, 2);
+    screenLight.position.set(0, 8.7, 3.4);
+    screenLight.visible = false;
     scene.add(screenLight);
 
     // 3. Load 3D Character
@@ -1031,6 +1032,7 @@
     let userMovedMouse = false;
     let monitorObject = null;
     let screenLightMesh = null;
+    let screenGlowMaterials = [];
 
     const gltfLoader = new THREE.GLTFLoader();
     const modelSource = (typeof window.CHARACTER_GLB_BASE64 !== 'undefined')
@@ -1095,6 +1097,18 @@
         // Find laptop screen and screenlight
         monitorObject = character.getObjectByName('Plane.004') || character.getObjectByName('Plane004') || null;
         screenLightMesh = character.getObjectByName('screenlight') || null;
+        character.add(screenLight);
+        screenLight.position.set(0, 8.7, 3.4);
+        screenGlowMaterials = [];
+        [monitorObject, screenLightMesh].filter(Boolean).forEach((object) => {
+          const materials = Array.isArray(object.material) ? object.material : [object.material];
+          materials.forEach((material) => {
+            if (!material || !material.emissive) return;
+            material.emissive.set(0xffc5ad);
+            material.emissiveIntensity = 0;
+            screenGlowMaterials.push(material);
+          });
+        });
 
         // IN THE HERO SECTION: HIDE THE LAPTOP SCREEN SO FACE & UPPER BODY ARE FULLY VISIBLE!
         if (monitorObject) {
@@ -1206,9 +1220,15 @@
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
+            const laptopGlow = THREE.MathUtils.clamp((self.progress - 0.08) / 0.3, 0, 1);
             const showLaptop = self.progress > 0.08;
             if (monitorObject) monitorObject.visible = showLaptop;
             if (screenLightMesh) screenLightMesh.visible = showLaptop;
+            screenLight.visible = laptopGlow > 0;
+            screenLight.intensity = laptopGlow * 2.4;
+            screenGlowMaterials.forEach((material) => {
+              material.emissiveIntensity = laptopGlow * 1.35;
+            });
           }
         }
       });
@@ -1224,7 +1244,7 @@
         .fromTo(monitorObject ? monitorObject.position : {}, { y: -10 }, { y: 9.04, duration: 0.8 }, 0.2)
         .fromTo(screenLightMesh ? screenLightMesh.position : {}, { y: -10 }, { y: 9.04, duration: 0.8 }, 0.2)
         // Backlight follows to the left
-        .to(rimCircle, { left: "30%", scale: 1.1, opacity: 0.6, duration: 1 }, 0)
+        .to(rimCircle, { left: "30%", scale: 1.15, opacity: 0.9, duration: 1 }, 0)
         // Landing hero texts fade out and rise
         .to("#hero-left-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
         .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0);
