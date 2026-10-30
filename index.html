@@ -1889,39 +1889,20 @@
         .fromTo(aboutCards[2], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 2.62)
         .fromTo(aboutText[2], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, stagger: 0.08 }, 2.68)
         .fromTo(aboutHeadingLetters[2], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.08, stagger: 0.012 }, 2.70)
-        .to(character.position, { x: -2.9, duration: 0.65, ease: "none" }, 3.2)
-        .to(character.position, { y: -1.70, duration: 0.16, ease: "sine.inOut" }, 3.2)
-        .to(character.position, { y: -1.80, duration: 0.17, ease: "sine.inOut" }, 3.36)
-        .to(character.position, { y: -1.70, duration: 0.16, ease: "sine.inOut" }, 3.53)
-        .to(character.position, { y: -1.80, duration: 0.16, ease: "sine.inOut" }, 3.69)
-        .to(character.rotation, { z: 0.02, duration: 0.16, ease: "sine.inOut" }, 3.2)
-        .to(character.rotation, { z: -0.02, duration: 0.32, ease: "sine.inOut" }, 3.36)
-        .to(character.rotation, { z: 0, duration: 0.17, ease: "sine.inOut" }, 3.68);
+        .to(character.position, { x: -2.9, duration: 0.65, ease: "none" }, 3.2);
 
       const craftedWalk = gsap.timeline({
         scrollTrigger: {
           trigger: "#work",
           start: "top bottom",
-          end: "top top",
+          end: "top 10%",
           scrub: 1.1,
           invalidateOnRefresh: true
         }
       });
       craftedWalk
-        .to(character.position, { x: -3.35, duration: 1.16, ease: "none" }, 0)
-        .to(character.position, { y: -1.70, duration: 0.12, ease: "sine.inOut" }, 0.08)
-        .to(character.position, { y: -1.80, duration: 0.12, ease: "sine.inOut" }, 0.20)
-        .to(character.position, { y: -1.70, duration: 0.12, ease: "sine.inOut" }, 0.36)
-        .to(character.position, { y: -1.80, duration: 0.12, ease: "sine.inOut" }, 0.48)
-        .to(character.position, { y: -1.70, duration: 0.12, ease: "sine.inOut" }, 0.64)
-        .to(character.position, { y: -1.80, duration: 0.12, ease: "sine.inOut" }, 0.76)
-        .to(character.position, { y: -1.70, duration: 0.12, ease: "sine.inOut" }, 0.92)
-        .to(character.position, { y: -1.80, duration: 0.12, ease: "sine.inOut" }, 1.04)
-        .to(character.rotation, { z: 0.025, duration: 0.16, ease: "sine.inOut" }, 0)
-        .to(character.rotation, { z: -0.025, duration: 0.32, ease: "sine.inOut" }, 0.16)
-        .to(character.rotation, { z: 0.025, duration: 0.32, ease: "sine.inOut" }, 0.48)
-        .to(character.rotation, { z: -0.025, duration: 0.32, ease: "sine.inOut" }, 0.80)
-        .to(character.rotation, { z: 0, duration: 0.16, ease: "sine.inOut" }, 1.12);
+        .to(character.position, { x: -4.0, duration: 1.1, ease: "none" }, 0)
+        .to(character.rotation, { y: -1.2, duration: 1.1, ease: "none" }, 0);
       // The pinned hero reveals About, experience, and achievements before the
       // character continues moving left through the translucent Crafted section.
     }
