@@ -688,15 +688,15 @@
 
 
 
-/* Full-width, continuous photo marquee */
+/* Full-width, auto-moving My Work coverflow */
 #my-work-gallery {
   position: relative;
   z-index: 11;
   width: 100%;
-  min-height: 90vh;
-  padding: clamp(4rem, 8vh, 6rem) 0;
+  min-height: 100vh;
+  padding: clamp(4rem, 8vh, 6.5rem) 0;
   display: grid;
-  align-content: center;
+  place-items: center;
   overflow: hidden;
   isolation: isolate;
   background: linear-gradient(180deg, #080506, #100709 58%, #080506);
@@ -709,11 +709,12 @@
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 50% 46%, rgba(145,22,34,.18), transparent 55%),
-    radial-gradient(ellipse at 0% 88%, rgba(100,12,22,.14), transparent 35%),
-    radial-gradient(ellipse at 100% 82%, rgba(100,12,22,.14), transparent 34%);
+    radial-gradient(ellipse at 50% 42%, rgba(145,22,34,.2), transparent 55%),
+    radial-gradient(ellipse at 0% 88%, rgba(100,12,22,.16), transparent 35%),
+    radial-gradient(ellipse at 100% 82%, rgba(100,12,22,.15), transparent 34%);
 }
-#my-work-gallery .my-work-heading { width: min(88vw, 720px); margin: 0 auto clamp(2.5rem, 6vh, 4rem); text-align: center; }
+#my-work-gallery .my-work-inner { width: 100%; margin: auto; }
+#my-work-gallery .my-work-heading { width: min(88vw, 720px); margin: 0 auto 1rem; text-align: center; }
 #my-work-gallery .my-work-heading p:first-child {
   margin: 0 0 1rem;
   color: #ff7777;
@@ -738,60 +739,122 @@
   font-size: clamp(.9rem, 1.4vw, 1.05rem);
   line-height: 1.65;
 }
-#my-work-gallery .my-work-marquee {
-  position: relative;
+#my-work-gallery .coverflow {
+  display: grid;
+  justify-items: center;
+  gap: clamp(.75rem, 2vh, 1.5rem);
   width: 100%;
-  overflow: hidden;
-  padding: 12px 0 28px;
-  mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+  font-family: var(--font-geist), sans-serif;
 }
-#my-work-gallery .my-work-track {
-  display: flex;
-  align-items: center;
-  width: max-content;
-  animation: myWorkPhotoDrift 82s linear infinite;
-  will-change: transform;
-}
-#my-work-gallery .my-work-set {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: clamp(12px, 1.2vw, 18px);
-  padding-right: clamp(12px, 1.2vw, 18px);
-}
-#my-work-gallery .work-photo {
-  flex: 0 0 clamp(145px, 12vw, 170px);
-  margin: 0;
+#my-work-gallery .view {
   display: grid;
   place-items: center;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,.14);
-  border-radius: 13px;
-  background: rgba(15,8,9,.82);
-  box-shadow: 0 14px 34px rgba(0,0,0,.38), 0 0 18px rgba(255,65,65,.08);
+  width: 100vw;
+  height: clamp(390px, 54vw, 650px);
+  perspective: 1400px;
+  outline: none;
 }
-#my-work-gallery .work-photo img {
+#my-work-gallery .track {
+  position: relative;
+  width: 100vw;
+  height: 100%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+#my-work-gallery .cover-card {
+  --cover-step: clamp(100px, 16vw, 230px);
+  --cover-nudge: clamp(35px, 4vw, 60px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+  max-width: min(25vw, 340px);
+  height: max-content;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 14px;
+  color: #fff;
+  background: #10090a;
+  box-shadow: 0 22px 50px rgba(0,0,0,.5), 0 0 32px rgba(255,65,65,.12);
+  pointer-events: auto;
+  transform:
+    translate(-50%, -50%)
+    translateX(calc(var(--o) * var(--cover-step) + var(--sign) * var(--cover-nudge)))
+    translateZ(calc(var(--abs) * -72px))
+    rotateY(calc(var(--sign) * -52deg));
+  transition:
+    transform 1.2s cubic-bezier(.22,.72,.23,1),
+    opacity 1s ease,
+    filter 1s ease,
+    border-color .5s ease;
+  filter: brightness(calc(1 - var(--abs) * .11));
+  opacity: clamp(0, calc(2.2 - var(--abs) * .72), 1);
+  will-change: transform, opacity;
+}
+#my-work-gallery .cover-card[aria-current="true"] {
+  border-color: rgba(255,112,112,.85);
+  box-shadow: 0 25px 60px rgba(0,0,0,.58), 0 0 34px rgba(255,65,65,.18);
+}
+#my-work-gallery .cover-card.is-far { opacity: 0; pointer-events: none; }
+#my-work-gallery .cover-card img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(25vw, 340px);
+  max-height: min(48vh, 440px);
+  object-fit: contain;
+  border-radius: 12px 12px 0 0;
+}
+#my-work-gallery .cover-card-title {
   display: block;
   width: 100%;
-  height: auto;
-  max-height: min(32vw, 330px);
-  object-fit: contain;
-  border-radius: 12px;
+  padding: 10px 14px 12px;
+  color: #fff;
+  background: rgba(8,5,6,.96);
+  font-size: clamp(.72rem, 1.1vw, .9rem);
+  font-weight: 750;
+  letter-spacing: .07em;
+  line-height: 1.2;
+  text-align: left;
+  white-space: nowrap;
 }
-@keyframes myWorkPhotoDrift {
-  from { transform: translateX(-50%); }
-  to { transform: translateX(0); }
+#my-work-gallery .cover-card-title small {
+  display: block;
+  margin-bottom: .45em;
+  color: #ffc0c0;
+  font-size: .68em;
+  font-weight: 650;
+  letter-spacing: .15em;
 }
+#my-work-gallery .coverflow-caption {
+  min-height: 1.3em;
+  color: rgba(255,239,240,.78);
+  font-size: .82rem;
+  font-weight: 650;
+  letter-spacing: .15em;
+  text-align: center;
+}
+#my-work-gallery .view:focus-visible { outline: 2px solid #ff6a6a; outline-offset: -8px; }
 @media(max-width:700px) {
-  #my-work-gallery { min-height: 76vh; padding: 4rem 0; }
-  #my-work-gallery .my-work-heading { margin-bottom: 2rem; }
-  #my-work-gallery .work-photo { flex-basis: clamp(130px, 30vw, 155px); }
-  #my-work-gallery .work-photo img { max-height: 48vh; }
-  #my-work-gallery .my-work-track { animation-duration: 58s; }
+  #my-work-gallery { min-height: 88vh; padding: 4rem 0; }
+  #my-work-gallery .view { height: clamp(330px, 88vw, 470px); }
+  #my-work-gallery .cover-card {
+    --cover-step: calc((100vw - clamp(190px, 44vw, 260px)) / 2);
+    --cover-nudge: 0px;
+    max-width: min(68vw, 270px);
+  }
+  #my-work-gallery .cover-card img {
+    max-width: min(68vw, 270px);
+    max-height: min(48vh, 360px);
+  }
+  #my-work-gallery .cover-card-title { padding: 9px 11px 10px; font-size: .74rem; }
 }
 @media(prefers-reduced-motion:reduce) {
-  #my-work-gallery .my-work-track { animation-duration: 140s; }
+  #my-work-gallery .cover-card { transition-duration: .01ms; }
 }
 </style>
 </head>
@@ -942,227 +1005,152 @@
 </section>
 
 <section id="my-work-gallery" aria-labelledby="my-work-title">
-  <header class="my-work-heading">
-    <p>SELECTED PROJECTS</p>
-    <h2 id="my-work-title">MY <span>WORK</span></h2>
-    <p>A closer look at design, branding, product campaigns, and visual ideas.</p>
-  </header>
-  <div class="my-work-marquee" aria-label="Selected portfolio photos moving continuously">
-    <div class="my-work-track">
-      <div class="my-work-set">
-          <figure class="work-photo">
-            <img src="currently-creating-04.webp" alt="Idea Overload design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="currently-creating-01.webp" alt="Font Fails design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="currently-creating-02.webp" alt="Good Design design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="currently-creating-03.webp" alt="CapCut design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="ad-2.webp" alt="Ad Campaign design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="bali.webp" alt="Bali Travel design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="bridal-jewellery.webp" alt="Bridal Jewellery design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="chocolate-day.webp" alt="Chocolate Day design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="dharmi-realty.webp" alt="Dharmi Realty design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="french-fries.webp" alt="French Fries design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="gold-rate.webp" alt="Gold Rate design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="graphic.webp" alt="Visual Design design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="honey.webp" alt="Honey Campaign design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="jaisalmer.webp" alt="Jaisalmer design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="momo-street.webp" alt="Momo Street design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="organic.webp" alt="Organic Campaign design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="port%207.webp" alt="Portfolio Design design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="restaurant.webp" alt="Restaurant design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="followes.webp" alt="Social Media design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="momo-street-2.jpg.webp" alt="Momo Street 2 design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="Protect%20your%20glow...webp" alt="Vitamin C Glow design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="ac094c3fedd25880080e0f0e4d5b7467.webp" alt="Visual Campaign design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="business.jpg" alt="Business Campaign design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="food-ad.jpg" alt="Food Ad design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="goa.jpg" alt="Goa Travel design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="idli.jpg" alt="Idli Campaign design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="jewellery.webp" alt="Jewellery design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="kitkat%20shake%20copy.jpg" alt="KitKat Shake design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="leads%20gen%20copy.jpg" alt="Leads Generation design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="safe-tour.jpg" alt="Safe Tour design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="vietnam.jpg" alt="Vietnam design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="project-01.jpg" alt="Project 1 design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="project-02.jpg" alt="Project 2 design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="project-03.jpg" alt="Project 3 design by Subhajit" loading="lazy">
-          </figure>
-          <figure class="work-photo">
-            <img src="project-04.jpg" alt="Project 4 design by Subhajit" loading="lazy">
-          </figure>
-      </div>
-      <div class="my-work-set" aria-hidden="true">
-          <figure class="work-photo" aria-hidden="true">
-            <img src="currently-creating-04.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="currently-creating-01.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="currently-creating-02.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="currently-creating-03.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="ad-2.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="bali.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="bridal-jewellery.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="chocolate-day.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="dharmi-realty.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="french-fries.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="gold-rate.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="graphic.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="honey.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="jaisalmer.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="momo-street.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="organic.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="port%207.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="restaurant.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="followes.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="momo-street-2.jpg.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="Protect%20your%20glow...webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="ac094c3fedd25880080e0f0e4d5b7467.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="business.jpg" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="food-ad.jpg" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="goa.jpg" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="idli.jpg" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="jewellery.webp" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="kitkat%20shake%20copy.jpg" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="leads%20gen%20copy.jpg" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="safe-tour.jpg" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="vietnam.jpg" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="project-01.jpg" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="project-02.jpg" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="project-03.jpg" alt="" loading="lazy">
-          </figure>
-          <figure class="work-photo" aria-hidden="true">
-            <img src="project-04.jpg" alt="" loading="lazy">
-          </figure>
-      </div>
+  <div class="my-work-inner">
+    <header class="my-work-heading"><p>SELECTED PROJECTS</p><h2 id="my-work-title">MY <span>WORK</span></h2><p>A closer look at design, branding, product campaigns, and visual ideas.</p></header>
+    <div class="coverflow" aria-label="Automatic selected work coverflow">
+      <div class="view" tabindex="0" aria-label="Auto-moving coverflow. Use left and right arrow keys to browse"><div class="track">
+          <article class="cover-card" data-title="IDEA OVERLOAD" style="--hue: 0">
+            <img src="currently-creating-04.webp" alt="IDEA OVERLOAD editorial work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>01 / EDITORIAL</small>IDEA OVERLOAD</span>
+          </article>
+          <article class="cover-card" data-title="FONT FAILS" style="--hue: 17">
+            <img src="currently-creating-01.webp" alt="FONT FAILS typography work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>02 / TYPOGRAPHY</small>FONT FAILS</span>
+          </article>
+          <article class="cover-card" data-title="GOOD DESIGN?" style="--hue: 34">
+            <img src="currently-creating-02.webp" alt="GOOD DESIGN? concept work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>03 / CONCEPT</small>GOOD DESIGN?</span>
+          </article>
+          <article class="cover-card" data-title="CAPCUT" style="--hue: 51">
+            <img src="currently-creating-03.webp" alt="CAPCUT campaign work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>04 / CAMPAIGN</small>CAPCUT</span>
+          </article>
+          <article class="cover-card" data-title="AD CAMPAIGN" style="--hue: 68">
+            <img src="ad-2.webp" alt="AD CAMPAIGN advertising work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>05 / ADVERTISING</small>AD CAMPAIGN</span>
+          </article>
+          <article class="cover-card" data-title="BALI TRAVEL" style="--hue: 85">
+            <img src="bali.webp" alt="BALI TRAVEL travel work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>06 / TRAVEL</small>BALI TRAVEL</span>
+          </article>
+          <article class="cover-card" data-title="BRIDAL JEWELLERY" style="--hue: 102">
+            <img src="bridal-jewellery.webp" alt="BRIDAL JEWELLERY product work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>07 / PRODUCT</small>BRIDAL JEWELLERY</span>
+          </article>
+          <article class="cover-card" data-title="CHOCOLATE DAY" style="--hue: 119">
+            <img src="chocolate-day.webp" alt="CHOCOLATE DAY campaign work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>08 / CAMPAIGN</small>CHOCOLATE DAY</span>
+          </article>
+          <article class="cover-card" data-title="DHARMI REALTY" style="--hue: 136">
+            <img src="dharmi-realty.webp" alt="DHARMI REALTY real estate work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>09 / REAL ESTATE</small>DHARMI REALTY</span>
+          </article>
+          <article class="cover-card" data-title="FRENCH FRIES" style="--hue: 153">
+            <img src="french-fries.webp" alt="FRENCH FRIES food work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>10 / FOOD</small>FRENCH FRIES</span>
+          </article>
+          <article class="cover-card" data-title="GOLD RATE" style="--hue: 170">
+            <img src="gold-rate.webp" alt="GOLD RATE campaign work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>11 / CAMPAIGN</small>GOLD RATE</span>
+          </article>
+          <article class="cover-card" data-title="VISUAL DESIGN" style="--hue: 187">
+            <img src="graphic.webp" alt="VISUAL DESIGN graphic design work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>12 / GRAPHIC DESIGN</small>VISUAL DESIGN</span>
+          </article>
+          <article class="cover-card" data-title="HONEY CAMPAIGN" style="--hue: 204">
+            <img src="honey.webp" alt="HONEY CAMPAIGN product work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>13 / PRODUCT</small>HONEY CAMPAIGN</span>
+          </article>
+          <article class="cover-card" data-title="JAISALMER" style="--hue: 221">
+            <img src="jaisalmer.webp" alt="JAISALMER travel work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>14 / TRAVEL</small>JAISALMER</span>
+          </article>
+          <article class="cover-card" data-title="MOMO STREET" style="--hue: 238">
+            <img src="momo-street.webp" alt="MOMO STREET restaurant work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>15 / RESTAURANT</small>MOMO STREET</span>
+          </article>
+          <article class="cover-card" data-title="ORGANIC CAMPAIGN" style="--hue: 255">
+            <img src="organic.webp" alt="ORGANIC CAMPAIGN product work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>16 / PRODUCT</small>ORGANIC CAMPAIGN</span>
+          </article>
+          <article class="cover-card" data-title="PORTFOLIO DESIGN" style="--hue: 272">
+            <img src="port%207.webp" alt="PORTFOLIO DESIGN visual work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>17 / VISUAL</small>PORTFOLIO DESIGN</span>
+          </article>
+          <article class="cover-card" data-title="RESTAURANT" style="--hue: 289">
+            <img src="restaurant.webp" alt="RESTAURANT food work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>18 / FOOD</small>RESTAURANT</span>
+          </article>
+          <article class="cover-card" data-title="SOCIAL MEDIA" style="--hue: 306">
+            <img src="followes.webp" alt="SOCIAL MEDIA campaign work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>19 / CAMPAIGN</small>SOCIAL MEDIA</span>
+          </article>
+          <article class="cover-card" data-title="MOMO STREET 02" style="--hue: 323">
+            <img src="momo-street-2.jpg.webp" alt="MOMO STREET 02 restaurant work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>20 / RESTAURANT</small>MOMO STREET 02</span>
+          </article>
+          <article class="cover-card" data-title="VITAMIN C GLOW" style="--hue: 340">
+            <img src="Protect%20your%20glow...webp" alt="VITAMIN C GLOW product work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>21 / PRODUCT</small>VITAMIN C GLOW</span>
+          </article>
+          <article class="cover-card" data-title="VISUAL CAMPAIGN" style="--hue: 357">
+            <img src="ac094c3fedd25880080e0f0e4d5b7467.webp" alt="VISUAL CAMPAIGN campaign work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>22 / CAMPAIGN</small>VISUAL CAMPAIGN</span>
+          </article>
+          <article class="cover-card" data-title="BUSINESS CAMPAIGN" style="--hue: 14">
+            <img src="business.jpg" alt="BUSINESS CAMPAIGN photo work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>23 / PHOTO</small>BUSINESS CAMPAIGN</span>
+          </article>
+          <article class="cover-card" data-title="FOOD AD" style="--hue: 31">
+            <img src="food-ad.jpg" alt="FOOD AD advertising work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>24 / ADVERTISING</small>FOOD AD</span>
+          </article>
+          <article class="cover-card" data-title="GOA TRAVEL" style="--hue: 48">
+            <img src="goa.jpg" alt="GOA TRAVEL travel work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>25 / TRAVEL</small>GOA TRAVEL</span>
+          </article>
+          <article class="cover-card" data-title="IDLI CAMPAIGN" style="--hue: 65">
+            <img src="idli.jpg" alt="IDLI CAMPAIGN food work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>26 / FOOD</small>IDLI CAMPAIGN</span>
+          </article>
+          <article class="cover-card" data-title="JEWELLERY" style="--hue: 82">
+            <img src="jewellery.webp" alt="JEWELLERY product work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>27 / PRODUCT</small>JEWELLERY</span>
+          </article>
+          <article class="cover-card" data-title="KITKAT SHAKE" style="--hue: 99">
+            <img src="kitkat%20shake%20copy.jpg" alt="KITKAT SHAKE product work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>28 / PRODUCT</small>KITKAT SHAKE</span>
+          </article>
+          <article class="cover-card" data-title="LEADS GENERATION" style="--hue: 116">
+            <img src="leads%20gen%20copy.jpg" alt="LEADS GENERATION campaign work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>29 / CAMPAIGN</small>LEADS GENERATION</span>
+          </article>
+          <article class="cover-card" data-title="SAFE TOUR" style="--hue: 133">
+            <img src="safe-tour.jpg" alt="SAFE TOUR travel work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>30 / TRAVEL</small>SAFE TOUR</span>
+          </article>
+          <article class="cover-card" data-title="VIETNAM" style="--hue: 150">
+            <img src="vietnam.jpg" alt="VIETNAM travel work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>31 / TRAVEL</small>VIETNAM</span>
+          </article>
+          <article class="cover-card" data-title="PROJECT 01" style="--hue: 167">
+            <img src="project-01.jpg" alt="PROJECT 01 design work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>32 / DESIGN</small>PROJECT 01</span>
+          </article>
+          <article class="cover-card" data-title="PROJECT 02" style="--hue: 184">
+            <img src="project-02.jpg" alt="PROJECT 02 design work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>33 / DESIGN</small>PROJECT 02</span>
+          </article>
+          <article class="cover-card" data-title="PROJECT 03" style="--hue: 201">
+            <img src="project-03.jpg" alt="PROJECT 03 design work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>34 / DESIGN</small>PROJECT 03</span>
+          </article>
+          <article class="cover-card" data-title="PROJECT 04" style="--hue: 218">
+            <img src="project-04.jpg" alt="PROJECT 04 design work by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>35 / DESIGN</small>PROJECT 04</span>
+          </article>
+      </div></div>
+      <output class="coverflow-caption" aria-live="polite">18 / 35 — SOCIAL MEDIA</output>
     </div>
   </div>
 </section>
@@ -1170,8 +1158,69 @@
 
   </div>
 
-  
+<script>
+(() => {
+  const section = document.getElementById('my-work-gallery');
+  const root = section?.querySelector('.coverflow');
+  const track = root?.querySelector('.track');
+  if (!section || !root || !track) return;
 
+  const originals = [...track.querySelectorAll('.cover-card')];
+  const count = originals.length;
+  for (let cycle = 0; cycle < 2; cycle++) {
+    originals.forEach((card) => {
+      const clone = card.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      track.appendChild(clone);
+    });
+  }
+
+  const items = [...track.querySelectorAll('.cover-card')];
+  const caption = root.querySelector('.coverflow-caption');
+  const view = root.querySelector('.view');
+  let active = count + Math.floor(count / 2);
+
+  function layout() {
+    const maxOffset = window.innerWidth < 700 ? 1 : 2;
+    items.forEach((card, index) => {
+      const offset = index - active;
+      card.style.setProperty('--o', offset);
+      card.style.setProperty('--abs', Math.abs(offset));
+      card.style.setProperty('--sign', Math.sign(offset));
+      card.style.zIndex = String(items.length - Math.abs(offset));
+      card.classList.toggle('is-far', Math.abs(offset) > maxOffset);
+      card.setAttribute('aria-current', String(index === active));
+    });
+    const projectIndex = ((active - count) % count + count) % count;
+    caption.textContent = String(projectIndex + 1).padStart(2, '0') + ' / ' +
+      String(count).padStart(2, '0') + ' — ' + originals[projectIndex].dataset.title;
+  }
+
+  function advance(direction = 1) {
+    active += direction;
+    layout();
+    if (direction > 0 && active >= count * 2) {
+      window.setTimeout(() => {
+        active -= count;
+        layout();
+      }, 1250);
+    } else if (direction < 0 && active < count) {
+      window.setTimeout(() => {
+        active += count;
+        layout();
+      }, 1250);
+    }
+  }
+
+  view.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') { event.preventDefault(); advance(1); }
+    if (event.key === 'ArrowRight') { event.preventDefault(); advance(-1); }
+  });
+
+  layout();
+  window.setInterval(() => advance(1), 3600);
+})();
+</script>
 
 <script>
     // ==========================================
