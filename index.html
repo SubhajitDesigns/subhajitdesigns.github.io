@@ -131,6 +131,15 @@
     .portfolio-gallery-item:hover .portfolio-gallery-overlay i{transform:translate(3px,-3px)}
     @keyframes portfolioGalleryDrift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
     @media(max-width:760px){.portfolio-gallery-track{animation-duration:54s}.portfolio-gallery-item{flex-basis:clamp(190px,58vw,270px);height:clamp(260px,72vw,360px)}}
+    @media (max-width: 600px) {
+      .landing-section { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+      .landing-intro { width: 100%; max-width: 100%; min-width: 0; }
+      .landing-intro h2 { margin-left: 0; font-size: 1.25rem; letter-spacing: 2px; }
+      .tech-name-heading { width: 100%; max-width: 100%; height: 165px; margin-left: 0; }
+      .tech-name-fallback-visible { font-size: clamp(2.5rem, 10.5vw, 3.25rem); align-items: flex-start; text-align: left; white-space: normal; }
+      .tech-name-fallback-visible span { margin-left: 0; }
+      #techNameReactMount { display: none !important; }
+    }
     @media(prefers-reduced-motion:reduce){.portfolio-gallery-track{animation:none;transform:none}}
     .portfolio-gallery-footnote{display:flex;justify-content:center;align-items:center;gap:10px;margin:2.4rem auto 0;color:rgba(230,219,243,.4);font-size:.62rem;font-weight:650;letter-spacing:.18em;text-align:center}
     .portfolio-gallery-footnote span{color:#c481ff}
