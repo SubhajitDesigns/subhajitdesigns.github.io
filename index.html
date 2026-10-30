@@ -856,6 +856,127 @@
 @media(prefers-reduced-motion:reduce) {
   #my-work-gallery .cover-card { transition-duration: .01ms; }
 }
+
+/* Scroll-stepped About panels beside the pinned character */
+#hero .about-scroll-deck {
+  position: absolute;
+  z-index: 15;
+  top: 50%;
+  right: clamp(2rem, 7vw, 8rem);
+  width: min(42vw, 590px);
+  min-height: min(54vh, 500px);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+#hero .about-scroll-card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.6rem, 3vw, 3rem);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(16,10,11,.9), rgba(8,7,8,.76));
+  box-shadow: 0 24px 75px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.06);
+  backdrop-filter: blur(18px);
+  opacity: 0;
+  visibility: hidden;
+}
+#hero .about-scroll-eyebrow {
+  margin: 0 0 .8rem;
+  color: #ff7777;
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+#hero .about-scroll-card h2 {
+  margin: 0 0 1rem;
+  color: #fff;
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  font-weight: 800;
+  line-height: .98;
+  letter-spacing: -.05em;
+}
+#hero .about-scroll-card > p:not(.about-scroll-eyebrow) {
+  max-width: 48ch;
+  margin: 0;
+  color: rgba(247,240,241,.78);
+  font-size: clamp(.95rem, 1.25vw, 1.15rem);
+  line-height: 1.75;
+}
+#hero .about-scroll-foot {
+  margin-top: 1.5rem;
+  color: rgba(244,232,234,.52);
+  font-size: .75rem;
+  font-weight: 650;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+#hero .about-scroll-stats {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 12px;
+  margin-top: 1.5rem;
+}
+#hero .about-scroll-stat {
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 15px;
+  background: rgba(255,255,255,.035);
+}
+#hero .about-scroll-stat strong {
+  display: block;
+  color: #ff6868;
+  font-size: clamp(1.7rem, 3vw, 2.65rem);
+  font-weight: 850;
+  line-height: 1;
+}
+#hero .about-scroll-stat span {
+  display: block;
+  margin-top: .45rem;
+  color: rgba(247,240,241,.66);
+  font-size: .78rem;
+  line-height: 1.4;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+#hero .about-scroll-achievements {
+  display: grid;
+  gap: .8rem;
+  margin-top: 1.3rem;
+}
+#hero .about-scroll-achievements div {
+  display: flex;
+  align-items: flex-start;
+  gap: .8rem;
+  color: rgba(247,240,241,.82);
+  font-size: clamp(.9rem, 1.12vw, 1.04rem);
+  line-height: 1.5;
+}
+#hero .about-scroll-achievements span {
+  flex: 0 0 8px;
+  width: 8px;
+  height: 8px;
+  margin-top: .45em;
+  border-radius: 50%;
+  background: #ff5959;
+  box-shadow: 0 0 14px rgba(255,70,70,.55);
+}
+@media(max-width:900px) {
+  #hero .about-scroll-deck { right: 4vw; width: 48vw; min-height: 440px; }
+  #hero .about-scroll-card { padding: 1.5rem; }
+}
+@media(max-width:600px) {
+  #hero .about-scroll-deck { right: 4vw; width: 56vw; min-height: 420px; }
+  #hero .about-scroll-card { padding: 1.1rem; border-radius: 18px; }
+  #hero .about-scroll-card h2 { font-size: clamp(1.45rem, 6vw, 2rem); }
+  #hero .about-scroll-card > p:not(.about-scroll-eyebrow) { font-size: .82rem; line-height: 1.55; }
+  #hero .about-scroll-stat { padding: .75rem; }
+  #hero .about-scroll-stat span { font-size: .62rem; }
+  #hero .about-scroll-achievements div { font-size: .78rem; }
+}
 </style>
 </head>
 <body class="intro-active">
@@ -932,6 +1053,35 @@
         <div class="landing-info-sub">Video Editor</div>
       </div>
 
+      <div class="about-scroll-deck" aria-label="About Subhajit">
+        <article class="about-scroll-card" id="about-scroll-intro">
+          <p class="about-scroll-eyebrow">About Me</p>
+          <h2>Designing with purpose.</h2>
+          <p>I’m Subhajit Das, a self-taught visual designer and video editor. I turn ideas into clear, engaging visuals for brands, products, and social campaigns.</p>
+          <div class="about-scroll-foot">Independent creative • India</div>
+        </article>
+        <article class="about-scroll-card" id="about-scroll-experience">
+          <p class="about-scroll-eyebrow">Experience &amp; Impact</p>
+          <h2>Creative work, built over time.</h2>
+          <p>From visual identity to product campaigns and video, I work with teams to make ideas easy to notice and remember.</p>
+          <div class="about-scroll-stats">
+            <div class="about-scroll-stat"><strong>6+</strong><span>Years of experience</span></div>
+            <div class="about-scroll-stat"><strong>50+</strong><span>Brands worked with</span></div>
+            <div class="about-scroll-stat"><strong>2017</strong><span>Creative journey began</span></div>
+            <div class="about-scroll-stat"><strong>Design</strong><span>Brand • Product • Social</span></div>
+          </div>
+        </article>
+        <article class="about-scroll-card" id="about-scroll-achievements">
+          <p class="about-scroll-eyebrow">Selected Achievements</p>
+          <h2>Built through curiosity and craft.</h2>
+          <div class="about-scroll-achievements">
+            <div><span></span><div>Built a creative career through self-learning, practice, and real client projects.</div></div>
+            <div><span></span><div>Partnered with more than 50 brands across different industries.</div></div>
+            <div><span></span><div>Created visual work across identity, advertising, product campaigns, and video.</div></div>
+          </div>
+          <div class="about-scroll-foot">Keep learning. Keep making.</div>
+        </article>
+      </div>
       <div class="scroll-down-hint">
         <span>Scroll to Explore</span>
         <span>↓</span>
@@ -1627,22 +1777,25 @@
     function setupScrollTimelines() {
       if (!character) return;
 
-      // TIMELINE 1: Pin the hero while the character/workstation transition completes.
-      // The Featured Work gallery remains below this pinned sequence and only enters
-      // after the character has reached the left-side composition.
+      const aboutCards = [
+        document.getElementById('about-scroll-intro'),
+        document.getElementById('about-scroll-experience'),
+        document.getElementById('about-scroll-achievements')
+      ];
+
       const tl1 = gsap.timeline({
         scrollTrigger: {
           trigger: "#hero",
           start: "top top",
-          end: "+=1400",
+          end: "+=4500",
           pin: true,
           pinSpacing: true,
           scrub: 1.2,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            const laptopGlow = THREE.MathUtils.clamp((self.progress - 0.08) / 0.3, 0, 1);
-            const showLaptop = self.progress > 0.08;
+            const laptopGlow = THREE.MathUtils.clamp((self.progress - 0.04) / 0.28, 0, 1);
+            const showLaptop = self.progress > 0.04;
             if (monitorObject) monitorObject.visible = showLaptop;
             if (screenLightMesh) screenLightMesh.visible = showLaptop;
             screenLight.visible = laptopGlow > 0;
@@ -1655,23 +1808,21 @@
       });
 
       tl1
-        // Character moves to the LEFT side of the screen
         .to(character.position, { x: -4.5, duration: 1 }, 0)
-        // Character rotates to face the 3D perspective towards the right
         .to(character.rotation, { y: 0.72, duration: 1 }, 0)
-        // Camera pulls back to reveal the full character workstation
         .to(camera.position, { z: 27, y: 12.5, duration: 1 }, 0)
-        // Laptop screen slides up into place from below desk as character moves left!
-        .fromTo(monitorObject ? monitorObject.position : {}, { y: -10 }, { y: 9.04, duration: 0.8 }, 0.2)
-        .fromTo(screenLightMesh ? screenLightMesh.position : {}, { y: -10 }, { y: 9.04, duration: 0.8 }, 0.2)
-        // Backlight follows to the left
+        .fromTo(monitorObject ? monitorObject.position : {}, { y: -10 }, { y: 9.04, duration: 0.8 }, 0.15)
+        .fromTo(screenLightMesh ? screenLightMesh.position : {}, { y: -10 }, { y: 9.04, duration: 0.8 }, 0.15)
         .to(rimCircle, { left: "30%", scale: 1.15, opacity: 0.9, duration: 1 }, 0)
-        // Landing hero texts fade out and rise
         .to("#hero-left-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
-        .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0);
-
-      // The old About section has been removed, so the hero timeline above now
-      // owns the complete transition into the existing Featured Work section.
+        .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
+        .fromTo(aboutCards[0], { autoAlpha: 0, x: 52 }, { autoAlpha: 1, x: 0, duration: 0.22 }, 0.62)
+        .to(aboutCards[0], { autoAlpha: 0, x: -36, duration: 0.2 }, 1.42)
+        .fromTo(aboutCards[1], { autoAlpha: 0, x: 52 }, { autoAlpha: 1, x: 0, duration: 0.22 }, 1.62)
+        .to(aboutCards[1], { autoAlpha: 0, x: -36, duration: 0.2 }, 2.42)
+        .fromTo(aboutCards[2], { autoAlpha: 0, x: 52 }, { autoAlpha: 1, x: 0, duration: 0.22 }, 2.62);
+// The pinned hero now reveals the About, experience, and achievements panels
+      // before releasing into the Crafted Designs section.
     }
 
     // 5. Mouse Tracking & Kinematics
