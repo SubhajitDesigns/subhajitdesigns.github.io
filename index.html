@@ -1840,8 +1840,9 @@
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            const laptopGlow = THREE.MathUtils.clamp((self.progress - 0.04) / 0.28, 0, 1);
-            const showLaptop = self.progress > 0.04;
+            const laptopRevealProgress = 0.68;
+            const laptopGlow = THREE.MathUtils.clamp((self.progress - laptopRevealProgress) / 0.22, 0, 1);
+            const showLaptop = self.progress >= laptopRevealProgress;
             if (monitorObject) monitorObject.visible = showLaptop;
             if (screenLightMesh) screenLightMesh.visible = showLaptop;
             screenLight.visible = laptopGlow > 0;
@@ -1854,11 +1855,12 @@
       });
 
       tl1
-        .to(character.position, { x: -4.5, duration: 1 }, 0)
+        .to(character.position, { x: -4.0, duration: 1 }, 0)
+        .to(character.scale, { x: 1.08, y: 1.08, z: 1.08, duration: 1 }, 0)
         .to(character.rotation, { y: 0.72, duration: 1 }, 0)
-        .to(camera.position, { z: 27, y: 12.5, duration: 1 }, 0)
-        .fromTo(monitorObject ? monitorObject.position : {}, { y: -10 }, { y: 9.04, duration: 0.8 }, 0.15)
-        .fromTo(screenLightMesh ? screenLightMesh.position : {}, { y: -10 }, { y: 9.04, duration: 0.8 }, 0.15)
+        .to(camera.position, { z: 26.5, y: 12.5, duration: 1 }, 0)
+        .fromTo(monitorObject ? monitorObject.position : {}, { y: -10 }, { y: 9.04, duration: 0.8, ease: "power2.out" }, 2.12)
+        .fromTo(screenLightMesh ? screenLightMesh.position : {}, { y: -10 }, { y: 9.04, duration: 0.8, ease: "power2.out" }, 2.12)
         .to(rimCircle, { left: "30%", scale: 1.15, opacity: 0.9, duration: 1 }, 0)
         .to("#hero-left-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
         .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
