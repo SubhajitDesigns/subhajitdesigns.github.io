@@ -1888,13 +1888,21 @@
         .to(aboutCards[1], { autoAlpha: 0, y: -44, duration: 0.2 }, 2.42)
         .fromTo(aboutCards[2], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 2.62)
         .fromTo(aboutText[2], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, stagger: 0.08 }, 2.68)
-        .fromTo(aboutHeadingLetters[2], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.08, stagger: 0.012 }, 2.70);
+        .fromTo(aboutHeadingLetters[2], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.08, stagger: 0.012 }, 2.70)
+        .to(character.position, { x: -2.9, duration: 0.65, ease: "none" }, 3.2)
+        .to(character.position, { y: -1.70, duration: 0.16, ease: "sine.inOut" }, 3.2)
+        .to(character.position, { y: -1.80, duration: 0.17, ease: "sine.inOut" }, 3.36)
+        .to(character.position, { y: -1.70, duration: 0.16, ease: "sine.inOut" }, 3.53)
+        .to(character.position, { y: -1.80, duration: 0.16, ease: "sine.inOut" }, 3.69)
+        .to(character.rotation, { z: 0.02, duration: 0.16, ease: "sine.inOut" }, 3.2)
+        .to(character.rotation, { z: -0.02, duration: 0.32, ease: "sine.inOut" }, 3.36)
+        .to(character.rotation, { z: 0, duration: 0.17, ease: "sine.inOut" }, 3.68);
 
       const craftedWalk = gsap.timeline({
         scrollTrigger: {
           trigger: "#work",
-          start: "top top",
-          end: "bottom top",
+          start: "top bottom",
+          end: "top top",
           scrub: 1.1,
           invalidateOnRefresh: true
         }
