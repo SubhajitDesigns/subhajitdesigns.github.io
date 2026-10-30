@@ -292,6 +292,7 @@
       pointer-events: none;
       color: #fff;
     }
+    .tech-name-glow-line { display: block; }
     .tech-name-fallback-visible > .tech-name-second-line { color: #cbd5e1; font-weight: 300; }
     .tech-name-fallback-visible { opacity: 1 !important; }
     #techNameReactMount { display: none !important; }
@@ -1057,7 +1058,7 @@
       <div class="landing-intro" id="hero-left-text">
         <h2>Hello! I'm</h2>
         <div class="tech-name-heading" aria-label="Subhajit Das">
-          <div class="tech-name-fallback-visible" aria-hidden="true">SUBHAJIT<br><span class="tech-name-second-line">DAS</span></div>
+          <div class="tech-name-fallback-visible" aria-hidden="true"><span class="tech-name-glow-line">SUBHAJIT</span><span class="tech-name-glow-line tech-name-second-line">DAS</span></div>
           <div id="techNameReactMount" style="position:absolute;inset:0;width:100%;height:100%;color:currentColor"></div>
         </div>
       </div>
@@ -1449,7 +1450,7 @@
       const stagger = 46;
       const targets = [
         document.querySelector('#hero-left-text h2'),
-        document.querySelector('.tech-name-fallback-visible'),
+         ...document.querySelectorAll('.tech-name-fallback-visible .tech-name-glow-line'),
         document.querySelector('#hero-right-text h3'),
         document.querySelector('#hero-right-text .landing-info-h2'),
         document.querySelector('#hero-right-text .landing-info-sub')
@@ -1459,7 +1460,7 @@
         if (target.dataset.glowPrepared) return;
         target.dataset.glowPrepared = 'true';
         if (!target.hasAttribute('aria-hidden') && !target.hasAttribute('aria-label')) {
-          target.setAttribute('aria-label', target.textContent.replace(/\\s+/g, ' ').trim());
+          target.setAttribute('aria-label', target.textContent.replace(/\s+/g, ' ').trim());
         }
 
         const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT);
@@ -1471,7 +1472,7 @@
           const fragment = document.createDocumentFragment();
           Array.from(textNode.nodeValue).forEach((character) => {
             const span = document.createElement('span');
-            if (/\\s/.test(character)) {
+            if (/\s/.test(character)) {
               span.className = 'glw-sp';
               span.innerHTML = '&nbsp;';
               span.setAttribute('aria-hidden', 'true');
