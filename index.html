@@ -39,14 +39,6 @@
     }
 
     #webgl-canvas { width: 100%; height: 100%; }
-body.about-bust-crop #webgl-canvas {
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - clamp(80px, 12vh, 110px)), transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - clamp(80px, 12vh, 110px)), transparent 100%);
-}
-body.about-bust-crop .scroll-down-hint {
-  opacity: 0;
-  visibility: hidden;
-}
 
     /* Moncy.dev signature ambient backlight circles */
     .character-rim {
@@ -1861,7 +1853,6 @@ body.about-bust-crop .scroll-down-hint {
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            document.body.classList.toggle('about-bust-crop', self.progress > 0.02 && self.progress < 0.995);
             const laptopRevealProgress = 0.68;
             const laptopGlow = THREE.MathUtils.clamp((self.progress - laptopRevealProgress) / 0.22, 0, 1);
             const showLaptop = self.progress >= laptopRevealProgress;
@@ -1878,7 +1869,7 @@ body.about-bust-crop .scroll-down-hint {
       });
 
       tl1
-        .to(character.position, { x: -2.4, y: -1.28, duration: 1 }, 0)
+        .to(character.position, { x: -2.4, y: -1.63, duration: 1 }, 0)
         .to(character.scale, { x: 1.14, y: 1.14, z: 1.14, duration: 1 }, 0)
         .to(character.rotation, { y: 0.72, duration: 1 }, 0)
         .to(camera.position, { z: 26.5, y: 12.5, duration: 1 }, 0)
