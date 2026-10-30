@@ -240,16 +240,46 @@
 
     .landing-intro h1 span { font-weight: 300; color: #cbd5e1; }
 
-    .landing-intro h1.tech-name-heading{position:relative;width:min(560px,48vw);max-width:100%;height:clamp(180px,22vw,280px);overflow:visible}
-.tech-name-fallback-visible{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.02em;font-size:clamp(2.8rem,5.5vw,4.8rem);font-weight:700;line-height:.92;letter-spacing:.02em;text-align:center;pointer-events:none;color:#fff}
-.tech-name-fallback-visible span{color:#cbd5e1;font-weight:300}
-#techNameReactMount{z-index:2}
-#techNameReactMount .tech-text{position:relative;width:100%;height:100%;touch-action:pan-y;user-select:none}
-#techNameReactMount .tech-text-canvas{display:block;width:100%;height:100%}
-#techNameReactMount .tech-text-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(1.5rem,4.5vw,2rem);font-weight:600}
-#techNameReactMount .tech-text[data-ready='true'] .tech-text-fallback{visibility:hidden}
-.tech-name-heading:has(#techNameReactMount .tech-text[data-ready='true']) .tech-name-fallback-visible{opacity:0}
-@media(max-width:1024px){.tech-name-heading{width:min(560px,90vw);height:clamp(160px,30vw,240px);margin-inline:auto}}}
+    .landing-intro h1 span { font-weight: 300; color: #cbd5e1; }
+
+    .tech-name-heading {
+      position: relative;
+      display: block;
+      width: min(100%, 450px);
+      height: clamp(170px, 21vw, 250px);
+      max-width: 100%;
+      margin: 0;
+      overflow: visible;
+      isolation: isolate;
+    }
+    .tech-name-fallback-visible {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .02em;
+      font-size: clamp(2.8rem, 5.5vw, 4.8rem);
+      font-weight: 700;
+      line-height: .92;
+      letter-spacing: .02em;
+      text-align: center;
+      white-space: nowrap;
+      pointer-events: none;
+      color: #fff;
+    }
+    .tech-name-fallback-visible span { color: #cbd5e1; font-weight: 300; }
+    #techNameReactMount { z-index: 2; }
+    #techNameReactMount .tech-text { position: relative; width: 100%; height: 100%; touch-action: pan-y; user-select: none; }
+    #techNameReactMount .tech-text-canvas { display: block; width: 100%; height: 100%; }
+    #techNameReactMount .tech-text-fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: clamp(1.5rem, 4.5vw, 2rem); font-weight: 600; }
+    #techNameReactMount .tech-text[data-ready='true'] .tech-text-fallback { visibility: hidden; }
+    .tech-name-heading:has(#techNameReactMount .tech-text[data-ready='true']) .tech-name-fallback-visible { opacity: 0; }
+    @media (max-width: 1024px) {
+      .tech-name-heading { width: min(100%, 560px); height: clamp(160px, 30vw, 240px); margin-inline: auto; }
+    }
     @media(prefers-reduced-motion:reduce){.tech-name-canvas{cursor:default}}
 
 
