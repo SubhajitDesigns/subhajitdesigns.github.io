@@ -6,7 +6,7 @@
   <title>Subhajit — Moncy Scroll Walk Hero</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -858,169 +858,115 @@
 }
 
 
-/* Dotted, scroll-stepped About panels inspired by the reference cards */
+/* Scroll-stepped About panels with a clear dotted reference frame */
 #hero .about-scroll-deck {
-  position: absolute;
-  z-index: 15;
-  top: 50%;
+  position: absolute; z-index: 15; top: 50%;
   right: clamp(2rem, 7vw, 8rem);
-  width: min(42vw, 590px);
-  min-height: min(54vh, 500px);
-  transform: translateY(-50%);
-  pointer-events: none;
+  width: min(42vw, 590px); height: min(66vh, 620px); min-height: 540px;
+  transform: translateY(-50%); pointer-events: none;
+  font-family: 'Poppins', 'Inter', sans-serif;
 }
 #hero .about-scroll-card {
-  --frame: rgba(255,255,255,.28);
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: clamp(2rem, 3.2vw, 3.2rem);
-  border: 1px dashed var(--frame);
-  border-radius: 2px;
-  background: rgba(8,7,8,.28);
-  box-shadow: none;
-  backdrop-filter: blur(2px);
-  opacity: 0;
-  visibility: hidden;
+  --frame: rgba(255,255,255,.72);
+  position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center;
+  padding: clamp(2rem, 3.2vw, 3.2rem); border: 0; border-radius: 0;
+  background:
+    radial-gradient(circle, var(--frame) 1.25px, transparent 1.6px) left top / 9px 3px repeat-x,
+    radial-gradient(circle, var(--frame) 1.25px, transparent 1.6px) left bottom / 9px 3px repeat-x,
+    radial-gradient(circle, var(--frame) 1.25px, transparent 1.6px) left top / 3px 9px repeat-y,
+    radial-gradient(circle, var(--frame) 1.25px, transparent 1.6px) right top / 3px 9px repeat-y,
+    rgba(8,7,8,.3);
+  box-shadow: none; backdrop-filter: blur(2px); opacity: 0; visibility: hidden;
 }
+#hero #about-scroll-experience { inset: -20px 0; }
 #hero .about-scroll-card::before {
-  content: "";
-  position: absolute;
-  top: -13px;
-  left: 50%;
-  width: 16px;
-  height: 16px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: #ff6969;
+  content: ""; position: absolute; top: -13px; left: 50%; width: 16px; height: 16px;
+  transform: translateX(-50%); border-radius: 50%; background: #ff6969;
   box-shadow: 0 0 12px rgba(255,79,79,.85), 0 0 30px rgba(255,62,62,.45);
 }
 #hero .about-scroll-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+  content: ""; position: absolute; inset: 0; pointer-events: none;
   background:
-    linear-gradient(#f2e9e9,#f2e9e9) left top / 20px 3px no-repeat,
-    linear-gradient(#f2e9e9,#f2e9e9) left top / 3px 20px no-repeat,
-    linear-gradient(#f2e9e9,#f2e9e9) right top / 20px 3px no-repeat,
-    linear-gradient(#f2e9e9,#f2e9e9) right top / 3px 20px no-repeat,
-    linear-gradient(#f2e9e9,#f2e9e9) left bottom / 20px 3px no-repeat,
-    linear-gradient(#f2e9e9,#f2e9e9) left bottom / 3px 20px no-repeat,
-    linear-gradient(#f2e9e9,#f2e9e9) right bottom / 20px 3px no-repeat,
-    linear-gradient(#f2e9e9,#f2e9e9) right bottom / 3px 20px no-repeat;
-  opacity: .8;
+    linear-gradient(#f2e9e9,#f2e9e9) left top / 23px 3px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) left top / 3px 23px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) right top / 23px 3px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) right top / 3px 23px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) left bottom / 23px 3px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) left bottom / 3px 23px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) right bottom / 23px 3px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) right bottom / 3px 23px no-repeat;
+  opacity: .95;
 }
 #hero .about-scroll-eyebrow {
-  margin: 0 0 .8rem;
-  color: #ff7777;
-  font-size: .72rem;
-  font-weight: 750;
-  letter-spacing: .2em;
-  text-transform: uppercase;
+  margin: 0 0 .8rem; color: #ff7777; font-size: .72rem;
+  font-weight: 750; letter-spacing: .2em; text-transform: uppercase;
 }
 #hero .about-scroll-card h2 {
-  margin: 0 0 1rem;
-  color: #fff;
-  font-size: clamp(2rem, 3.5vw, 3.5rem);
-  font-weight: 800;
-  line-height: .98;
-  letter-spacing: -.05em;
+  margin: 0 0 1rem; color: #fff; font-size: clamp(1.85rem, 3vw, 3rem);
+  font-weight: 800; line-height: 1.02; letter-spacing: -.045em; text-transform: uppercase;
 }
 #hero .about-scroll-card > p:not(.about-scroll-eyebrow) {
-  max-width: 48ch;
-  margin: 0;
-  color: rgba(247,240,241,.78);
-  font-size: clamp(.95rem, 1.25vw, 1.15rem);
-  line-height: 1.75;
+  max-width: 48ch; margin: 0 0 .7rem; color: rgba(247,240,241,.84);
+  font-size: clamp(1rem, 1.18vw, 1.12rem); line-height: 1.58;
 }
 #hero .about-scroll-foot {
-  margin-top: 1.35rem;
-  color: rgba(244,232,234,.58);
-  font-size: .72rem;
-  font-weight: 650;
-  letter-spacing: .12em;
-  text-transform: uppercase;
+  margin-top: 1rem; color: rgba(244,232,234,.68); font-size: .72rem;
+  font-weight: 650; letter-spacing: .12em; text-transform: uppercase;
 }
 #hero .about-scroll-stats {
-  display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 14px 20px;
-  margin-top: 1.35rem;
+  display: grid; grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 14px 20px; margin-top: 1.35rem;
 }
 #hero .about-scroll-stat {
-  padding: .45rem 0;
-  border: 0;
-  border-bottom: 1px dashed rgba(255,255,255,.24);
-  border-radius: 0;
-  background: transparent;
+  padding: .55rem 0; border: 0; border-bottom: 1px dashed rgba(255,255,255,.42);
+  border-radius: 0; background: transparent;
 }
 #hero .about-scroll-stat strong {
-  display: block;
-  color: #ff6868;
-  font-size: clamp(1.7rem, 3vw, 2.65rem);
-  font-weight: 850;
-  line-height: 1;
+  display: block; color: #ff6868; font-size: clamp(1.7rem, 3vw, 2.65rem);
+  font-weight: 850; line-height: 1;
 }
 #hero .about-scroll-stat span {
-  display: block;
-  margin-top: .45rem;
-  color: rgba(247,240,241,.66);
-  font-size: .72rem;
-  line-height: 1.4;
-  letter-spacing: .06em;
-  text-transform: uppercase;
+  display: block; margin-top: .45rem; color: rgba(247,240,241,.72);
+  font-size: .72rem; line-height: 1.4; letter-spacing: .06em; text-transform: uppercase;
 }
-#hero .about-scroll-achievements {
-  display: grid;
-  gap: .8rem;
-  margin-top: 1.3rem;
-}
+#hero .about-scroll-achievements { display: grid; gap: .8rem; margin-top: 1rem; }
 #hero .about-scroll-achievements div {
-  display: flex;
-  align-items: flex-start;
-  gap: .8rem;
-  color: rgba(247,240,241,.82);
-  font-size: clamp(.9rem, 1.12vw, 1.04rem);
-  line-height: 1.5;
+  display: flex; align-items: flex-start; gap: .8rem; color: rgba(247,240,241,.86);
+  font-size: clamp(.9rem, 1.05vw, 1rem); line-height: 1.5;
 }
 #hero .about-scroll-achievements span {
-  flex: 0 0 8px;
-  width: 8px;
-  height: 8px;
-  margin-top: .45em;
-  border-radius: 50%;
-  background: #ff5959;
-  box-shadow: 0 0 14px rgba(255,70,70,.55);
+  flex: 0 0 8px; width: 8px; height: 8px; margin-top: .45em;
+  border-radius: 50%; background: #ff5959; box-shadow: 0 0 14px rgba(255,70,70,.55);
 }
-#hero .about-scroll-skills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 1.25rem;
+#hero .about-scroll-certs { display: flex; gap: 1rem; margin-top: 1.1rem; }
+#hero .about-scroll-certs figure { display: flex; align-items: center; gap: .65rem; min-width: 0; margin: 0; }
+#hero .about-scroll-certs img {
+  display: block; width: 94px; height: 66px; object-fit: contain; background: rgba(255,255,255,.06);
 }
+#hero .about-scroll-certs figcaption {
+  max-width: 105px; color: rgba(247,240,241,.7); font-size: .62rem;
+  font-weight: 700; line-height: 1.4; letter-spacing: .07em;
+}
+#hero .about-scroll-skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.25rem; }
 #hero .about-scroll-skills span {
-  padding: 5px 10px;
-  border: 1px solid rgba(255,255,255,.4);
-  border-radius: 999px;
-  color: rgba(255,245,245,.88);
-  background: rgba(255,255,255,.07);
-  font-size: .7rem;
-  font-weight: 600;
+  padding: 5px 10px; border: 1px solid rgba(255,255,255,.4); border-radius: 999px;
+  color: rgba(255,245,245,.88); background: rgba(255,255,255,.07); font-size: .7rem; font-weight: 600;
 }
 @media(max-width:900px) {
-  #hero .about-scroll-deck { right: 4vw; width: 48vw; min-height: 440px; }
+  #hero .about-scroll-deck { right: 4vw; width: 48vw; height: 570px; min-height: 0; }
   #hero .about-scroll-card { padding: 2rem 1.5rem; }
 }
 @media(max-width:600px) {
-  #hero .about-scroll-deck { right: 4vw; width: 56vw; min-height: 420px; }
+  #hero .about-scroll-deck { right: 4vw; width: 56vw; height: 540px; min-height: 0; }
   #hero .about-scroll-card { padding: 1.5rem 1.1rem; }
-  #hero .about-scroll-card h2 { font-size: clamp(1.45rem, 6vw, 2rem); }
-  #hero .about-scroll-card > p:not(.about-scroll-eyebrow) { font-size: .82rem; line-height: 1.55; }
+  #hero .about-scroll-card h2 { font-size: clamp(1.35rem, 5.4vw, 1.9rem); }
+  #hero .about-scroll-card > p:not(.about-scroll-eyebrow) { font-size: .84rem; line-height: 1.48; }
   #hero .about-scroll-stat span { font-size: .62rem; }
-  #hero .about-scroll-achievements div { font-size: .78rem; }
+  #hero .about-scroll-achievements div { font-size: .76rem; }
+  #hero .about-scroll-certs { gap: .55rem; }
+  #hero .about-scroll-certs figure { gap: .35rem; }
+  #hero .about-scroll-certs img { width: 62px; height: 50px; }
+  #hero .about-scroll-certs figcaption { font-size: .52rem; }
 }
 </style>
 </head>
@@ -1101,13 +1047,15 @@
       <div class="about-scroll-deck" aria-label="About Subhajit">
         <article class="about-scroll-card" id="about-scroll-intro">
           <p class="about-scroll-eyebrow">About Me</p>
-          <h2>Designing with purpose.</h2>
-          <p>I’m Subhajit Das, a self-taught visual designer and video editor. I turn ideas into clear, engaging visuals for brands, products, and social campaigns.</p>
+          <h2>DESIGNING WITH PURPOSE.</h2>
+          <p>I’m Subhajit Das, a dedicated graphic designer with over 7 years of professional experience. After completing my schooling in 2017, financial limitations prevented me from finishing college—but they never limited my ambition.</p>
+          <p>Since then, I’ve built my career through self-learning, continuous practice, and real client projects. I’ve collaborated with 50+ brands, helping them strengthen their visual identity and stand out in competitive markets.</p>
+          <p>My work blends creativity with clarity. I focus on clean, effective design that captures attention, communicates ideas, and drives engagement. I’m always learning, evolving, and pushing my skills to deliver better results every day.</p>
           <div class="about-scroll-foot">Independent creative • India</div>
         </article>
         <article class="about-scroll-card" id="about-scroll-experience">
           <p class="about-scroll-eyebrow">Experience &amp; Impact</p>
-          <h2>Creative work, built over time.</h2>
+          <h2>CREATIVE WORK, BUILT OVER TIME.</h2>
           <p>From visual identity to product campaigns and video, I work with teams to make ideas easy to notice and remember.</p>
           <div class="about-scroll-stats">
             <div class="about-scroll-stat"><strong>7+</strong><span>Years of experience</span></div>
@@ -1118,11 +1066,14 @@
         </article>
         <article class="about-scroll-card" id="about-scroll-achievements">
           <p class="about-scroll-eyebrow">Selected Achievements</p>
-          <h2>Built through curiosity and craft.</h2>
+          <h2>BUILT THROUGH CURIOSITY AND CRAFT.</h2>
           <div class="about-scroll-achievements">
             <div><span></span><div>Built a creative career through self-learning, practice, and real client projects.</div></div>
-            <div><span></span><div>Partnered with more than 50 brands across different industries.</div></div>
-            <div><span></span><div>Created visual work across identity, advertising, product campaigns, and video.</div></div>
+            <div><span></span><div>Partnered with 50+ brands and created work across identity, advertising, product campaigns, and video.</div></div>
+          </div>
+          <div class="about-scroll-certs" aria-label="Certificates">
+            <figure><img src="certificate-photoshop-2020.jpg" alt="Adobe Photoshop certificate, 2020"><figcaption>PHOTOSHOP · 2020</figcaption></figure>
+            <figure><img src="certificate-retouching-2021.jpg" alt="Photo retouching certificate, 2021"><figcaption>PHOTO RETOUCHING · 2021</figcaption></figure>
           </div>
           <div class="about-scroll-foot">Keep learning. Keep making.</div>
         </article>
@@ -1827,6 +1778,11 @@
         document.getElementById('about-scroll-experience'),
         document.getElementById('about-scroll-achievements')
       ];
+      const aboutText = aboutCards.map(card =>
+        Array.from(card.querySelectorAll(
+          '.about-scroll-eyebrow, h2, p:not(.about-scroll-eyebrow), .about-scroll-stats, .about-scroll-achievements > div, .about-scroll-certs, .about-scroll-foot'
+        ))
+      );
 
       const tl1 = gsap.timeline({
         scrollTrigger: {
@@ -1862,10 +1818,13 @@
         .to("#hero-left-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
         .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
         .fromTo(aboutCards[0], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 0.62)
+        .fromTo(aboutText[0], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, stagger: 0.08 }, 0.68)
         .to(aboutCards[0], { autoAlpha: 0, y: -44, duration: 0.2 }, 1.42)
         .fromTo(aboutCards[1], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 1.62)
+        .fromTo(aboutText[1], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, stagger: 0.08 }, 1.68)
         .to(aboutCards[1], { autoAlpha: 0, y: -44, duration: 0.2 }, 2.42)
-        .fromTo(aboutCards[2], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 2.62);
+        .fromTo(aboutCards[2], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 2.62)
+        .fromTo(aboutText[2], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, stagger: 0.08 }, 2.68);
 // The pinned hero now reveals the About, experience, and achievements panels
       // before releasing into the Crafted Designs section.
     }
