@@ -857,7 +857,8 @@
   #my-work-gallery .cover-card { transition-duration: .01ms; }
 }
 
-/* Scroll-stepped About panels beside the pinned character */
+
+/* Dotted, scroll-stepped About panels inspired by the reference cards */
 #hero .about-scroll-deck {
   position: absolute;
   z-index: 15;
@@ -869,19 +870,48 @@
   pointer-events: none;
 }
 #hero .about-scroll-card {
+  --frame: rgba(255,255,255,.28);
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(1.6rem, 3vw, 3rem);
-  border: 1px solid rgba(255,255,255,.14);
-  border-radius: 24px;
-  background: linear-gradient(145deg, rgba(16,10,11,.9), rgba(8,7,8,.76));
-  box-shadow: 0 24px 75px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.06);
-  backdrop-filter: blur(18px);
+  padding: clamp(2rem, 3.2vw, 3.2rem);
+  border: 1px dashed var(--frame);
+  border-radius: 2px;
+  background: rgba(8,7,8,.28);
+  box-shadow: none;
+  backdrop-filter: blur(2px);
   opacity: 0;
   visibility: hidden;
+}
+#hero .about-scroll-card::before {
+  content: "";
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #ff6969;
+  box-shadow: 0 0 12px rgba(255,79,79,.85), 0 0 30px rgba(255,62,62,.45);
+}
+#hero .about-scroll-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(#f2e9e9,#f2e9e9) left top / 20px 3px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) left top / 3px 20px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) right top / 20px 3px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) right top / 3px 20px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) left bottom / 20px 3px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) left bottom / 3px 20px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) right bottom / 20px 3px no-repeat,
+    linear-gradient(#f2e9e9,#f2e9e9) right bottom / 3px 20px no-repeat;
+  opacity: .8;
 }
 #hero .about-scroll-eyebrow {
   margin: 0 0 .8rem;
@@ -907,9 +937,9 @@
   line-height: 1.75;
 }
 #hero .about-scroll-foot {
-  margin-top: 1.5rem;
-  color: rgba(244,232,234,.52);
-  font-size: .75rem;
+  margin-top: 1.35rem;
+  color: rgba(244,232,234,.58);
+  font-size: .72rem;
   font-weight: 650;
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -917,14 +947,15 @@
 #hero .about-scroll-stats {
   display: grid;
   grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 12px;
-  margin-top: 1.5rem;
+  gap: 14px 20px;
+  margin-top: 1.35rem;
 }
 #hero .about-scroll-stat {
-  padding: 1rem;
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 15px;
-  background: rgba(255,255,255,.035);
+  padding: .45rem 0;
+  border: 0;
+  border-bottom: 1px dashed rgba(255,255,255,.24);
+  border-radius: 0;
+  background: transparent;
 }
 #hero .about-scroll-stat strong {
   display: block;
@@ -937,7 +968,7 @@
   display: block;
   margin-top: .45rem;
   color: rgba(247,240,241,.66);
-  font-size: .78rem;
+  font-size: .72rem;
   line-height: 1.4;
   letter-spacing: .06em;
   text-transform: uppercase;
@@ -964,16 +995,30 @@
   background: #ff5959;
   box-shadow: 0 0 14px rgba(255,70,70,.55);
 }
+#hero .about-scroll-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1.25rem;
+}
+#hero .about-scroll-skills span {
+  padding: 5px 10px;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 999px;
+  color: rgba(255,245,245,.88);
+  background: rgba(255,255,255,.07);
+  font-size: .7rem;
+  font-weight: 600;
+}
 @media(max-width:900px) {
   #hero .about-scroll-deck { right: 4vw; width: 48vw; min-height: 440px; }
-  #hero .about-scroll-card { padding: 1.5rem; }
+  #hero .about-scroll-card { padding: 2rem 1.5rem; }
 }
 @media(max-width:600px) {
   #hero .about-scroll-deck { right: 4vw; width: 56vw; min-height: 420px; }
-  #hero .about-scroll-card { padding: 1.1rem; border-radius: 18px; }
+  #hero .about-scroll-card { padding: 1.5rem 1.1rem; }
   #hero .about-scroll-card h2 { font-size: clamp(1.45rem, 6vw, 2rem); }
   #hero .about-scroll-card > p:not(.about-scroll-eyebrow) { font-size: .82rem; line-height: 1.55; }
-  #hero .about-scroll-stat { padding: .75rem; }
   #hero .about-scroll-stat span { font-size: .62rem; }
   #hero .about-scroll-achievements div { font-size: .78rem; }
 }
@@ -1816,11 +1861,11 @@
         .to(rimCircle, { left: "30%", scale: 1.15, opacity: 0.9, duration: 1 }, 0)
         .to("#hero-left-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
         .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
-        .fromTo(aboutCards[0], { autoAlpha: 0, x: 52 }, { autoAlpha: 1, x: 0, duration: 0.22 }, 0.62)
-        .to(aboutCards[0], { autoAlpha: 0, x: -36, duration: 0.2 }, 1.42)
-        .fromTo(aboutCards[1], { autoAlpha: 0, x: 52 }, { autoAlpha: 1, x: 0, duration: 0.22 }, 1.62)
-        .to(aboutCards[1], { autoAlpha: 0, x: -36, duration: 0.2 }, 2.42)
-        .fromTo(aboutCards[2], { autoAlpha: 0, x: 52 }, { autoAlpha: 1, x: 0, duration: 0.22 }, 2.62);
+        .fromTo(aboutCards[0], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 0.62)
+        .to(aboutCards[0], { autoAlpha: 0, y: -44, duration: 0.2 }, 1.42)
+        .fromTo(aboutCards[1], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 1.62)
+        .to(aboutCards[1], { autoAlpha: 0, y: -44, duration: 0.2 }, 2.42)
+        .fromTo(aboutCards[2], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 2.62);
 // The pinned hero now reveals the About, experience, and achievements panels
       // before releasing into the Crafted Designs section.
     }
