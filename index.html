@@ -965,9 +965,12 @@
     const studioEnvTexture = new THREE.CanvasTexture(studioEnvCanvas);
     studioEnvTexture.mapping = THREE.EquirectangularReflectionMapping;
     studioEnvTexture.encoding = THREE.sRGBEncoding;
-    const studioEnvironment = new THREE.PMREMGenerator(renderer).fromEquirectangular(studioEnvTexture);
+    const studioPMREM = new THREE.PMREMGenerator(renderer);
+    studioPMREM.compileEquirectangularShader();
+    const studioEnvironment = studioPMREM.fromEquirectangular(studioEnvTexture);
     scene.environment = studioEnvironment.texture;
     studioEnvTexture.dispose();
+    studioPMREM.dispose();
 
     // 2. Studio & Character PBR Lighting Setup
     // Low warm ambient keeps the shadows rich.
@@ -1049,9 +1052,9 @@
             child.castShadow = true;
             child.receiveShadow = true;
             if (child.material) {
-              child.material.envMapIntensity = 1.25;
               const materials = Array.isArray(child.material) ? child.material : [child.material];
               materials.forEach((material) => {
+                material.envMapIntensity = 1.25;
                 const isEyeSurface = /(eye|iris|pupil)/i.test(`${child.name || ''} ${material.name || ''}`);
                 if (typeof material.roughness === 'number') material.roughness = Math.min(material.roughness, isEyeSurface ? 0.3 : 0.52);
                 if ('clearcoat' in material && !isEyeSurface) {
