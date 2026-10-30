@@ -1645,7 +1645,7 @@
         // Optimize materials for rich color and sheen
         character.traverse((child) => {
           if (child.isMesh) {
-            if (/^hand$/i.test(child.name || '')) {
+            if (/^(hand|pant|shoe|sole)$/i.test(child.name || '')) {
               child.visible = false;
               return;
             }
