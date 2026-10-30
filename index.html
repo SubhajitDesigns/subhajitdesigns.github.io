@@ -1229,14 +1229,26 @@
     // ==========================================
     gsap.registerPlugin(ScrollTrigger);
 
-    // A refresh should replay the portfolio from the landing section, not the
-    // browser's previously restored scroll position.
+    // A refresh should replay the portfolio at the hero, not restore a prior section.
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     const pageNavigation = performance.getEntriesByType?.('navigation')?.[0];
     const isReload = pageNavigation?.type === 'reload';
-    if (isReload) {
+    const resetReloadScroll = () => {
+      if (!isReload) return;
+      document.documentElement.style.scrollBehavior = 'auto';
+      if (window.location.hash) {
+        history.replaceState(null, document.title, window.location.pathname + window.location.search);
+      }
+      if (window.ScrollTrigger && typeof ScrollTrigger.clearScrollMemory === 'function') {
+        ScrollTrigger.clearScrollMemory('manual');
+      }
       window.scrollTo(0, 0);
-      window.addEventListener('pageshow', () => window.scrollTo(0, 0), { once: true });
+      requestAnimationFrame(() => window.scrollTo(0, 0));
+    };
+    if (isReload) {
+      resetReloadScroll();
+      window.addEventListener('pageshow', resetReloadScroll, { once: true });
+      window.addEventListener('load', resetReloadScroll, { once: true });
     }
 
     const canvas = document.getElementById('webgl-canvas');
@@ -1288,10 +1300,17 @@
                   loadingScreen.style.display = 'none';
                   document.documentElement.classList.remove('intro-active');
                   document.body.classList.remove('intro-active');
-                  window.scrollTo(0, 0);
-                  if (window.ScrollTrigger) {
-                    ScrollTrigger.refresh();
-                    ScrollTrigger.update();
+                  if (isReload) {
+                    const finishAtLanding = () => {
+                      resetReloadScroll();
+                      if (window.ScrollTrigger) {
+                        ScrollTrigger.refresh(true);
+                        ScrollTrigger.update();
+                      }
+                      requestAnimationFrame(() => requestAnimationFrame(resetReloadScroll));
+                    };
+                    finishAtLanding();
+                    setTimeout(finishAtLanding, 80);
                   }
                 }, 950);
               }, 900);
