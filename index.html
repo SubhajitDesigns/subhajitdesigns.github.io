@@ -1904,8 +1904,8 @@
         }
       });
       craftedWalk
-        .to(character.position, { x: -4.0, duration: 1.1, ease: "power1.inOut" }, 0)
-        .to(character.rotation, { y: 0.95, duration: 1.1, ease: "power1.inOut" }, 0);
+        .fromTo(character.position, { x: -2.9 }, { x: -4.0, duration: 1.1, ease: "power1.inOut", immediateRender: false }, 0)
+        .fromTo(character.rotation, { y: 0.72 }, { y: 0.95, duration: 1.1, ease: "power1.inOut", immediateRender: false }, 0);
       // The pinned hero reveals About, experience, and achievements before the
       // character continues moving left through the translucent Crafted section.
     }
