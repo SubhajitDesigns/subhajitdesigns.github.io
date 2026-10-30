@@ -1015,19 +1015,19 @@
     <div class="coverflow" aria-label="Selected work carousel">
       <div class="view" tabindex="0" aria-label="Coverflow. Use the left and right arrow keys">
         <div class="track">
-          <button class="cover-card" type="button" style="--hue: 2" aria-label="Idea Overload, editorial and photo manipulation" aria-pressed="false">
+          <button class="cover-card" type="button" style="--hue: 2" aria-label="Idea Overload, editorial and photo manipulation" data-title="IDEA OVERLOAD" aria-pressed="false">
             <img src="currently-creating-04.png" alt="Idea Overload editorial poster" loading="lazy">
             <span class="cover-card-title"><small>01 / EDITORIAL</small>IDEA OVERLOAD</span>
           </button>
-          <button class="cover-card" type="button" style="--hue: 350" aria-label="Font Fails, typography and art direction" aria-pressed="false">
+          <button class="cover-card" type="button" style="--hue: 350" aria-label="Font Fails, typography and art direction" data-title="FONT FAILS" aria-pressed="false">
             <img src="currently-creating-01-new.jpg" alt="Font Fails typography poster" loading="lazy">
             <span class="cover-card-title"><small>02 / TYPOGRAPHY</small>FONT FAILS</span>
           </button>
-          <button class="cover-card" type="button" style="--hue: 4" aria-label="Good Design, conceptual and editorial design" aria-pressed="false">
+          <button class="cover-card" type="button" style="--hue: 4" aria-label="Good Design, conceptual and editorial design" data-title="GOOD DESIGN?" aria-pressed="false">
             <img src="currently-creating-02.jpg" alt="Good Design conceptual poster" loading="lazy">
             <span class="cover-card-title"><small>03 / CONCEPT</small>GOOD DESIGN?</span>
           </button>
-          <button class="cover-card" type="button" style="--hue: 8" aria-label="CapCut, visual campaign" aria-pressed="false">
+          <button class="cover-card" type="button" style="--hue: 8" aria-label="CapCut, visual campaign" data-title="CAPCUT" aria-pressed="false">
             <img src="currently-creating-03.png" alt="CapCut creative campaign poster" loading="lazy">
             <span class="cover-card-title"><small>04 / CAMPAIGN</small>CAPCUT</span>
           </button>
@@ -1074,7 +1074,7 @@
     });
     caption.textContent = String(active + 1).padStart(2, '0') + ' / ' +
       String(items.length).padStart(2, '0') + ' — ' +
-      items[active].querySelector('.cover-card-title').textContent.replace(/\s+/g, ' ').trim().replace(/^\d+\s*\/\s*[^ ]+\s*/, '');
+      items[active].dataset.title;
   }
 
   function go(direction) {
