@@ -935,21 +935,64 @@
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    // 2. Realistic Studio & Character PBR Lighting Setup
-    // Warm ambient light
-    const ambientLight = new THREE.AmbientLight(0x241719, 1.15);
+    // Procedural studio environment: softboxes give the model real PBR reflections
+    // without changing the transparent hero background or loading another asset.
+    const studioEnvCanvas = document.createElement('canvas');
+    studioEnvCanvas.width = 1024;
+    studioEnvCanvas.height = 512;
+    const studioEnvContext = studioEnvCanvas.getContext('2d');
+    studioEnvContext.fillStyle = '#120e10';
+    studioEnvContext.fillRect(0, 0, studioEnvCanvas.width, studioEnvCanvas.height);
+    const studioEnvWash = studioEnvContext.createLinearGradient(0, 0, 1024, 0);
+    studioEnvWash.addColorStop(0, '#351016');
+    studioEnvWash.addColorStop(0.28, '#211316');
+    studioEnvWash.addColorStop(0.5, '#171315');
+    studioEnvWash.addColorStop(0.76, '#211316');
+    studioEnvWash.addColorStop(1, '#351016');
+    studioEnvContext.fillStyle = studioEnvWash;
+    studioEnvContext.fillRect(0, 0, 1024, 512);
+    const drawSoftbox = (x, y, width, height, alpha) => {
+      const glow = studioEnvContext.createRadialGradient(x + width / 2, y + height / 2, 12, x + width / 2, y + height / 2, Math.max(width, height) * 0.72);
+      glow.addColorStop(0, `rgba(255, 230, 218, ${alpha})`);
+      glow.addColorStop(0.58, `rgba(255, 190, 175, ${alpha * 0.42})`);
+      glow.addColorStop(1, 'rgba(255, 120, 115, 0)');
+      studioEnvContext.fillStyle = glow;
+      studioEnvContext.fillRect(x - width * 0.6, y - height * 0.5, width * 2.2, height * 2);
+    };
+    drawSoftbox(210, 74, 150, 300, 0.92);
+    drawSoftbox(660, 102, 112, 248, 0.62);
+    drawSoftbox(438, 28, 130, 92, 0.4);
+    const studioEnvTexture = new THREE.CanvasTexture(studioEnvCanvas);
+    studioEnvTexture.mapping = THREE.EquirectangularReflectionMapping;
+    studioEnvTexture.encoding = THREE.sRGBEncoding;
+    const studioEnvironment = new THREE.PMREMGenerator(renderer).fromEquirectangular(studioEnvTexture);
+    scene.environment = studioEnvironment.texture;
+    studioEnvTexture.dispose();
+
+    // 2. Studio & Character PBR Lighting Setup
+    // Low warm ambient keeps the shadows rich.
+    const ambientLight = new THREE.AmbientLight(0x241719, 0.72);
     scene.add(ambientLight);
 
     // Warm key light on face & skin
-    const keyLight = new THREE.DirectionalLight(0xffe2d1, 3.0);
-    keyLight.position.set(-2.5, 11, 9);
+    const keyLight = new THREE.DirectionalLight(0xffe2d1, 3.4);
+    keyLight.position.set(-3.5, 10, 8);
     keyLight.castShadow = true;
-    keyLight.shadow.mapSize.width = 1024;
-    keyLight.shadow.mapSize.height = 1024;
+    keyLight.shadow.mapSize.width = 2048;
+    keyLight.shadow.mapSize.height = 2048;
+    keyLight.shadow.camera.left = -8;
+    keyLight.shadow.camera.right = 8;
+    keyLight.shadow.camera.top = 10;
+    keyLight.shadow.camera.bottom = -10;
+    keyLight.shadow.camera.near = 0.1;
+    keyLight.shadow.camera.far = 40;
+    keyLight.shadow.bias = -0.0001;
+    keyLight.shadow.normalBias = 0.025;
+    keyLight.shadow.radius = 4;
     scene.add(keyLight);
 
     // Restrained red rim light from the left rear
-    const rimLightRed = new THREE.PointLight(0xe83949, 2.7, 27, 1.9);
+    const rimLightRed = new THREE.PointLight(0xe83949, 3.0, 27, 1.9);
     rimLightRed.position.set(-5, 10, -5);
     scene.add(rimLightRed);
 
@@ -959,7 +1002,7 @@
     scene.add(rimLightWarm);
 
     // Soft front fill light
-    const fillLight = new THREE.PointLight(0xffd9d0, 1.0, 22);
+    const fillLight = new THREE.PointLight(0xffd9d0, 0.62, 22);
     fillLight.position.set(0, 8, 9);
     scene.add(fillLight);
 
@@ -1006,11 +1049,19 @@
             child.castShadow = true;
             child.receiveShadow = true;
             if (child.material) {
-              child.material.envMapIntensity = 0.9;
+              child.material.envMapIntensity = 1.25;
               const materials = Array.isArray(child.material) ? child.material : [child.material];
               materials.forEach((material) => {
                 const isEyeSurface = /(eye|iris|pupil)/i.test(`${child.name || ''} ${material.name || ''}`);
-                if (!isEyeSurface) return;
+                if (typeof material.roughness === 'number') material.roughness = Math.min(material.roughness, isEyeSurface ? 0.3 : 0.52);
+                if ('clearcoat' in material && !isEyeSurface) {
+                  material.clearcoat = Math.max(material.clearcoat || 0, 0.18);
+                  material.clearcoatRoughness = Math.min(material.clearcoatRoughness ?? 0.35, 0.35);
+                }
+                if (!isEyeSurface) {
+                  material.needsUpdate = true;
+                  return;
+                }
                 ['color', 'emissive'].forEach((property) => {
                   const tint = material[property];
                   if (!tint || typeof tint.getHSL !== 'function' || typeof tint.setHSL !== 'function') return;
