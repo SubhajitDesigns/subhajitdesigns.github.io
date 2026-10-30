@@ -1524,7 +1524,7 @@
       powerPreference: 'high-performance'
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.12;
     renderer.shadowMap.enabled = true;
@@ -1852,7 +1852,7 @@
           end: "+=4500",
           pin: true,
           pinSpacing: true,
-          scrub: 1.2,
+          scrub: 0.25,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
@@ -1899,7 +1899,7 @@
           trigger: "#work",
           start: "top bottom",
           end: "top 10%",
-          scrub: 1.1,
+          scrub: 0.25,
           invalidateOnRefresh: true
         }
       });
