@@ -686,6 +686,7 @@
 
 
 
+
 /* Full-width, auto-moving My Work coverflow */
 #my-work-gallery {
   position: relative;
@@ -760,29 +761,34 @@
   pointer-events: none;
 }
 #my-work-gallery .cover-card {
+  --cover-step: clamp(100px, 16vw, 230px);
+  --cover-nudge: clamp(35px, 4vw, 60px);
   position: absolute;
   top: 50%;
   left: 50%;
-  display: block;
-  width: clamp(220px, 22vw, 330px);
-  height: clamp(300px, 34vw, 460px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+  max-width: min(25vw, 340px);
+  height: max-content;
   overflow: hidden;
   padding: 0;
   border: 1px solid rgba(255,255,255,.18);
-  border-radius: 18px;
+  border-radius: 14px;
   color: #fff;
-  background: #16090b;
+  background: #10090a;
   box-shadow: 0 22px 50px rgba(0,0,0,.5), 0 0 32px rgba(255,65,65,.12);
   pointer-events: auto;
   transform:
     translate(-50%, -50%)
-    translateX(calc(var(--o) * clamp(100px, 15vw, 220px) + var(--sign) * clamp(35px, 4vw, 60px)))
+    translateX(calc(var(--o) * var(--cover-step) + var(--sign) * var(--cover-nudge)))
     translateZ(calc(var(--abs) * -72px))
     rotateY(calc(var(--sign) * -52deg));
   transition:
-    transform .95s cubic-bezier(.22,.72,.23,1),
-    opacity .85s ease,
-    filter .85s ease,
+    transform 1.2s cubic-bezier(.22,.72,.23,1),
+    opacity 1s ease,
+    filter 1s ease,
     border-color .5s ease;
   filter: brightness(calc(1 - var(--abs) * .11));
   opacity: clamp(0, calc(2.2 - var(--abs) * .72), 1);
@@ -794,34 +800,30 @@
 }
 #my-work-gallery .cover-card.is-far { opacity: 0; pointer-events: none; }
 #my-work-gallery .cover-card img {
-  position: absolute;
-  inset: 0;
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-#my-work-gallery .cover-card::after {
-  content: "";
-  position: absolute;
-  inset: 28% 0 0;
-  background: linear-gradient(transparent 5%, rgba(8,4,6,.88));
+  width: auto;
+  height: auto;
+  max-width: min(25vw, 340px);
+  max-height: min(48vh, 440px);
+  object-fit: contain;
+  border-radius: 12px 12px 0 0;
 }
 #my-work-gallery .cover-card-title {
-  position: absolute;
-  z-index: 1;
-  inset: auto 0 0;
-  padding: 20px;
+  display: block;
+  width: 100%;
+  padding: 10px 14px 12px;
   color: #fff;
-  font-size: clamp(.75rem, 1.2vw, 1rem);
+  background: rgba(8,5,6,.96);
+  font-size: clamp(.72rem, 1.1vw, .9rem);
   font-weight: 750;
   letter-spacing: .07em;
   line-height: 1.2;
   text-align: left;
+  white-space: nowrap;
 }
 #my-work-gallery .cover-card-title small {
   display: block;
-  margin-bottom: .5em;
+  margin-bottom: .45em;
   color: #ffc0c0;
   font-size: .68em;
   font-weight: 650;
@@ -838,9 +840,17 @@
 #my-work-gallery .view:focus-visible { outline: 2px solid #ff6a6a; outline-offset: -8px; }
 @media(max-width:700px) {
   #my-work-gallery { min-height: 88vh; padding: 4rem 0; }
-  #my-work-gallery .view { height: clamp(320px, 88vw, 470px); }
-  #my-work-gallery .cover-card { width: clamp(205px, 58vw, 270px); height: clamp(285px, 78vw, 390px); }
-  #my-work-gallery .cover-card-title { padding: 14px; font-size: .8rem; }
+  #my-work-gallery .view { height: clamp(330px, 88vw, 470px); }
+  #my-work-gallery .cover-card {
+    --cover-step: calc((100vw - clamp(190px, 44vw, 260px)) / 2);
+    --cover-nudge: 0px;
+    max-width: min(68vw, 270px);
+  }
+  #my-work-gallery .cover-card img {
+    max-width: min(68vw, 270px);
+    max-height: min(48vh, 360px);
+  }
+  #my-work-gallery .cover-card-title { padding: 9px 11px 10px; font-size: .74rem; }
 }
 @media(prefers-reduced-motion:reduce) {
   #my-work-gallery .cover-card { transition-duration: .01ms; }
@@ -1111,9 +1121,89 @@
             <img src="freehit.png" alt="FREEHIT branding design by Subhajit" loading="lazy">
             <span class="cover-card-title"><small>27 / BRANDING</small>FREEHIT</span>
           </article>
+          <article class="cover-card" data-title="VITAMIN C GLOW" data-category="PRODUCT CAMPAIGN" style="--hue: 99">
+            <img src="Protect%20your%20glow...webp" alt="VITAMIN C GLOW product campaign design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>28 / PRODUCT CAMPAIGN</small>VITAMIN C GLOW</span>
+          </article>
+          <article class="cover-card" data-title="VISUAL CAMPAIGN" data-category="CAMPAIGN" style="--hue: 116">
+            <img src="ac094c3fedd25880080e0f0e4d5b7467.webp" alt="VISUAL CAMPAIGN campaign design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>29 / CAMPAIGN</small>VISUAL CAMPAIGN</span>
+          </article>
+          <article class="cover-card" data-title="BUSINESS BRANDING" data-category="BRAND DESIGN" style="--hue: 133">
+            <img src="business.jpg" alt="BUSINESS BRANDING brand design design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>30 / BRAND DESIGN</small>BUSINESS BRANDING</span>
+          </article>
+          <article class="cover-card" data-title="PORTRAIT CUTOUT" data-category="PHOTO DESIGN" style="--hue: 150">
+            <img src="cutout-photo.png" alt="PORTRAIT CUTOUT photo design design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>31 / PHOTO DESIGN</small>PORTRAIT CUTOUT</span>
+          </article>
+          <article class="cover-card" data-title="FOOD CAMPAIGN" data-category="ADVERTISING" style="--hue: 167">
+            <img src="food-ad.jpg" alt="FOOD CAMPAIGN advertising design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>32 / ADVERTISING</small>FOOD CAMPAIGN</span>
+          </article>
+          <article class="cover-card" data-title="GOA TRAVEL" data-category="TRAVEL" style="--hue: 184">
+            <img src="goa.jpg" alt="GOA TRAVEL travel design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>33 / TRAVEL</small>GOA TRAVEL</span>
+          </article>
+          <article class="cover-card" data-title="HELI TOURS" data-category="TRAVEL BRANDING" style="--hue: 201">
+            <img src="heli-tours-travels.png" alt="HELI TOURS travel branding design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>34 / TRAVEL BRANDING</small>HELI TOURS</span>
+          </article>
+          <article class="cover-card" data-title="IDLI" data-category="FOOD CAMPAIGN" style="--hue: 218">
+            <img src="idli.jpg" alt="IDLI food campaign design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>35 / FOOD CAMPAIGN</small>IDLI</span>
+          </article>
+          <article class="cover-card" data-title="JEWELLERY" data-category="PRODUCT CAMPAIGN" style="--hue: 235">
+            <img src="jewellery.webp" alt="JEWELLERY product campaign design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>36 / PRODUCT CAMPAIGN</small>JEWELLERY</span>
+          </article>
+          <article class="cover-card" data-title="KITKAT SHAKE" data-category="PRODUCT AD" style="--hue: 252">
+            <img src="kitkat%20shake%20copy.jpg" alt="KITKAT SHAKE product ad design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>37 / PRODUCT AD</small>KITKAT SHAKE</span>
+          </article>
+          <article class="cover-card" data-title="LEADS GENERATION" data-category="CAMPAIGN" style="--hue: 269">
+            <img src="leads%20gen%20copy.jpg" alt="LEADS GENERATION campaign design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>38 / CAMPAIGN</small>LEADS GENERATION</span>
+          </article>
+          <article class="cover-card" data-title="MAMAEARTH" data-category="PRODUCT DESIGN" style="--hue: 286">
+            <img src="mamaearth.png" alt="MAMAEARTH product design design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>39 / PRODUCT DESIGN</small>MAMAEARTH</span>
+          </article>
+          <article class="cover-card" data-title="SAFE TOUR" data-category="TRAVEL" style="--hue: 303">
+            <img src="safe-tour.jpg" alt="SAFE TOUR travel design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>40 / TRAVEL</small>SAFE TOUR</span>
+          </article>
+          <article class="cover-card" data-title="SON KAPILA" data-category="BRANDING" style="--hue: 320">
+            <img src="son-kapila.png" alt="SON KAPILA branding design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>41 / BRANDING</small>SON KAPILA</span>
+          </article>
+          <article class="cover-card" data-title="UNTOUCH NATURE" data-category="CAMPAIGN" style="--hue: 337">
+            <img src="untouch-nature.png" alt="UNTOUCH NATURE campaign design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>42 / CAMPAIGN</small>UNTOUCH NATURE</span>
+          </article>
+          <article class="cover-card" data-title="VIETNAM" data-category="TRAVEL" style="--hue: 354">
+            <img src="vietnam.jpg" alt="VIETNAM travel design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>43 / TRAVEL</small>VIETNAM</span>
+          </article>
+          <article class="cover-card" data-title="PROJECT 01" data-category="DESIGN" style="--hue: 11">
+            <img src="project-01.jpg" alt="PROJECT 01 design design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>44 / DESIGN</small>PROJECT 01</span>
+          </article>
+          <article class="cover-card" data-title="PROJECT 02" data-category="DESIGN" style="--hue: 28">
+            <img src="project-02.jpg" alt="PROJECT 02 design design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>45 / DESIGN</small>PROJECT 02</span>
+          </article>
+          <article class="cover-card" data-title="PROJECT 03" data-category="DESIGN" style="--hue: 45">
+            <img src="project-03.jpg" alt="PROJECT 03 design design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>46 / DESIGN</small>PROJECT 03</span>
+          </article>
+          <article class="cover-card" data-title="PROJECT 04" data-category="DESIGN" style="--hue: 62">
+            <img src="project-04.jpg" alt="PROJECT 04 design design by Subhajit" loading="lazy">
+            <span class="cover-card-title"><small>47 / DESIGN</small>PROJECT 04</span>
+          </article>
         </div>
       </div>
-      <output class="coverflow-caption" aria-live="polite">01 / 27 — IDEA OVERLOAD</output>
+      <output class="coverflow-caption" aria-live="polite">14 / 47 — JAISALMER</output>
     </div>
   </div>
 </section>
@@ -1143,20 +1233,17 @@
   const items = [...track.querySelectorAll('.cover-card')];
   const caption = root.querySelector('.coverflow-caption');
   const view = root.querySelector('.view');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let active = count + Math.floor(count / 2);
-  let timer = null;
-  let visible = false;
-  let paused = false;
 
   function layout() {
+    const maxOffset = window.innerWidth < 700 ? 1 : 2;
     items.forEach((card, index) => {
       const offset = index - active;
       card.style.setProperty('--o', offset);
       card.style.setProperty('--abs', Math.abs(offset));
       card.style.setProperty('--sign', Math.sign(offset));
       card.style.zIndex = String(items.length - Math.abs(offset));
-      card.classList.toggle('is-far', Math.abs(offset) > 2);
+      card.classList.toggle('is-far', Math.abs(offset) > maxOffset);
       card.setAttribute('aria-current', String(index === active));
     });
     const projectIndex = ((active - count) % count + count) % count;
@@ -1164,47 +1251,29 @@
       String(count).padStart(2, '0') + ' — ' + originals[projectIndex].dataset.title;
   }
 
-  function advance(direction = -1) {
+  function advance(direction = 1) {
     active += direction;
     layout();
-    if (direction < 0 && active < count) {
-      window.setTimeout(() => {
-        active += count;
-        layout();
-      }, 1000);
-    } else if (direction > 0 && active >= count * 2) {
+    if (direction > 0 && active >= count * 2) {
       window.setTimeout(() => {
         active -= count;
         layout();
-      }, 1000);
+      }, 1250);
+    } else if (direction < 0 && active < count) {
+      window.setTimeout(() => {
+        active += count;
+        layout();
+      }, 1250);
     }
   }
 
-  function stop() {
-    if (timer) window.clearInterval(timer);
-    timer = null;
-  }
-  function start() {
-    if (!timer && visible && !paused && !reducedMotion) {
-      timer = window.setInterval(() => advance(-1), 2800);
-    }
-  }
-
-  section.addEventListener('mouseenter', () => { paused = true; stop(); });
-  section.addEventListener('mouseleave', () => { paused = false; start(); });
-  section.addEventListener('focusin', () => { paused = true; stop(); });
-  section.addEventListener('focusout', () => { paused = false; start(); });
   view.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowLeft') { event.preventDefault(); advance(-1); }
-    if (event.key === 'ArrowRight') { event.preventDefault(); advance(1); }
+    if (event.key === 'ArrowLeft') { event.preventDefault(); advance(1); }
+    if (event.key === 'ArrowRight') { event.preventDefault(); advance(-1); }
   });
 
-  const observer = new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting;
-    if (visible) start(); else stop();
-  }, { threshold: 0.2 });
-  observer.observe(section);
   layout();
+  window.setInterval(() => advance(1), 3600);
 })();
 </script>
 <script>
