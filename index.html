@@ -39,6 +39,14 @@
     }
 
     #webgl-canvas { width: 100%; height: 100%; }
+body.about-bust-crop #webgl-canvas {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - clamp(80px, 12vh, 110px)), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - clamp(80px, 12vh, 110px)), transparent 100%);
+}
+body.about-bust-crop .scroll-down-hint {
+  opacity: 0;
+  visibility: hidden;
+}
 
     /* Moncy.dev signature ambient backlight circles */
     .character-rim {
@@ -1853,6 +1861,7 @@
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
+            document.body.classList.toggle('about-bust-crop', self.progress > 0.02 && self.progress < 0.995);
             const laptopRevealProgress = 0.68;
             const laptopGlow = THREE.MathUtils.clamp((self.progress - laptopRevealProgress) / 0.22, 0, 1);
             const showLaptop = self.progress >= laptopRevealProgress;
