@@ -1738,10 +1738,10 @@
       powerPreference: 'high-performance'
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth <= 760 ? 1 : 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth <= 1024 ? 1 : 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.12;
-    const compactRender = window.matchMedia("(max-width: 760px)").matches || (navigator.hardwareConcurrency || 8) <= 4;
+    const compactRender = window.matchMedia("(max-width: 1024px)").matches || (navigator.hardwareConcurrency || 8) <= 4;
     renderer.shadowMap.enabled = !compactRender;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -2064,7 +2064,7 @@
         scrollTrigger: {
           trigger: "#hero",
           start: "top top",
-          end: () => window.matchMedia("(max-width: 760px)").matches ? "+=2700" : "+=4500",
+          end: () => window.matchMedia("(max-width: 1024px)").matches ? "+=2700" : "+=4500",
           pin: true,
           pinSpacing: true,
           scrub: 0.25,
@@ -2168,7 +2168,7 @@
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-      const compactRender = window.matchMedia("(max-width: 760px)").matches || (navigator.hardwareConcurrency || 8) <= 4;
+      const compactRender = window.matchMedia("(max-width: 1024px)").matches || (navigator.hardwareConcurrency || 8) <= 4;
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, compactRender ? 1 : 1.5));
       renderer.shadowMap.enabled = !compactRender;
       keyLight.castShadow = !compactRender;
