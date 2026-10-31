@@ -1972,7 +1972,6 @@
     let monitorObject = null;
     let keyboardObject = null;
     let keyboardBaseY = 0;
-    let laptopShown = false;
     let laptopGlowLevel = 0;
     let screenLightMesh = null;
     let screenGlowMaterials = [];
@@ -2047,7 +2046,7 @@
         if (keyboardObject) {
           keyboardBaseY = keyboardObject.position.y;
           keyboardObject.position.y = -10;
-          keyboardObject.visible = false;
+          keyboardObject.visible = true;
         }
         screenLightMesh = character.getObjectByName('screenlight') || null;
         character.add(screenLight);
@@ -2065,12 +2064,12 @@
 
         // IN THE HERO SECTION: HIDE THE LAPTOP SCREEN SO FACE & UPPER BODY ARE FULLY VISIBLE!
         if (monitorObject) {
-          monitorObject.visible = false;
+          monitorObject.visible = true;
           monitorObject.position.y = -10;
         }
-        if (keyboardObject) keyboardObject.visible = false;
+        if (keyboardObject) keyboardObject.visible = true;
         if (screenLightMesh) {
-          screenLightMesh.visible = false;
+          screenLightMesh.visible = true;
           screenLightMesh.position.y = -10;
         }
 
@@ -2200,14 +2199,7 @@
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            const laptopRevealProgress = 0.68;
-            const laptopHideProgress = 0.55;
-            const laptopGlow = THREE.MathUtils.clamp((self.progress - laptopRevealProgress) / 0.22, 0, 1);
-            if (self.progress >= laptopRevealProgress) laptopShown = true;
-            else if (self.progress <= laptopHideProgress) laptopShown = false;
-            if (monitorObject) monitorObject.visible = laptopShown;
-            if (keyboardObject) keyboardObject.visible = laptopShown;
-            if (screenLightMesh) screenLightMesh.visible = laptopShown;
+            const laptopGlow = THREE.MathUtils.clamp((self.progress - 0.68) / 0.22, 0, 1);
             laptopGlowLevel = laptopGlow;
             screenLight.visible = laptopGlow > 0;
           }
@@ -2219,9 +2211,9 @@
         .to(character.scale, { x: 1.14, y: 1.14, z: 1.14, duration: 1 }, 0)
         .to(character.rotation, { y: 0.72, duration: 1 }, 0)
         .to(camera.position, { z: 26.5, y: compactHeroViewport() ? 14.2 : 12.5, duration: 1 }, 0)
-        .fromTo(monitorObject ? monitorObject.position : {}, { y: -10 }, { y: 9.04, duration: 0.8, ease: "power2.out" }, 2.12)
-        .fromTo(keyboardObject ? keyboardObject.position : {}, { y: -10 }, { y: keyboardBaseY, duration: 0.8, ease: "power2.out" }, 2.12)
-        .fromTo(screenLightMesh ? screenLightMesh.position : {}, { y: -10 }, { y: 9.04, duration: 0.8, ease: "power2.out" }, 2.12)
+        .fromTo(monitorObject ? monitorObject.position : {}, { y: -10 }, { y: 9.04, duration: 1.4, ease: "none" }, 2.12)
+        .fromTo(keyboardObject ? keyboardObject.position : {}, { y: -10 }, { y: keyboardBaseY, duration: 1.4, ease: "none" }, 2.12)
+        .fromTo(screenLightMesh ? screenLightMesh.position : {}, { y: -10 }, { y: 9.04, duration: 1.4, ease: "none" }, 2.12)
         .to(rimCircle, { left: "30%", scale: 1.15, opacity: 0.9, duration: 1 }, 0)
         .to("#hero-left-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
         .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
