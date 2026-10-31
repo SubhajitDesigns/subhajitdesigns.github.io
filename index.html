@@ -1097,8 +1097,7 @@
   margin: 0 0 .9rem; color: #fff; font-size: clamp(1.55rem, 2.45vw, 2.45rem);
   font-weight: 800; line-height: 1.04; letter-spacing: -.045em; text-transform: uppercase;
 }
-#hero .about-heading-letter, #hero .about-heading-space { display: inline-block; }
-#hero .about-heading-space { width: .27em; }
+#hero .about-heading-word { display: inline-block; white-space: nowrap; }
 #hero .about-scroll-card > p:not(.about-scroll-eyebrow) {
   max-width: 44ch; margin: 0 0 .7rem; color: rgba(247,240,241,.83);
   font-size: clamp(.92rem, 1.04vw, 1.02rem); line-height: 1.55;
@@ -2164,16 +2163,21 @@
         document.getElementById('about-scroll-experience'),
         document.getElementById('about-scroll-achievements')
       ];
-      const aboutHeadingLetters = aboutCards.map(card => {
+      const aboutHeadingWords = aboutCards.map(card => {
         const heading = card.querySelector('h2');
         const title = heading.textContent.trim();
         heading.setAttribute('aria-label', title);
-        heading.innerHTML = Array.from(title).map(char =>
-          char === ' '
-            ? '<span class="about-heading-space" aria-hidden="true"> </span>'
-            : '<span class="about-heading-letter" aria-hidden="true">' + char + '</span>'
-        ).join('');
-        return Array.from(heading.querySelectorAll('.about-heading-letter, .about-heading-space'));
+        const parts = Array.from(title.matchAll(/\S+|\s+/g), ([part]) => part);
+        const headingContent = parts.map(part => {
+          if (/^\s+$/.test(part)) return document.createTextNode(part);
+          const word = document.createElement('span');
+          word.className = 'about-heading-word';
+          word.setAttribute('aria-hidden', 'true');
+          word.textContent = part;
+          return word;
+        });
+        heading.replaceChildren(...headingContent);
+        return Array.from(heading.querySelectorAll('.about-heading-word'));
       });
       const aboutText = aboutCards.map(card =>
         Array.from(card.querySelectorAll(
@@ -2219,15 +2223,15 @@
         .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
         .fromTo(aboutCards[0], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 0.62)
         .fromTo(aboutText[0], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, stagger: 0.08 }, 0.68)
-        .fromTo(aboutHeadingLetters[0], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.08, stagger: 0.012 }, 0.70)
+        .fromTo(aboutHeadingWords[0], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.16, stagger: 0.07 }, 0.70)
         .to(aboutCards[0], { autoAlpha: 0, y: -44, duration: 0.2 }, 1.42)
         .fromTo(aboutCards[1], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 1.62)
         .fromTo(aboutText[1], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, stagger: 0.08 }, 1.68)
-        .fromTo(aboutHeadingLetters[1], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.08, stagger: 0.012 }, 1.70)
+        .fromTo(aboutHeadingWords[1], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.16, stagger: 0.07 }, 1.70)
         .to(aboutCards[1], { autoAlpha: 0, y: -44, duration: 0.2 }, 2.42)
         .fromTo(aboutCards[2], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 2.62)
         .fromTo(aboutText[2], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, stagger: 0.08 }, 2.68)
-        .fromTo(aboutHeadingLetters[2], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.08, stagger: 0.012 }, 2.70)
+        .fromTo(aboutHeadingWords[2], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.16, stagger: 0.07 }, 2.70)
         .to(character.position, { x: -2.9, duration: 0.65, ease: "none" }, 3.2);
 
       const craftedWalk = gsap.timeline({
