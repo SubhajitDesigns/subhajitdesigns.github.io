@@ -2090,9 +2090,9 @@
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            const laptopRevealProgress = 0.68;
-            const laptopHideProgress = 0.55;
-            const laptopGlow = THREE.MathUtils.clamp((self.progress - laptopRevealProgress) / 0.22, 0, 1);
+            const laptopRevealProgress = 0.64;
+            const laptopHideProgress = 0.52;
+            const laptopGlow = THREE.MathUtils.clamp((self.progress - laptopRevealProgress) / 0.18, 0, 1);
             if (self.progress >= laptopRevealProgress) laptopShown = true;
             else if (self.progress <= laptopHideProgress) laptopShown = false;
             if (monitorObject) monitorObject.visible = laptopShown;
@@ -2109,9 +2109,9 @@
         .to(character.scale, { x: 1.14, y: 1.14, z: 1.14, duration: 1 }, 0)
         .to(character.rotation, { y: 0.72, duration: 1 }, 0)
         .to(camera.position, { z: 26.5, y: compactHeroViewport() ? 14.2 : 12.5, duration: 1 }, 0)
-        .fromTo(monitorObject ? monitorObject.position : {}, { y: -10 }, { y: 9.04, duration: 0.8, ease: "power2.out" }, 2.12)
-        .fromTo(keyboardObject ? keyboardObject.position : {}, { y: -10 }, { y: keyboardBaseY, duration: 0.8, ease: "power2.out" }, 2.12)
-        .fromTo(screenLightMesh ? screenLightMesh.position : {}, { y: -10 }, { y: 9.04, duration: 0.8, ease: "power2.out" }, 2.12)
+        .fromTo(monitorObject ? monitorObject.position : {}, { y: -10 }, { y: 9.04, duration: 1.0, ease: "power2.out" }, 1.8)
+        .fromTo(keyboardObject ? keyboardObject.position : {}, { y: -10 }, { y: keyboardBaseY, duration: 1.0, ease: "power2.out" }, 1.8)
+        .fromTo(screenLightMesh ? screenLightMesh.position : {}, { y: -10 }, { y: 9.04, duration: 1.0, ease: "power2.out" }, 1.8)
         .to(rimCircle, { left: "30%", scale: 1.15, opacity: 0.9, duration: 1 }, 0)
         .to("#hero-left-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
         .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
