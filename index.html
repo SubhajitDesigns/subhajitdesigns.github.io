@@ -1863,7 +1863,6 @@
     let keyboardObject = null;
     let keyboardBaseY = 0;
     let laptopGlowLevel = 0;
-    let laptopShown = false;
     let screenLightMesh = null;
     let screenGlowMaterials = [];
 
@@ -1937,7 +1936,7 @@
         if (keyboardObject) {
           keyboardBaseY = keyboardObject.position.y;
           keyboardObject.position.y = -10;
-          keyboardObject.visible = false;
+          keyboardObject.visible = true;
         }
         screenLightMesh = character.getObjectByName('screenlight') || null;
         character.add(screenLight);
@@ -1955,12 +1954,12 @@
 
         // IN THE HERO SECTION: HIDE THE LAPTOP SCREEN SO FACE & UPPER BODY ARE FULLY VISIBLE!
         if (monitorObject) {
-          monitorObject.visible = false;
+          monitorObject.visible = true;
           monitorObject.position.y = -10;
         }
-        if (keyboardObject) keyboardObject.visible = false;
+        if (keyboardObject) keyboardObject.visible = true;
         if (screenLightMesh) {
-          screenLightMesh.visible = false;
+          screenLightMesh.visible = true;
           screenLightMesh.position.y = -10;
         }
 
@@ -2090,14 +2089,7 @@
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            const laptopRevealProgress = 0.64;
-            const laptopHideProgress = 0.52;
-            const laptopGlow = THREE.MathUtils.clamp((self.progress - laptopRevealProgress) / 0.18, 0, 1);
-            if (self.progress >= laptopRevealProgress) laptopShown = true;
-            else if (self.progress <= laptopHideProgress) laptopShown = false;
-            if (monitorObject) monitorObject.visible = laptopShown;
-            if (keyboardObject) keyboardObject.visible = laptopShown;
-            if (screenLightMesh) screenLightMesh.visible = laptopShown;
+            const laptopGlow = THREE.MathUtils.clamp((self.progress - 0.64) / 0.18, 0, 1);
             laptopGlowLevel = laptopGlow;
             screenLight.visible = laptopGlow > 0;
           }
