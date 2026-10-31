@@ -1195,6 +1195,62 @@
   #hero .landing-info-h2 { font-size: clamp(1.65rem, 7vw, 2.45rem); }
   #hero .landing-info-sub { font-size: clamp(1.25rem, 5.6vw, 1.9rem); }
 }
+
+/* One continuous liquid-glass backdrop across featured work, My Work, and Wall of Love. */
+.portfolio-glass-surface {
+  --portfolio-glass-dark:
+    radial-gradient(ellipse at 16% 3%, rgba(255,72,82,.18), transparent 35%),
+    radial-gradient(ellipse at 88% 43%, rgba(125,25,43,.2), transparent 43%),
+    linear-gradient(145deg, #12090c 0%, #080709 42%, #10080b 72%, #070608 100%);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--portfolio-glass-dark);
+  transition: background .45s ease;
+}
+.portfolio-glass-surface::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(128deg, rgba(255,255,255,.055), transparent 24%, transparent 76%, rgba(255,83,93,.035)),
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.045), transparent 46%);
+  -webkit-backdrop-filter: blur(22px) saturate(135%);
+  backdrop-filter: blur(22px) saturate(135%);
+}
+.portfolio-glass-surface:has(.tmq-theme:checked) {
+  background:
+    radial-gradient(ellipse at 16% 3%, rgba(255,110,125,.16), transparent 35%),
+    radial-gradient(ellipse at 88% 43%, rgba(90,115,190,.1), transparent 43%),
+    linear-gradient(145deg, #e8eaf1 0%, #f7f7f9 44%, #eceef4 100%);
+}
+.portfolio-glass-surface > #work,
+.portfolio-glass-surface > #my-work-gallery,
+.portfolio-glass-surface > #software-logo-loop,
+.portfolio-glass-surface > .tmq {
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+  background-image: none !important;
+  border-top: 0;
+}
+.portfolio-glass-surface > #work,
+.portfolio-glass-surface > #my-work-gallery {
+  box-shadow: none;
+}
+.portfolio-glass-surface > #work::before,
+.portfolio-glass-surface > #my-work-gallery::before {
+  display: none !important;
+}
+.portfolio-glass-surface > #software-logo-loop {
+  border-block: 0;
+  box-shadow: none;
+}
+.portfolio-glass-surface > .tmq {
+  isolation: isolate;
+}
 </style>
 </head>
 <body class="intro-active">
@@ -1327,6 +1383,7 @@
     <!-- SECTION 3: WHAT I DO (service cards removed as requested) -->
 
 
+    <div class="portfolio-glass-surface">
     <!-- EXISTING FEATURED WORK SECTION -->
     <section id="work" class="crafted section crafted-gallery-enabled" aria-label="Crafted Designs">
   <div class="crafted-heading">
@@ -1562,6 +1619,7 @@
       <div class="tmq-row rev"><div class="tmq-track"><article class="tmq-card"><span class="tmq-stars">★★★★★</span><p class="tmq-q">“We cut our launch time in half and shipped two extra features. Wild.”</p><div class="tmq-author"><span class="tmq-av" style="background:linear-gradient(135deg,#10b981,#84cc16)">E</span><span class="tmq-who"><b>Elena Rossi</b><span>PM · Lumira</span></span></div></article><article class="tmq-card"><span class="tmq-stars">★★★★★</span><p class="tmq-q">“Fast, polished and a joy to use daily. We switched and never looked back.”</p><div class="tmq-author"><span class="tmq-av" style="background:linear-gradient(135deg,#3b82f6,#22d3ee)">D</span><span class="tmq-who"><b>Diego Santos</b><span>Founder · Outset</span></span></div></article><article class="tmq-card"><span class="tmq-stars">★★★★★</span><p class="tmq-q">“Designers and engineers finally live in the same file. Quietly magic.”</p><div class="tmq-author"><span class="tmq-av" style="background:linear-gradient(135deg,#f43f5e,#fb923c)">Y</span><span class="tmq-who"><b>Yuki Tanaka</b><span>Eng Lead</span></span></div></article><article class="tmq-card"><span class="tmq-stars">★★★★★</span><p class="tmq-q">“Set up SSO and audit logs in an afternoon. Security signed off the same day.”</p><div class="tmq-author"><span class="tmq-av" style="background:linear-gradient(135deg,#a855f7,#ec4899)">A</span><span class="tmq-who"><b>Aria Lindqvist</b><span>IT · Northwind</span></span></div></article><article class="tmq-card"><span class="tmq-stars">★★★★★</span><p class="tmq-q">“We cut our launch time in half and shipped two extra features. Wild.”</p><div class="tmq-author"><span class="tmq-av" style="background:linear-gradient(135deg,#10b981,#84cc16)">E</span><span class="tmq-who"><b>Elena Rossi</b><span>PM · Lumira</span></span></div></article><article class="tmq-card"><span class="tmq-stars">★★★★★</span><p class="tmq-q">“Fast, polished and a joy to use daily. We switched and never looked back.”</p><div class="tmq-author"><span class="tmq-av" style="background:linear-gradient(135deg,#3b82f6,#22d3ee)">D</span><span class="tmq-who"><b>Diego Santos</b><span>Founder · Outset</span></span></div></article><article class="tmq-card"><span class="tmq-stars">★★★★★</span><p class="tmq-q">“Designers and engineers finally live in the same file. Quietly magic.”</p><div class="tmq-author"><span class="tmq-av" style="background:linear-gradient(135deg,#f43f5e,#fb923c)">Y</span><span class="tmq-who"><b>Yuki Tanaka</b><span>Eng Lead</span></span></div></article><article class="tmq-card"><span class="tmq-stars">★★★★★</span><p class="tmq-q">“Set up SSO and audit logs in an afternoon. Security signed off the same day.”</p><div class="tmq-author"><span class="tmq-av" style="background:linear-gradient(135deg,#a855f7,#ec4899)">A</span><span class="tmq-who"><b>Aria Lindqvist</b><span>IT · Northwind</span></span></div></article></div></div>
     </div>
   </section>
+</div>
 
   </div>
 
