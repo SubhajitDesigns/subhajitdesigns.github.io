@@ -1196,19 +1196,18 @@
   #hero .landing-info-sub { font-size: clamp(1.25rem, 5.6vw, 1.9rem); }
 }
 
-/* Shared liquid-glass surface: flowing crimson refractions, soft blur, and bright glass reflections. */
+/* Frosted liquid-glass sheet: lets the moving character show softly through it. */
 .portfolio-glass-surface {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  border-block: 1px solid rgba(255,190,198,.14);
+  border-block: 1px solid rgba(255,205,212,.2);
   background:
-    radial-gradient(ellipse 54% 17% at 12% 8%, rgba(122,20,35,.5), transparent 72%),
-    radial-gradient(ellipse 56% 20% at 86% 30%, rgba(104,22,42,.48), transparent 72%),
-    radial-gradient(ellipse 45% 16% at 20% 55%, rgba(98,20,31,.42), transparent 75%),
-    radial-gradient(ellipse 58% 19% at 78% 78%, rgba(115,20,42,.4), transparent 74%),
-    linear-gradient(145deg, #0e080a 0%, #070608 42%, #10080b 72%, #070608 100%);
-  transition: background .45s ease;
+    radial-gradient(ellipse 70% 22% at 12% 10%, rgba(255,53,77,.095), transparent 72%),
+    radial-gradient(ellipse 65% 22% at 88% 48%, rgba(161,43,67,.08), transparent 75%),
+    linear-gradient(145deg, rgba(18,10,13,.2), rgba(7,7,9,.16) 48%, rgba(20,8,12,.23));
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  backdrop-filter: blur(22px) saturate(145%);
 }
 .portfolio-glass-surface::before {
   content: "";
@@ -1217,14 +1216,12 @@
   inset: -2% -5%;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 25% 8% at 13% 11%, rgba(255,61,83,.6), transparent 72%),
-    radial-gradient(ellipse 31% 9% at 83% 28%, rgba(205,54,89,.4), transparent 74%),
-    radial-gradient(ellipse 27% 8% at 24% 57%, rgba(255,79,95,.36), transparent 72%),
-    radial-gradient(ellipse 30% 10% at 78% 78%, rgba(187,43,73,.38), transparent 75%),
-    linear-gradient(118deg, rgba(255,255,255,.12), transparent 19%, transparent 76%, rgba(255,123,139,.1));
-  -webkit-backdrop-filter: blur(28px) saturate(175%);
-  backdrop-filter: blur(28px) saturate(175%);
-  filter: saturate(135%);
+    radial-gradient(ellipse 28% 9% at 13% 11%, rgba(255,63,84,.28), transparent 72%),
+    radial-gradient(ellipse 34% 11% at 83% 28%, rgba(221,66,104,.2), transparent 74%),
+    radial-gradient(ellipse 28% 9% at 24% 57%, rgba(255,88,103,.19), transparent 72%),
+    radial-gradient(ellipse 32% 10% at 78% 78%, rgba(187,50,82,.2), transparent 75%),
+    linear-gradient(118deg, rgba(255,255,255,.1), transparent 19%, transparent 76%, rgba(255,123,139,.08));
+  mix-blend-mode: screen;
   animation: liquidGlassDrift 28s ease-in-out infinite alternate;
   will-change: transform;
 }
@@ -1235,11 +1232,10 @@
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(112deg, transparent 9%, rgba(255,244,246,.16) 9.12%, transparent 9.35%),
-    radial-gradient(ellipse 38% 3.8% at 17% 10%, rgba(255,228,232,.16), transparent 72%),
-    radial-gradient(ellipse 42% 3.2% at 80% 31%, rgba(255,220,228,.13), transparent 74%),
-    radial-gradient(ellipse 36% 3.4% at 29% 58%, rgba(255,215,224,.1), transparent 74%),
-    linear-gradient(180deg, rgba(255,255,255,.06), transparent 8%, transparent 92%, rgba(255,255,255,.045));
+    radial-gradient(ellipse 38% 3.8% at 17% 10%, rgba(255,228,232,.2), transparent 72%),
+    radial-gradient(ellipse 42% 3.2% at 80% 31%, rgba(255,220,228,.16), transparent 74%),
+    radial-gradient(ellipse 36% 3.4% at 29% 58%, rgba(255,215,224,.13), transparent 74%),
+    linear-gradient(180deg, rgba(255,255,255,.065), transparent 8%, transparent 92%, rgba(255,255,255,.05));
   mix-blend-mode: screen;
 }
 @keyframes liquidGlassDrift {
@@ -1247,19 +1243,19 @@
   to { transform: translate3d(.7%, -.25%, 0) scale(1.035); }
 }
 .portfolio-glass-surface:has(.tmq-theme:checked) {
-  border-color: rgba(67,77,120,.17);
+  border-color: rgba(67,77,120,.22);
   background:
-    radial-gradient(ellipse 54% 17% at 12% 8%, rgba(247,133,148,.3), transparent 72%),
-    radial-gradient(ellipse 56% 20% at 86% 30%, rgba(121,139,203,.25), transparent 72%),
-    radial-gradient(ellipse 45% 16% at 20% 55%, rgba(255,155,168,.22), transparent 75%),
-    radial-gradient(ellipse 58% 19% at 78% 78%, rgba(143,157,208,.2), transparent 74%),
-    linear-gradient(145deg, #e8eaf1 0%, #f7f7f9 44%, #eceef4 100%);
+    radial-gradient(ellipse 70% 22% at 12% 10%, rgba(247,133,148,.13), transparent 72%),
+    radial-gradient(ellipse 65% 22% at 88% 48%, rgba(121,139,203,.11), transparent 75%),
+    linear-gradient(145deg, rgba(226,230,242,.48), rgba(247,247,249,.34) 48%, rgba(232,235,245,.46));
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  backdrop-filter: blur(22px) saturate(145%);
 }
 .portfolio-glass-surface:has(.tmq-theme:checked)::before {
   background:
-    radial-gradient(ellipse 25% 8% at 13% 11%, rgba(255,99,122,.42), transparent 72%),
-    radial-gradient(ellipse 31% 9% at 83% 28%, rgba(111,131,206,.3), transparent 74%),
-    linear-gradient(118deg, rgba(255,255,255,.34), transparent 19%, transparent 76%, rgba(255,255,255,.18));
+    radial-gradient(ellipse 28% 9% at 13% 11%, rgba(255,99,122,.22), transparent 72%),
+    radial-gradient(ellipse 34% 11% at 83% 28%, rgba(111,131,206,.18), transparent 74%),
+    linear-gradient(118deg, rgba(255,255,255,.32), transparent 19%, transparent 76%, rgba(255,255,255,.18));
 }
 @media (prefers-reduced-motion: reduce) {
   .portfolio-glass-surface::before { animation: none; }
@@ -2229,7 +2225,8 @@
         scrollTrigger: {
           trigger: "#work",
           start: "top bottom",
-          end: "top 10%",
+          endTrigger: ".tmq",
+          end: "bottom bottom",
           scrub: 0.25,
           invalidateOnRefresh: true
         }
