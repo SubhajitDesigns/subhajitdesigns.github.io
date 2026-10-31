@@ -1176,6 +1176,24 @@
   .achievement-dialog-certs { grid-template-columns: 1fr; }
   .achievement-dialog-certs img { height: 130px; }
 }
+
+/* Final phone hero composition: keep the intro copy clear of the character. */
+@media (max-width: 760px) {
+  #hero.landing-section {
+    padding-top: max(4.5rem, calc(env(safe-area-inset-top) + 4rem));
+    gap: .35rem;
+  }
+  #hero .landing-intro h2 { font-size: 1.05rem; letter-spacing: .16em; }
+  #hero .tech-name-heading { height: clamp(126px, 34vw, 150px); }
+  #hero .tech-name-fallback-visible {
+    font-size: clamp(2.65rem, 10vw, 3.65rem);
+    line-height: .9;
+  }
+  #hero .landing-info { margin-top: -.25rem; }
+  #hero .landing-info h3 { margin-bottom: .1rem; }
+  #hero .landing-info-h2 { font-size: clamp(1.65rem, 7vw, 2.45rem); }
+  #hero .landing-info-sub { font-size: clamp(1.25rem, 5.6vw, 1.9rem); }
+}
 </style>
 </head>
 <body class="intro-active">
@@ -1726,9 +1744,10 @@
     // Perspective Telephoto Camera (FOV: 14.5)
     const aspect = window.innerWidth / window.innerHeight;
     const camera = new THREE.PerspectiveCamera(14.5, aspect, 0.1, 1000);
-    // Positioned to frame face, cap, and chest directly in the center
-    camera.position.set(0, 12.6, 23.2);
-    camera.zoom = 1.05;
+    const compactHeroViewport = () => window.matchMedia("(max-width: 760px)").matches;
+    // Give the phone layout extra headroom and keep the portrait from covering the text.
+    camera.position.set(0, compactHeroViewport() ? 14.2 : 12.6, 23.2);
+    camera.zoom = compactHeroViewport() ? 0.86 : 1.05;
     camera.updateProjectionMatrix();
 
     const renderer = new THREE.WebGLRenderer({
@@ -2089,7 +2108,7 @@
         .to(character.position, { x: -2.4, y: -1.8, duration: 1 }, 0)
         .to(character.scale, { x: 1.14, y: 1.14, z: 1.14, duration: 1 }, 0)
         .to(character.rotation, { y: 0.72, duration: 1 }, 0)
-        .to(camera.position, { z: 26.5, y: 12.5, duration: 1 }, 0)
+        .to(camera.position, { z: 26.5, y: compactHeroViewport() ? 14.2 : 12.5, duration: 1 }, 0)
         .fromTo(monitorObject ? monitorObject.position : {}, { y: -10 }, { y: 9.04, duration: 0.8, ease: "power2.out" }, 2.12)
         .fromTo(keyboardObject ? keyboardObject.position : {}, { y: -10 }, { y: keyboardBaseY, duration: 0.8, ease: "power2.out" }, 2.12)
         .fromTo(screenLightMesh ? screenLightMesh.position : {}, { y: -10 }, { y: 9.04, duration: 0.8, ease: "power2.out" }, 2.12)
@@ -2167,6 +2186,8 @@
 
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
+      camera.position.y = compactHeroViewport() ? 14.2 : 12.6;
+      camera.zoom = compactHeroViewport() ? 0.86 : 1.05;
       camera.updateProjectionMatrix();
       const compactRender = window.matchMedia("(max-width: 1024px)").matches;
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, compactRender ? 1 : 1.5));
