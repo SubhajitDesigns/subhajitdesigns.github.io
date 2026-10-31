@@ -1264,6 +1264,31 @@
 @media (prefers-reduced-motion: reduce) {
   .portfolio-glass-surface::before { animation: none; }
 }
+
+/* Keep every showcased section transparent so the parent glass surface remains continuous. */
+.portfolio-glass-surface > #work,
+.portfolio-glass-surface > #my-work-gallery,
+.portfolio-glass-surface > #software-logo-loop,
+.portfolio-glass-surface > .tmq {
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+  background-image: none !important;
+  border-top: 0;
+}
+.portfolio-glass-surface > #work,
+.portfolio-glass-surface > #my-work-gallery {
+  box-shadow: none;
+}
+.portfolio-glass-surface > #work::before,
+.portfolio-glass-surface > #my-work-gallery::before {
+  display: none !important;
+}
+.portfolio-glass-surface > #software-logo-loop {
+  border-block: 0;
+  box-shadow: none;
+}
+.portfolio-glass-surface > .tmq { isolation: isolate; }
 </style>
 </head>
 <body class="intro-active">
