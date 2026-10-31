@@ -2192,7 +2192,7 @@
         scrollTrigger: {
           trigger: "#hero",
           start: "top top",
-          end: () => window.matchMedia("(max-width: 760px)").matches ? "+=2700" : "+=4500",
+          end: () => window.matchMedia("(max-width: 760px)").matches ? "+=1800" : "+=3000",
           pin: true,
           pinSpacing: true,
           scrub: 0.25,
@@ -2241,8 +2241,18 @@
         }
       });
       craftedWalk
-        .fromTo(character.position, { x: -2.9 }, { x: -4.0, duration: 1.1, ease: "power1.inOut", immediateRender: false }, 0)
-        .fromTo(character.rotation, { y: 0.72 }, { y: 0.95, duration: 1.1, ease: "power1.inOut", immediateRender: false }, 0);
+        .fromTo(character.position, { x: -2.9 }, { x: -4.0, duration: 1.1, ease: "power1.inOut", immediateRender: false }, 0);
+
+      const craftedTurn = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#work",
+          start: "top bottom",
+          end: "bottom bottom",
+          scrub: 0.25,
+          invalidateOnRefresh: true
+        }
+      });
+      craftedTurn.fromTo(character.rotation, { y: 0.72 }, { y: 1.35, duration: 1, ease: "power1.inOut", immediateRender: false }, 0);
       // The pinned hero reveals About, experience, and achievements before the
       // character continues moving left through the translucent Crafted section.
     }
