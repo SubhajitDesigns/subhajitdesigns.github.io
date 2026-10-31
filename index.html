@@ -1196,60 +1196,73 @@
   #hero .landing-info-sub { font-size: clamp(1.25rem, 5.6vw, 1.9rem); }
 }
 
-/* One continuous liquid-glass backdrop across featured work, My Work, and Wall of Love. */
+/* Shared liquid-glass surface: flowing crimson refractions, soft blur, and bright glass reflections. */
 .portfolio-glass-surface {
-  --portfolio-glass-dark:
-    radial-gradient(ellipse at 16% 3%, rgba(255,72,82,.18), transparent 35%),
-    radial-gradient(ellipse at 88% 43%, rgba(125,25,43,.2), transparent 43%),
-    linear-gradient(145deg, #12090c 0%, #080709 42%, #10080b 72%, #070608 100%);
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: var(--portfolio-glass-dark);
+  border-block: 1px solid rgba(255,190,198,.14);
+  background:
+    radial-gradient(ellipse 54% 17% at 12% 8%, rgba(122,20,35,.5), transparent 72%),
+    radial-gradient(ellipse 56% 20% at 86% 30%, rgba(104,22,42,.48), transparent 72%),
+    radial-gradient(ellipse 45% 16% at 20% 55%, rgba(98,20,31,.42), transparent 75%),
+    radial-gradient(ellipse 58% 19% at 78% 78%, rgba(115,20,42,.4), transparent 74%),
+    linear-gradient(145deg, #0e080a 0%, #070608 42%, #10080b 72%, #070608 100%);
   transition: background .45s ease;
 }
 .portfolio-glass-surface::before {
   content: "";
   position: absolute;
   z-index: 0;
+  inset: -2% -5%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 25% 8% at 13% 11%, rgba(255,61,83,.6), transparent 72%),
+    radial-gradient(ellipse 31% 9% at 83% 28%, rgba(205,54,89,.4), transparent 74%),
+    radial-gradient(ellipse 27% 8% at 24% 57%, rgba(255,79,95,.36), transparent 72%),
+    radial-gradient(ellipse 30% 10% at 78% 78%, rgba(187,43,73,.38), transparent 75%),
+    linear-gradient(118deg, rgba(255,255,255,.12), transparent 19%, transparent 76%, rgba(255,123,139,.1));
+  -webkit-backdrop-filter: blur(28px) saturate(175%);
+  backdrop-filter: blur(28px) saturate(175%);
+  filter: saturate(135%);
+  animation: liquidGlassDrift 28s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.portfolio-glass-surface::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(128deg, rgba(255,255,255,.055), transparent 24%, transparent 76%, rgba(255,83,93,.035)),
-    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.045), transparent 46%);
-  -webkit-backdrop-filter: blur(22px) saturate(135%);
-  backdrop-filter: blur(22px) saturate(135%);
+    linear-gradient(112deg, transparent 9%, rgba(255,244,246,.16) 9.12%, transparent 9.35%),
+    radial-gradient(ellipse 38% 3.8% at 17% 10%, rgba(255,228,232,.16), transparent 72%),
+    radial-gradient(ellipse 42% 3.2% at 80% 31%, rgba(255,220,228,.13), transparent 74%),
+    radial-gradient(ellipse 36% 3.4% at 29% 58%, rgba(255,215,224,.1), transparent 74%),
+    linear-gradient(180deg, rgba(255,255,255,.06), transparent 8%, transparent 92%, rgba(255,255,255,.045));
+  mix-blend-mode: screen;
+}
+@keyframes liquidGlassDrift {
+  from { transform: translate3d(-.7%, .25%, 0) scale(1.01); }
+  to { transform: translate3d(.7%, -.25%, 0) scale(1.035); }
 }
 .portfolio-glass-surface:has(.tmq-theme:checked) {
+  border-color: rgba(67,77,120,.17);
   background:
-    radial-gradient(ellipse at 16% 3%, rgba(255,110,125,.16), transparent 35%),
-    radial-gradient(ellipse at 88% 43%, rgba(90,115,190,.1), transparent 43%),
+    radial-gradient(ellipse 54% 17% at 12% 8%, rgba(247,133,148,.3), transparent 72%),
+    radial-gradient(ellipse 56% 20% at 86% 30%, rgba(121,139,203,.25), transparent 72%),
+    radial-gradient(ellipse 45% 16% at 20% 55%, rgba(255,155,168,.22), transparent 75%),
+    radial-gradient(ellipse 58% 19% at 78% 78%, rgba(143,157,208,.2), transparent 74%),
     linear-gradient(145deg, #e8eaf1 0%, #f7f7f9 44%, #eceef4 100%);
 }
-.portfolio-glass-surface > #work,
-.portfolio-glass-surface > #my-work-gallery,
-.portfolio-glass-surface > #software-logo-loop,
-.portfolio-glass-surface > .tmq {
-  position: relative;
-  z-index: 1;
-  background: transparent !important;
-  background-image: none !important;
-  border-top: 0;
+.portfolio-glass-surface:has(.tmq-theme:checked)::before {
+  background:
+    radial-gradient(ellipse 25% 8% at 13% 11%, rgba(255,99,122,.42), transparent 72%),
+    radial-gradient(ellipse 31% 9% at 83% 28%, rgba(111,131,206,.3), transparent 74%),
+    linear-gradient(118deg, rgba(255,255,255,.34), transparent 19%, transparent 76%, rgba(255,255,255,.18));
 }
-.portfolio-glass-surface > #work,
-.portfolio-glass-surface > #my-work-gallery {
-  box-shadow: none;
-}
-.portfolio-glass-surface > #work::before,
-.portfolio-glass-surface > #my-work-gallery::before {
-  display: none !important;
-}
-.portfolio-glass-surface > #software-logo-loop {
-  border-block: 0;
-  box-shadow: none;
-}
-.portfolio-glass-surface > .tmq {
-  isolation: isolate;
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-glass-surface::before { animation: none; }
 }
 </style>
 </head>
