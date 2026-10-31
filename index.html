@@ -1285,6 +1285,22 @@
   box-shadow: none;
 }
 .portfolio-glass-surface > .tmq { isolation: isolate; }
+
+/* Remove local section fills and separators; the parent glass is the only surface. */
+.portfolio-glass-surface > section {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.portfolio-glass-surface > section::before,
+.portfolio-glass-surface > section::after {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  opacity: 0 !important;
+}
 </style>
 </head>
 <body class="intro-active">
