@@ -2124,7 +2124,7 @@
   let active = count + Math.floor(count / 2);
 
   function layout() {
-    const maxOffset = window.innerWidth < 700 ? 1 : window.innerWidth < 900 ? 2 : 3;
+    const maxOffset = window.innerWidth < 700 ? 1 : window.innerWidth < 900 ? 2 : 4;
     items.forEach((card, index) => {
       const offset = index - active;
       card.style.setProperty('--o', offset);
@@ -2132,6 +2132,9 @@
       card.style.setProperty('--sign', Math.sign(offset));
       card.style.zIndex = String(items.length - Math.abs(offset));
       card.classList.toggle('is-far', Math.abs(offset) > maxOffset);
+      if (maxOffset === 4 && Math.abs(offset) === 3) card.style.opacity = '.28';
+      else if (maxOffset === 4 && Math.abs(offset) === 4) card.style.opacity = '.5';
+      else card.style.opacity = '';
       card.setAttribute('aria-current', String(index === active));
     });
     const projectIndex = ((active - count) % count + count) % count;
