@@ -1363,6 +1363,21 @@
 }
 </style>
 
+<style>
+/* Desktop-only sizing for the My Work coverflow. */
+@media (min-width: 701px) {
+  #my-work-gallery .cover-card {
+    --cover-step: clamp(70px, 12vw, 165px);
+    --cover-nudge: clamp(20px, 3vw, 42px);
+    max-width: min(22vw, 300px);
+  }
+  #my-work-gallery .cover-card img {
+    max-width: min(22vw, 300px);
+    max-height: min(42vh, 380px);
+  }
+}
+</style>
+
 </head>
 <body class="intro-active">
   <!-- Ambient Moncy.dev Glow Circles -->
@@ -2109,7 +2124,7 @@
   let active = count + Math.floor(count / 2);
 
   function layout() {
-    const maxOffset = window.innerWidth < 700 ? 1 : 2;
+    const maxOffset = window.innerWidth < 700 ? 1 : window.innerWidth < 900 ? 2 : 3;
     items.forEach((card, index) => {
       const offset = index - active;
       card.style.setProperty('--o', offset);
