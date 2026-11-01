@@ -48,7 +48,7 @@
       z-index: 2147483000;
       width: 36px;
       height: 36px;
-      margin: -40px 0 0 -40px;
+      margin: -18px 0 0 -18px;
       border-radius: 50%;
       background: #fff;
       mix-blend-mode: difference;
@@ -3242,7 +3242,7 @@ if (techMount) ReactDOM.createRoot(techMount).render(<TechText text="SUBHAJIT DA
   if (!dot || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const size = Number(dot.dataset.size) || 80;
+  const size = Number(dot.dataset.size) || 36;
   const speed = reduceMotion ? 1 : Math.min(1, Math.max(.02, Number(dot.dataset.speed) || .18));
   const grow = dot.dataset.grow !== 'off';
   dot.style.width = dot.style.height = size + 'px';
