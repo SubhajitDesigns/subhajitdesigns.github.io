@@ -1307,6 +1307,62 @@
   opacity: 0 !important;
 }
 </style>
+<style>
+/* Phone-only refinements for the hero, My Work, and testimonials. */
+@media (max-width: 760px) {
+  #hero.landing-section {
+    justify-content: flex-start;
+    padding-top: max(calc(env(safe-area-inset-top) + 5rem), 19svh);
+  }
+  #hero .tech-name-heading { height: clamp(88px, 27vw, 106px); }
+  #hero .tech-name-fallback-visible {
+    font-size: clamp(2rem, 8vw, 2.8rem);
+    line-height: .9;
+  }
+  #hero .landing-info { margin-top: 0; }
+  #hero .landing-info-h2 { font-size: clamp(1.45rem, 6vw, 2rem); }
+  #hero .landing-info-sub { font-size: clamp(1.05rem, 4.7vw, 1.4rem); }
+
+  #my-work-gallery {
+    min-height: 72svh;
+    padding-block: 2.5rem;
+  }
+  #my-work-gallery .my-work-heading { margin-bottom: .5rem; }
+  #my-work-gallery .my-work-heading h2 { font-size: clamp(2.2rem, 10vw, 3rem); }
+  #my-work-gallery .my-work-heading p:last-child {
+    margin-top: .65rem;
+    font-size: .85rem;
+  }
+  #my-work-gallery .coverflow { gap: .5rem; }
+  #my-work-gallery .view { height: clamp(260px, 76vw, 330px); }
+  #my-work-gallery .cover-card { max-width: min(56vw, 220px); }
+  #my-work-gallery .cover-card img {
+    max-width: min(56vw, 220px);
+    max-height: min(32svh, 230px);
+  }
+  #my-work-gallery .coverflow-caption { font-size: .7rem; }
+
+  .tmq { padding-block: 2.5rem; }
+  .tmq-head {
+    gap: 10px;
+    margin-bottom: 1.25rem;
+    padding-inline: 1rem;
+  }
+  .tmq h2 { font-size: clamp(22px, 6vw, 30px); }
+  .tmq-sub { font-size: 14px; }
+  .tmq-rows { gap: 10px; }
+  .tmq-card {
+    flex-basis: clamp(225px, 68vw, 280px);
+    margin-right: 10px;
+    gap: 9px;
+    padding: 16px 17px;
+    border-radius: 14px;
+  }
+  .tmq-q { font-size: 13px; }
+  .tmq-av { flex-basis: 32px; width: 32px; height: 32px; }
+}
+</style>
+
 </head>
 <body class="intro-active">
   <!-- Ambient Moncy.dev Glow Circles -->
