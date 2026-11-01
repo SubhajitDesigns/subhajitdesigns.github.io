@@ -2124,7 +2124,7 @@
   let active = count + Math.floor(count / 2);
 
   function layout() {
-    const maxOffset = window.innerWidth < 700 ? 1 : window.innerWidth < 900 ? 2 : 4;
+    const maxOffset = window.innerWidth < 700 ? 1 : 4;
     items.forEach((card, index) => {
       const offset = index - active;
       card.style.setProperty('--o', offset);
