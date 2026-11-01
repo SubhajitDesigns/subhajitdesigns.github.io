@@ -1705,6 +1705,296 @@
     </div>
   </div>
 </section>
+<section id="designer-gallery" aria-label="Selected design work gallery">
+  <div class="cgal-stage" id="designerGalleryStage" role="list" tabindex="0" aria-label="Drag to explore selected work, or use the arrow keys">
+    <h2 class="sr-only">Selected design work</h2>
+  </div>
+  <button class="cgal-nav cgal-prev" id="designerGalleryPrev" type="button" aria-label="Previous image">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+  </button>
+  <button class="cgal-nav cgal-next" id="designerGalleryNext" type="button" aria-label="Next image">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+  </button>
+</section>
+<script>
+(() => {
+  const root = document.getElementById('designer-gallery');
+  const stage = document.getElementById('designerGalleryStage');
+  if (!root || !stage) return;
+
+  const photos = [
+    { src: 'restaurant.webp', alt: 'Restaurant campaign design' },
+    { src: 'bali.webp', alt: 'Bali travel campaign design' },
+    { src: 'bridal-jewellery.webp', alt: 'Bridal jewellery campaign design' },
+    { src: 'chocolate-day.webp', alt: 'Chocolate Day campaign design' },
+    { src: 'dharmi-realty.webp', alt: 'Dharmi Realty campaign design' },
+    { src: 'french-fries.webp', alt: 'French fries food campaign design' },
+    { src: 'gold-rate.webp', alt: 'Gold rate campaign design' },
+    { src: 'graphic.webp', alt: 'Graphic design work' },
+    { src: 'honey.webp', alt: 'Honey product campaign design' },
+    { src: 'jaisalmer.webp', alt: 'Jaisalmer travel campaign design' },
+    { src: 'momo-street.webp', alt: 'Momo Street restaurant campaign design' },
+    { src: 'organic.webp', alt: 'Organic product campaign design' },
+    { src: 'followes.webp', alt: 'Social media campaign design' },
+    { src: 'Protect%20your%20glow...webp', alt: 'Vitamin C sunscreen campaign design' }
+  ];
+  const cards = photos.map((photo) => {
+    const card = document.createElement('figure');
+    card.className = 'cgal-card';
+    card.setAttribute('role', 'listitem');
+
+    const image = document.createElement('img');
+    image.className = 'cgal-pic';
+    image.src = photo.src;
+    image.alt = photo.alt;
+    image.loading = 'lazy';
+    image.decoding = 'async';
+
+    const reflection = document.createElement('img');
+    reflection.className = 'cgal-reflection';
+    reflection.src = photo.src;
+    reflection.alt = '';
+    reflection.setAttribute('aria-hidden', 'true');
+    reflection.loading = 'lazy';
+    reflection.decoding = 'async';
+
+    card.append(image, reflection);
+    stage.appendChild(card);
+    return card;
+  });
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const count = cards.length;
+  const step = (Math.PI * 2) / count;
+  let angle = 0;
+  let target = 0;
+  let velocity = 0;
+  let cardWidth = 0;
+  let radius = 0;
+  let depth = 0;
+  let drag = null;
+  let frame = 0;
+  let lastFrame = 0;
+
+  function measure() {
+    const width = root.clientWidth || window.innerWidth || 800;
+    const isPhone = window.matchMedia('(max-width: 760px)').matches;
+    cardWidth = isPhone
+      ? Math.max(118, Math.min(190, width * .44))
+      : Math.max(220, Math.min(360, width * .3));
+    radius = cardWidth * (isPhone ? 1.45 : 2.8);
+    depth = cardWidth * 3.4;
+    cards.forEach((card) => { card.style.width = cardWidth + 'px'; });
+  }
+
+  function paint() {
+    cards.forEach((card, index) => {
+      const theta = Math.atan2(Math.sin(index * step - angle), Math.cos(index * step - angle));
+      const cosine = Math.cos(theta);
+      const sine = Math.sin(theta);
+      const cardDepth = depth + radius * (1 - cosine);
+      const scale = depth / cardDepth;
+      const x = depth * (radius * sine) / cardDepth;
+      const front = cosine;
+
+      card.style.transform = 'translate(-50%, -50%) translate3d(' + x.toFixed(2) + 'px, 0, 0) scale(' + scale.toFixed(4) + ')';
+      card.style.opacity = Math.max(0, Math.min(1, front + .42)).toFixed(3);
+      card.style.filter = 'brightness(' + (.5 + .5 * Math.max(0, front)).toFixed(3) + ')';
+      card.style.zIndex = String(Math.round((front + 1) * 1000));
+    });
+  }
+
+  function animate(now) {
+    frame = 0;
+    const dt = Math.min(.05, Math.max(.001, (now - (lastFrame || now)) / 1000));
+    lastFrame = now;
+    velocity += (target - angle) * 80 * dt;
+    velocity *= Math.exp(-11 * dt);
+    angle += velocity * dt;
+    paint();
+
+    if (Math.abs(target - angle) > .001 || Math.abs(velocity) > .001) {
+      frame = requestAnimationFrame(animate);
+    } else {
+      angle = target;
+      velocity = 0;
+      paint();
+    }
+  }
+
+  function requestAnimation() {
+    if (reducedMotion) {
+      angle = target;
+      velocity = 0;
+      paint();
+      return;
+    }
+    if (!frame) {
+      lastFrame = performance.now();
+      frame = requestAnimationFrame(animate);
+    }
+  }
+
+  function go(direction) {
+    target = (Math.round(angle / step) + direction) * step;
+    requestAnimation();
+  }
+
+  function endDrag(event) {
+    if (!drag || event.pointerId !== drag.pointerId) return;
+    drag = null;
+    target = Math.round((angle + velocity * .1) / step) * step;
+    if (stage.hasPointerCapture?.(event.pointerId)) stage.releasePointerCapture(event.pointerId);
+    requestAnimation();
+  }
+
+  stage.addEventListener('pointerdown', (event) => {
+    if (event.button !== undefined && event.button !== 0) return;
+    drag = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      lastX: event.clientX,
+      startAngle: angle,
+      lastTime: performance.now()
+    };
+    velocity = 0;
+    if (stage.setPointerCapture) stage.setPointerCapture(event.pointerId);
+  });
+  stage.addEventListener('pointermove', (event) => {
+    if (!drag || event.pointerId !== drag.pointerId) return;
+    const now = performance.now();
+    const dt = Math.max(.001, (now - drag.lastTime) / 1000);
+    angle = drag.startAngle - (event.clientX - drag.startX) * step / (cardWidth * 1.05);
+    velocity = -((event.clientX - drag.lastX) * step / (cardWidth * 1.05)) / dt;
+    drag.lastX = event.clientX;
+    drag.lastTime = now;
+    paint();
+  });
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+  stage.addEventListener('wheel', (event) => {
+    if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+    event.preventDefault();
+    go(event.deltaX > 0 ? 1 : -1);
+  }, { passive: false });
+  stage.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') { go(-1); event.preventDefault(); }
+    if (event.key === 'ArrowRight') { go(1); event.preventDefault(); }
+  });
+
+  document.getElementById('designerGalleryPrev').addEventListener('click', () => go(-1));
+  document.getElementById('designerGalleryNext').addEventListener('click', () => go(1));
+  window.addEventListener('resize', () => { measure(); paint(); });
+  measure();
+  paint();
+})();
+</script>
+<style>
+/* Full-width circular portfolio gallery, using the site's liquid-glass surface. */
+#designer-gallery {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: min(90svh, 900px);
+  min-height: min(660px, 80svh);
+  margin: 0;
+  padding: 0;
+  display: block;
+  overflow: hidden;
+  isolation: isolate;
+  color: #fff;
+  font-family: inherit;
+  user-select: none;
+  touch-action: pan-y;
+  background: transparent !important;
+}
+#designer-gallery .cgal-stage {
+  position: absolute;
+  inset: 0;
+  outline: none;
+  cursor: grab;
+  touch-action: pan-y;
+}
+#designer-gallery .cgal-stage:active { cursor: grabbing; }
+#designer-gallery .cgal-stage:focus-visible {
+  outline: 2px solid rgba(255,77,77,.8);
+  outline-offset: -5px;
+}
+#designer-gallery .cgal-card {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  margin: 0;
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
+}
+#designer-gallery .cgal-pic {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 14px;
+  box-shadow: 0 34px 64px -24px rgba(0,0,0,.72), 0 0 0 1px rgba(255,255,255,.1) inset;
+}
+#designer-gallery .cgal-reflection {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 0;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  transform: scaleY(-1);
+  border-radius: 14px;
+  opacity: .23;
+  filter: blur(2px);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.58), transparent 38%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.58), transparent 38%);
+}
+#designer-gallery .cgal-nav {
+  position: absolute;
+  top: 44%;
+  z-index: 20;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(15,8,10,.48);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+#designer-gallery .cgal-nav:hover {
+  transform: translateY(-50%) scale(1.06);
+  border-color: rgba(255,115,115,.7);
+  background: rgba(255,77,77,.2);
+}
+#designer-gallery .cgal-nav:focus-visible {
+  outline: 2px solid #ff6b6b;
+  outline-offset: 3px;
+}
+#designer-gallery .cgal-nav svg { width: 20px; height: 20px; }
+#designer-gallery .cgal-prev { left: clamp(14px, 3vw, 36px); }
+#designer-gallery .cgal-next { right: clamp(14px, 3vw, 36px); }
+@media (max-width: 760px) {
+  #designer-gallery {
+    height: min(82svh, 720px);
+    min-height: min(580px, 76svh);
+  }
+  #designer-gallery .cgal-nav { width: 42px; height: 42px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #designer-gallery .cgal-card,
+  #designer-gallery .cgal-nav { transition: none; }
+}
+</style>
+
 
 <section id="software-logo-loop" class="software-logo-loop" aria-label="Creative software logos">
   <div class="software-logo-loop-viewport">
