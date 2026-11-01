@@ -1734,7 +1734,13 @@
     { src: 'momo-street.webp', alt: 'Momo Street restaurant campaign design' },
     { src: 'organic.webp', alt: 'Organic product campaign design' },
     { src: 'followes.webp', alt: 'Social media campaign design' },
-    { src: 'Protect%20your%20glow...webp', alt: 'Vitamin C sunscreen campaign design' }
+    { src: 'Protect%20your%20glow...webp', alt: 'Vitamin C sunscreen campaign design' },
+    { src: 'food-ad.jpg', alt: 'Food advertising campaign design' },
+    { src: 'goa.jpg', alt: 'Goa travel campaign design' },
+    { src: 'idli.jpg', alt: 'Idli food campaign design' },
+    { src: 'jewellery.webp', alt: 'Jewellery campaign design' },
+    { src: 'safe-tour.jpg', alt: 'Safe Tour travel campaign design' },
+    { src: 'vietnam.jpg', alt: 'Vietnam travel campaign design' }
   ];
   const cards = photos.map((photo) => {
     const card = document.createElement('figure');
@@ -1762,8 +1768,12 @@
   });
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const count = cards.length;
-  const step = (Math.PI * 2) / count;
+  const mobilePhotoCount = 14;
+  let isPhone = window.matchMedia('(max-width: 760px)').matches;
+  let visibleCount = 0;
+  let step = 0;
+  let hovering = false;
+  let focused = false;
   let angle = 0;
   let target = 0;
   let velocity = 0;
@@ -1776,17 +1786,33 @@
 
   function measure() {
     const width = root.clientWidth || window.innerWidth || 800;
-    const isPhone = window.matchMedia('(max-width: 760px)').matches;
+    const wasPhone = isPhone;
+    isPhone = window.matchMedia('(max-width: 760px)').matches;
+    if (isPhone !== wasPhone) {
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+      if (isPhone) {
+        angle = 0;
+        target = 0;
+        velocity = 0;
+      }
+    }
+    visibleCount = isPhone ? mobilePhotoCount : cards.length;
+    step = (Math.PI * 2) / visibleCount;
     cardWidth = isPhone
       ? Math.max(118, Math.min(190, width * .44))
-      : Math.max(220, Math.min(360, width * .3));
+      : Math.max(200, Math.min(290, width * .22));
     radius = cardWidth * (isPhone ? 1.45 : 2.8);
     depth = cardWidth * 3.4;
-    cards.forEach((card) => { card.style.width = cardWidth + 'px'; });
+    cards.forEach((card, index) => {
+      card.style.display = index < visibleCount ? '' : 'none';
+      card.style.width = cardWidth + 'px';
+    });
   }
 
   function paint() {
     cards.forEach((card, index) => {
+      if (index >= visibleCount) return;
       const theta = Math.atan2(Math.sin(index * step - angle), Math.cos(index * step - angle));
       const cosine = Math.cos(theta);
       const sine = Math.sin(theta);
@@ -1806,6 +1832,14 @@
     frame = 0;
     const dt = Math.min(.05, Math.max(.001, (now - (lastFrame || now)) / 1000));
     lastFrame = now;
+    if (!isPhone && !hovering && !focused && !drag && !reducedMotion) {
+      angle += .075 * dt;
+      target = angle;
+      velocity = 0;
+      paint();
+      frame = requestAnimationFrame(animate);
+      return;
+    }
     velocity += (target - angle) * 80 * dt;
     velocity *= Math.exp(-11 * dt);
     angle += velocity * dt;
@@ -1845,6 +1879,19 @@
     if (stage.hasPointerCapture?.(event.pointerId)) stage.releasePointerCapture(event.pointerId);
     requestAnimation();
   }
+
+  root.addEventListener('pointerenter', () => { hovering = true; });
+  root.addEventListener('pointerleave', () => {
+    hovering = false;
+    if (!focused && !isPhone) requestAnimation();
+  });
+  root.addEventListener('focusin', () => { focused = true; });
+  root.addEventListener('focusout', (event) => {
+    if (!root.contains(event.relatedTarget)) {
+      focused = false;
+      if (!hovering && !isPhone) requestAnimation();
+    }
+  });
 
   stage.addEventListener('pointerdown', (event) => {
     if (event.button !== undefined && event.button !== 0) return;
@@ -1887,9 +1934,14 @@
 
   document.getElementById('designerGalleryPrev').addEventListener('click', () => go(-1));
   document.getElementById('designerGalleryNext').addEventListener('click', () => go(1));
-  window.addEventListener('resize', () => { measure(); paint(); });
+  window.addEventListener('resize', () => {
+    measure();
+    paint();
+    if (!isPhone && !hovering && !focused && !reducedMotion) requestAnimation();
+  });
   measure();
   paint();
+  if (!isPhone && !reducedMotion) requestAnimation();
 })();
 </script>
 <style>
@@ -1985,6 +2037,14 @@
 #designer-gallery .cgal-nav svg { width: 20px; height: 20px; }
 #designer-gallery .cgal-prev { left: clamp(14px, 3vw, 36px); }
 #designer-gallery .cgal-next { right: clamp(14px, 3vw, 36px); }
+@media (min-width: 761px) {
+  #designer-gallery {
+    height: min(78svh, 820px);
+    min-height: min(600px, 70svh);
+  }
+  #designer-gallery .cgal-card,
+  #designer-gallery .cgal-nav { top: 50%; }
+}
 @media (max-width: 760px) {
   #designer-gallery {
     height: min(82svh, 720px);
