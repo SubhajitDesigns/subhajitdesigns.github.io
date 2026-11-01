@@ -1706,9 +1706,7 @@
   </div>
 </section>
 <section id="designer-gallery" aria-label="Selected design work gallery">
-  <div class="cgal-stage" id="designerGalleryStage" role="list" tabindex="0" aria-label="Drag to explore selected work, or use the arrow keys">
-    <h2 class="sr-only">Selected design work</h2>
-  </div>
+  <div class="cgal-stage" id="designerGalleryStage" role="list" tabindex="0" aria-label="Drag to explore selected work, or use the arrow keys"></div>
   <button class="cgal-nav cgal-prev" id="designerGalleryPrev" type="button" aria-label="Previous image">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
   </button>
@@ -1857,6 +1855,11 @@
       startAngle: angle,
       lastTime: performance.now()
     };
+    if (frame) {
+      cancelAnimationFrame(frame);
+      frame = 0;
+    }
+    target = angle;
     velocity = 0;
     if (stage.setPointerCapture) stage.setPointerCapture(event.pointerId);
   });
