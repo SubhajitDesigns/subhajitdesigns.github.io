@@ -2147,10 +2147,15 @@
       card.style.setProperty('--abs', Math.abs(offset));
       card.style.setProperty('--sign', Math.sign(offset));
       card.style.zIndex = String(items.length - Math.abs(offset));
-      card.classList.toggle('is-far', Math.abs(offset) > maxOffset);
-      if (maxOffset === 4 && Math.abs(offset) === 3) card.style.opacity = '.28';
-      else if (maxOffset === 4 && Math.abs(offset) === 4) card.style.opacity = '.5';
-      else card.style.opacity = '';
+      const distance = Math.abs(offset);
+      card.classList.toggle('is-far', distance > maxOffset);
+      if (maxOffset === 4 && distance <= 4) {
+        card.style.opacity = String(Math.max(.68, 1 - distance * .08));
+        card.style.filter = 'brightness(' + Math.max(.72, 1 - distance * .07) + ')';
+      } else {
+        card.style.opacity = '';
+        card.style.filter = '';
+      }
       card.setAttribute('aria-current', String(index === active));
     });
     const projectIndex = ((active - count) % count + count) % count;
