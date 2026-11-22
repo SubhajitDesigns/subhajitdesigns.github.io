@@ -1102,8 +1102,9 @@
   margin: 0 0 .9rem; color: #fff; font-size: clamp(1.55rem, 2.45vw, 2.45rem);
   font-weight: 800; line-height: 1.04; letter-spacing: -.045em; text-transform: uppercase;
 }
-#hero .about-heading-letter, #hero .about-heading-space { display: inline-block; }
-#hero .about-heading-space { width: .27em; }
+/* Keep each heading word together so narrow cards never split a word across lines. */
+#hero .about-heading-word { display: inline-block; white-space: nowrap; }
+#hero .about-scroll-card h2 { overflow-wrap: normal; word-break: normal; }
 #hero .about-scroll-card > p:not(.about-scroll-eyebrow) {
   max-width: 44ch; margin: 0 0 .7rem; color: rgba(247,240,241,.83);
   font-size: clamp(.92rem, 1.04vw, 1.02rem); line-height: 1.55;
@@ -2383,12 +2384,12 @@
         const heading = card.querySelector('h2');
         const title = heading.textContent.trim();
         heading.setAttribute('aria-label', title);
-        heading.innerHTML = Array.from(title).map(char =>
-          char === ' '
-            ? '<span class="about-heading-space" aria-hidden="true"> </span>'
-            : '<span class="about-heading-letter" aria-hidden="true">' + char + '</span>'
+        heading.innerHTML = title.split(/(\\s+)/).map(part =>
+          /\\s+/.test(part)
+            ? part
+            : '<span class="about-heading-word" aria-hidden="true">' + part + '</span>'
         ).join('');
-        return Array.from(heading.querySelectorAll('.about-heading-letter, .about-heading-space'));
+        return Array.from(heading.querySelectorAll('.about-heading-word'));
       });
       const aboutText = aboutCards.map(card =>
         Array.from(card.querySelectorAll(
