@@ -3742,3 +3742,34 @@ if (techMount) ReactDOM.createRoot(techMount).render(<TechText text="SUBHAJIT DA
 
 </body>
 </html>
+
+
+<style>
+/* Mobile-only spacing correction for Featured Work and the My Work galleries.
+   Desktop/tablet layouts remain unchanged. */
+@media (max-width: 760px) {
+  #work.crafted-gallery-enabled {
+    min-height: auto;
+    padding: 2rem 1rem 1rem;
+  }
+  #work .crafted-heading {
+    margin-bottom: 1rem;
+  }
+  #work .crafted-gallery {
+    min-height: 34svh;
+  }
+  #my-work-gallery {
+    min-height: auto;
+    padding: 1.5rem 0 2rem;
+  }
+  #my-work-gallery .my-work-heading {
+    margin-bottom: .25rem;
+  }
+  #my-work-gallery .coverflow {
+    gap: .35rem;
+  }
+  #my-work-gallery .view {
+    height: clamp(240px, 68vw, 300px);
+  }
+}
+</style>
