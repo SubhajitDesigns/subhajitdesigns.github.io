@@ -206,9 +206,10 @@
       object-fit: contain;
       filter: none;
       opacity: 1;
+      transform-origin: center;
       transition: transform .25s ease;
     }
-    .software-logo-loop-item:hover img { transform: scale(1.05); }
+    .software-logo-loop-item:hover img { filter: none; }
     @media(max-width:600px) {
       .software-logo-loop { padding: 24px 0 20px; }
       .client-logo-heading { margin-bottom: 17px; }
@@ -3486,8 +3487,42 @@ if (techMount) ReactDOM.createRoot(techMount).render(<TechText text="SUBHAJIT DA
       logo.loading = cycle === 0 ? 'eager' : 'lazy';
       logo.decoding = 'async';
 
+      const normalizeLogo = () => {
+        if (!logo.naturalWidth || !logo.naturalHeight) return;
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = logo.naturalWidth;
+          canvas.height = logo.naturalHeight;
+          const ctx = canvas.getContext('2d', { willReadFrequently: true });
+          ctx.drawImage(logo, 0, 0);
+          const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+          let minX = canvas.width, minY = canvas.height, maxX = -1, maxY = -1;
+          for (let y = 0; y < canvas.height; y += 2) {
+            for (let x = 0; x < canvas.width; x += 2) {
+              if (pixels[(y * canvas.width + x) * 4 + 3] > 24) {
+                if (x < minX) minX = x;
+                if (y < minY) minY = y;
+                if (x > maxX) maxX = x;
+                if (y > maxY) maxY = y;
+              }
+            }
+          }
+          if (maxX < minX || maxY < minY) return;
+          const visibleWidth = (maxX - minX + 1) / canvas.width * logo.clientWidth;
+          const visibleHeight = (maxY - minY + 1) / canvas.height * logo.clientHeight;
+          const targetWidth = logo.clientWidth * 0.88;
+          const targetHeight = logo.clientHeight * 0.78;
+          const scale = Math.min(1.8, targetWidth / visibleWidth, targetHeight / visibleHeight);
+          logo.style.transform = 'scale(' + scale.toFixed(3) + ')';
+        } catch (error) {
+          logo.style.transform = 'scale(1)';
+        }
+      };
+      logo.addEventListener('load', normalizeLogo, { once: true });
+
       if (cycle > 0) entry.setAttribute('aria-hidden', 'true');
       entry.append(logo);
+      if (logo.complete) normalizeLogo();
       track.appendChild(entry);
     });
   }
