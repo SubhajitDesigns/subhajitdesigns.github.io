@@ -802,7 +802,7 @@
     }
     @media (max-width: 420px) {
       #hero .about-scroll-card { padding: 1rem .9rem; }
-      #hero .about-scroll-card h2 { font-size: clamp(1.4rem,7.2vw,1.8rem); }
+      #hero .about-scroll-card h2 { font-size: clamp(1.65rem,7.4vw,2rem); line-height: 1.04; }
       #hero .about-scroll-stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
       #my-work-gallery .cover-card-title { padding: 8px; font-size: .68rem; }
       .portfolio-gallery-item { flex-basis: 78vw; height: 94vw; }
@@ -1099,8 +1099,10 @@
   font-weight: 750; letter-spacing: .18em; text-transform: uppercase;
 }
 #hero .about-scroll-card h2 {
-  margin: 0 0 .9rem; color: #fff; font-size: clamp(1.35rem, 2.05vw, 2.05rem);
-  font-weight: 800; line-height: 1.08; letter-spacing: -.045em; text-transform: uppercase;
+  margin: 0 0 1rem; color: #fff;
+  font-size: clamp(1.9rem, 3vw, 2.55rem);
+  font-weight: 850; line-height: 1.02; letter-spacing: -.052em;
+  text-transform: uppercase; text-wrap: pretty;
 }
 /* Keep each heading word together so narrow cards never split a word across lines. */
 #hero .about-heading-line {
@@ -1181,7 +1183,7 @@
   #hero #about-scroll-intro { min-height: 0; }
   #hero #about-scroll-experience { min-height: 440px; }
   #hero #about-scroll-achievements { min-height: 340px; }
-  #hero .about-scroll-card h2 { font-size: clamp(1.5rem, 7vw, 2.1rem); }
+  #hero .about-scroll-card h2 { font-size: clamp(1.75rem, 7.2vw, 2.25rem); line-height: 1.04; }
   #hero .about-scroll-card > p:not(.about-scroll-eyebrow) { font-size: .9rem; line-height: 1.5; }
   #hero .about-scroll-stat span { font-size: .62rem; }
   .achievement-dialog-certs { grid-template-columns: 1fr; }
@@ -2447,15 +2449,15 @@
         .to("#hero-right-text", { opacity: 0, y: -40, duration: 0.5 }, 0)
         .fromTo(aboutCards[0], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 0.62)
         .fromTo(aboutText[0], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, stagger: 0.08 }, 0.68)
-        .fromTo(aboutHeadingLetters[0], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.08, stagger: 0.012 }, 0.70)
+        .fromTo(aboutHeadingLetters[0], { autoAlpha: 0, y: 22, rotateX: -28, transformOrigin: "50% 100%" }, { autoAlpha: 1, y: 0, rotateX: 0, duration: 0.2, stagger: 0.055, ease: "power3.out" }, 0.70)
         .to(aboutCards[0], { autoAlpha: 0, y: -44, duration: 0.2 }, 1.42)
         .fromTo(aboutCards[1], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 1.62)
         .fromTo(aboutText[1], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, stagger: 0.08 }, 1.68)
-        .fromTo(aboutHeadingLetters[1], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.08, stagger: 0.012 }, 1.70)
+        .fromTo(aboutHeadingLetters[1], { autoAlpha: 0, y: 22, rotateX: -28, transformOrigin: "50% 100%" }, { autoAlpha: 1, y: 0, rotateX: 0, duration: 0.2, stagger: 0.055, ease: "power3.out" }, 1.70)
         .to(aboutCards[1], { autoAlpha: 0, y: -44, duration: 0.2 }, 2.42)
         .fromTo(aboutCards[2], { autoAlpha: 0, y: 74 }, { autoAlpha: 1, y: 0, duration: 0.22 }, 2.62)
         .fromTo(aboutText[2], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.2, stagger: 0.08 }, 2.68)
-        .fromTo(aboutHeadingLetters[2], { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.08, stagger: 0.012 }, 2.70)
+        .fromTo(aboutHeadingLetters[2], { autoAlpha: 0, y: 22, rotateX: -28, transformOrigin: "50% 100%" }, { autoAlpha: 1, y: 0, rotateX: 0, duration: 0.2, stagger: 0.055, ease: "power3.out" }, 2.70)
         .to(character.position, { x: -2.9, duration: 0.65, ease: "none" }, 3.2);
 
       const craftedWalk = gsap.timeline({
