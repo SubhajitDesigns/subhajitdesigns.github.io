@@ -3510,9 +3510,9 @@ if (techMount) ReactDOM.createRoot(techMount).render(<TechText text="SUBHAJIT DA
           if (maxX < minX || maxY < minY) return;
           const visibleWidth = (maxX - minX + 1) / canvas.width * logo.clientWidth;
           const visibleHeight = (maxY - minY + 1) / canvas.height * logo.clientHeight;
-          const targetWidth = logo.clientWidth * 0.88;
-          const targetHeight = logo.clientHeight * 0.78;
-          const scale = Math.min(1.8, targetWidth / visibleWidth, targetHeight / visibleHeight);
+          const targetWidth = logo.clientWidth * 0.96;
+          const targetHeight = logo.clientHeight * 0.90;
+          const scale = Math.min(2.6, targetWidth / visibleWidth, targetHeight / visibleHeight);
           logo.style.transform = 'scale(' + scale.toFixed(3) + ')';
         } catch (error) {
           logo.style.transform = 'scale(1)';
