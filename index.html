@@ -1103,6 +1103,10 @@
   font-weight: 800; line-height: 1.04; letter-spacing: -.045em; text-transform: uppercase;
 }
 /* Keep each heading word together so narrow cards never split a word across lines. */
+#hero .about-heading-line {
+  display: block;
+  white-space: nowrap;
+}
 #hero .about-heading-word { display: inline-block; white-space: nowrap; }
 #hero .about-scroll-card h2 { overflow-wrap: normal; word-break: normal; }
 #hero .about-scroll-card > p:not(.about-scroll-eyebrow) {
@@ -2384,10 +2388,18 @@
         const heading = card.querySelector('h2');
         const title = heading.textContent.trim();
         heading.setAttribute('aria-label', title);
-        heading.innerHTML = title.split(/(\s+)/).map(part =>
-          /\s+/.test(part)
-            ? part
-            : '<span class="about-heading-word" aria-hidden="true">' + part + '</span>'
+        const lineBreaks = {
+          'DESIGNING WITH PURPOSE.': ['DESIGNING WITH', 'PURPOSE.'],
+          'CREATIVE WORK, BUILT OVER TIME.': ['CREATIVE WORK,', 'BUILT OVER TIME.'],
+          'BUILT THROUGH CURIOSITY AND CRAFT.': ['BUILT THROUGH', 'CURIOSITY AND', 'CRAFT.']
+        };
+        const lines = lineBreaks[title] || [title];
+        heading.innerHTML = lines.map(line =>
+          '<span class="about-heading-line">' +
+          line.split(/\s+/).map(word =>
+            '<span class="about-heading-word" aria-hidden="true">' + word + '</span>'
+          ).join(' ') +
+          '</span>'
         ).join('');
         return Array.from(heading.querySelectorAll('.about-heading-word'));
       });
