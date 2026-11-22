@@ -128,28 +128,54 @@
     @media(max-width:850px){.crafted-gallery-cards{grid-template-columns:repeat(2,minmax(0,1fr));max-width:650px}.featured-photo-label{padding:12px}}
     @media(max-width:420px){.crafted-gallery-cards{gap:10px}.featured-photo-label strong{font-size:.76rem}.featured-photo-label small{font-size:.55rem}}
 
-    /* Continuous client-logo marquee beneath the selected work gallery */
+    /* Compact, editorial client-brand showcase */
     .software-logo-loop {
       position: relative;
       z-index: 20;
       display: block;
       width: 100%;
-      min-height: 0;
-      padding: 22px 0;
+      padding: clamp(26px, 3.5vw, 42px) 0 clamp(22px, 3vw, 34px);
       overflow: hidden;
-      border-block: 1px solid rgba(244,242,236,.12);
-      background: rgba(10,10,11,.82);
+      border-block: 1px solid rgba(244,242,236,.10);
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(255,77,84,.10), transparent 58%),
+        linear-gradient(180deg, rgba(15,10,12,.96), rgba(8,8,10,.98));
+    }
+    .client-logo-heading {
+      width: min(100% - 36px, 1180px);
+      margin: 0 auto 22px;
+      text-align: center;
+    }
+    .client-logo-kicker {
+      display: block;
+      margin-bottom: 8px;
+      color: #ff6268;
+      font: 800 10px/1.2 system-ui,sans-serif;
+      letter-spacing: .22em;
+    }
+    .client-logo-heading h2 {
+      margin: 0;
+      color: #f7f4f2;
+      font: 850 clamp(23px, 3.2vw, 38px)/1 system-ui,sans-serif;
+      letter-spacing: -.055em;
+      text-transform: uppercase;
+    }
+    .client-logo-heading h2 span { color: #ff555d; }
+    .client-logo-heading p {
+      margin: 9px 0 0;
+      color: rgba(235,225,226,.58);
+      font: 500 12px/1.5 system-ui,sans-serif;
     }
     .software-logo-loop-viewport {
       width: 100%;
       overflow: hidden;
-      mask-image: linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
-      -webkit-mask-image: linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
+      mask-image: linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);
+      -webkit-mask-image: linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);
     }
     .software-logo-loop-track {
       display: inline-flex;
       align-items: center;
-      gap: clamp(18px, 2.2vw, 32px);
+      gap: clamp(12px, 1.5vw, 22px);
       width: max-content;
       white-space: nowrap;
       will-change: transform;
@@ -159,11 +185,19 @@
       align-items: center;
       justify-content: center;
       flex: 0 0 auto;
-      width: clamp(100px, 10vw, 142px);
-      height: 58px;
-      padding: 3px 4px;
-      border-radius: 8px;
-      background: transparent;
+      width: clamp(112px, 11vw, 148px);
+      height: 66px;
+      padding: 10px 13px;
+      border: 1px solid rgba(255,255,255,.075);
+      border-radius: 12px;
+      background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+      box-shadow: 0 8px 24px rgba(0,0,0,.16);
+      transition: border-color .25s ease, background .25s ease, transform .25s ease;
+    }
+    .software-logo-loop-item:hover {
+      border-color: rgba(255,91,98,.42);
+      background: rgba(255,255,255,.075);
+      transform: translateY(-3px);
     }
     .software-logo-loop-item img {
       display: block;
@@ -172,20 +206,18 @@
       object-fit: contain;
       filter: none;
       opacity: 1;
-      transition: transform .3s ease;
+      transition: transform .25s ease;
     }
-    .software-logo-loop-item:hover img {
-      filter: none;
-      opacity: 1;
-      transform: scale(1.06);
-    }
+    .software-logo-loop-item:hover img { transform: scale(1.05); }
     @media(max-width:600px) {
-      .software-logo-loop { padding: 16px 0; }
-      .software-logo-loop-track { gap: 16px; }
-      .software-logo-loop-item { width: 92px; height: 46px; padding: 2px; }
+      .software-logo-loop { padding: 24px 0 20px; }
+      .client-logo-heading { margin-bottom: 17px; }
+      .client-logo-heading p { font-size: 11px; }
+      .software-logo-loop-track { gap: 10px; }
+      .software-logo-loop-item { width: 100px; height: 54px; padding: 8px 10px; border-radius: 10px; }
     }
     @media(prefers-reduced-motion:reduce) {
-      .software-logo-loop-item img { transition: none; }
+      .software-logo-loop-item, .software-logo-loop-item img { transition: none; }
     }
 
     /* Standalone gallery below Crafted Designs */
@@ -1866,7 +1898,12 @@
 </style>
 
 
-<section id="software-logo-loop" class="software-logo-loop" aria-label="Client brand logos">
+<section id="software-logo-loop" class="software-logo-loop" aria-label="Selected client brands">
+  <div class="client-logo-heading">
+    <span class="client-logo-kicker">SELECTED CLIENTS</span>
+    <h2>GOOD COMPANY. <span>GREAT WORK.</span></h2>
+    <p>Some of the brands I have had the pleasure to work with</p>
+  </div>
   <div class="software-logo-loop-viewport">
     <div class="software-logo-loop-track" id="softwareLogoTrack"></div>
   </div>
@@ -3456,7 +3493,7 @@ if (techMount) ReactDOM.createRoot(techMount).render(<TechText text="SUBHAJIT DA
   }
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const speed = 60;
+  const speed = 42;
   const direction = -1;
   let offset = 0;
   let last = performance.now();
