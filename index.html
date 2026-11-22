@@ -2384,8 +2384,8 @@
         const heading = card.querySelector('h2');
         const title = heading.textContent.trim();
         heading.setAttribute('aria-label', title);
-        heading.innerHTML = title.split(/(\\s+)/).map(part =>
-          /\\s+/.test(part)
+        heading.innerHTML = title.split(/(\s+)/).map(part =>
+          /\s+/.test(part)
             ? part
             : '<span class="about-heading-word" aria-hidden="true">' + part + '</span>'
         ).join('');
