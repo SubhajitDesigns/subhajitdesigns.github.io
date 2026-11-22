@@ -128,14 +128,14 @@
     @media(max-width:850px){.crafted-gallery-cards{grid-template-columns:repeat(2,minmax(0,1fr));max-width:650px}.featured-photo-label{padding:12px}}
     @media(max-width:420px){.crafted-gallery-cards{gap:10px}.featured-photo-label strong{font-size:.76rem}.featured-photo-label small{font-size:.55rem}}
 
-    /* Continuous software-logo loop beneath the selected work gallery */
+    /* Continuous client-logo marquee beneath the selected work gallery */
     .software-logo-loop {
       position: relative;
       z-index: 20;
       display: block;
       width: 100%;
       min-height: 0;
-      padding: 14px 0;
+      padding: 22px 0;
       overflow: hidden;
       border-block: 1px solid rgba(244,242,236,.12);
       background: rgba(10,10,11,.82);
@@ -149,7 +149,7 @@
     .software-logo-loop-track {
       display: inline-flex;
       align-items: center;
-      gap: 56px;
+      gap: clamp(42px, 5vw, 76px);
       width: max-content;
       white-space: nowrap;
       will-change: transform;
@@ -157,28 +157,35 @@
     .software-logo-loop-item {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      color: #8A8893;
-      font: 700 18px/1 system-ui,sans-serif;
-      letter-spacing: -.012em;
+      justify-content: center;
+      flex: 0 0 auto;
+      width: clamp(112px, 12vw, 168px);
+      height: 58px;
+      padding: 4px 8px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.025);
     }
     .software-logo-loop-item img {
       display: block;
-      width: 36px;
-      height: 36px;
+      width: 100%;
+      height: 100%;
       object-fit: contain;
+      filter: grayscale(1) brightness(1.5);
+      opacity: .78;
+      transition: filter .3s ease, opacity .3s ease, transform .3s ease;
     }
-    .software-logo-loop-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #4A6BFF;
-      flex: 0 0 5px;
+    .software-logo-loop-item:hover img {
+      filter: grayscale(0) brightness(1);
+      opacity: 1;
+      transform: scale(1.08);
     }
     @media(max-width:600px) {
-      .software-logo-loop-track { gap: 36px; }
-      .software-logo-loop-item { font-size: 15px; }
-      .software-logo-loop-item img { width: 30px; height: 30px; }
+      .software-logo-loop { padding: 16px 0; }
+      .software-logo-loop-track { gap: 28px; }
+      .software-logo-loop-item { width: 104px; height: 48px; padding: 3px 5px; }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      .software-logo-loop-item img { transition: none; }
     }
 
     /* Standalone gallery below Crafted Designs */
@@ -1859,7 +1866,7 @@
 </style>
 
 
-<section id="software-logo-loop" class="software-logo-loop" aria-label="Creative software logos">
+<section id="software-logo-loop" class="software-logo-loop" aria-label="Client brand logos">
   <div class="software-logo-loop-viewport">
     <div class="software-logo-loop-track" id="softwareLogoTrack"></div>
   </div>
@@ -3411,12 +3418,22 @@ if (techMount) ReactDOM.createRoot(techMount).render(<TechText text="SUBHAJIT DA
   if (!track) return;
 
   const logos = [
-    { name: 'After Effects', src: 'icons/icon-ae.webp' },
-    { name: 'Illustrator', src: 'icons/icon-ai.webp' },
-    { name: 'CapCut', src: 'icons/icon-capcut.webp' },
-    { name: 'Figma', src: 'icons/icon-figma.webp' },
-    { name: 'Premiere Pro', src: 'icons/icon-pr.webp' },
-    { name: 'Photoshop', src: 'icons/icon-ps.webp' }
+    { name: 'Hotel Ma Grand', src: 'hotel-ma-grand.png' },
+    { name: 'MA Realty', src: 'ma-realty.png' },
+    { name: 'Yuven Motors', src: 'yuven-motors.png' },
+    { name: 'GB', src: 'gb.png' },
+    { name: 'SU', src: 'su.png' },
+    { name: 'AceMath', src: 'acemath.png' },
+    { name: 'Mamaearth', src: 'mamaearth.png' },
+    { name: 'Dharmi Realty', src: 'dharmi-realty.png' },
+    { name: 'FreeHit', src: 'freehit.png' },
+    { name: 'Untouch Nature', src: 'untouch-nature.png' },
+    { name: 'Heli Tours & Travels', src: 'heli-tours-travels.png' },
+    { name: 'Jivantika Organic', src: 'jivantika-organic.png' },
+    { name: 'Son Kapila', src: 'son-kapila.png' },
+    { name: 'Mobiles 24', src: 'mobiles-24.png' },
+    { name: 'Client 16', src: 'client-16.png' },
+    { name: 'Vedainn', src: 'vedainn.png' }
   ];
 
   for (let cycle = 0; cycle < 3; cycle++) {
@@ -3427,20 +3444,14 @@ if (techMount) ReactDOM.createRoot(techMount).render(<TechText text="SUBHAJIT DA
 
       const logo = document.createElement('img');
       logo.src = item.src;
-      logo.alt = '';
-      logo.width = 36;
-      logo.height = 36;
-      logo.loading = 'lazy';
+      logo.alt = cycle === 0 ? item.name : '';
+      logo.width = 160;
+      logo.height = 58;
+      logo.loading = cycle === 0 ? 'eager' : 'lazy';
       logo.decoding = 'async';
 
-      const dot = document.createElement('span');
-      dot.className = 'software-logo-loop-dot';
-      dot.setAttribute('aria-hidden', 'true');
-
-      const label = document.createElement('span');
-      label.textContent = item.name;
-
-      entry.append(logo, dot, label);
+      if (cycle > 0) entry.setAttribute('aria-hidden', 'true');
+      entry.append(logo);
       track.appendChild(entry);
     });
   }
