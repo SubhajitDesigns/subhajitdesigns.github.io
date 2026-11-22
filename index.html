@@ -785,7 +785,7 @@
       #work .crafted-heading { margin-bottom: 2rem; }
       #work .crafted-heading h2 { font-size: clamp(2.35rem, 11vw, 4.2rem); }
       #work .crafted-gallery { min-height: 52svh; }
-      #my-work-gallery { min-height: 82svh; padding: 3.5rem 0; }
+      #my-work-gallery { min-height: auto; padding: 2rem 0 1.25rem; }
       #my-work-gallery .my-work-heading { width: min(92vw,560px); padding-inline: .5rem; }
       #my-work-gallery .view { height: clamp(310px,92vw,430px); }
       #my-work-gallery .cover-card { max-width: min(62vw,250px); border-radius: 12px; }
@@ -887,10 +887,9 @@
   position: relative;
   z-index: 11;
   width: 100%;
-  min-height: 100vh;
-  padding: clamp(2.5rem, 4vh, 3.5rem) 0;
-  display: grid;
-  place-items: center;
+  min-height: auto;
+  padding: clamp(2.5rem, 5vh, 4rem) 0 clamp(1.5rem, 3vh, 2.5rem);
+  display: block;
   overflow: hidden;
   isolation: isolate;
   background: linear-gradient(180deg, #080506, #100709 58%, #080506);
@@ -908,7 +907,7 @@
     radial-gradient(ellipse at 100% 82%, rgba(100,12,22,.15), transparent 34%);
 }
 #my-work-gallery .my-work-inner { width: 100%; margin: auto; }
-#my-work-gallery .my-work-heading { width: min(88vw, 720px); margin: 0 auto 1rem; text-align: center; }
+#my-work-gallery .my-work-heading { width: min(88vw, 720px); margin: 0 auto .25rem; text-align: center; }
 #my-work-gallery .my-work-heading p:first-child {
   margin: 0 0 1rem;
   color: #ff7777;
@@ -936,7 +935,7 @@
 #my-work-gallery .coverflow {
   display: grid;
   justify-items: center;
-  gap: clamp(.75rem, 2vh, 1.5rem);
+  gap: .25rem;
   width: 100%;
   font-family: var(--font-geist), sans-serif;
 }
@@ -945,7 +944,7 @@
   place-items: center;
   width: calc(100% - clamp(28px, 4vw, 56px));
   margin-inline: auto;
-  height: clamp(390px, 54vw, 650px);
+  height: clamp(320px, 40vw, 480px);
   perspective: 1400px;
   outline: none;
 }
@@ -1035,8 +1034,8 @@
 }
 #my-work-gallery .view:focus-visible { outline: 2px solid #ff6a6a; outline-offset: -8px; }
 @media(max-width:700px) {
-  #my-work-gallery { min-height: 88vh; padding: 4rem 0; }
-  #my-work-gallery .view { height: clamp(330px, 88vw, 470px); }
+  #my-work-gallery { min-height: auto; padding: 2.5rem 0 1.5rem; }
+  #my-work-gallery .view { height: clamp(300px, 80vw, 420px); }
   #my-work-gallery .cover-card {
     --cover-step: calc((100vw - clamp(28px, 7vw, 40px) - clamp(190px, 44vw, 260px)) / 2);
     --cover-nudge: 0px;
