@@ -1099,8 +1099,8 @@
   font-weight: 750; letter-spacing: .18em; text-transform: uppercase;
 }
 #hero .about-scroll-card h2 {
-  margin: 0 0 .9rem; color: #fff; font-size: clamp(1.55rem, 2.45vw, 2.45rem);
-  font-weight: 800; line-height: 1.04; letter-spacing: -.045em; text-transform: uppercase;
+  margin: 0 0 .9rem; color: #fff; font-size: clamp(1.35rem, 2.05vw, 2.05rem);
+  font-weight: 800; line-height: 1.08; letter-spacing: -.045em; text-transform: uppercase;
 }
 /* Keep each heading word together so narrow cards never split a word across lines. */
 #hero .about-heading-line {
@@ -1479,13 +1479,13 @@
       <div class="about-scroll-deck" aria-label="About Subhajit">
         <article class="about-scroll-card" id="about-scroll-intro">
           <p class="about-scroll-eyebrow">About Me</p>
-          <h2>DESIGNING WITH PURPOSE.</h2>
+          <h2>DESIGN WITH PURPOSE.</h2>
           <p>Hi, I’m Subhajit Das, a dedicated graphic designer and video editor with over seven years of professional experience. I’m from Medinipur, a small town in West Bengal. After completing my schooling in 2017, financial limitations prevented me from finishing college. Since then, I’ve built my career through self-learning, continuous practice, and real client projects. I’ve collaborated with 50+ brands, helping them shape their visual identity and stand out in competitive markets.</p>
           <div class="about-scroll-foot">Independent creative • India</div>
         </article>
         <article class="about-scroll-card" id="about-scroll-experience">
           <p class="about-scroll-eyebrow">Experience &amp; Impact</p>
-          <h2>CREATIVE WORK, BUILT OVER TIME.</h2>
+          <h2>CREATIVE WORK. BUILT OVER TIME.</h2>
           <p>From visual identity to product campaigns and video, I work with teams to make ideas easy to notice and remember.</p>
           <div class="about-scroll-stats">
             <div class="about-scroll-stat"><strong>7+</strong><span>Years of experience</span></div>
@@ -1496,7 +1496,7 @@
         </article>
         <article class="about-scroll-card" id="about-scroll-achievements">
           <p class="about-scroll-eyebrow">Selected Achievements</p>
-          <h2>BUILT THROUGH CURIOSITY AND CRAFT.</h2>
+          <h2>BUILT ON CURIOSITY. DEFINED BY CRAFT.</h2>
           <p class="about-scroll-summary">Career highlights and certificates</p>
           <button class="about-scroll-achievement-trigger" type="button" aria-haspopup="dialog" aria-controls="achievements-dialog">
             <span>VIEW ACHIEVEMENTS</span><span aria-hidden="true">↗</span>
@@ -1507,7 +1507,7 @@
       <dialog class="achievement-dialog" id="achievements-dialog" aria-labelledby="achievements-dialog-title">
         <button class="achievement-dialog-close" type="button" aria-label="Close achievements">×</button>
         <p class="about-scroll-eyebrow">Selected Achievements</p>
-        <h2 id="achievements-dialog-title">BUILT THROUGH CURIOSITY AND CRAFT.</h2>
+        <h2 id="achievements-dialog-title">BUILT ON CURIOSITY. DEFINED BY CRAFT.</h2>
         <ul class="achievement-dialog-list">
           <li>Built a creative career through self-learning, continuous practice, and real client projects.</li>
           <li>Partnered with 50+ brands across different industries.</li>
@@ -2389,9 +2389,9 @@
         const title = heading.textContent.trim();
         heading.setAttribute('aria-label', title);
         const lineBreaks = {
-          'DESIGNING WITH PURPOSE.': ['DESIGNING WITH', 'PURPOSE.'],
-          'CREATIVE WORK, BUILT OVER TIME.': ['CREATIVE WORK,', 'BUILT OVER TIME.'],
-          'BUILT THROUGH CURIOSITY AND CRAFT.': ['BUILT THROUGH', 'CURIOSITY AND', 'CRAFT.']
+          'DESIGN WITH PURPOSE.': ['DESIGN WITH', 'PURPOSE.'],
+          'CREATIVE WORK. BUILT OVER TIME.': ['CREATIVE WORK.', 'BUILT OVER TIME.'],
+          'BUILT ON CURIOSITY. DEFINED BY CRAFT.': ['BUILT ON CURIOSITY.', 'DEFINED BY CRAFT.']
         };
         const lines = lineBreaks[title] || [title];
         heading.innerHTML = lines.map(line =>
