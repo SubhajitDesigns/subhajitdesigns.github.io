@@ -7,7 +7,10 @@
     // Keep the lightweight, mobile-optimized portfolio for phones and tablets.
     // Send desktop visitors to the redesigned portfolio.
     (function () {
-      var isDesktop = window.matchMedia("(min-width: 1025px)").matches;
+      var hasTouch = (navigator.maxTouchPoints || 0) > 0 ||
+        window.matchMedia("(pointer: coarse)").matches;
+      var isWide = window.matchMedia("(min-width: 1025px)").matches;
+      var isDesktop = isWide && !hasTouch;
       if (isDesktop) {
         window.location.replace("https://subhajitdesigns.github.io/subhajit-portfolio-redesign/");
       }
