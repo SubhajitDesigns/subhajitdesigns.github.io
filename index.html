@@ -13,7 +13,9 @@
       var isTouchTablet = window.matchMedia("(pointer: coarse) and (hover: none)").matches;
       var isWide = window.matchMedia("(min-width: 1025px)").matches;
       var shouldUseMobilePortfolio = isPhoneOrTablet || isIPadOS || isTouchTablet;
-      if (isWide && !shouldUseMobilePortfolio) {
+      // Allow the original portfolio to be opened on desktop with ?old.
+      var forceOldPortfolio = new URLSearchParams(window.location.search).has("old");
+      if (isWide && !shouldUseMobilePortfolio && !forceOldPortfolio) {
         window.location.replace("https://subhajitdesigns.github.io/subhajit-portfolio-redesign/");
       }
     })();
