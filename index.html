@@ -1912,9 +1912,19 @@
   #designer-gallery .cgal-nav { transition: none; }
 }
 
-/* Tighten the transition from client logos into client testimonials. */
-#software-logo-loop { padding-bottom: 0 !important; }
-.portfolio-glass-surface > .tmq { padding-top: 0 !important; }
+/* Remove the entire section-sized gap between client logos and testimonials. */
+#software-logo-loop {
+  min-height: 0 !important;
+  height: auto !important;
+  display: block !important;
+  margin-bottom: 0 !important;
+  padding: clamp(26px, 3.5vw, 42px) 0 0 !important;
+}
+.portfolio-glass-surface > .tmq {
+  min-height: 0 !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
 </style>
 
 
