@@ -3,6 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    // Keep the lightweight, mobile-optimized portfolio for phones and tablets.
+    // Send desktop visitors to the redesigned portfolio.
+    (function () {
+      var isDesktop = window.matchMedia("(min-width: 1025px)").matches;
+      if (isDesktop) {
+        window.location.replace("https://subhajitdesigns.github.io/subhajit-portfolio-redesign/");
+      }
+    })();
+  </script>
   <title>Subhajit — Moncy Scroll Walk Hero</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
